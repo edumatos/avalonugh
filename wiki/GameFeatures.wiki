@@ -27,7 +27,7 @@ Add your content here.
 
 Flash + Nonoba = 800
 640 x 400 -> need a scrolling feature
-
+Actual metrics seem to be 320x200
 
 Tile size: 32x24
 Door tiles: 2x2
