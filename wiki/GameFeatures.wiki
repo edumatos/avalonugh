@@ -20,6 +20,15 @@ Add your content here.
   * saurus - will run at tnhe taxi
   * signs from 1 to 6
 
+= Metrics =
+
+Flash + Nonoba = 800
+640 x 400 -> need a scrolling feature
+
+
+Tile size: 32x24
+Door tiles: 2x2
+
 = Online Information for Ugh =
 http://www.answers.com/topic/ugh-game
 http://www.gamespot.com/pc/action/ugh/hints.html?om_act=convert&om_clk=gsbottomnav&tag=quicklinks;cheats
