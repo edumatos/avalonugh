@@ -62,7 +62,14 @@ namespace AvalonUgh.Labs.Shared
 			var Create = new
 			{
 				stone0 = CreateTile.FixLastParam("stone0"),
+
 				bridge0 = CreateTile.FixLastParam("bridge0"),
+				bridge0left = CreateTile.FixLastParam("bridge0left"),
+				bridge0right = CreateTile.FixLastParam("bridge0right"),
+
+
+				platform0 = CreateTile.FixLastParam("platform0"),
+
 				sign2 = CreateSprite.FixLastParam("sign2"),
 				rock0 = CreateSprite.FixLastParam("rock0"),
 			};
@@ -74,8 +81,18 @@ namespace AvalonUgh.Labs.Shared
 					Create.stone0(x, y);
 				}
 
-			for (int x = 0; x < 20; x++)
+			Create.bridge0left(0, 12);
+			Create.bridge0right(19, 12);
+			for (int x = 1; x < 19; x++)
 				Create.bridge0(x, 12);
+
+
+			for (int x = 0; x < 6; x++)
+				Create.platform0(x, 9);
+
+			for (int x = 14; x < 20; x++)
+				Create.platform0(x, 9);
+
 			#endregion
 
 			Create.sign2(4, 11);
