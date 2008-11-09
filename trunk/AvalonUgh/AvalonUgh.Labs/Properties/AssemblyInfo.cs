@@ -1,17 +1,18 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 using ScriptCoreLib;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AvalonUgh.Assets")]
+[assembly: AssemblyTitle("AvalonUgh.Labs")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AvalonUgh.Assets")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("AvalonUgh.Labs")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +22,7 @@ using ScriptCoreLib;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("965aded2-0262-490d-b0d8-cc1f4da1595c")]
+[assembly: Guid("91a9e2f5-2152-4ebf-8b11-d814dfb83a78")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -38,8 +39,8 @@ using ScriptCoreLib;
 
 [assembly:
 	Script,
-	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Assets.Shared.KnownAssets)),
-	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Assets.ActionScript.__AssetsImplementationDetails)),
-	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Assets.Shared.KnownAssets)),
-	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Assets.JavaScript.__AssetsImplementationDetails)),
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Labs.Shared.LabsCanvas)),
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Labs.ActionScript.LabsFlash)),
+	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Labs.Shared.LabsCanvas)),
+	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Labs.JavaScript.LabsDocument)),
 ]
