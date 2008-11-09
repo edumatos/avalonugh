@@ -14,7 +14,7 @@ namespace AvalonUgh.Labs.ActionScript
 	/// Default flash player entrypoint class. See 'tools/build.bat' for adding more entrypoints.
 	/// </summary>
 	[Script, ScriptApplicationEntryPoint(Width = TargetCanvas.DefaultWidth, Height = TargetCanvas.DefaultHeight)]
-	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight)]
+	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight, backgroundColor = 0)]
 	public class LabsFlash : Sprite
 	{
 		public LabsFlash()
