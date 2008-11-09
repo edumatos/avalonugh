@@ -39,13 +39,13 @@ namespace AvalonUgh.Labs.Shared
 
 			var Zoom = 2;
 			#region CreateCustom
-			Action<int, int, string, string> CreateCustom =
+			Func<int, int, string, string, Image> CreateCustom =
 				(x, y, tile, path) =>
 				{
 					var w = 16 * Zoom;
 					var h = 12 * Zoom;
 
-					new Image
+					return new Image
 					{
 						Source = (path + "/" + tile + ".png").ToSource(),
 						Stretch = Stretch.Fill,
@@ -58,13 +58,13 @@ namespace AvalonUgh.Labs.Shared
 			#endregion
 
 			#region CreateCustom
-			Action<int, int, string, string> CreateCustom_2x2 =
+			Func<int, int, string, string, Image> CreateCustom_2x2 =
 				(x, y, tile, path) =>
 				{
 					var w = 16 * Zoom;
 					var h = 12 * Zoom;
 
-					new Image
+					return new Image
 					{
 						Source = (path + "/" + tile + ".png").ToSource(),
 						Stretch = Stretch.Fill,
@@ -102,7 +102,10 @@ namespace AvalonUgh.Labs.Shared
 
 				sign2 = CreateSprite.FixLastParam("sign2"),
 				rock0 = CreateSprite.FixLastParam("rock0"),
+				rock1 = CreateSprite.FixLastParam("rock1"),
+
 				tree0_2x2 = CreateSprite_2x2.FixLastParam("tree0_2x2"),
+				tree1_2x2 = CreateSprite_2x2.FixLastParam("tree1_2x2"),
 			};
 
 			#region Background
@@ -131,13 +134,60 @@ namespace AvalonUgh.Labs.Shared
 			Create.bridge0right(18, 12);
 
 			Create.ridge0(19, 13);
-
 			#endregion
 
 			Create.sign2(4, 11);
-			Create.rock0(8, 11);
 
-			Create.tree0_2x2(13, 10);
+			Action<Image, Image> Blink =
+				(a, b) =>
+				{
+					(1000 / 10).AtIntervalWithCounter(
+						c =>
+						{
+							if (c % 12 == 0)
+							{
+								b.Hide();
+								a.Show();
+
+								return;
+							}
+
+							a.Hide();
+							b.Show();
+						}
+					);
+				};
+
+			Action<Image, Image> SlowFrameChange =
+				(a, b) =>
+				{
+					(5000).AtIntervalWithCounter(
+						c =>
+						{
+							if (c % 2 == 0)
+							{
+								b.Hide();
+								a.Show();
+
+								return;
+							}
+
+							a.Hide();
+							b.Show();
+						}
+					);
+				};
+
+
+			SlowFrameChange(
+				Create.rock0(8, 11),
+				Create.rock1(8, 11)
+			);
+
+			Blink(
+				Create.tree1_2x2(13, 10),
+				Create.tree0_2x2(13, 10)
+			);
 		}
 	}
 }

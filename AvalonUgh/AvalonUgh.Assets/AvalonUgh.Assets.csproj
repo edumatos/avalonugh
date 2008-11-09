@@ -99,6 +99,12 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_2x2.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tree1_2x2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\rock1.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="web\assets\AvalonUgh.Assets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
