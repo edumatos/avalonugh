@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 
 namespace AvalonUgh.Labs.Shared
 {
+
 	[Script]
 	public class LabsCanvas : Canvas
 	{
@@ -37,7 +38,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 			var Zoom = 2;
-
+			#region CreateCustom
 			Action<int, int, string, string> CreateCustom =
 				(x, y, tile, path) =>
 				{
@@ -54,14 +55,38 @@ namespace AvalonUgh.Labs.Shared
 
 					}.MoveTo(x * w, y * h).AttachTo(this);
 				};
+			#endregion
+
+			#region CreateCustom
+			Action<int, int, string, string> CreateCustom_2x2 =
+				(x, y, tile, path) =>
+				{
+					var w = 16 * Zoom;
+					var h = 12 * Zoom;
+
+					new Image
+					{
+						Source = (path + "/" + tile + ".png").ToSource(),
+						Stretch = Stretch.Fill,
+						Width = w * 2,
+						Height = h * 2,
+
+
+					}.MoveTo(x * w, y * h).AttachTo(this);
+				};
+			#endregion
+
 
 			var CreateTile = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
+			var CreateTile_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
 			var CreateSprite = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
+			var CreateSprite_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 
 
 			var Create = new
 			{
 				stone0 = CreateTile.FixLastParam("stone0"),
+				stone1_2x2 = CreateTile_2x2.FixLastParam("stone1_2x2"),
 
 				bridge0 = CreateTile.FixLastParam("bridge0"),
 				bridge0left = CreateTile.FixLastParam("bridge0left"),
@@ -69,34 +94,50 @@ namespace AvalonUgh.Labs.Shared
 
 
 				platform0 = CreateTile.FixLastParam("platform0"),
+				platform0_2x2 = CreateTile_2x2.FixLastParam("platform0_2x2"),
+				platform1 = CreateTile.FixLastParam("platform1"),
+
+				ridge0 = CreateTile.FixLastParam("ridge0"),
+				ridge0_2x2 = CreateTile_2x2.FixLastParam("ridge0_2x2"),
 
 				sign2 = CreateSprite.FixLastParam("sign2"),
 				rock0 = CreateSprite.FixLastParam("rock0"),
+				tree0_2x2 = CreateSprite_2x2.FixLastParam("tree0_2x2"),
 			};
 
 			#region Background
-			for (int x = 0; x < 20; x++)
-				for (int y = 13; y < 20; y++)
-				{
-					Create.stone0(x, y);
-				}
+			for (int x = 2; x < 20; x++)
+				Create.stone0(x, 13);
 
-			Create.bridge0left(0, 12);
-			Create.bridge0right(19, 12);
-			for (int x = 1; x < 19; x++)
-				Create.bridge0(x, 12);
+			for (int x = 2; x < 20; x += 2)
+				for (int y = 14; y < 20; y += 2)
+					Create.stone1_2x2(x, y);
+
+			for (int y = 14; y < 20; y += 2)
+				Create.ridge0_2x2(0, y);
 
 
 			for (int x = 0; x < 6; x++)
-				Create.platform0(x, 9);
+				Create.platform0(x, 7);
 
-			for (int x = 14; x < 20; x++)
-				Create.platform0(x, 9);
+			Create.platform0_2x2(0, 12);
+			Create.platform1(2, 12);
+			Create.bridge0left(3, 12);
+			for (int x = 4; x < 18; x++)
+				Create.bridge0(x, 12);
+
+
+			Create.platform0(19, 12);
+			Create.bridge0right(18, 12);
+
+			Create.ridge0(19, 13);
 
 			#endregion
 
 			Create.sign2(4, 11);
 			Create.rock0(8, 11);
+
+			Create.tree0_2x2(13, 10);
 		}
 	}
 }
