@@ -85,6 +85,8 @@ namespace AvalonUgh.Labs.Shared
 
 			var Create = new
 			{
+				fence0 = CreateTile.FixLastParam("fence0"),
+
 				stone0 = CreateTile.FixLastParam("stone0"),
 				stone1_2x2 = CreateTile_2x2.FixLastParam("stone1_2x2"),
 
@@ -101,6 +103,7 @@ namespace AvalonUgh.Labs.Shared
 				ridge0_2x2 = CreateTile_2x2.FixLastParam("ridge0_2x2"),
 
 				sign2 = CreateSprite.FixLastParam("sign2"),
+
 				rock0 = CreateSprite.FixLastParam("rock0"),
 				rock1 = CreateSprite.FixLastParam("rock1"),
 
@@ -113,8 +116,11 @@ namespace AvalonUgh.Labs.Shared
 				Create.stone0(x, 13);
 
 			for (int x = 2; x < 20; x += 2)
-				for (int y = 14; y < 20; y += 2)
-					Create.stone1_2x2(x, y);
+				Create.stone1_2x2(x, 14);
+			for (int x = 2; x < 20; x += 2)
+				Create.stone1_2x2(x, 16);
+			for (int x = 2; x < 20; x += 2)
+				Create.stone1_2x2(x, 18);
 
 			for (int y = 14; y < 20; y += 2)
 				Create.ridge0_2x2(0, y);
