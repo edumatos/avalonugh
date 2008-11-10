@@ -108,6 +108,16 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\fence0.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_00_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_01_2x2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone0_2x3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone0_2x4.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="web\assets\AvalonUgh.Assets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

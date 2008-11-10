@@ -1,0 +1,22 @@
+# Avalon UGH Level 01
+# Ridge, Platform, Bridge, Stone
+R2
+22
+R2
+22
+R2
+22
+R2
+22PPPP
+R2
+22
+
+    
+P2PBBBBBBBP2PPBBBPP2
+22S2S2    22      22
+R22244
+22S244
+R22244
+22S2
+R233
+2233

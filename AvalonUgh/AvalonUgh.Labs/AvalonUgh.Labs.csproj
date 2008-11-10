@@ -65,6 +65,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\ASCIIImage.cs" />
     <Compile Include="LabsFlash.cs" />
     <Compile Include="LabsDocument.cs" />
     <Compile Include="KnownAssets.cs" />
@@ -83,7 +84,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="web\assets\AvalonUgh.Labs\" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level01.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
