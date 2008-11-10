@@ -20,6 +20,7 @@ namespace AvalonUgh.Labs.Shared
 		public const int DefaultWidth = 640;
 		public const int DefaultHeight = 480;
 
+	
 		public LabsCanvas()
 		{
 			Width = DefaultWidth;
@@ -115,11 +116,51 @@ namespace AvalonUgh.Labs.Shared
 				};
 			#endregion
 
+			#region CreateCustom
+			Func<int, int, string, string, Image> CreateCustom_2x1 =
+				(x, y, tile, path) =>
+				{
+					var w = 16 * Zoom;
+					var h = 12 * Zoom;
+
+					return new Image
+					{
+						Source = (path + "/" + tile + ".png").ToSource(),
+						Stretch = Stretch.Fill,
+						Width = w * 2,
+						Height = h * 1,
+
+
+					}.MoveTo(x * w, y * h).AttachTo(this);
+				};
+			#endregion
+
+			#region CreateCustom
+			Func<int, int, string, string, Image> CreateCustom_4x2 =
+				(x, y, tile, path) =>
+				{
+					var w = 16 * Zoom;
+					var h = 12 * Zoom;
+
+					return new Image
+					{
+						Source = (path + "/" + tile + ".png").ToSource(),
+						Stretch = Stretch.Fill,
+						Width = w * 4,
+						Height = h * 2,
+
+
+					}.MoveTo(x * w, y * h).AttachTo(this);
+				};
+			#endregion
+
 
 			var CreateTile = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
+			var CreateTile_2x1 = CreateCustom_2x1.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
 			var CreateTile_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
 			var CreateTile_2x3 = CreateCustom_2x3.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
 			var CreateTile_2x4 = CreateCustom_2x4.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
+			var CreateTile_4x2 = CreateCustom_4x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
 			var CreateSprite = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 			var CreateSprite_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 
@@ -129,9 +170,11 @@ namespace AvalonUgh.Labs.Shared
 				fence0 = CreateTile.FixLastParam("fence0"),
 
 				stone0 = CreateTile.FixLastParam("stone0"),
+				stone0_2x1 = CreateTile_2x1.FixLastParam("stone0_2x1"),
 				stone1_2x2 = CreateTile_2x2.FixLastParam("stone1_2x2"),
 				stone0_2x3 = CreateTile_2x3.FixLastParam("stone0_2x3"),
 				stone0_2x4 = CreateTile_2x4.FixLastParam("stone0_2x4"),
+				stone0_4x2 = CreateTile_4x2.FixLastParam("stone0_4x2"),
 
 				bridge0 = CreateTile.FixLastParam("bridge0"),
 				bridge0left = CreateTile.FixLastParam("bridge0left"),
@@ -139,6 +182,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 				platform0 = CreateTile.FixLastParam("platform0"),
+				platform0_2x1 = CreateTile_2x1.FixLastParam("platform0_2x1"),
 				platform0_2x2 = CreateTile_2x2.FixLastParam("platform0_2x2"),
 				platform1 = CreateTile.FixLastParam("platform1"),
 
@@ -167,41 +211,21 @@ namespace AvalonUgh.Labs.Shared
 					Level.ForEach(
 						k =>
 						{
-							if (k.Value == "4")
+							if (char.IsNumber(k.Value, 0))
 								return;
 
-							if (k.Value == "3")
-								return;
+							var Tile = new ASCIITileSizeInfo(k);
 
-							if (k.Value == "2")
-								return;
-
-							var Is_2x2 = false;
-							var Is_2x3 = false;
-							var Is_2x4 = false;
+							var Is_2x1 = Tile.Width == 2 && Tile.Height == 1;
+							var Is_2x2 = Tile.Width == 2 && Tile.Height == 2;
+							var Is_2x3 = Tile.Width == 2 && Tile.Height == 3;
+							var Is_2x4 = Tile.Width == 2 && Tile.Height == 4;
+							var Is_4x2 = Tile.Width == 4 && Tile.Height == 2;
 
 
 
-							if (k[1, 0] == "2")
-								if (k[0, 1] == "2")
-									if (k[1, 1] == "2")
-										Is_2x2 = true;
+							
 
-							if (k[1, 0] == "2")
-								if (k[0, 1] == "3")
-									if (k[1, 1] == "3")
-										if (k[0, 2] == "3")
-											if (k[1, 2] == "3")
-												Is_2x3 = true;
-
-							if (k[1, 0] == "2")
-								if (k[0, 1] == "4")
-									if (k[1, 1] == "4")
-										if (k[0, 2] == "4")
-											if (k[1, 2] == "4")
-												if (k[0, 3] == "4")
-													if (k[1, 3] == "4")
-														Is_2x4 = true;
 
 							// ridge
 							if (k.Value == "R")
@@ -219,6 +243,12 @@ namespace AvalonUgh.Labs.Shared
 							// platform
 							if (k.Value == "P")
 							{
+								if (Is_2x1)
+								{
+									Create.platform0_2x1(k.X, k.Y);
+									return;
+								}
+
 								if (Is_2x2)
 								{
 									Create.platform0_2x2(k.X, k.Y);
@@ -232,6 +262,12 @@ namespace AvalonUgh.Labs.Shared
 							// stone
 							if (k.Value == "S")
 							{
+								if (Is_4x2)
+								{
+									Create.stone0_4x2(k.X, k.Y);
+									return;
+								}
+
 								if (Is_2x4)
 								{
 									Create.stone0_2x4(k.X, k.Y);
@@ -247,6 +283,12 @@ namespace AvalonUgh.Labs.Shared
 								if (Is_2x2)
 								{
 									Create.stone1_2x2(k.X, k.Y);
+									return;
+								}
+
+								if (Is_2x1)
+								{
+									Create.stone0_2x1(k.X, k.Y);
 									return;
 								}
 
