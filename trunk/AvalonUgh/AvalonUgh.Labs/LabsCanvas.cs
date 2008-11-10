@@ -189,6 +189,8 @@ namespace AvalonUgh.Labs.Shared
 				ridge0 = CreateTile.FixLastParam("ridge0"),
 				ridge0_2x2 = CreateTile_2x2.FixLastParam("ridge0_2x2"),
 
+				cave0_2x2 = CreateTile_2x2.FixLastParam("cave0_2x2"),
+
 				sign2 = CreateSprite.FixLastParam("sign2"),
 
 				rock0 = CreateSprite.FixLastParam("rock0"),
@@ -237,6 +239,19 @@ namespace AvalonUgh.Labs.Shared
 								}
 
 								Create.ridge0(k.X, k.Y);
+								return;
+							}
+
+							// cave
+							if (k.Value == "C")
+							{
+							
+								if (Is_2x2)
+								{
+									Create.cave0_2x2(k.X, k.Y);
+									return;
+								}
+
 								return;
 							}
 
