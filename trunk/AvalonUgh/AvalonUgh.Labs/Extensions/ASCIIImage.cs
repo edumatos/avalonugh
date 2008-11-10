@@ -79,14 +79,14 @@ namespace AvalonUgh.Labs.Shared.Extensions
 			get
 			{
 				if (x < 0)
-					return "";
+					return " ";
 				if (y < 0)
-					return "";
+					return " ";
 
 				if (x >= Width)
-					return "";
+					return " ";
 				if (y >= Height)
-					return "";
+					return " ";
 
 				var Line = this.Lines[y];
 
@@ -103,11 +103,16 @@ namespace AvalonUgh.Labs.Shared.Extensions
 			public readonly int X;
 			public readonly int Y;
 
-			readonly Func<int, int, string> InternalSelect;
+			readonly Func<int, int, string> Select;
+
+			public static implicit operator Func<int, int, string>(Entry e)
+			{
+				return (x, y) => e[x, y];
+			}
 
 			public Entry(Func<int, int, string> Select, int X, int Y)
 			{
-				this.InternalSelect = Select;
+				this.Select = Select;
 
 				this.X = X;
 				this.Y = Y;
@@ -126,7 +131,7 @@ namespace AvalonUgh.Labs.Shared.Extensions
 			{
 				get
 				{
-					return InternalSelect(this.X + x, this.Y + y);
+					return Select(this.X + x, this.Y + y);
 				}
 			}
 		}

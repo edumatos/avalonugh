@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\ASCIIImage.cs" />
+    <Compile Include="Extensions\ASCIITileSizeInfo.cs" />
     <Compile Include="LabsFlash.cs" />
     <Compile Include="LabsDocument.cs" />
     <Compile Include="KnownAssets.cs" />
