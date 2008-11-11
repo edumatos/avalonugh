@@ -161,6 +161,7 @@ namespace AvalonUgh.Labs.Shared
 			var CreateTile_2x3 = CreateCustom_2x3.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
 			var CreateTile_2x4 = CreateCustom_2x4.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
 			var CreateTile_4x2 = CreateCustom_4x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
+
 			var CreateSprite = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 			var CreateSprite_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 
@@ -363,101 +364,75 @@ namespace AvalonUgh.Labs.Shared
 								Create.fence0(k.X, k.Y);
 						}
 					);
+
+
+
+
+
+					#region sprites
+
+					Create.sign2(4, 11);
+
+					Action<Image, Image> Blink =
+						(a, b) =>
+						{
+							(1000 / 10).AtIntervalWithCounter(
+								c =>
+								{
+									if (c % 12 == 0)
+									{
+										b.Hide();
+										a.Show();
+
+										return;
+									}
+
+									a.Hide();
+									b.Show();
+								}
+							);
+						};
+
+					Action<int, Image, Image> FrameChange =
+						(f, a, b) =>
+						{
+							f.AtIntervalWithCounter(
+								c =>
+								{
+									if (c % 2 == 0)
+									{
+										b.Hide();
+										a.Show();
+
+										return;
+									}
+
+									a.Hide();
+									b.Show();
+								}
+							);
+						};
+
+					FrameChange(5000,
+						Create.rock0(8, 11),
+						Create.rock1(8, 11)
+					);
+
+					FrameChange(500,
+						Create.man0_00_2x2(16, 10),
+						Create.man0_01_2x2(16, 10)
+					);
+
+
+					Blink(
+						Create.tree1_2x2(13, 10),
+						Create.tree0_2x2(13, 10)
+					);
+					#endregion
+
 				}
 			);
 
-			//#region Background
-			//for (int x = 2; x < 20; x++)
-			//    Create.stone0(x, 13);
-
-			//for (int x = 2; x < 20; x += 2)
-			//    Create.stone1_2x2(x, 14);
-			//for (int x = 2; x < 20; x += 2)
-			//    Create.stone1_2x2(x, 16);
-			//for (int x = 2; x < 20; x += 2)
-			//    Create.stone1_2x2(x, 18);
-
-			//for (int y = 14; y < 20; y += 2)
-			//    Create.ridge0_2x2(0, y);
-
-
-			//for (int x = 2; x < 6; x++)
-			//    Create.platform0(x, 7);
-
-			//for (int y = 0; y <= 8; y += 2)
-			//    Create.ridge0_2x2(0, y);
-
-
-			//Create.platform0_2x2(0, 12);
-			//Create.platform1(2, 12);
-			//Create.bridge0left(3, 12);
-			//for (int x = 4; x < 18; x++)
-			//    Create.bridge0(x, 12);
-
-
-			//Create.platform0(19, 12);
-			//Create.bridge0right(18, 12);
-
-			//Create.ridge0(19, 13);
-			//#endregion
-
-			Create.sign2(4, 11);
-
-			Action<Image, Image> Blink =
-				(a, b) =>
-				{
-					(1000 / 10).AtIntervalWithCounter(
-						c =>
-						{
-							if (c % 12 == 0)
-							{
-								b.Hide();
-								a.Show();
-
-								return;
-							}
-
-							a.Hide();
-							b.Show();
-						}
-					);
-				};
-
-			Action<int, Image, Image> FrameChange =
-				(f, a, b) =>
-				{
-					f.AtIntervalWithCounter(
-						c =>
-						{
-							if (c % 2 == 0)
-							{
-								b.Hide();
-								a.Show();
-
-								return;
-							}
-
-							a.Hide();
-							b.Show();
-						}
-					);
-				};
-
-			FrameChange(5000,
-				Create.rock0(8, 11),
-				Create.rock1(8, 11)
-			);
-
-			FrameChange(500,
-				Create.man0_00_2x2(16, 10),
-				Create.man0_01_2x2(16, 10)
-			);
-
-
-			Blink(
-				Create.tree1_2x2(13, 10),
-				Create.tree0_2x2(13, 10)
-			);
 		}
 	}
 }
