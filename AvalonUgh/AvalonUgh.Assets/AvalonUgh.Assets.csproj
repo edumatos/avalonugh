@@ -137,6 +137,9 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\cave1_2x2.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\ugh_music.mp3" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="web\assets\AvalonUgh.Assets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

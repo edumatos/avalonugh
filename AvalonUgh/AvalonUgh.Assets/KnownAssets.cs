@@ -25,6 +25,7 @@ namespace AvalonUgh.Assets
 				public const string Assets = "assets/AvalonUgh.Assets";
 				public const string Tiles = "assets/AvalonUgh.Assets.Tiles";
 				public const string Sprites = "assets/AvalonUgh.Assets.Sprites";
+				public const string Audio = "assets/AvalonUgh.Assets.Audio";
 			}
 
 
