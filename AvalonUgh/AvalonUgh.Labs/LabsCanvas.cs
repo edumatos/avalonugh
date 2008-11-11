@@ -184,6 +184,8 @@ namespace AvalonUgh.Labs.Shared
 				platform0 = CreateTile.FixLastParam("platform0"),
 				platform0_2x1 = CreateTile_2x1.FixLastParam("platform0_2x1"),
 				platform0_2x2 = CreateTile_2x2.FixLastParam("platform0_2x2"),
+				platform0_2x3 = CreateTile_2x3.FixLastParam("platform0_2x3"),
+				platform0_4x2 = CreateTile_4x2.FixLastParam("platform0_4x2"),
 				platform1 = CreateTile.FixLastParam("platform1"),
 
 				ridge0 = CreateTile.FixLastParam("ridge0"),
@@ -204,7 +206,7 @@ namespace AvalonUgh.Labs.Shared
 				man0_01_2x2 = CreateSprite_2x2.FixLastParam("man0_01_2x2"),
 			};
 
-			("assets/AvalonUgh.Labs/level01.txt").ToStringAsset(
+			(KnownAssets.Path.Assets + "/level02.txt").ToStringAsset(
 				LevelText =>
 				{
 					var Level = new ASCIIImage(LevelText);
@@ -258,6 +260,18 @@ namespace AvalonUgh.Labs.Shared
 							// platform
 							if (k.Value == "P")
 							{
+								if (Is_2x3)
+								{
+									Create.platform0_2x3(k.X, k.Y);
+									return;
+								}
+
+								if (Is_4x2)
+								{
+									Create.platform0_4x2(k.X, k.Y);
+									return;
+								}
+
 								if (Is_2x1)
 								{
 									Create.platform0_2x1(k.X, k.Y);
@@ -333,6 +347,13 @@ namespace AvalonUgh.Labs.Shared
 								return;
 							}
 
+
+							// fence
+							if (k.Value == "F")
+							{
+								Create.fence0(k.X, k.Y);
+								return;
+							}
 
 							if (k.Value != " ")
 								Create.fence0(k.X, k.Y);
