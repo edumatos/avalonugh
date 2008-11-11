@@ -19,6 +19,8 @@ namespace AvalonUgh.Labs.ActionScript
 	{
 		public LabsFlash()
 		{
+			KnownEmbeddedResources.Default[AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"].ToSoundAsset().play();
+
 			// spawn the wpf control
 			AvalonExtensions.AttachToContainer(new TargetCanvas(), this);
 		}
