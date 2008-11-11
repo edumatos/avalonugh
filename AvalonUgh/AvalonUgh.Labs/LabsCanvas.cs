@@ -20,7 +20,7 @@ namespace AvalonUgh.Labs.Shared
 		public const int DefaultWidth = 640;
 		public const int DefaultHeight = 480;
 
-	
+
 		public LabsCanvas()
 		{
 			Width = DefaultWidth;
@@ -192,6 +192,7 @@ namespace AvalonUgh.Labs.Shared
 				ridge0_2x2 = CreateTile_2x2.FixLastParam("ridge0_2x2"),
 
 				cave0_2x2 = CreateTile_2x2.FixLastParam("cave0_2x2"),
+				cave1_2x2 = CreateTile_2x2.FixLastParam("cave1_2x2"),
 
 				sign2 = CreateSprite.FixLastParam("sign2"),
 
@@ -228,7 +229,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-							
+
 
 
 							// ridge
@@ -247,10 +248,13 @@ namespace AvalonUgh.Labs.Shared
 							// cave
 							if (k.Value == "C")
 							{
-							
+
 								if (Is_2x2)
 								{
-									Create.cave0_2x2(k.X, k.Y);
+									if ((k.X * k.Y) % 2 == 0)
+										Create.cave0_2x2(k.X, k.Y);
+									else
+										Create.cave1_2x2(k.X, k.Y);
 									return;
 								}
 
