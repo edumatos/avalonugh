@@ -140,6 +140,21 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\ugh_music.mp3" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_00_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_01_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_02_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_03_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_04_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_05_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_06_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_07_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_08_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_09_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_10_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_11_2x3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_12_2x3.png" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="web\assets\AvalonUgh.Assets\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
