@@ -428,7 +428,53 @@ namespace AvalonUgh.Labs.Shared
 						Create.tree1_2x2(13, 10),
 						Create.tree0_2x2(13, 10)
 					);
+
+
 					#endregion
+
+
+					{
+						var w = 16 * Zoom;
+						var h = 12 * Zoom;
+						var x = DefaultWidth;
+
+						var birdc = new Canvas
+						{
+
+						}.MoveTo(6 * w, 2 * h).AttachTo(this);
+
+						var bird = Enumerable.Range(0, 13).ToArray(
+							index =>
+								new Image
+								{
+									Source = (Assets.Shared.KnownAssets.Path.Sprites + "/bird0_" + ("" + index).PadLeft(2, '0') + "_2x3.png").ToSource(),
+									Stretch = Stretch.Fill,
+									Width = w * 2,
+									Height = h * 3,
+									Visibility = Visibility.Hidden
+								}.AttachTo(birdc)
+						);
+
+						bird.AsCyclicEnumerable().ForEach(
+							(Image value, Action SignalNext) =>
+							{
+								value.Visibility = Visibility.Visible;
+								x -= 2;
+								if (x < -(w * 2))
+									x = DefaultWidth;
+
+								birdc.MoveTo(x, 2 * h);
+
+								(1000 / 30).AtDelay(
+									delegate
+									{
+										value.Visibility = Visibility.Hidden;
+										SignalNext();
+									}
+								);
+							}
+						);
+					}
 
 				}
 			);
