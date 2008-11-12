@@ -3,10 +3,6 @@ set TargetFileName=%2
 set ConfigurationName=%3
 
 if %ConfigurationName%==Debug (
-  echo ExtractAssets
-  pushd ..\bin\%ConfigurationName%
-  call c:\util\jsc\bin\jsc.exe %TargetFileName%  -ExtractAssets
-  popd
   goto :eof
 )
 

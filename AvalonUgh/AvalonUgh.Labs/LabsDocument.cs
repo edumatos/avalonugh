@@ -18,6 +18,9 @@ namespace AvalonUgh.Labs.JavaScript
 	{
 		public LabsDocument(IHTMLElement e)
 		{
+			Native.Document.body.style.margin = "0";
+			Native.Document.body.style.padding = "0";
+			Native.Document.body.style.border = "0";
 			Native.Document.body.style.backgroundColor = Color.Black;
 
 			new IHTMLElement(IHTMLElement.HTMLElementEnum.center).Apply(
