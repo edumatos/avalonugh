@@ -258,7 +258,7 @@ namespace AvalonUgh.Labs.Shared
 								if (Is_2x2)
 								{
 									//if ((k.X * k.Y) % 2 == 0)
-										Create.cave0_2x2(k.X, k.Y);
+									Create.cave0_2x2(k.X, k.Y);
 									//else
 									//    Create.cave1_2x2(k.X, k.Y);
 									return;
@@ -490,12 +490,87 @@ namespace AvalonUgh.Labs.Shared
 					}
 					#endregion
 
+					// water wkith waves 
+					// http://learnwpf.com/Posts/Post.aspx?postId=9b2c71c0-7136-4ee7-ab2a-f8eec62874af
+
+					var WaterHeight = 42;
+					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
+
+					var WaterContainer = new Canvas
+					{
+						Width = DefaultWidth,
+						Height = WaterHeight
+					}.MoveTo(0, WaterTop).AttachTo(this);
+
+					new Rectangle
+					{
+						Fill = Brushes.Cyan,
+						Width = DefaultWidth,
+						Height = WaterHeight,
+						Opacity = 0.15,
+					}.MoveTo(0, 0).AttachTo(WaterContainer);
+
+					#region watersurface
+					{
+
+						var watersurfaces = Enumerable.Range(0, 3).ToArray(
+							index =>
+							{
+								var frame = new Canvas
+								{
+									Width = DefaultWidth,
+									Height = WaterHeight,
+									//Visibility = Visibility.Hidden
+								}.MoveTo(0, 0).AttachTo(WaterContainer);
+
+								Action<double, int> CreateWater =
+									(WaterOpacity, WaterIndex) =>
+									{
+										new Image
+										{
+											Source = (Assets.Shared.KnownAssets.Path.Assets + "/water" + index + ".png").ToSource(),
+											Stretch = Stretch.Fill,
+											Width = DefaultWidth,
+											Height = 1 * Zoom,
+											Opacity = WaterOpacity
+										}.AttachTo(frame).MoveTo(0, WaterIndex * Zoom);
+									};
+
+								CreateWater.FixLastParamToIndex()(
+									1,
+									0.5,
+									0.2
+								);
+
+								
+
+								
+								return frame;
+							}
+						);
+
+						watersurfaces.AsCyclicEnumerable().ForEach(
+							(value, SignalNext) =>
+							{
+								value.Visibility = Visibility.Visible;
+
+								(300).AtDelay(
+									delegate
+									{
+										value.Visibility = Visibility.Hidden;
+										SignalNext();
+									}
+								);
+							}
+						);
+					}
+					#endregion
 
 					new Image
 					{
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/statusbar.png").ToSource(),
 						Stretch = Stretch.Fill,
-						Width = 320 * Zoom,
+						Width = DefaultWidth,
 						Height = 9 * Zoom,
 					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * Zoom);
 				}
