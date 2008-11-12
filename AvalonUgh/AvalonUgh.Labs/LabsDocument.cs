@@ -5,29 +5,33 @@ using System.Text;
 using ScriptCoreLib;
 using ScriptCoreLib.JavaScript.Extensions;
 using ScriptCoreLib.JavaScript.DOM.HTML;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Labs.JavaScript
 {
 	using TargetCanvas = global::AvalonUgh.Labs.Shared.LabsCanvas;
+	using ScriptCoreLib.JavaScript;
+	using ScriptCoreLib.Shared.Drawing;
 
 	[Script, ScriptApplicationEntryPoint]
 	public class LabsDocument
 	{
 		public LabsDocument(IHTMLElement e)
 		{
-			// wpf here
-			var clip = new IHTMLDiv();
+			Native.Document.body.style.backgroundColor = Color.Black;
 
-			clip.style.position = ScriptCoreLib.JavaScript.DOM.IStyle.PositionEnum.relative;
-			clip.style.SetSize(TargetCanvas.DefaultWidth, TargetCanvas.DefaultHeight);
-			clip.style.overflow = ScriptCoreLib.JavaScript.DOM.IStyle.OverflowEnum.hidden;
+			new IHTMLElement(IHTMLElement.HTMLElementEnum.center).Apply(
+				center =>
+				{
+					var c = new IHTMLDiv().AttachTo(center);
 
-			if (e == null)
-				clip.AttachToDocument();
-			else
-				e.insertPreviousSibling(clip);
+					c.style.position = ScriptCoreLib.JavaScript.DOM.IStyle.PositionEnum.relative;
+					c.style.SetSize(TargetCanvas.DefaultWidth, TargetCanvas.DefaultHeight);
 
-			AvalonExtensions.AttachToContainer(new TargetCanvas(), clip);
+					//// wpf here
+					new TargetCanvas().AttachToContainer(c);
+				}
+			).AttachToDocument();
 
 		}
 

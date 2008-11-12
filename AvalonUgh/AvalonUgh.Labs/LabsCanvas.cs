@@ -41,7 +41,6 @@ namespace AvalonUgh.Labs.Shared
 			).ToArray();
 
 
-			var Zoom = 2;
 			#region CreateCustom
 			Func<int, int, string, string, Image> CreateCustom =
 				(x, y, tile, path) =>
@@ -476,7 +475,7 @@ namespace AvalonUgh.Labs.Shared
 								if (x < -(w * 2))
 									x = DefaultWidth;
 
-								birdc.MoveTo(x, 2 * h);
+								birdc.MoveTo(x, Zoom * h);
 
 								(1000 / 30).AtDelay(
 									delegate
@@ -490,10 +489,11 @@ namespace AvalonUgh.Labs.Shared
 					}
 					#endregion
 
-					// water wkith waves 
+					#region water gradient
+					// water with waves 
 					// http://learnwpf.com/Posts/Post.aspx?postId=9b2c71c0-7136-4ee7-ab2a-f8eec62874af
 
-					var WaterHeight = 42;
+					var WaterHeight = 24 * Zoom;
 					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
 					var WaterContainer = new Canvas
@@ -502,14 +502,31 @@ namespace AvalonUgh.Labs.Shared
 						Height = WaterHeight
 					}.MoveTo(0, WaterTop).AttachTo(this);
 
-					new Rectangle
-					{
-						Fill = Brushes.Cyan,
-						Width = DefaultWidth,
-						Height = WaterHeight,
-						Opacity = 0.15,
-					}.MoveTo(0, 0).AttachTo(WaterContainer);
+					var WaterColorTop = Colors.Cyan;
+					var WaterColorBottom = Colors.DarkCyan;
 
+					WaterColorTop.A = 40;
+					WaterColorBottom.A = 40;
+
+					WaterColorTop.ToGradient(WaterColorBottom, WaterHeight / Zoom).Select(
+						(c, i) =>
+						{
+							var Opacity =  c.A  / 255.0;
+							
+							c.A = 0xFF;
+
+							return new Rectangle
+							{
+								Fill = new SolidColorBrush(c),
+								Width = DefaultWidth,
+								Height = Zoom,
+								Opacity = Opacity
+							}.MoveTo(0, i * Zoom).AttachTo(WaterContainer);
+						}
+					).ToArray();
+					#endregion
+
+					
 					#region watersurface
 					{
 

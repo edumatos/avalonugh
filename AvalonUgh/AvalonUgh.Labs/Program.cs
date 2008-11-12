@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using AvalonUgh.Labs.Shared;
 using ScriptCoreLib.CSharp.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Labs
 {
@@ -16,7 +17,9 @@ namespace AvalonUgh.Labs
 		[STAThread]
 		static public void Main(string[] args)
 		{
-			new LabsCanvas().ToWindow().ShowDialog();
+			var w = new LabsCanvas().ToWindow();
+
+			w.ShowDialog();
 		}
 	}
 }
