@@ -17,8 +17,10 @@ namespace AvalonUgh.Labs.Shared
 	[Script]
 	public class LabsCanvas : Canvas
 	{
-		public const int DefaultWidth = 640;
-		public const int DefaultHeight = 480;
+		public const int Zoom = 2;
+
+		public const int DefaultWidth = 320 * Zoom;
+		public const int DefaultHeight = 200 * Zoom;
 
 
 		public LabsCanvas()
@@ -195,7 +197,10 @@ namespace AvalonUgh.Labs.Shared
 				cave0_2x2 = CreateTile_2x2.FixLastParam("cave0_2x2"),
 				cave1_2x2 = CreateTile_2x2.FixLastParam("cave1_2x2"),
 
+				sign1 = CreateSprite.FixLastParam("sign1"),
 				sign2 = CreateSprite.FixLastParam("sign2"),
+				sign3 = CreateSprite.FixLastParam("sign3"),
+				sign4 = CreateSprite.FixLastParam("sign4"),
 
 				rock0 = CreateSprite.FixLastParam("rock0"),
 				rock1 = CreateSprite.FixLastParam("rock1"),
@@ -208,7 +213,7 @@ namespace AvalonUgh.Labs.Shared
 				man0_01_2x2 = CreateSprite_2x2.FixLastParam("man0_01_2x2"),
 			};
 
-			(KnownAssets.Path.Assets + "/level02.txt").ToStringAsset(
+			(KnownAssets.Path.Assets + "/level03.txt").ToStringAsset(
 				LevelText =>
 				{
 					var Level = new ASCIIImage(LevelText);
@@ -371,7 +376,10 @@ namespace AvalonUgh.Labs.Shared
 
 					#region sprites
 
-					Create.sign2(4, 11);
+					Create.sign1(1, 11);
+					Create.sign2(2, 11);
+					Create.sign3(3, 11);
+					Create.sign4(4, 11);
 
 					Action<Image, Image> Blink =
 						(a, b) =>
@@ -476,6 +484,14 @@ namespace AvalonUgh.Labs.Shared
 						);
 					}
 
+
+					new Image
+					{
+						Source = (Assets.Shared.KnownAssets.Path.Assets + "/statusbar.png").ToSource(),
+						Stretch = Stretch.Fill,
+						Width = 320 * Zoom,
+						Height = 9 * Zoom,
+					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * Zoom);
 				}
 			);
 

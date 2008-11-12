@@ -155,7 +155,12 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_12_2x3.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="web\assets\AvalonUgh.Assets\" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\sign1.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\sign3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\sign4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\statusbar.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
