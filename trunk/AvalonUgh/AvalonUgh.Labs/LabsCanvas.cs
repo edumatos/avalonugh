@@ -489,6 +489,46 @@ namespace AvalonUgh.Labs.Shared
 					}
 					#endregion
 
+					#region vehicle
+					{
+						var w = 16 * Zoom;
+						var h = 12 * Zoom;
+
+						var vehc = new Canvas
+						{
+
+						}.MoveTo(10 * w, 6 * h).AttachTo(this);
+
+						var veh = Enumerable.Range(0, 7).ToArray(
+							index =>
+								new Image
+								{
+									Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_" + ("" + index).PadLeft(2, '0') + "_2x2.png").ToSource(),
+									Stretch = Stretch.Fill,
+									Width = w * 2,
+									Height = h * 2,
+									Visibility = Visibility.Hidden
+								}.AttachTo(vehc)
+						);
+
+						veh.AsCyclicEnumerable().ForEach(
+							(Image value, Action SignalNext) =>
+							{
+								value.Visibility = Visibility.Visible;
+							
+								(1000 / 30).AtDelay(
+									delegate
+									{
+										value.Visibility = Visibility.Hidden;
+										SignalNext();
+									}
+								);
+							}
+						);
+					}
+					#endregion
+
+
 					#region water gradient
 					// water with waves 
 					// http://learnwpf.com/Posts/Post.aspx?postId=9b2c71c0-7136-4ee7-ab2a-f8eec62874af
