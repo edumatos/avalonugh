@@ -5,3 +5,6 @@
 
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/001.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/002.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/003.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/004.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/005.png]
