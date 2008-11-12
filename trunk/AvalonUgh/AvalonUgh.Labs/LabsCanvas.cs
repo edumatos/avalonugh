@@ -218,7 +218,7 @@ namespace AvalonUgh.Labs.Shared
 				{
 					var Level = new ASCIIImage(LevelText);
 
-
+					#region Background
 					Level.ForEach(
 						k =>
 						{
@@ -257,10 +257,10 @@ namespace AvalonUgh.Labs.Shared
 
 								if (Is_2x2)
 								{
-									if ((k.X * k.Y) % 2 == 0)
+									//if ((k.X * k.Y) % 2 == 0)
 										Create.cave0_2x2(k.X, k.Y);
-									else
-										Create.cave1_2x2(k.X, k.Y);
+									//else
+									//    Create.cave1_2x2(k.X, k.Y);
 									return;
 								}
 
@@ -370,16 +370,12 @@ namespace AvalonUgh.Labs.Shared
 						}
 					);
 
+					#endregion
 
 
 
 
 					#region sprites
-
-					Create.sign1(1, 11);
-					Create.sign2(2, 11);
-					Create.sign3(3, 11);
-					Create.sign4(4, 11);
 
 					Action<Image, Image> Blink =
 						(a, b) =>
@@ -422,25 +418,34 @@ namespace AvalonUgh.Labs.Shared
 						};
 
 					FrameChange(5000,
-						Create.rock0(8, 11),
-						Create.rock1(8, 11)
+						Create.rock0(6, 12),
+						Create.rock1(6, 12)
 					);
 
 					FrameChange(500,
-						Create.man0_00_2x2(16, 10),
-						Create.man0_01_2x2(16, 10)
+						Create.man0_00_2x2(16, 1),
+						Create.man0_01_2x2(16, 1)
 					);
 
 
+					Create.sign3(9, 12);
+					Create.sign2(3, 6);
+					Create.sign1(14, 2);
+
+
+					//Create.sign4(4, 11);
+
+
+
 					Blink(
-						Create.tree1_2x2(13, 10),
-						Create.tree0_2x2(13, 10)
+						Create.tree1_2x2(4, 5),
+						Create.tree0_2x2(4, 5)
 					);
 
 
 					#endregion
 
-
+					#region bird
 					{
 						var w = 16 * Zoom;
 						var h = 12 * Zoom;
@@ -483,6 +488,7 @@ namespace AvalonUgh.Labs.Shared
 							}
 						);
 					}
+					#endregion
 
 
 					new Image
