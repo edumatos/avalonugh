@@ -20,7 +20,9 @@ http://www.abandonia.com/en/games/26/Ugh.html
   * sfx, music
   * sleeping dragon - breath wind
   * tree
-  * rock
+  * rock 
+      can be used to knock out tree, saurus
+      can only carry a rock or a man
   * water
   * old man (bzw gray) and a woman
   * ASCII map
