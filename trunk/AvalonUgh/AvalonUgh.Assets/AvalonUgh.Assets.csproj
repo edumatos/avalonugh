@@ -176,6 +176,15 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\vehicle0_05_2x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\vehicle0_06_2x2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\gameover.mp3" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\highscore_music.mp3" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\newlevel.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\sign0.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\sign5.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
