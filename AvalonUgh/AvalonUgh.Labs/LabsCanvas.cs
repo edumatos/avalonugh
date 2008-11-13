@@ -498,6 +498,7 @@ namespace AvalonUgh.Labs.Shared
 					#region vehicle
 					{
 						var xveh = new Vehicle(Zoom);
+						xveh.ColorStripe = Colors.Red;
 
 						double x = DefaultWidth / 2;
 						double y = DefaultHeight / 2;
@@ -510,9 +511,16 @@ namespace AvalonUgh.Labs.Shared
 						xveh.MoveTo(x, y);
 
 						var twin = new Vehicle(Zoom);
+						twin.ColorStripe = Colors.Blue;
 
 						twin.AttachContainerTo(this);
-						twin.MoveTo(DefaultWidth / 2, DefaultHeight / 4);
+						twin.MoveTo(DefaultWidth / 3, DefaultHeight / 4);
+
+						var twin2 = new Vehicle(Zoom);
+						twin2.ColorStripe = Colors.Yellow;
+
+						twin2.AttachContainerTo(this);
+						twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 4);
 
 						(1000 / 30).AtIntervalWithCounter(
 							c =>
@@ -761,6 +769,38 @@ namespace AvalonUgh.Labs.Shared
 			this.Container.MoveTo(x - Width / 2, y - Height / 2);
 		}
 
+		readonly Image ColorStripeRed;
+		readonly Image ColorStripeBlue;
+		readonly Image ColorStripeYellow;
+
+		public Color ColorStripe
+		{
+			set
+			{
+				ColorStripeBlue.Hide();
+				ColorStripeRed.Hide();
+				ColorStripeYellow.Hide();
+
+				if (value == Colors.Red)
+				{
+					ColorStripeRed.Show();
+					return;
+				}
+
+				if (value == Colors.Blue)
+				{
+					ColorStripeBlue.Show();
+					return;
+				}
+
+				if (value == Colors.Yellow)
+				{
+					ColorStripeYellow.Show();
+					return;
+				}
+			}
+		}
+
 		public Vehicle(int Zoom)
 		{
 			this.Zoom = Zoom;
@@ -776,7 +816,7 @@ namespace AvalonUgh.Labs.Shared
 
 			this.IsAnimated = true;
 
-			var frames = Enumerable.Range(0, 7).ToArray(
+			var frames = Enumerable.Range(0, 6).ToArray(
 				index =>
 					new Image
 					{
@@ -787,6 +827,33 @@ namespace AvalonUgh.Labs.Shared
 						Visibility = Visibility.Hidden
 					}.AttachTo(this.Container)
 			);
+
+			this.ColorStripeRed = new Image
+			{
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_red_2x2.png").ToSource(),
+				Stretch = Stretch.Fill,
+				Width = this.Width,
+				Height = this.Height,
+				Visibility = Visibility.Hidden
+			}.AttachTo(this.Container);
+
+			this.ColorStripeBlue = new Image
+			{
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_blue_2x2.png").ToSource(),
+				Stretch = Stretch.Fill,
+				Width = this.Width,
+				Height = this.Height,
+				Visibility = Visibility.Hidden
+			}.AttachTo(this.Container);
+
+			this.ColorStripeYellow = new Image
+			{
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_yellow_2x2.png").ToSource(),
+				Stretch = Stretch.Fill,
+				Width = this.Width,
+				Height = this.Height,
+				Visibility = Visibility.Hidden
+			}.AttachTo(this.Container);
 
 			frames.AsCyclicEnumerable().ForEach(
 				(Image value, Action SignalNext) =>
