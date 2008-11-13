@@ -494,14 +494,17 @@ namespace AvalonUgh.Labs.Shared
 					{
 						var w = 16 * Zoom;
 						var h = 12 * Zoom;
-						var x = 10 * w;
-						var y = 6 * h;
+						var x = 10.0 * w;
+						var y = 6.0 * h;
 
+						var y_float = 0.0;
+						var y_float_acc = 0.1;
+						var y_float_max = 4.0;
 
 						var vehc = new Canvas
 						{
 
-						}.MoveTo(x, y).AttachTo(this);
+						}.MoveTo(x, y ).AttachTo(this);
 
 						var veh = Enumerable.Range(0, 7).ToArray(
 							index =>
@@ -520,7 +523,7 @@ namespace AvalonUgh.Labs.Shared
 							{
 								var yy = Math.Cos(c * 0.1);
 
-								vehc.MoveTo(x, y + yy * Zoom * 4);
+								vehc.MoveTo(x, y + yy * Zoom * y_float);
 							}
 						);
 
@@ -574,35 +577,66 @@ namespace AvalonUgh.Labs.Shared
 
 						Func<Key, bool> IsKeyDown =
 							k => KeyState[k];
-						//k => Keyboard.IsKeyDown(k);
+
+						// http://www.regentsprep.org/Regents/physics/phys01/accgravi/index.htm
+						// http://www.glenbrook.k12.il.us/GBSSCI/PHYS/Class/1DKin/U1L5b.html
+						// http://www.regentsprep.org/Regents/physics/phys-topic.cfm?Course=PHYS&TopicCode=01a
+
+						var speed_y = 0.0;
+						var speed_y_Acc = 0.1;
+
+						var speed_x = 0.0;
+						var speed_x_Acc = 0.1;
 
 						(1000 / 30).AtInterval(
 							delegate
 							{
-								if (IsKeyDown(Key.Up))
-									y -= Zoom;
+								if (KeyState.Any(k => k.Value))
+								{
+									y_float = (y_float - y_float_acc).Max(0);
+								}
+								else
+								{
+									y_float = (y_float + y_float_acc / 2).Min(y_float_max);
+								}
 
-								if (IsKeyDown(Key.Down))
-									y += Zoom;
+								if (IsKeyDown(Key.Up))
+								{
+									speed_y -= speed_y_Acc;
+								}
+								else if (IsKeyDown(Key.Down))
+								{
+									speed_y += speed_y_Acc;
+								}
+								else
+								{
+									if (speed_y > 0)
+										speed_y -= speed_y_Acc / 2;
+									else
+										speed_y += speed_y_Acc / 2;
+
+
+
+								}
+
+								y += speed_y * Zoom;
 
 								if (IsKeyDown(Key.Left))
-									x -= Zoom;
+									speed_x -= speed_x_Acc;
+								else if (IsKeyDown(Key.Right))
+									speed_x += speed_x_Acc;
+								else
+								{
+									if (speed_x > 0)
+										speed_x -= speed_x_Acc / 2;
+									else
+										speed_x += speed_x_Acc / 2;
+								}
 
-								if (IsKeyDown(Key.Right))
-									x += Zoom;
+								x += speed_x * Zoom;
 							}
 						);
 
-						//if (args.Key == System.Windows.Input.Key.Down)
-						//    y += Zoom * 4;
-						//if (args.Key == System.Windows.Input.Key.Up)
-						//    y -= Zoom * 4;
-
-						//if (args.Key == System.Windows.Input.Key.Left)
-						//    x -= Zoom * 4;
-						//if (args.Key == System.Windows.Input.Key.Right)
-						//    x += Zoom * 4;
-						//Input.Focus();
 
 					}
 					#endregion
