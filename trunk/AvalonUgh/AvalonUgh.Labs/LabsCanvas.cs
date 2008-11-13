@@ -490,6 +490,11 @@ namespace AvalonUgh.Labs.Shared
 					}
 					#endregion
 
+
+					var WaterHeight = 24 * Zoom;
+					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
+
+
 					#region vehicle
 					{
 						var w = 16 * Zoom;
@@ -600,6 +605,7 @@ namespace AvalonUgh.Labs.Shared
 									y_float = (y_float + y_float_acc / 2).Min(y_float_max);
 								}
 
+						
 								if (IsKeyDown(Key.Up))
 								{
 									speed_y -= speed_y_Acc;
@@ -618,6 +624,12 @@ namespace AvalonUgh.Labs.Shared
 
 
 								}
+
+								//if ((y - Zoom * 24) < WaterTop)
+								//    speed_y += 0.1; // add gravity
+								//else
+								//    speed_y -= 0.2; // add water pressure
+
 
 								y += speed_y * Zoom;
 
@@ -645,9 +657,6 @@ namespace AvalonUgh.Labs.Shared
 					#region water gradient
 					// water with waves 
 					// http://learnwpf.com/Posts/Post.aspx?postId=9b2c71c0-7136-4ee7-ab2a-f8eec62874af
-
-					var WaterHeight = 24 * Zoom;
-					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
 					var WaterContainer = new Canvas
 					{
