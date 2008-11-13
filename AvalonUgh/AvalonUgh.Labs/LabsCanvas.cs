@@ -497,55 +497,32 @@ namespace AvalonUgh.Labs.Shared
 
 					#region vehicle
 					{
-						var w = 16 * Zoom;
-						var h = 12 * Zoom;
-						var x = 10.0 * w;
-						var y = 6.0 * h;
+						var xveh = new Vehicle(Zoom);
+
+						double x = DefaultWidth / 2;
+						double y = DefaultHeight / 2;
 
 						var y_float = 0.0;
 						var y_float_acc = 0.1;
 						var y_float_max = 4.0;
 
-						var vehc = new Canvas
-						{
+						xveh.AttachContainerTo(this);
+						xveh.MoveTo(x, y);
 
-						}.MoveTo(x, y ).AttachTo(this);
+						var twin = new Vehicle(Zoom);
 
-						var veh = Enumerable.Range(0, 7).ToArray(
-							index =>
-								new Image
-								{
-									Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_" + ("" + index).PadLeft(2, '0') + "_2x2.png").ToSource(),
-									Stretch = Stretch.Fill,
-									Width = w * 2,
-									Height = h * 2,
-									Visibility = Visibility.Hidden
-								}.AttachTo(vehc)
-						);
+						twin.AttachContainerTo(this);
+						twin.MoveTo(DefaultWidth / 2, DefaultHeight / 4);
 
 						(1000 / 30).AtIntervalWithCounter(
 							c =>
 							{
 								var yy = Math.Cos(c * 0.1);
 
-								vehc.MoveTo(x, y + yy * Zoom * y_float);
+								xveh.MoveTo(x, y + yy * Zoom * y_float);
 							}
 						);
 
-						veh.AsCyclicEnumerable().ForEach(
-							(Image value, Action SignalNext) =>
-							{
-								value.Visibility = Visibility.Visible;
-
-								(1000 / 30).AtDelay(
-									delegate
-									{
-										value.Visibility = Visibility.Hidden;
-										SignalNext();
-									}
-								);
-							}
-						);
 
 
 						this.Focusable = true;
@@ -598,17 +575,20 @@ namespace AvalonUgh.Labs.Shared
 							{
 								if (KeyState.Any(k => k.Value))
 								{
+									xveh.IsAnimated = true;
 									y_float = (y_float - y_float_acc).Max(0);
 								}
 								else
 								{
+									xveh.IsAnimated = false;
+
 									y_float = (y_float + y_float_acc / 2).Min(y_float_max);
 								}
 
-						
+
 								if (IsKeyDown(Key.Up))
 								{
-									speed_y -= speed_y_Acc;
+									speed_y -= speed_y_Acc * 2;
 								}
 								else if (IsKeyDown(Key.Down))
 								{
@@ -625,10 +605,13 @@ namespace AvalonUgh.Labs.Shared
 
 								}
 
-								//if ((y - Zoom * 24) < WaterTop)
-								//    speed_y += 0.1; // add gravity
-								//else
-								//    speed_y -= 0.2; // add water pressure
+								if (y  < WaterTop)
+									speed_y += 0.1; // add gravity
+								else
+								{
+									xveh.IsAnimated = false;
+									speed_y -= 0.2; // add water pressure
+								}
 
 
 								y += speed_y * Zoom;
@@ -752,10 +735,77 @@ namespace AvalonUgh.Labs.Shared
 						Width = DefaultWidth,
 						Height = 9 * Zoom,
 					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * Zoom);
+
+					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 				}
 			);
 
 
+		}
+	}
+
+	[Script]
+	public class Vehicle : ISupportsContainer
+	{
+		public Canvas Container { get; set; }
+
+		public readonly int Zoom;
+
+		public readonly int Width;
+		public readonly int Height;
+
+		public bool IsAnimated { get; set; }
+
+		public void MoveTo(double x, double y)
+		{
+			this.Container.MoveTo(x - Width / 2, y - Height / 2);
+		}
+
+		public Vehicle(int Zoom)
+		{
+			this.Zoom = Zoom;
+
+			this.Width = 16 * Zoom * 2;
+			this.Height = 12 * Zoom * 2;
+
+			this.Container = new Canvas
+			{
+				Width = this.Width,
+				Height = this.Height
+			};
+
+			this.IsAnimated = true;
+
+			var frames = Enumerable.Range(0, 7).ToArray(
+				index =>
+					new Image
+					{
+						Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_" + ("" + index).PadLeft(2, '0') + "_2x2.png").ToSource(),
+						Stretch = Stretch.Fill,
+						Width = this.Width,
+						Height = this.Height,
+						Visibility = Visibility.Hidden
+					}.AttachTo(this.Container)
+			);
+
+			frames.AsCyclicEnumerable().ForEach(
+				(Image value, Action SignalNext) =>
+				{
+					value.Visibility = Visibility.Visible;
+
+					(1000 / 30).AtIntervalWithTimer(
+						t =>
+						{
+							if (IsAnimated)
+							{
+								value.Visibility = Visibility.Hidden;
+								SignalNext();
+								t.Stop();
+							}
+						}
+					);
+				}
+			);
 		}
 	}
 }
