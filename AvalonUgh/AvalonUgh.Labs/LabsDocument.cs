@@ -30,6 +30,7 @@ namespace AvalonUgh.Labs.JavaScript
 
 					c.style.position = ScriptCoreLib.JavaScript.DOM.IStyle.PositionEnum.relative;
 					c.style.SetSize(TargetCanvas.DefaultWidth, TargetCanvas.DefaultHeight);
+					c.style.overflow = ScriptCoreLib.JavaScript.DOM.IStyle.OverflowEnum.hidden;
 
 					//// wpf here
 					new TargetCanvas().AttachToContainer(c);
