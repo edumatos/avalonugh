@@ -10,6 +10,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using AvalonUgh.Labs.Shared.Extensions;
+using System.Windows.Input;
 
 namespace AvalonUgh.Labs.Shared
 {
@@ -493,11 +494,14 @@ namespace AvalonUgh.Labs.Shared
 					{
 						var w = 16 * Zoom;
 						var h = 12 * Zoom;
+						var x = 10 * w;
+						var y = 6 * h;
+
 
 						var vehc = new Canvas
 						{
 
-						}.MoveTo(10 * w, 6 * h).AttachTo(this);
+						}.MoveTo(x, y).AttachTo(this);
 
 						var veh = Enumerable.Range(0, 7).ToArray(
 							index =>
@@ -511,11 +515,20 @@ namespace AvalonUgh.Labs.Shared
 								}.AttachTo(vehc)
 						);
 
+						(1000 / 30).AtIntervalWithCounter(
+							c =>
+							{
+								var yy = Math.Cos(c * 0.1);
+
+								vehc.MoveTo(x, y + yy * Zoom * 4);
+							}
+						);
+
 						veh.AsCyclicEnumerable().ForEach(
 							(Image value, Action SignalNext) =>
 							{
 								value.Visibility = Visibility.Visible;
-							
+
 								(1000 / 30).AtDelay(
 									delegate
 									{
@@ -525,6 +538,72 @@ namespace AvalonUgh.Labs.Shared
 								);
 							}
 						);
+
+
+						this.Focusable = true;
+						this.Focus();
+
+						this.MouseLeftButtonDown +=
+							(sender, args) =>
+							{
+								this.Focus();
+							};
+
+						var KeyState = new Dictionary<Key, bool>
+						{
+							{Key.Up, false},
+							{Key.Down, false},
+							{Key.Right, false},
+							{Key.Left, false},
+						};
+
+						this.KeyDown +=
+							(sender, args) =>
+							{
+								if (KeyState.ContainsKey(args.Key))
+									KeyState[args.Key] = true;
+							};
+
+
+						this.KeyUp +=
+							(sender, args) =>
+							{
+								if (KeyState.ContainsKey(args.Key))
+									KeyState[args.Key] = false;
+							};
+
+						Func<Key, bool> IsKeyDown =
+							k => KeyState[k];
+						//k => Keyboard.IsKeyDown(k);
+
+						(1000 / 30).AtInterval(
+							delegate
+							{
+								if (IsKeyDown(Key.Up))
+									y -= Zoom;
+
+								if (IsKeyDown(Key.Down))
+									y += Zoom;
+
+								if (IsKeyDown(Key.Left))
+									x -= Zoom;
+
+								if (IsKeyDown(Key.Right))
+									x += Zoom;
+							}
+						);
+
+						//if (args.Key == System.Windows.Input.Key.Down)
+						//    y += Zoom * 4;
+						//if (args.Key == System.Windows.Input.Key.Up)
+						//    y -= Zoom * 4;
+
+						//if (args.Key == System.Windows.Input.Key.Left)
+						//    x -= Zoom * 4;
+						//if (args.Key == System.Windows.Input.Key.Right)
+						//    x += Zoom * 4;
+						//Input.Focus();
+
 					}
 					#endregion
 
@@ -551,8 +630,8 @@ namespace AvalonUgh.Labs.Shared
 					WaterColorTop.ToGradient(WaterColorBottom, WaterHeight / Zoom).Select(
 						(c, i) =>
 						{
-							var Opacity =  c.A  / 255.0;
-							
+							var Opacity = c.A / 255.0;
+
 							c.A = 0xFF;
 
 							return new Rectangle
@@ -566,7 +645,7 @@ namespace AvalonUgh.Labs.Shared
 					).ToArray();
 					#endregion
 
-					
+
 					#region watersurface
 					{
 
@@ -599,9 +678,9 @@ namespace AvalonUgh.Labs.Shared
 									0.2
 								);
 
-								
 
-								
+
+
 								return frame;
 							}
 						);
@@ -632,6 +711,7 @@ namespace AvalonUgh.Labs.Shared
 					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * Zoom);
 				}
 			);
+
 
 		}
 	}
