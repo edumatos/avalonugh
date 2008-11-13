@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using AvalonUgh.Labs.Shared.Extensions;
 using System.Windows.Input;
+using AvalonUgh.Code;
 
 namespace AvalonUgh.Labs.Shared
 {
@@ -447,51 +448,48 @@ namespace AvalonUgh.Labs.Shared
 
 					#region bird
 					{
-						var w = 16 * Zoom;
-						var h = 12 * Zoom;
-						var x = DefaultWidth;
+						var bird1 = new Bird(Zoom);
+						var bird1_x = DefaultWidth + bird1.Width / 2;
+						var bird1_y = Zoom * 32;
 
-						var birdc = new Canvas
-						{
+						bird1.AttachContainerTo(this).MoveTo(bird1_x, bird1_y);
 
-						}.MoveTo(6 * w, 2 * h).AttachTo(this);
 
-						var bird = Enumerable.Range(0, 13).ToArray(
-							index =>
-								new Image
-								{
-									Source = (Assets.Shared.KnownAssets.Path.Sprites + "/bird0_" + ("" + index).PadLeft(2, '0') + "_2x3.png").ToSource(),
-									Stretch = Stretch.Fill,
-									Width = w * 2,
-									Height = h * 3,
-									Visibility = Visibility.Hidden
-								}.AttachTo(birdc)
-						);
-
-						bird.AsCyclicEnumerable().ForEach(
-							(Image value, Action SignalNext) =>
+						(1000 / 30).AtInterval(
+							delegate
 							{
-								value.Visibility = Visibility.Visible;
-								x -= 2;
-								if (x < -(w * 2))
-									x = DefaultWidth;
+								bird1_x -= 2;
+								if (bird1_x < -(bird1.Width / 2))
+									bird1_x = DefaultWidth + bird1.Width / 2;
 
-								birdc.MoveTo(x, Zoom * h);
-
-								(1000 / 30).AtDelay(
-									delegate
-									{
-										value.Visibility = Visibility.Hidden;
-										SignalNext();
-									}
-								);
+								bird1.MoveTo(bird1_x, bird1_y);
 							}
 						);
+
+
+						var bird2 = new Bird(Zoom);
+						var bird2_x = DefaultWidth / 2;
+						var bird2_y = Zoom * 70;
+
+						bird2.AttachContainerTo(this).MoveTo(bird2_x, bird2_y);
+
+
+						(1000 / 30).AtInterval(
+							delegate
+							{
+								bird2_x -= 2;
+								if (bird2_x < -(bird2.Width / 2))
+									bird2_x = DefaultWidth + bird2.Width / 2;
+
+								bird2.MoveTo(bird2_x, bird2_y);
+							}
+						);
+
 					}
 					#endregion
 
 
-					var WaterHeight = 24 * Zoom;
+					var WaterHeight = 50 * Zoom;
 					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
 
@@ -578,7 +576,7 @@ namespace AvalonUgh.Labs.Shared
 						var speed_x = 0.0;
 						var speed_x_Acc = 0.1;
 
-						(1000 / 30).AtInterval(
+						(1000 / 60).AtInterval(
 							delegate
 							{
 								if (KeyState.Any(k => k.Value))
@@ -613,7 +611,7 @@ namespace AvalonUgh.Labs.Shared
 
 								}
 
-								if (y  < WaterTop)
+								if (y < WaterTop)
 									speed_y += 0.1; // add gravity
 								else
 								{
@@ -645,96 +643,17 @@ namespace AvalonUgh.Labs.Shared
 					#endregion
 
 
-					#region water gradient
-					// water with waves 
-					// http://learnwpf.com/Posts/Post.aspx?postId=9b2c71c0-7136-4ee7-ab2a-f8eec62874af
 
-					var WaterContainer = new Canvas
-					{
-						Width = DefaultWidth,
-						Height = WaterHeight
-					}.MoveTo(0, WaterTop).AttachTo(this);
-
-					var WaterColorTop = Colors.Cyan;
-					var WaterColorBottom = Colors.DarkCyan;
-
-					WaterColorTop.A = 40;
-					WaterColorBottom.A = 40;
-
-					WaterColorTop.ToGradient(WaterColorBottom, WaterHeight / Zoom).Select(
-						(c, i) =>
+					new Water(
+						new Water.Info
 						{
-							var Opacity = c.A / 255.0;
-
-							c.A = 0xFF;
-
-							return new Rectangle
-							{
-								Fill = new SolidColorBrush(c),
-								Width = DefaultWidth,
-								Height = Zoom,
-								Opacity = Opacity
-							}.MoveTo(0, i * Zoom).AttachTo(WaterContainer);
+							DefaultWidth = DefaultWidth,
+							Zoom = Zoom,
+							WaterHeight = WaterHeight,
+							WaterTop = WaterTop
 						}
-					).ToArray();
-					#endregion
+					).AttachContainerTo(this);
 
-
-					#region watersurface
-					{
-
-						var watersurfaces = Enumerable.Range(0, 3).ToArray(
-							index =>
-							{
-								var frame = new Canvas
-								{
-									Width = DefaultWidth,
-									Height = WaterHeight,
-									//Visibility = Visibility.Hidden
-								}.MoveTo(0, 0).AttachTo(WaterContainer);
-
-								Action<double, int> CreateWater =
-									(WaterOpacity, WaterIndex) =>
-									{
-										new Image
-										{
-											Source = (Assets.Shared.KnownAssets.Path.Assets + "/water" + index + ".png").ToSource(),
-											Stretch = Stretch.Fill,
-											Width = DefaultWidth,
-											Height = 1 * Zoom,
-											Opacity = WaterOpacity
-										}.AttachTo(frame).MoveTo(0, WaterIndex * Zoom);
-									};
-
-								CreateWater.FixLastParamToIndex()(
-									1,
-									0.5,
-									0.2
-								);
-
-
-
-
-								return frame;
-							}
-						);
-
-						watersurfaces.AsCyclicEnumerable().ForEach(
-							(value, SignalNext) =>
-							{
-								value.Visibility = Visibility.Visible;
-
-								(300).AtDelay(
-									delegate
-									{
-										value.Visibility = Visibility.Hidden;
-										SignalNext();
-									}
-								);
-							}
-						);
-					}
-					#endregion
 
 					new Image
 					{
@@ -752,127 +671,4 @@ namespace AvalonUgh.Labs.Shared
 		}
 	}
 
-	[Script]
-	public class Vehicle : ISupportsContainer
-	{
-		public Canvas Container { get; set; }
-
-		public readonly int Zoom;
-
-		public readonly int Width;
-		public readonly int Height;
-
-		public bool IsAnimated { get; set; }
-
-		public void MoveTo(double x, double y)
-		{
-			this.Container.MoveTo(x - Width / 2, y - Height / 2);
-		}
-
-		readonly Image ColorStripeRed;
-		readonly Image ColorStripeBlue;
-		readonly Image ColorStripeYellow;
-
-		public Color ColorStripe
-		{
-			set
-			{
-				ColorStripeBlue.Hide();
-				ColorStripeRed.Hide();
-				ColorStripeYellow.Hide();
-
-				if (value == Colors.Red)
-				{
-					ColorStripeRed.Show();
-					return;
-				}
-
-				if (value == Colors.Blue)
-				{
-					ColorStripeBlue.Show();
-					return;
-				}
-
-				if (value == Colors.Yellow)
-				{
-					ColorStripeYellow.Show();
-					return;
-				}
-			}
-		}
-
-		public Vehicle(int Zoom)
-		{
-			this.Zoom = Zoom;
-
-			this.Width = 16 * Zoom * 2;
-			this.Height = 12 * Zoom * 2;
-
-			this.Container = new Canvas
-			{
-				Width = this.Width,
-				Height = this.Height
-			};
-
-			this.IsAnimated = true;
-
-			var frames = Enumerable.Range(0, 6).ToArray(
-				index =>
-					new Image
-					{
-						Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_" + ("" + index).PadLeft(2, '0') + "_2x2.png").ToSource(),
-						Stretch = Stretch.Fill,
-						Width = this.Width,
-						Height = this.Height,
-						Visibility = Visibility.Hidden
-					}.AttachTo(this.Container)
-			);
-
-			this.ColorStripeRed = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_red_2x2.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = this.Width,
-				Height = this.Height,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Container);
-
-			this.ColorStripeBlue = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_blue_2x2.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = this.Width,
-				Height = this.Height,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Container);
-
-			this.ColorStripeYellow = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_yellow_2x2.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = this.Width,
-				Height = this.Height,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Container);
-
-			frames.AsCyclicEnumerable().ForEach(
-				(Image value, Action SignalNext) =>
-				{
-					value.Visibility = Visibility.Visible;
-
-					(1000 / 30).AtIntervalWithTimer(
-						t =>
-						{
-							if (IsAnimated)
-							{
-								value.Visibility = Visibility.Hidden;
-								SignalNext();
-								t.Stop();
-							}
-						}
-					);
-				}
-			);
-		}
-	}
 }
