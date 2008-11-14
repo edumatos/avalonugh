@@ -10,3 +10,4 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/005.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/006.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/007.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/008.png]
