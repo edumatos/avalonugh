@@ -214,10 +214,20 @@ namespace AvalonUgh.Labs.Shared
 				man0_01_2x2 = CreateSprite_2x2.FixLastParam("man0_01_2x2"),
 			};
 
-			(KnownAssets.Path.Assets + "/level03.txt").ToStringAsset(
+			var CurrentLevel = KnownAssets.Path.Assets + "/level03.txt";
+
+			Console.WriteLine("loading: " + CurrentLevel);
+
+			CurrentLevel.ToStringAsset(
 				LevelText =>
 				{
+					Console.WriteLine("loading done: " + CurrentLevel);
+					Console.WriteLine("loading done: " + LevelText.Length + " chars");
+					Console.WriteLine(LevelText);
+
 					var Level = new ASCIIImage(LevelText);
+
+					Console.WriteLine(new { Level.Width, Level.Height }.ToString());
 
 					#region Background
 					Level.ForEach(
@@ -569,6 +579,11 @@ namespace AvalonUgh.Labs.Shared
 						// http://www.regentsprep.org/Regents/physics/phys01/accgravi/index.htm
 						// http://www.glenbrook.k12.il.us/GBSSCI/PHYS/Class/1DKin/U1L5b.html
 						// http://www.regentsprep.org/Regents/physics/phys-topic.cfm?Course=PHYS&TopicCode=01a
+						// http://en.wikipedia.org/wiki/Vector_(spatial)
+						// http://www.netcomuk.co.uk/~jenolive/homevec.html
+						// http://farside.ph.utexas.edu/teaching/301/lectures/node23.html
+						// http://www2.swgc.mun.ca/physics/physlets.html
+						// http://www.icoachmath.com/SiteMap/MagnitudeofaVector.html
 
 						var speed_y = 0.0;
 						var speed_y_Acc = 0.1;

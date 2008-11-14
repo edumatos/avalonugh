@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ScriptCoreLib;
+using System.IO;
 
 namespace AvalonUgh.Labs.Shared.Extensions
 {
@@ -33,13 +34,30 @@ namespace AvalonUgh.Labs.Shared.Extensions
 
 		public ASCIIImage(ConstructorArguments e)
 		{
-			var lines = e.value.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			var s = new StringReader(e.value);
+
+			var lines = new List<string>();
+
+			var loop = true;
+			while (loop)
+			{
+				var x = s.ReadLine();
+
+				if (x == null)
+				{
+					loop = false;
+				}
+				else
+				{
+					lines.Add(x);
+				}
+			}
 
 			var a = new List<string>();
 
 			this.Height = 0;
 
-			for (int i = 0; i < lines.Length; )
+			for (int i = 0; i < lines.Count; )
 			{
 				var v = lines[i];
 
