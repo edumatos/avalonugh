@@ -16,6 +16,16 @@ namespace AvalonUgh.Labs.JavaScript
 	[Script, ScriptApplicationEntryPoint]
 	public class LabsDocument
 	{
+		// http://localhost/jsc/AvalonUgh.Labs
+
+		//Alias /jsc/AvalonUgh.Labs "C:\work\code.google\avalonugh\AvalonUgh\AvalonUgh.Labs\bin\Release\web"
+		//<Directory "C:\work\code.google\avalonugh\AvalonUgh\AvalonUgh.Labs\bin\Release\web">
+		//       Options Indexes FollowSymLinks ExecCGI
+		//       AllowOverride All
+		//       Order allow,deny
+		//       Allow from all
+		//</Directory>
+
 		public LabsDocument(IHTMLElement e)
 		{
 			Native.Document.body.style.margin = "0";
