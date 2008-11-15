@@ -41,6 +41,7 @@ Tile size: 16x12
 Door tiles: 2x2
 
 = Online Information for Ugh =
+ # http://www.lemonamiga.com/?game_id=1088
  # http://hol.abime.net/1791
  # http://www.answers.com/topic/ugh-game
  # http://www.gamespot.com/pc/action/ugh/hints.html?om_act=convert&om_clk=gsbottomnav&tag=quicklinks;cheats
