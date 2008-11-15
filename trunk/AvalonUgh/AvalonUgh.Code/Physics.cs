@@ -13,6 +13,7 @@ namespace AvalonUgh.Code
 		public double WaterTop;
 
 		public IEnumerable<Obstacle> Obstacles;
+		public IEnumerable<Vehicle> Vehicles;
 
 		// mass = density / volume
 		// length * width * height = volume
@@ -41,8 +42,12 @@ namespace AvalonUgh.Code
 		// http://en.wikipedia.org/wiki/Buoyancy
 		// http://ca.youtube.com/watch?v=VDSYXmvjg6M
 
+		public void Apply()
+		{
+			this.Vehicles.ForEach(Apply);
+		}
 
-		public void Apply(AvalonUgh.Code.Vehicle twin)
+		void Apply(AvalonUgh.Code.Vehicle twin)
 		{
 			// y relative to water
 			var y = twin.Y - WaterTop;
@@ -79,35 +84,41 @@ namespace AvalonUgh.Code
 			var newX = twin.X + twin.VelocityX;
 			var newY = twin.Y + twin.VelocityY;
 
-			var vehX = new Obstacle
-			{
-				Left = newX - twin.HalfWidth + 6 * twin.Zoom,
-				Right = newX + twin.HalfWidth - 6 * twin.Zoom,
-				Top = twin.Y - twin.HalfHeight + 6 * twin.Zoom,
-				Bottom = twin.Y + twin.HalfHeight,
-			};
+			var vehX = twin.ToObstacle(newX, twin.Y);
+			var vehY = twin.ToObstacle(twin.X, newY);
 
-			var vehY = new Obstacle
-			{
-				Left = twin.X - twin.HalfWidth + 6 * twin.Zoom,
-				Right = twin.X + twin.HalfWidth - 6 * twin.Zoom,
-				Top = newY - twin.HalfHeight + 6 * twin.Zoom,
-				Bottom = newY + twin.HalfHeight,
-			};
+			var OtherVehicles = this.Vehicles.Where(k => k != twin).Select(k => k.ToObstacle());
 
-			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
-			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));
+
+			var ObstacleX = Obstacles.Concat(OtherVehicles).FirstOrDefault(k => k.Intersects(vehX));
+			var ObstacleY = Obstacles.Concat(OtherVehicles).FirstOrDefault(k => k.Intersects(vehY));
+
 
 			if (ObstacleX != null)
 			{
-				twin.VelocityX *= -0.5;
+				if (ObstacleX.SupportsVelocity != null)
+				{
+					twin.VelocityX *= -0.5;
+					ObstacleX.SupportsVelocity.VelocityX -= twin.VelocityX;
+				}
+				else
+				{
+					twin.VelocityX *= -0.5;
+				}
 			}
+		
 
 			if (ObstacleY != null)
 			{
-
-				twin.VelocityY *= -0.5;
-
+				if (ObstacleY.SupportsVelocity != null)
+				{
+					twin.VelocityY *= -0.5;
+					ObstacleY.SupportsVelocity.VelocityY -= twin.VelocityY;
+				}
+				else
+				{
+					twin.VelocityY *= -0.5;
+				}
 			}
 
 			newX = twin.X + twin.VelocityX;
@@ -116,5 +127,15 @@ namespace AvalonUgh.Code
 			twin.MoveTo(newX, newY);
 
 		}
+	}
+
+
+	[Script]
+	public interface ISupportsVelocity
+	{
+
+		double VelocityX { get; set; }
+		double VelocityY { get; set; }
+
 	}
 }

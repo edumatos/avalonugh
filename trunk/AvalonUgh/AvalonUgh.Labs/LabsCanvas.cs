@@ -228,7 +228,42 @@ namespace AvalonUgh.Labs.Shared
 
 					Console.WriteLine(new { Level.Width, Level.Height }.ToString());
 
-					var Obstacles = new List<Obstacle>();
+					var BorderSize = Zoom * 10;
+					var Obstacles = new List<Obstacle>
+					{
+						new Obstacle
+						{
+							Left = 0,
+							Top = -BorderSize,
+							Right = DefaultWidth,
+							Bottom = -12 * Zoom
+						},
+						new Obstacle
+						{
+							Left = -BorderSize,
+							Top = 0,
+							Right = -16 * Zoom,
+							Bottom = DefaultHeight
+						},
+						new Obstacle
+						{
+							Left = DefaultWidth + 16 * Zoom,
+							Top = 0,
+							Right = DefaultWidth + 16 * Zoom + BorderSize,
+							Bottom = DefaultHeight
+						},
+						new Obstacle
+						{
+							Left = 0,
+							Top = DefaultHeight ,
+							Right = DefaultWidth,
+							Bottom = DefaultHeight + BorderSize
+						},
+					};
+
+
+
+
 
 					#region Background
 					Level.ForEach(
@@ -532,11 +567,7 @@ namespace AvalonUgh.Labs.Shared
 
 					#region vehicle
 					{
-						var ph = new Physics
-						{
-							WaterTop = WaterTop,
-							Obstacles = Obstacles
-						};
+
 
 						var xveh = new Vehicle(Zoom);
 						xveh.ColorStripe = Colors.Red;
@@ -555,20 +586,28 @@ namespace AvalonUgh.Labs.Shared
 						twin.AttachContainerTo(this);
 						twin.MoveTo(DefaultWidth / 3, DefaultHeight / 4);
 
-						//var twin2 = new Vehicle(Zoom);
-						//twin2.ColorStripe = Colors.Yellow;
-						//twin2.Density = 1.11;
-						//twin2.AttachContainerTo(this);
-						//twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 4);
+						var twin2 = new Vehicle(Zoom);
+						twin2.ColorStripe = Colors.Yellow;
+						twin2.Density = 1.11;
+						twin2.AttachContainerTo(this);
+						twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 2);
+
+						var ph = new Physics
+						{
+							WaterTop = WaterTop,
+							Obstacles = Obstacles,
+							Vehicles = new[]
+							{
+								xveh,
+								twin2,
+								twin
+							}
+						};
 
 						(1000 / 30).AtIntervalWithCounter(
 							c =>
 							{
-								// how much volume is in water?
-
-								ph.Apply(twin);
-								//ph.Apply(twin2);
-								ph.Apply(xveh);
+								ph.Apply();
 							}
 						);
 
