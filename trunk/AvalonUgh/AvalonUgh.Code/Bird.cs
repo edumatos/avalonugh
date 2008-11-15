@@ -12,7 +12,7 @@ using System.Windows;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Bird : ISupportsContainer
+	public class Bird : ISupportsContainer, ISupportsObstacle
 	{
 		// PTERODACTYL
 		//-----------
@@ -28,11 +28,34 @@ namespace AvalonUgh.Code
 		public readonly int Width;
 		public readonly int Height;
 
-		public void MoveTo(double x, double y)
+
+		public double X { get; set; }
+		public double Y { get; set; }
+
+
+		public int HalfHeight
 		{
-			this.Container.MoveTo(x - Width / 2, y - Height / 2);
+			get
+			{
+				return Height / 2;
+			}
 		}
 
+		public int HalfWidth
+		{
+			get
+			{
+				return Width / 2;
+			}
+		}
+
+		public void MoveTo(double x, double y)
+		{
+			this.X = x;
+			this.Y = y;
+
+			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
+		}
 
 		public Bird(int Zoom)
 		{
@@ -74,6 +97,18 @@ namespace AvalonUgh.Code
 					);
 				}
 			);
+		}
+
+		public Obstacle ToObstacle(double x, double y)
+		{
+			return new Obstacle
+			{
+				Left = x - HalfWidth,
+				Top = y - HalfHeight / 2,
+				Right = x + HalfWidth,
+				Bottom = y + HalfHeight / 2,
+				//SupportsVelocity = this
+			};
 		}
 	}
 }

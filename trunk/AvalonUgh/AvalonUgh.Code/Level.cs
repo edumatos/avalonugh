@@ -52,8 +52,12 @@ namespace AvalonUgh.Code
 
 		readonly Dictionary<string, Action<string>> SetProperty;
 
+		public readonly int Zoom;
+
 		public Level(string source, int Zoom)
 		{
+			this.Zoom = Zoom;
+
 			SetProperty = new Dictionary<string, Action<string>>
 			{
 				{"text", e => Text = e},
@@ -67,6 +71,7 @@ namespace AvalonUgh.Code
 				{
 					value = source,
 					IsComment = ParseProperty
+		
 				}
 			);
 

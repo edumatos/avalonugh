@@ -17,6 +17,7 @@ namespace AvalonUgh.Code
 		public IEnumerable<Vehicle> Vehicles;
 		public IEnumerable<Rock> Rocks;
 		public IEnumerable<Tree> Trees;
+		public IEnumerable<Bird> Birds;
 
 		// mass = density / volume
 		// length * width * height = volume
@@ -116,17 +117,35 @@ namespace AvalonUgh.Code
 			{
 				if (rock.Stability < 10)
 				{
-					Obstacles = Obstacles.Concat(
-						this.Trees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
-					);
+					if (!rock.IsSleeping)
+					{
+						Obstacles = Obstacles.Concat(
+							this.Trees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
+						);
 
-					this.Trees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-						tree =>
-						{
-							tree.GoToSleep();
-							rock.GoToSleep();
-						}
-					);
+						this.Trees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+							tree =>
+							{
+								// we did will hit a tree
+								tree.GoToSleep();
+								rock.GoToSleep();
+							}
+						);
+
+
+						Obstacles = Obstacles.Concat(
+							this.Birds.Select(k => k.ToObstacle()).ToArray()
+						);
+
+						this.Birds.Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+							bird =>
+							{
+								// we did will hit a tree
+								//tree.GoToSleep();
+								rock.GoToSleep();
+							}
+						);
+					}
 
 				}
 			}
