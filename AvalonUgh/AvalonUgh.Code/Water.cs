@@ -26,6 +26,9 @@ namespace AvalonUgh.Code
 			public int WaterTop;
 
 			public int Zoom;
+
+			public Color WaterColorTop = Colors.Cyan;
+			public Color WaterColorBottom = Colors.Violet;
 		}
 
 		public Water(Info e)
@@ -41,13 +44,11 @@ namespace AvalonUgh.Code
 				Height = e.WaterHeight
 			}.MoveTo(0, e.WaterTop);
 
-			var WaterColorTop = Colors.Cyan;
-			var WaterColorBottom = Colors.DarkCyan;
+		
+			e.WaterColorTop.A = 40;
+			e.WaterColorBottom.A = 60;
 
-			WaterColorTop.A = 40;
-			WaterColorBottom.A = 40;
-
-			WaterColorTop.ToGradient(WaterColorBottom, e.WaterHeight / e.Zoom).Select(
+			e.WaterColorTop.ToGradient(e.WaterColorBottom, e.WaterHeight / e.Zoom).Select(
 				(c, i) =>
 				{
 					var Opacity = c.A / 255.0;

@@ -702,7 +702,8 @@ namespace AvalonUgh.Labs.Shared
 							DefaultWidth = DefaultWidth,
 							Zoom = Zoom,
 							WaterHeight = WaterHeight,
-							WaterTop = WaterTop
+							WaterTop = WaterTop,
+							
 						}
 					).AttachContainerTo(this);
 
