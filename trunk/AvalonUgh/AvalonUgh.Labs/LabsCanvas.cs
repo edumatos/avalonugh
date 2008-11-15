@@ -9,7 +9,6 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using AvalonUgh.Labs.Shared.Extensions;
 using System.Windows.Input;
 using AvalonUgh.Code;
 
@@ -229,6 +228,8 @@ namespace AvalonUgh.Labs.Shared
 
 					Console.WriteLine(new { Level.Width, Level.Height }.ToString());
 
+					var Obstacles = new List<Obstacle>();
+
 					#region Background
 					Level.ForEach(
 						k =>
@@ -252,6 +253,7 @@ namespace AvalonUgh.Labs.Shared
 							// ridge
 							if (k.Value == "R")
 							{
+
 								if (Is_2x2)
 								{
 									Create.ridge0_2x2(k.X, k.Y);
@@ -281,6 +283,18 @@ namespace AvalonUgh.Labs.Shared
 							// platform
 							if (k.Value == "P")
 							{
+								Obstacles.Add(
+									new Obstacle
+									{
+										Tile = Tile,
+										Position = k,
+										Left = k.X * 16 * Zoom,
+										Top = k.Y * 12 * Zoom,
+										Right = (k.X + Tile.Width) * 16 * Zoom,
+										Bottom = (k.Y + Tile.Height) * 12 * Zoom
+									}
+								);
+
 								if (Is_2x3)
 								{
 									Create.platform0_2x3(k.X, k.Y);
@@ -351,6 +365,18 @@ namespace AvalonUgh.Labs.Shared
 							// bridge
 							if (k.Value == "B")
 							{
+								Obstacles.Add(
+									new Obstacle
+									{
+										Tile = Tile,
+										Position = k,
+										Left = k.X * 16 * Zoom,
+										Top = k.Y * 12 * Zoom,
+										Right = (k.X + Tile.Width) * 16 * Zoom,
+										Bottom = (k.Y + Tile.Height) * 12 * Zoom
+									}
+								);
+
 								if (k[-1, 0] != "B")
 								{
 									Create.bridge0left(k.X, k.Y);
@@ -499,14 +525,18 @@ namespace AvalonUgh.Labs.Shared
 					#endregion
 
 
-					var WaterHeight = 100 * Zoom;
+					var WaterHeight = 50 * Zoom;
 					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
 
 
 					#region vehicle
 					{
-						var ph = new Physics { WaterTop = WaterTop };
+						var ph = new Physics
+						{
+							WaterTop = WaterTop,
+							Obstacles = Obstacles
+						};
 
 						var xveh = new Vehicle(Zoom);
 						xveh.ColorStripe = Colors.Red;
@@ -514,9 +544,7 @@ namespace AvalonUgh.Labs.Shared
 						double x = DefaultWidth / 2;
 						double y = DefaultHeight / 2;
 
-						var y_float = 0.0;
-						var y_float_acc = 0.1;
-						var y_float_max = 4.0;
+
 
 						xveh.AttachContainerTo(this);
 						xveh.MoveTo(x, y);
@@ -525,13 +553,13 @@ namespace AvalonUgh.Labs.Shared
 						twin.ColorStripe = Colors.Blue;
 
 						twin.AttachContainerTo(this);
-						twin.MoveTo(DefaultWidth / 3, (WaterTop + DefaultHeight) / 2);
+						twin.MoveTo(DefaultWidth / 3, DefaultHeight / 4);
 
-						var twin2 = new Vehicle(Zoom);
-						twin2.ColorStripe = Colors.Yellow;
-
-						twin2.AttachContainerTo(this);
-						twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 4);
+						//var twin2 = new Vehicle(Zoom);
+						//twin2.ColorStripe = Colors.Yellow;
+						//twin2.Density = 1.11;
+						//twin2.AttachContainerTo(this);
+						//twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 4);
 
 						(1000 / 30).AtIntervalWithCounter(
 							c =>
@@ -539,12 +567,8 @@ namespace AvalonUgh.Labs.Shared
 								// how much volume is in water?
 
 								ph.Apply(twin);
-								ph.Apply(twin2);
+								//ph.Apply(twin2);
 								ph.Apply(xveh);
-
-
-
-								//xveh.MoveTo(x, y);
 							}
 						);
 
@@ -586,19 +610,8 @@ namespace AvalonUgh.Labs.Shared
 						Func<Key, bool> IsKeyDown =
 							k => KeyState[k];
 						#endregion
-						// http://www.regentsprep.org/Regents/physics/phys01/accgravi/index.htm
-						// http://www.glenbrook.k12.il.us/GBSSCI/PHYS/Class/1DKin/U1L5b.html
-						// http://www.regentsprep.org/Regents/physics/phys-topic.cfm?Course=PHYS&TopicCode=01a
-						// http://en.wikipedia.org/wiki/Vector_(spatial)
-						// http://www.netcomuk.co.uk/~jenolive/homevec.html
-						// http://farside.ph.utexas.edu/teaching/301/lectures/node23.html
-						// http://www2.swgc.mun.ca/physics/physlets.html
-						// http://www.icoachmath.com/SiteMap/MagnitudeofaVector.html
-						// http://www.physicsforums.com/showthread.php?t=154533
-						// http://en.wikipedia.org/wiki/Buoyancy
-						// http://ca.youtube.com/watch?v=VDSYXmvjg6M
 
-						var speed_y_Acc = 0.2;
+
 
 
 						#region movement
@@ -617,23 +630,23 @@ namespace AvalonUgh.Labs.Shared
 
 								if (IsKeyDown(Key.Up))
 								{
-									xveh.VelocityY -= speed_y_Acc * 3;
+									xveh.VelocityY -= twin.Acceleration * 2;
 								}
 								else if (IsKeyDown(Key.Down))
 								{
 									if (xveh.Y > WaterTop)
 										xveh.IsAnimated = false;
 									else
-										xveh.VelocityY += speed_y_Acc;
+										xveh.VelocityY += twin.Acceleration;
 								}
 
 								if (IsKeyDown(Key.Left))
 								{
-									xveh.VelocityX -= speed_y_Acc;
+									xveh.VelocityX -= twin.Acceleration;
 								}
 								else if (IsKeyDown(Key.Right))
 								{
-									xveh.VelocityX += speed_y_Acc;
+									xveh.VelocityX += twin.Acceleration;
 								}
 							}
 						);
@@ -672,5 +685,6 @@ namespace AvalonUgh.Labs.Shared
 
 		}
 	}
+
 
 }
