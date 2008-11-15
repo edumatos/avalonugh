@@ -18,6 +18,8 @@ namespace AvalonUgh.Labs
 		[STAThread]
 		static public void Main(string[] args)
 		{
+			
+
 			var w = new LabsCanvas().ToWindow();
 
 			w.ShowDialog();
