@@ -52,7 +52,8 @@ namespace AvalonUgh.Code
 		public double X { get; set; }
 		public double Y { get; set; }
 
-	
+		public event Action LocationChanged;
+
 
 		public void MoveTo(double x, double y)
 		{
@@ -60,6 +61,9 @@ namespace AvalonUgh.Code
 			this.Y = y;
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
+
+			if (LocationChanged != null)
+				LocationChanged();
 		}
 
 		readonly Image ColorStripeRed;

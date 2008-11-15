@@ -77,7 +77,9 @@
     <Compile Include="Actor.man0.cs" />
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
+    <Compile Include="Flashlight.cs" />
     <Compile Include="KeyboardInput.cs" />
+    <Compile Include="Level.cs" />
     <Compile Include="Sign.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Physics.cs" />
@@ -86,6 +88,7 @@
     <Compile Include="Tree.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View.cs" />
     <Compile Include="Water.cs" />
   </ItemGroup>
   <ItemGroup>
