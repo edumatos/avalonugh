@@ -197,13 +197,8 @@ namespace AvalonUgh.Labs.Shared
 				cave0_2x2 = CreateTile_2x2.FixLastParam("cave0_2x2"),
 				cave1_2x2 = CreateTile_2x2.FixLastParam("cave1_2x2"),
 
-				sign1 = CreateSprite.FixLastParam("sign1"),
-				sign2 = CreateSprite.FixLastParam("sign2"),
-				sign3 = CreateSprite.FixLastParam("sign3"),
-				sign4 = CreateSprite.FixLastParam("sign4"),
 
-		
-		
+
 
 				man0_00_2x2 = CreateSprite_2x2.FixLastParam("man0_00_2x2"),
 				man0_01_2x2 = CreateSprite_2x2.FixLastParam("man0_01_2x2"),
@@ -449,7 +444,7 @@ namespace AvalonUgh.Labs.Shared
 
 					#region sprites
 
-				
+
 					Action<int, Image, Image> FrameChange =
 						(f, a, b) =>
 						{
@@ -470,25 +465,39 @@ namespace AvalonUgh.Labs.Shared
 							);
 						};
 
-			
+
 					FrameChange(500,
 						Create.man0_00_2x2(16, 1),
 						Create.man0_01_2x2(16, 1)
 					);
 
+					new Sign(Zoom) { Value = 3 }.AttachContainerTo(this).MoveToTile(9, 12);
+					new Sign(Zoom) { Value = 2 }.AttachContainerTo(this).MoveToTile(3, 6);
+					new Sign(Zoom) { Value = 1 }.AttachContainerTo(this).MoveToTile(14, 2);
 
-					Create.sign3(9, 12);
-					Create.sign2(3, 6);
-					Create.sign1(14, 2);
 
 
-					//Create.sign4(4, 11);
 
 					var KnownRocks = new List<Rock>();
 					var KnownTrees = new List<Tree>();
 
+
+					var WaterHeight = 50 * Zoom;
+					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
+
+					var KnownWater = new Water(
+						new Water.Info
+						{
+							DefaultWidth = DefaultWidth,
+							Zoom = Zoom,
+							WaterHeight = WaterHeight,
+							WaterTop = WaterTop,
+
+						}
+					);
+
 					var tree1 = new Tree(Zoom).AttachContainerTo(this);
-					
+
 					tree1.MoveToTile(4.5, 5);
 					KnownTrees.Add(tree1);
 
@@ -537,12 +546,9 @@ namespace AvalonUgh.Labs.Shared
 					#endregion
 
 
-					var WaterHeight = 50 * Zoom;
-					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
-
 
 					var rock1 = new Rock(Zoom);
-					
+
 					rock1.AttachContainerTo(this);
 					rock1.MoveTo(DefaultWidth / 2, DefaultHeight / 3);
 
@@ -589,7 +595,7 @@ namespace AvalonUgh.Labs.Shared
 							Trees = KnownTrees
 						};
 
-					
+
 
 						this.FocusVisualStyle = null;
 						this.Focusable = true;
@@ -601,93 +607,77 @@ namespace AvalonUgh.Labs.Shared
 								this.Focus();
 							};
 
-						#region KeyState
-						var KeyState = new Dictionary<Key, bool>
-						{
-							{Key.Up, false},
-							{Key.Down, false},
-							{Key.Right, false},
-							{Key.Left, false},
-						};
-
-						this.KeyDown +=
-							(sender, args) =>
+						var k1 = new KeyboardInput(
+							new KeyboardInput.Arguments
 							{
-								if (KeyState.ContainsKey(args.Key))
-									KeyState[args.Key] = true;
+								Left = Key.Left,
+								Right = Key.Right,
+								Up = Key.Up,
+								Down = Key.Down,
+								Drop = Key.Space,
+								Enter = Key.Enter,
+
+								InputControl = this,
+								Vehicle = xveh,
+								Water = KnownWater
+							}
+						);
+
+						k1.Drop +=
+							delegate
+							{
+								var rock2 = new Rock(Zoom);
+
+								rock2.AttachContainerTo(this);
+								rock2.MoveTo(xveh.X, xveh.Y);
+								rock2.VelocityX = xveh.VelocityX;
+								rock2.VelocityY = xveh.VelocityY;
+
+								KnownRocks.Add(rock2);
 							};
 
 
-						this.KeyUp +=
-							(sender, args) =>
+						var k2 = new KeyboardInput(
+							new KeyboardInput.Arguments
 							{
-								if (KeyState.ContainsKey(args.Key))
-									KeyState[args.Key] = false;
+								Left = Key.A,
+								Right = Key.D,
+								Up = Key.W,
+								Down = Key.S,
+								Drop = Key.Q,
+								Enter = Key.E,
+
+								InputControl = this,
+								Vehicle = twin,
+								Water = KnownWater
+							}
+						);
+
+						k2.Drop +=
+							delegate
+							{
+								var rock2 = new Rock(Zoom);
+
+								rock2.AttachContainerTo(this);
+								rock2.MoveTo(twin.X, twin.Y);
+								rock2.VelocityX = twin.VelocityX;
+								rock2.VelocityY = twin.VelocityY;
+
+								KnownRocks.Add(rock2);
 							};
 
-						this.KeyUp +=
-							(sender, args) =>
-							{
-								if (args.Key == Key.Space)
-								{
-									var rock2 = new Rock(Zoom);
-
-									rock2.AttachContainerTo(this);
-									rock2.MoveTo(xveh.X, xveh.Y);
-									rock2.VelocityX = xveh.VelocityX;
-									rock2.VelocityY = xveh.VelocityY;
-
-									KnownRocks.Add(rock2);
-								}
-							};
-
-						Func<Key, bool> IsKeyDown =
-							k => KeyState[k];
-						#endregion
 
 
-
-
-						#region movement
 						(1000 / 40).AtInterval(
 							delegate
 							{
-								if (KeyState.Any(k => k.Value))
-								{
-									xveh.IsAnimated = true;
-								}
-								else
-								{
-									xveh.IsAnimated = false;
-								}
-
-
-								if (IsKeyDown(Key.Up))
-								{
-									xveh.VelocityY -= twin.Acceleration * 2;
-								}
-								else if (IsKeyDown(Key.Down))
-								{
-									if (xveh.Y > WaterTop)
-										xveh.IsAnimated = false;
-									else
-										xveh.VelocityY += twin.Acceleration;
-								}
-
-								if (IsKeyDown(Key.Left))
-								{
-									xveh.VelocityX -= twin.Acceleration;
-								}
-								else if (IsKeyDown(Key.Right))
-								{
-									xveh.VelocityX += twin.Acceleration;
-								}
+								k1.Tick();
+								k2.Tick();
 
 								ph.Apply();
 
 							}
 						);
-						#endregion
 
 
 
@@ -696,16 +686,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					new Water(
-						new Water.Info
-						{
-							DefaultWidth = DefaultWidth,
-							Zoom = Zoom,
-							WaterHeight = WaterHeight,
-							WaterTop = WaterTop,
-							
-						}
-					).AttachContainerTo(this);
+					KnownWater.AttachContainerTo(this);
 
 
 					new Image

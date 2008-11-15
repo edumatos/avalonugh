@@ -31,8 +31,11 @@ namespace AvalonUgh.Code
 			public Color WaterColorBottom = Colors.Violet;
 		}
 
+		public readonly Info Args;
+
 		public Water(Info e)
 		{
+			this.Args = e;
 
 			#region water gradient
 			// water with waves 

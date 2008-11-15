@@ -77,6 +77,8 @@
     <Compile Include="Actor.man0.cs" />
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
+    <Compile Include="KeyboardInput.cs" />
+    <Compile Include="Sign.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="PrimitiveTile.cs" />
