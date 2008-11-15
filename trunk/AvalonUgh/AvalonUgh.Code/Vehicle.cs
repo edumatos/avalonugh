@@ -12,10 +12,10 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Vehicle : ISupportsContainer, ISupportsVelocity
+	public class Vehicle : ISupportsContainer, ISupportsVelocity, ISupportsPhysics
 	{
 		public double Acceleration = 0.4;
-		public double Density = 0.4;
+		public double Density { get; set; }
 
 		public Canvas Container { get; set; }
 
@@ -55,7 +55,7 @@ namespace AvalonUgh.Code
 			this.X = x;
 			this.Y = y;
 
-			this.Container.MoveTo(x - Width / 2, y - Height / 2);
+			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 		}
 
 		readonly Image ColorStripeRed;
@@ -92,6 +92,7 @@ namespace AvalonUgh.Code
 
 		public Vehicle(int Zoom)
 		{
+			this.Density = 0.4;
 			this.Zoom = Zoom;
 
 			this.Width = 16 * Zoom * 2;

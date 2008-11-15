@@ -14,6 +14,7 @@ namespace AvalonUgh.Code
 
 		public IEnumerable<Obstacle> Obstacles;
 		public IEnumerable<Vehicle> Vehicles;
+		public IEnumerable<Rock> Rocks;
 
 		// mass = density / volume
 		// length * width * height = volume
@@ -45,9 +46,10 @@ namespace AvalonUgh.Code
 		public void Apply()
 		{
 			this.Vehicles.ForEach(Apply);
+			this.Rocks.ForEach(Apply);
 		}
 
-		void Apply(AvalonUgh.Code.Vehicle twin)
+		void Apply(ISupportsPhysics twin)
 		{
 			// y relative to water
 			var y = twin.Y - WaterTop;
@@ -87,33 +89,41 @@ namespace AvalonUgh.Code
 			var vehX = twin.ToObstacle(newX, twin.Y);
 			var vehY = twin.ToObstacle(twin.X, newY);
 
-			var OtherVehicles = this.Vehicles.Where(k => k != twin).Select(k => k.ToObstacle());
+			var Obstacles = this.Obstacles;
+
+			if (twin is Vehicle)
+			{
+				Obstacles = Obstacles.Concat(this.Vehicles.Where(k => k != twin).Select(k => k.ToObstacle()));
+			}
 
 
-			var ObstacleX = Obstacles.Concat(OtherVehicles).FirstOrDefault(k => k.Intersects(vehX));
-			var ObstacleY = Obstacles.Concat(OtherVehicles).FirstOrDefault(k => k.Intersects(vehY));
+
+			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
+			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));
 
 
 			if (ObstacleX != null)
 			{
 				if (ObstacleX.SupportsVelocity != null)
 				{
-					twin.VelocityX *= -0.5;
-					ObstacleX.SupportsVelocity.VelocityX -= twin.VelocityX;
+					var fx = ObstacleX.SupportsVelocity.VelocityX / 2;
+					ObstacleX.SupportsVelocity.VelocityX += twin.VelocityX / 2;
+					twin.VelocityX = fx;
 				}
 				else
 				{
 					twin.VelocityX *= -0.5;
 				}
 			}
-		
+
 
 			if (ObstacleY != null)
 			{
 				if (ObstacleY.SupportsVelocity != null)
 				{
-					twin.VelocityY *= -0.5;
-					ObstacleY.SupportsVelocity.VelocityY -= twin.VelocityY;
+					var fy = ObstacleY.SupportsVelocity.VelocityY / 2;
+					ObstacleY.SupportsVelocity.VelocityY += twin.VelocityY / 2;
+					twin.VelocityY = fy;
 				}
 				else
 				{
@@ -137,5 +147,21 @@ namespace AvalonUgh.Code
 		double VelocityX { get; set; }
 		double VelocityY { get; set; }
 
+	}
+
+	[Script]
+	public interface ISupportsPhysics : ISupportsVelocity
+	{
+		double X { get; }
+		double Y { get; }
+
+		int HalfHeight { get; }
+		int HalfWidth { get; }
+		double Density { get; set; }
+
+		Obstacle ToObstacle(double x, double y);
+
+
+		void MoveTo(double x, double y);
 	}
 }

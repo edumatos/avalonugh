@@ -12,27 +12,58 @@ using System.Windows;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Bird : ISupportsContainer
+	public class Rock : ISupportsContainer, ISupportsPhysics
 	{
 		public Canvas Container { get; set; }
 
 		public readonly int Zoom;
 
+		public double Density { get; set; }
+
+		public double VelocityX { get; set; }
+		public double VelocityY { get; set; }
+
+		public double X { get; set; }
+		public double Y { get; set; }
+
+	
+
 		public readonly int Width;
 		public readonly int Height;
 
+
+		public int HalfHeight
+		{
+			get
+			{
+				return Height / 2;
+			}
+		}
+
+		public int HalfWidth
+		{
+			get
+			{
+				return Width / 2;
+			}
+		}
+
 		public void MoveTo(double x, double y)
 		{
-			this.Container.MoveTo(x - Width / 2, y - Height / 2);
+			this.X = x;
+			this.Y = y;
+
+			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 		}
 
 
-		public Bird(int Zoom)
+		public Rock(int Zoom)
 		{
+			this.Density = 2.3;
 			this.Zoom = Zoom;
 
-			this.Width = PrimitiveTile.Width * Zoom * 2;
-			this.Height = PrimitiveTile.Heigth * Zoom * 3;
+			this.Width = PrimitiveTile.Width * Zoom;
+			this.Height = PrimitiveTile.Heigth * Zoom;
 
 			this.Container = new Canvas
 			{
@@ -41,11 +72,11 @@ namespace AvalonUgh.Code
 			};
 
 
-			var frames = Enumerable.Range(0, 13).ToArray(
+			var frames = Enumerable.Range(0, 2).ToArray(
 				index =>
 					new Image
 					{
-						Source = (Assets.Shared.KnownAssets.Path.Sprites + "/bird0_" + ("" + index).PadLeft(2, '0') + "_2x3.png").ToSource(),
+						Source = (Assets.Shared.KnownAssets.Path.Sprites + "/rock" + index + ".png").ToSource(),
 						Stretch = Stretch.Fill,
 						Width = this.Width,
 						Height = this.Height,
@@ -58,7 +89,7 @@ namespace AvalonUgh.Code
 				{
 					value.Visibility = Visibility.Visible;
 
-					(1000 / 30).AtDelay(
+					(5000).AtDelay(
 						delegate
 						{
 							value.Visibility = Visibility.Hidden;
@@ -67,6 +98,18 @@ namespace AvalonUgh.Code
 					);
 				}
 			);
+		}
+
+		public Obstacle ToObstacle(double x, double y)
+		{
+			return new Obstacle
+			{
+				Left = x - HalfWidth,
+				Top = y - HalfHeight,
+				Right = x + HalfWidth,
+				Bottom = y + HalfHeight,
+				SupportsVelocity = this
+			};
 		}
 	}
 }

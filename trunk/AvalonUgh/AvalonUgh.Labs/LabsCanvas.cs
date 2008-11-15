@@ -229,8 +229,10 @@ namespace AvalonUgh.Labs.Shared
 					Console.WriteLine(new { Level.Width, Level.Height }.ToString());
 
 					var BorderSize = Zoom * 10;
+
 					var Obstacles = new List<Obstacle>
 					{
+						#region Borders
 						new Obstacle
 						{
 							Left = 0,
@@ -259,6 +261,8 @@ namespace AvalonUgh.Labs.Shared
 							Right = DefaultWidth,
 							Bottom = DefaultHeight + BorderSize
 						},
+#endregion
+
 					};
 
 
@@ -563,7 +567,14 @@ namespace AvalonUgh.Labs.Shared
 					var WaterHeight = 50 * Zoom;
 					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
+					var KnownRocks = new List<Rock>();
 
+					var rock1 = new Rock(Zoom);
+					
+					rock1.AttachContainerTo(this);
+					rock1.MoveTo(DefaultWidth / 3, DefaultHeight / 3);
+
+					KnownRocks.Add(rock1);
 
 					#region vehicle
 					{
@@ -601,7 +612,8 @@ namespace AvalonUgh.Labs.Shared
 								xveh,
 								twin2,
 								twin
-							}
+							}.AsEnumerable(),
+							Rocks = KnownRocks
 						};
 
 						(1000 / 30).AtIntervalWithCounter(
@@ -612,7 +624,7 @@ namespace AvalonUgh.Labs.Shared
 						);
 
 
-
+						this.FocusVisualStyle = null;
 						this.Focusable = true;
 						this.Focus();
 
@@ -644,6 +656,22 @@ namespace AvalonUgh.Labs.Shared
 							{
 								if (KeyState.ContainsKey(args.Key))
 									KeyState[args.Key] = false;
+							};
+
+						this.KeyUp +=
+							(sender, args) =>
+							{
+								if (args.Key == Key.Space)
+								{
+									var rock2 = new Rock(Zoom);
+
+									rock2.AttachContainerTo(this);
+									rock2.MoveTo(xveh.X, xveh.Y);
+									rock2.VelocityX = xveh.VelocityX;
+									rock2.VelocityY = xveh.VelocityY;
+
+									KnownRocks.Add(rock2);
+								}
 							};
 
 						Func<Key, bool> IsKeyDown =
