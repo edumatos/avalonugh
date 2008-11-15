@@ -15,6 +15,7 @@ namespace AvalonUgh.Code
 		public IEnumerable<Obstacle> Obstacles;
 		public IEnumerable<Vehicle> Vehicles;
 		public IEnumerable<Rock> Rocks;
+		public IEnumerable<Tree> Trees;
 
 		// mass = density / volume
 		// length * width * height = volume
@@ -61,7 +62,7 @@ namespace AvalonUgh.Code
 			var WaterVolume = (y / twin.HalfHeight).Min(1).Max(0);
 
 			// add gravity
-			twin.VelocityY += 0.25 * AirVolume;
+			twin.VelocityY += 0.3 * AirVolume;
 
 
 			const double WaterDensity = 1.0;

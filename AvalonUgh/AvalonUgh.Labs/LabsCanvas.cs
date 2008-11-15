@@ -202,12 +202,8 @@ namespace AvalonUgh.Labs.Shared
 				sign3 = CreateSprite.FixLastParam("sign3"),
 				sign4 = CreateSprite.FixLastParam("sign4"),
 
-				rock0 = CreateSprite.FixLastParam("rock0"),
-				rock1 = CreateSprite.FixLastParam("rock1"),
-
-				tree0_2x2 = CreateSprite_2x2.FixLastParam("tree0_2x2"),
-				tree1_2x2 = CreateSprite_2x2.FixLastParam("tree1_2x2"),
-
+		
+		
 
 				man0_00_2x2 = CreateSprite_2x2.FixLastParam("man0_00_2x2"),
 				man0_01_2x2 = CreateSprite_2x2.FixLastParam("man0_01_2x2"),
@@ -493,11 +489,7 @@ namespace AvalonUgh.Labs.Shared
 							);
 						};
 
-					FrameChange(5000,
-						Create.rock0(6, 12),
-						Create.rock1(6, 12)
-					);
-
+			
 					FrameChange(500,
 						Create.man0_00_2x2(16, 1),
 						Create.man0_01_2x2(16, 1)
@@ -512,12 +504,7 @@ namespace AvalonUgh.Labs.Shared
 					//Create.sign4(4, 11);
 
 
-
-					Blink(
-						Create.tree1_2x2(4, 5),
-						Create.tree0_2x2(4, 5)
-					);
-
+					new Tree(Zoom).AttachContainerTo(this).MoveToTile(4, 5);
 
 					#endregion
 
