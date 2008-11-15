@@ -14,6 +14,10 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Vehicle : ISupportsContainer, ISupportsVelocity, ISupportsPhysics
 	{
+		public int Stability { get; set; }
+
+		public bool Hidden { get; set; }
+
 		public double Acceleration = 0.4;
 		public double Density { get; set; }
 

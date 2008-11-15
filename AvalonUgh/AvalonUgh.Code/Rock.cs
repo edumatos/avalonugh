@@ -14,6 +14,18 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Rock : ISupportsContainer, ISupportsPhysics
 	{
+		public int Stability { get; set; }
+
+		public bool ReadyForPickup
+		{
+			get
+			{
+				return Stability > 10;
+			}
+		}
+
+		public bool Hidden { get; set; }
+
 		public Canvas Container { get; set; }
 
 		public readonly int Zoom;
@@ -26,7 +38,7 @@ namespace AvalonUgh.Code
 		public double X { get; set; }
 		public double Y { get; set; }
 
-	
+
 
 		public readonly int Width;
 		public readonly int Height;
@@ -56,6 +68,7 @@ namespace AvalonUgh.Code
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 		}
 
+		public bool IsSleeping { get; set; }
 
 		public Rock(int Zoom)
 		{
@@ -72,7 +85,7 @@ namespace AvalonUgh.Code
 			};
 
 
-			var frames = Enumerable.Range(0, 2).ToArray(
+			var ShowFrame = Enumerable.Range(0, 3).ToArray(
 				index =>
 					new Image
 					{
@@ -82,25 +95,46 @@ namespace AvalonUgh.Code
 						Height = this.Height,
 						Visibility = Visibility.Hidden
 					}.AttachTo(this.Container)
+			).ToShowFrame(
+				k =>
+					new
+					{
+						up = k.FixParam(0),
+						down = k.FixParam(1),
+						sleep = k.FixParam(2),
+					}
 			);
 
-			frames.AsCyclicEnumerable().ForEach(
-				(Image value, Action SignalNext) =>
+			UpdateFrame =
+				delegate
 				{
-					value.Visibility = Visibility.Visible;
+					if (IsSleeping)
+					{
+						ShowFrame.sleep();
+					}
+					else
+					{
+						ShowFrame.up();
 
-					(5000).AtDelay(
-						delegate
-						{
-							value.Visibility = Visibility.Hidden;
-							SignalNext();
-						}
-					);
-				}
-			);
+						5000.AtDelay(
+							delegate
+							{
+								if (IsSleeping)
+									return;
+
+								ShowFrame.down();
+							}
+						);
+					};
+				};
+
+			ShowFrame.up();
+			10000.AtInterval(UpdateFrame);
+
 		}
 
-	
+		public readonly Action UpdateFrame;
+
 
 		public Obstacle ToObstacle(double x, double y)
 		{
@@ -112,6 +146,25 @@ namespace AvalonUgh.Code
 				Bottom = y + HalfHeight,
 				SupportsVelocity = this
 			};
+		}
+
+
+		public void GoToSleep()
+		{
+			if (this.IsSleeping)
+				return;
+
+			this.IsSleeping = true;
+			this.UpdateFrame();
+
+
+			5000.AtDelay(
+				delegate
+				{
+					this.IsSleeping = false;
+					this.UpdateFrame();
+				}
+			);
 		}
 	}
 }

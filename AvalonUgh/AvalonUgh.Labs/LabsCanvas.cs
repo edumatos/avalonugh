@@ -449,26 +449,7 @@ namespace AvalonUgh.Labs.Shared
 
 					#region sprites
 
-					Action<Image, Image> Blink =
-						(a, b) =>
-						{
-							(1000 / 10).AtIntervalWithCounter(
-								c =>
-								{
-									if (c % 12 == 0)
-									{
-										b.Hide();
-										a.Show();
-
-										return;
-									}
-
-									a.Hide();
-									b.Show();
-								}
-							);
-						};
-
+				
 					Action<int, Image, Image> FrameChange =
 						(f, a, b) =>
 						{
@@ -503,8 +484,13 @@ namespace AvalonUgh.Labs.Shared
 
 					//Create.sign4(4, 11);
 
+					var KnownRocks = new List<Rock>();
+					var KnownTrees = new List<Tree>();
 
-					new Tree(Zoom).AttachContainerTo(this).MoveToTile(4, 5);
+					var tree1 = new Tree(Zoom).AttachContainerTo(this);
+					
+					tree1.MoveToTile(4.5, 5);
+					KnownTrees.Add(tree1);
 
 					#endregion
 
@@ -554,12 +540,11 @@ namespace AvalonUgh.Labs.Shared
 					var WaterHeight = 50 * Zoom;
 					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
-					var KnownRocks = new List<Rock>();
 
 					var rock1 = new Rock(Zoom);
 					
 					rock1.AttachContainerTo(this);
-					rock1.MoveTo(DefaultWidth / 3, DefaultHeight / 3);
+					rock1.MoveTo(DefaultWidth / 2, DefaultHeight / 3);
 
 					KnownRocks.Add(rock1);
 
@@ -600,16 +585,11 @@ namespace AvalonUgh.Labs.Shared
 								twin2,
 								twin
 							}.AsEnumerable(),
-							Rocks = KnownRocks
+							Rocks = KnownRocks,
+							Trees = KnownTrees
 						};
 
-						(1000 / 30).AtIntervalWithCounter(
-							c =>
-							{
-								ph.Apply();
-							}
-						);
-
+					
 
 						this.FocusVisualStyle = null;
 						this.Focusable = true;
@@ -669,7 +649,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 						#region movement
-						(1000 / 30).AtInterval(
+						(1000 / 40).AtInterval(
 							delegate
 							{
 								if (KeyState.Any(k => k.Value))
@@ -702,6 +682,9 @@ namespace AvalonUgh.Labs.Shared
 								{
 									xveh.VelocityX += twin.Acceleration;
 								}
+
+								ph.Apply();
+
 							}
 						);
 						#endregion
