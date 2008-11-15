@@ -445,7 +445,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					var actor0 = new Actor.man0(Zoom).AttachContainerTo(this);
+					var actor0 = new Actor.man1(Zoom).AttachContainerTo(this);
 
 					actor0.MoveToTile(16.5, 1);
 					var actor1 = new Actor.man0(Zoom).AttachContainerTo(this);
@@ -463,6 +463,11 @@ namespace AvalonUgh.Labs.Shared
 					var KnownRocks = new List<Rock>();
 					var KnownTrees = new List<Tree>();
 					var KnownBirds = new List<Bird>();
+					var KnownActors = new List<Actor>
+					{
+						actor0,
+						actor1
+					};
 
 
 					var KnownWater = new Water(
@@ -566,7 +571,8 @@ namespace AvalonUgh.Labs.Shared
 							}.AsEnumerable(),
 						Rocks = KnownRocks,
 						Trees = KnownTrees,
-						Birds = KnownBirds
+						Birds = KnownBirds,
+						Actors = KnownActors
 					};
 
 

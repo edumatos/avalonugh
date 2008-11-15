@@ -10,8 +10,11 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public abstract partial class Actor : ISupportsContainer
+	public abstract partial class Actor : ISupportsContainer, ISupportsPhysics
 	{
+		public double Density { get; set; }
+		public int Stability { get; set; }
+
 		public Canvas Container { get; set; }
 
 		public readonly int Zoom;
@@ -25,8 +28,10 @@ namespace AvalonUgh.Code
 		public Image[] PanicFrames;
 		public int PanicInterval = 100;
 
+
 		public Actor(int Zoom)
 		{
+			this.Density = 0.3;
 			this.Zoom = Zoom;
 
 			this.Width = PrimitiveTile.Width * Zoom * 2;
@@ -41,6 +46,14 @@ namespace AvalonUgh.Code
 
 		public bool IsIdle = true;
 		public bool IsPanicing = false;
+
+		public bool PhysicsDisabled
+		{
+			get
+			{
+				return !IsPanicing;
+			}
+		}
 
 		protected void Initialize()
 		{
@@ -99,6 +112,9 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public double VelocityX { get; set; }
+		public double VelocityY { get; set; }
+
 		public double X { get; set; }
 		public double Y { get; set; }
 
@@ -117,6 +133,19 @@ namespace AvalonUgh.Code
 		{
 			MoveTo(PrimitiveTile.Width * x * Zoom + HalfWidth, PrimitiveTile.Heigth * y * Zoom + HalfHeight);
 
+		}
+
+
+		public Obstacle ToObstacle(double x, double y)
+		{
+			return new Obstacle
+			{
+				Left = x - HalfWidth / 2,
+				Top = y - HalfHeight / 2,
+				Right = x + HalfWidth / 2,
+				Bottom = y + HalfHeight,
+				//SupportsVelocity = this
+			};
 		}
 	}
 }

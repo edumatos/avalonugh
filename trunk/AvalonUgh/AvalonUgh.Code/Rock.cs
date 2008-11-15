@@ -24,7 +24,7 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public bool Hidden { get; set; }
+		public bool PhysicsDisabled { get; set; }
 
 		public Canvas Container { get; set; }
 

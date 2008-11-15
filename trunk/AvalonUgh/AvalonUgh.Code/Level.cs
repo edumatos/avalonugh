@@ -15,6 +15,7 @@ namespace AvalonUgh.Code
 		public string Code;
 		public string Background;
 		public string Water;
+		public string Wind;
 
 		public readonly ASCIIImage Map;
 
@@ -63,7 +64,8 @@ namespace AvalonUgh.Code
 				{"text", e => Text = e},
 				{"code", e => Code = e},
 				{"background", e => Background = e},
-				{"water", e => Water = e}
+				{"water", e => Water = e},
+				{"wind", e => Wind = e}
 			};
 
 			this.Map = new ASCIIImage(
@@ -85,6 +87,7 @@ namespace AvalonUgh.Code
 				this.BackgroundImage = new Image
 				{
 					Source = BackgroundImageSource.ToSource(),
+					Stretch = System.Windows.Media.Stretch.Fill,
 					Width = BackgroundImageWidth * Zoom,
 					Height = BackgroundImageHeight * Zoom,
 				};

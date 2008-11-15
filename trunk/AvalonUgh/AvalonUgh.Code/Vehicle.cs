@@ -16,7 +16,7 @@ namespace AvalonUgh.Code
 	{
 		public int Stability { get; set; }
 
-		public bool Hidden { get; set; }
+		public bool PhysicsDisabled { get; set; }
 
 		public double Acceleration = 0.4;
 		public double Density { get; set; }
