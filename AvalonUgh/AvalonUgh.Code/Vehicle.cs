@@ -12,7 +12,7 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Vehicle : ISupportsContainer
+	public class Vehicle : ISupportsContainer, ISupportsVelocity
 	{
 		public double Acceleration = 0.4;
 		public double Density = 0.4;
@@ -162,6 +162,24 @@ namespace AvalonUgh.Code
 					);
 				}
 			);
+		}
+
+		public Obstacle ToObstacle()
+		{
+			return this.ToObstacle(this.X, this.Y);
+		}
+
+		public Obstacle ToObstacle(double x, double y)
+		{
+			return new Obstacle
+			{
+				Left = x - this.HalfWidth + 6 * this.Zoom,
+				Right = x + this.HalfWidth - 6 * this.Zoom,
+				Top = y - this.HalfHeight + 4 * this.Zoom,
+				Bottom = y + this.HalfHeight,
+
+				SupportsVelocity = this
+			};
 		}
 	}
 
