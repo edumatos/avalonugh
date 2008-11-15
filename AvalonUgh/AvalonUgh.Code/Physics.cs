@@ -18,6 +18,7 @@ namespace AvalonUgh.Code
 		public IEnumerable<Rock> Rocks;
 		public IEnumerable<Tree> Trees;
 		public IEnumerable<Bird> Birds;
+		public IEnumerable<Actor> Actors;
 
 		// mass = density / volume
 		// length * width * height = volume
@@ -50,11 +51,12 @@ namespace AvalonUgh.Code
 		{
 			this.Vehicles.ForEach(Apply);
 			this.Rocks.ForEach(Apply);
+			this.Actors.ForEach(Apply);
 		}
 
 		void Apply(ISupportsPhysics twin)
 		{
-			if (twin.Hidden)
+			if (twin.PhysicsDisabled)
 				return;
 
 			// y relative to water
@@ -105,12 +107,26 @@ namespace AvalonUgh.Code
 				this.Rocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 					rock_ =>
 					{
-						rock_.Hidden = true;
+						rock_.PhysicsDisabled = true;
 						rock_.Container.Hide();
 					}
 				);
+
+				this.Actors.WhereNot(k => k.IsPanicing).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+					actor_ =>
+					{
+						// we did will hit a tree
+						actor_.IsPanicing = true;
+					}
+				);
+
 			}
 
+			var actor = twin as Actor;
+			if (actor != null)
+			{
+				Obstacles = new Obstacle[0];
+			}
 
 			var rock = twin as Rock;
 			if (rock != null)
@@ -232,7 +248,7 @@ namespace AvalonUgh.Code
 	{
 		int Stability { get; set; }
 
-		bool Hidden { get; }
+		bool PhysicsDisabled { get; }
 
 		int HalfHeight { get; }
 		int HalfWidth { get; }
