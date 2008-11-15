@@ -100,6 +100,8 @@ namespace AvalonUgh.Code
 			);
 		}
 
+	
+
 		public Obstacle ToObstacle(double x, double y)
 		{
 			return new Obstacle

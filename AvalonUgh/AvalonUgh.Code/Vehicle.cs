@@ -165,11 +165,7 @@ namespace AvalonUgh.Code
 			);
 		}
 
-		public Obstacle ToObstacle()
-		{
-			return this.ToObstacle(this.X, this.Y);
-		}
-
+		
 		public Obstacle ToObstacle(double x, double y)
 		{
 			return new Obstacle

@@ -96,6 +96,7 @@ namespace AvalonUgh.Code
 				Obstacles = Obstacles.Concat(this.Vehicles.Where(k => k != twin).Select(k => k.ToObstacle()));
 			}
 
+		
 
 
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
@@ -163,5 +164,15 @@ namespace AvalonUgh.Code
 
 
 		void MoveTo(double x, double y);
+	}
+
+	[Script]
+	public static class SupportPhysicsExtensions
+	{
+		public static Obstacle ToObstacle(this ISupportsPhysics e)
+		{
+			return e.ToObstacle(e.X, e.Y);
+		}
+
 	}
 }
