@@ -100,7 +100,7 @@ namespace AvalonUgh.Code
 			}
 			else if (IsKeyDown(a.Down))
 			{
-				if (xveh.Y > a.Water.Args.WaterTop)
+				if (xveh.Y > a.Water.Args.Level.WaterTop)
 					xveh.IsAnimated = false;
 				else
 					xveh.VelocityY += xveh.Acceleration;

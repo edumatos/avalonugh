@@ -214,6 +214,10 @@ namespace AvalonUgh.Labs.Shared
 
 					Console.WriteLine(new { Level.Text, Level.Code, Level.Background, Level.Water, Level.Map.Width, Level.Map.Height }.ToString());
 
+
+					if (Level.BackgroundImage != null)
+						Level.BackgroundImage.AttachTo(this);
+
 					var BorderSize = Zoom * 10;
 
 					var Obstacles = new List<Obstacle>
@@ -458,18 +462,15 @@ namespace AvalonUgh.Labs.Shared
 
 					var KnownRocks = new List<Rock>();
 					var KnownTrees = new List<Tree>();
+					var KnownBirds = new List<Bird>();
 
-
-					//var WaterHeight = 50 * Zoom;
-					//var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
 					var KnownWater = new Water(
 						new Water.Info
 						{
 							DefaultWidth = DefaultWidth,
-							Zoom = Zoom,
-							WaterHeight = Level.WaterHeight,
-							WaterTop = Level.WaterTop,
+							Level = Level
+
 
 						}
 					);
@@ -488,7 +489,7 @@ namespace AvalonUgh.Labs.Shared
 						var bird1_y = Zoom * 32;
 
 						bird1.AttachContainerTo(this).MoveTo(bird1_x, bird1_y);
-
+						KnownBirds.Add(bird1);
 
 						(1000 / 30).AtInterval(
 							delegate
@@ -507,6 +508,7 @@ namespace AvalonUgh.Labs.Shared
 						var bird2_y = Zoom * 70;
 
 						bird2.AttachContainerTo(this).MoveTo(bird2_x, bird2_y);
+						KnownBirds.Add(bird2);
 
 
 						(1000 / 30).AtInterval(
@@ -563,7 +565,8 @@ namespace AvalonUgh.Labs.Shared
 								twin
 							}.AsEnumerable(),
 						Rocks = KnownRocks,
-						Trees = KnownTrees
+						Trees = KnownTrees,
+						Birds = KnownBirds
 					};
 
 

@@ -22,10 +22,8 @@ namespace AvalonUgh.Code
 		{
 			public int DefaultWidth;
 
-			public int WaterHeight;
-			public int WaterTop;
+			public Level Level;
 
-			public int Zoom;
 
 			public Color WaterColorTop = Colors.Cyan;
 			public Color WaterColorBottom = Colors.Violet;
@@ -44,14 +42,14 @@ namespace AvalonUgh.Code
 			this.Container = new Canvas
 			{
 				Width = e.DefaultWidth,
-				Height = e.WaterHeight
-			}.MoveTo(0, e.WaterTop);
+				Height = e.Level.WaterHeight
+			}.MoveTo(0, e.Level.WaterTop);
 
 		
 			e.WaterColorTop.A = 40;
 			e.WaterColorBottom.A = 60;
 
-			e.WaterColorTop.ToGradient(e.WaterColorBottom, e.WaterHeight / e.Zoom).Select(
+			e.WaterColorTop.ToGradient(e.WaterColorBottom, e.Level.WaterHeight / e.Level.Zoom).Select(
 				(c, i) =>
 				{
 					var Opacity = c.A / 255.0;
@@ -62,9 +60,9 @@ namespace AvalonUgh.Code
 					{
 						Fill = new SolidColorBrush(c),
 						Width = e.DefaultWidth,
-						Height = e.Zoom,
+						Height = e.Level.Zoom,
 						Opacity = Opacity
-					}.MoveTo(0, i * e.Zoom).AttachTo(this.Container);
+					}.MoveTo(0, i * e.Level.Zoom).AttachTo(this.Container);
 				}
 			).ToArray();
 			#endregion
@@ -79,8 +77,7 @@ namespace AvalonUgh.Code
 						var frame = new Canvas
 						{
 							Width = e.DefaultWidth,
-							Height = e.WaterHeight,
-							//Visibility = Visibility.Hidden
+							Height = e.Level.WaterHeight,
 						}.MoveTo(0, 0).AttachTo(this.Container);
 
 						Action<double, int> CreateWater =
@@ -91,9 +88,9 @@ namespace AvalonUgh.Code
 									Source = (Assets.Shared.KnownAssets.Path.Assets + "/water" + index + ".png").ToSource(),
 									Stretch = Stretch.Fill,
 									Width = e.DefaultWidth,
-									Height = 1 * e.Zoom,
+									Height = 1 * e.Level.Zoom,
 									Opacity = WaterOpacity
-								}.AttachTo(frame).MoveTo(0, WaterIndex * e.Zoom);
+								}.AttachTo(frame).MoveTo(0, WaterIndex * e.Level.Zoom);
 							};
 
 						CreateWater.FixLastParamToIndex()(
