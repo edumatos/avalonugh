@@ -44,14 +44,44 @@ namespace AvalonUgh.Code
 			};
 		}
 
-		public bool IsIdle = true;
-		public bool IsPanicing = false;
+		public enum AnimationEnum
+		{
+			Idle,
+			Panic
+		}
+
+
+		AnimationEnum _Animation = AnimationEnum.Idle;
+		public AnimationEnum Animation
+		{
+			get
+			{
+				return _Animation;
+			}
+			set
+			{
+				_Animation = value;
+
+				if (value != AnimationEnum.Idle)
+					this.IdleFrames.ForEach(k => k.Hide());
+
+				if (value != AnimationEnum.Panic)
+					this.PanicFrames.ForEach(k => k.Hide());
+
+				if (value == AnimationEnum.Idle)
+					this.IdleFrames.First().Show();
+
+				if (value == AnimationEnum.Panic)
+					this.PanicFrames.First().Show();
+			}
+		}
+
 
 		public bool PhysicsDisabled
 		{
 			get
 			{
-				return !IsPanicing;
+				return Animation != AnimationEnum.Panic;
 			}
 		}
 
@@ -60,7 +90,7 @@ namespace AvalonUgh.Code
 			this.IdleInterval.AtIntervalWithCounter(
 				i =>
 				{
-					if (!IsIdle)
+					if (Animation != AnimationEnum.Idle)
 						return;
 
 					this.IdleFrames.ForEach(
@@ -78,7 +108,7 @@ namespace AvalonUgh.Code
 			this.PanicInterval.AtIntervalWithCounter(
 				i =>
 				{
-					if (!IsPanicing)
+					if (Animation != AnimationEnum.Panic)
 						return;
 
 					this.PanicFrames.ForEach(

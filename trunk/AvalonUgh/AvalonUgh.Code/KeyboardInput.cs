@@ -31,6 +31,7 @@ namespace AvalonUgh.Code
 
 		Dictionary<Key, bool> KeyState;
 
+		public event Action Enter;
 		public event Action Drop;
 
 		readonly Arguments a;
@@ -69,6 +70,13 @@ namespace AvalonUgh.Code
 					{
 						if (Drop != null)
 							Drop();
+
+					}
+
+					if (args.Key == e.Enter)
+					{
+						if (Enter != null)
+							Enter();
 
 					}
 				};

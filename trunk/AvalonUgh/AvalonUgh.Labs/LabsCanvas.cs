@@ -194,6 +194,8 @@ namespace AvalonUgh.Labs.Shared
 				ridge0 = CreateTile.FixLastParam("ridge0"),
 				ridge0_2x2 = CreateTile_2x2.FixLastParam("ridge0_2x2"),
 
+				weed0_2x2 = CreateSprite_2x2.FixLastParam("weed0_00_2x2"),
+
 				cave0_2x2 = CreateTile_2x2.FixLastParam("cave0_2x2"),
 				cave1_2x2 = CreateTile_2x2.FixLastParam("cave1_2x2"),
 
@@ -439,6 +441,7 @@ namespace AvalonUgh.Labs.Shared
 					#endregion
 
 
+					Create.weed0_2x2(0, 14);
 
 
 					#region sprites
@@ -446,11 +449,12 @@ namespace AvalonUgh.Labs.Shared
 
 
 					var actor0 = new Actor.man1(Zoom).AttachContainerTo(this);
+					var actor1 = new Actor.man0(Zoom).AttachContainerTo(this);
+					var actor2 = new Actor.woman0(Zoom).AttachContainerTo(this);
 
 					actor0.MoveToTile(16.5, 1);
-					var actor1 = new Actor.man0(Zoom).AttachContainerTo(this);
-
 					actor1.MoveToTile(14.5, 1);
+					actor2.MoveToTile(12.5, 1);
 
 
 					new Sign(Zoom) { Value = 3 }.AttachContainerTo(this).MoveToTile(9, 12);
@@ -466,7 +470,8 @@ namespace AvalonUgh.Labs.Shared
 					var KnownActors = new List<Actor>
 					{
 						actor0,
-						actor1
+						actor1,
+						actor2
 					};
 
 
@@ -474,8 +479,8 @@ namespace AvalonUgh.Labs.Shared
 						new Water.Info
 						{
 							DefaultWidth = DefaultWidth,
-							Level = Level
-
+							Level = Level,
+							WaterColorBottom = Colors.Green
 
 						}
 					);
@@ -614,6 +619,30 @@ namespace AvalonUgh.Labs.Shared
 							rock2.VelocityY = xveh.VelocityY;
 
 							KnownRocks.Add(rock2);
+						};
+
+					k1.Enter +=
+						delegate
+						{
+							if (xveh.IsUnmanned)
+							{
+								xveh.IsUnmanned = false;
+
+							}
+							else
+							{
+								xveh.IsUnmanned = true;
+								var actor5 = new Actor.man0(Zoom)
+								{
+									Animation = Actor.AnimationEnum.Panic
+								};
+								
+								actor5.MoveTo(xveh.X, xveh.Y);
+								
+								actor5.AttachContainerTo(this);
+
+								KnownActors.Add(actor5);
+							}
 						};
 
 
