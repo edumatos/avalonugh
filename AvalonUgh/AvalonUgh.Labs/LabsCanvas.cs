@@ -499,12 +499,15 @@ namespace AvalonUgh.Labs.Shared
 					#endregion
 
 
-					var WaterHeight = 50 * Zoom;
+					var WaterHeight = 100 * Zoom;
 					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
+
 
 
 					#region vehicle
 					{
+						var ph = new Physics { WaterTop = WaterTop };
+
 						var xveh = new Vehicle(Zoom);
 						xveh.ColorStripe = Colors.Red;
 
@@ -522,7 +525,7 @@ namespace AvalonUgh.Labs.Shared
 						twin.ColorStripe = Colors.Blue;
 
 						twin.AttachContainerTo(this);
-						twin.MoveTo(DefaultWidth / 3, DefaultHeight / 4);
+						twin.MoveTo(DefaultWidth / 3, (WaterTop + DefaultHeight) / 2);
 
 						var twin2 = new Vehicle(Zoom);
 						twin2.ColorStripe = Colors.Yellow;
@@ -533,9 +536,15 @@ namespace AvalonUgh.Labs.Shared
 						(1000 / 30).AtIntervalWithCounter(
 							c =>
 							{
-								var yy = Math.Cos(c * 0.1);
+								// how much volume is in water?
 
-								xveh.MoveTo(x, y + yy * Zoom * y_float);
+								ph.Apply(twin);
+								ph.Apply(twin2);
+								ph.Apply(xveh);
+
+
+
+								//xveh.MoveTo(x, y);
 							}
 						);
 
@@ -550,6 +559,7 @@ namespace AvalonUgh.Labs.Shared
 								this.Focus();
 							};
 
+						#region KeyState
 						var KeyState = new Dictionary<Key, bool>
 						{
 							{Key.Up, false},
@@ -575,7 +585,7 @@ namespace AvalonUgh.Labs.Shared
 
 						Func<Key, bool> IsKeyDown =
 							k => KeyState[k];
-
+						#endregion
 						// http://www.regentsprep.org/Regents/physics/phys01/accgravi/index.htm
 						// http://www.glenbrook.k12.il.us/GBSSCI/PHYS/Class/1DKin/U1L5b.html
 						// http://www.regentsprep.org/Regents/physics/phys-topic.cfm?Course=PHYS&TopicCode=01a
@@ -584,74 +594,51 @@ namespace AvalonUgh.Labs.Shared
 						// http://farside.ph.utexas.edu/teaching/301/lectures/node23.html
 						// http://www2.swgc.mun.ca/physics/physlets.html
 						// http://www.icoachmath.com/SiteMap/MagnitudeofaVector.html
+						// http://www.physicsforums.com/showthread.php?t=154533
+						// http://en.wikipedia.org/wiki/Buoyancy
+						// http://ca.youtube.com/watch?v=VDSYXmvjg6M
 
-						var speed_y = 0.0;
-						var speed_y_Acc = 0.1;
+						var speed_y_Acc = 0.2;
 
-						var speed_x = 0.0;
-						var speed_x_Acc = 0.1;
 
-						(1000 / 60).AtInterval(
+						#region movement
+						(1000 / 30).AtInterval(
 							delegate
 							{
 								if (KeyState.Any(k => k.Value))
 								{
 									xveh.IsAnimated = true;
-									y_float = (y_float - y_float_acc).Max(0);
 								}
 								else
 								{
 									xveh.IsAnimated = false;
-
-									y_float = (y_float + y_float_acc / 2).Min(y_float_max);
 								}
 
 
 								if (IsKeyDown(Key.Up))
 								{
-									speed_y -= speed_y_Acc * 2;
+									xveh.VelocityY -= speed_y_Acc * 3;
 								}
 								else if (IsKeyDown(Key.Down))
 								{
-									speed_y += speed_y_Acc;
-								}
-								else
-								{
-									if (speed_y > 0)
-										speed_y -= speed_y_Acc / 2;
+									if (xveh.Y > WaterTop)
+										xveh.IsAnimated = false;
 									else
-										speed_y += speed_y_Acc / 2;
-
-
-
+										xveh.VelocityY += speed_y_Acc;
 								}
-
-								if (y < WaterTop)
-									speed_y += 0.1; // add gravity
-								else
-								{
-									xveh.IsAnimated = false;
-									speed_y -= 0.2; // add water pressure
-								}
-
-
-								y += speed_y * Zoom;
 
 								if (IsKeyDown(Key.Left))
-									speed_x -= speed_x_Acc;
-								else if (IsKeyDown(Key.Right))
-									speed_x += speed_x_Acc;
-								else
 								{
-									if (speed_x > 0)
-										speed_x -= speed_x_Acc / 2;
-									else
-										speed_x += speed_x_Acc / 2;
+									xveh.VelocityX -= speed_y_Acc;
 								}
-
-								x += speed_x * Zoom;
+								else if (IsKeyDown(Key.Right))
+								{
+									xveh.VelocityX += speed_y_Acc;
+								}
 							}
 						);
+						#endregion
+
 
 
 					}
