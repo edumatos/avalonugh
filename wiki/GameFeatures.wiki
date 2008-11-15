@@ -45,3 +45,7 @@ Door tiles: 2x2
 = Demo =
 
 [http://code.google.com/p/avalonugh/source/browse/trunk/AvalonUgh/Public/LabsFlash.swf]
+
+
+multiplayer level codes:
+onlyshadowsofhooks
