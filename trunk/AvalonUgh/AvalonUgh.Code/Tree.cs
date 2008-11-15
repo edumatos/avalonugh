@@ -12,7 +12,7 @@ using System.Windows.Media;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Tree : ISupportsContainer
+	public class Tree : ISupportsContainer, ISupportsObstacle
 	{
 		public Canvas Container { get; set; }
 
@@ -50,7 +50,7 @@ namespace AvalonUgh.Code
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 		}
 
-		public bool IsSleeping;
+		public bool IsSleeping { get; set; }
 
 		public Tree(int Zoom)
 		{
@@ -85,8 +85,7 @@ namespace AvalonUgh.Code
 					}
 			);
 
-			ShowFrame.ok();
-			1000.AtInterval(
+			UpdateFrame =
 				delegate
 				{
 					if (IsSleeping)
@@ -98,16 +97,49 @@ namespace AvalonUgh.Code
 						ShowFrame.blink();
 
 						100.AtDelay(ShowFrame.ok);
-					}
-				}
-			);
+					};
+				};
+
+			ShowFrame.ok();
+			1000.AtInterval(UpdateFrame);
 
 		}
+
+		public readonly Action UpdateFrame;
 
 		public void MoveToTile(double x, double y)
 		{
 			MoveTo(PrimitiveTile.Width * x * Zoom + HalfWidth, PrimitiveTile.Heigth * y * Zoom + HalfHeight);
 
+		}
+
+		public Obstacle ToObstacle(double x, double y)
+		{
+			return new Obstacle
+			{
+				Left = x - HalfWidth,
+				Top = y - HalfHeight,
+				Right = x + HalfWidth,
+				Bottom = y + HalfHeight,
+			};
+		}
+
+		public void GoToSleep()
+		{
+			if (this.IsSleeping)
+				return;
+
+			this.IsSleeping = true;
+			this.UpdateFrame();
+
+
+			5000.AtDelay(
+				delegate
+				{
+					this.IsSleeping = false;
+					this.UpdateFrame();
+				}
+			);
 		}
 	}
 }

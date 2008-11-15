@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Lambda;
+using ScriptCoreLib.Shared.Avalon.Extensions;
 
 namespace AvalonUgh.Code
 {
@@ -52,6 +53,9 @@ namespace AvalonUgh.Code
 
 		void Apply(ISupportsPhysics twin)
 		{
+			if (twin.Hidden)
+				return;
+
 			// y relative to water
 			var y = twin.Y - WaterTop;
 
@@ -87,6 +91,7 @@ namespace AvalonUgh.Code
 			var newX = twin.X + twin.VelocityX;
 			var newY = twin.Y + twin.VelocityY;
 
+			var vehXY = twin.ToObstacle(newX, newY);
 			var vehX = twin.ToObstacle(newX, twin.Y);
 			var vehY = twin.ToObstacle(twin.X, newY);
 
@@ -95,10 +100,36 @@ namespace AvalonUgh.Code
 			if (twin is Vehicle)
 			{
 				Obstacles = Obstacles.Concat(this.Vehicles.Where(k => k != twin).Select(k => k.ToObstacle()));
+
+				this.Rocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+					rock_ =>
+					{
+						rock_.Hidden = true;
+						rock_.Container.Hide();
+					}
+				);
 			}
 
-		
 
+			var rock = twin as Rock;
+			if (rock != null)
+			{
+				if (rock.Stability < 10)
+				{
+					Obstacles = Obstacles.Concat(
+						this.Trees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
+					);
+
+					this.Trees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+						tree =>
+						{
+							tree.GoToSleep();
+							rock.GoToSleep();
+						}
+					);
+
+				}
+			}
 
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
 			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));
@@ -114,7 +145,10 @@ namespace AvalonUgh.Code
 				}
 				else
 				{
-					twin.VelocityX *= -0.5;
+					if (Math.Abs(twin.VelocityX) < 1.0)
+						twin.VelocityX = 0;
+					else
+						twin.VelocityX *= -0.5;
 				}
 			}
 
@@ -129,12 +163,26 @@ namespace AvalonUgh.Code
 				}
 				else
 				{
-					twin.VelocityY *= -0.5;
+					if (Math.Abs(twin.VelocityY) < 1.0)
+						twin.VelocityY = 0;
+					else
+						twin.VelocityY *= -0.5;
 				}
+			}
+
+			if (twin.GetVelocity() < 0.5)
+			{
+				twin.Stability++;
+			}
+			else
+			{
+				twin.Stability = 0;
 			}
 
 			newX = twin.X + twin.VelocityX;
 			newY = twin.Y + twin.VelocityY;
+
+
 
 			twin.MoveTo(newX, newY);
 
@@ -152,16 +200,25 @@ namespace AvalonUgh.Code
 	}
 
 	[Script]
-	public interface ISupportsPhysics : ISupportsVelocity
+	public interface ISupportsObstacle
 	{
 		double X { get; }
 		double Y { get; }
+
+		Obstacle ToObstacle(double x, double y);
+	}
+
+	[Script]
+	public interface ISupportsPhysics : ISupportsVelocity, ISupportsObstacle
+	{
+		int Stability { get; set; }
+
+		bool Hidden { get; }
 
 		int HalfHeight { get; }
 		int HalfWidth { get; }
 		double Density { get; set; }
 
-		Obstacle ToObstacle(double x, double y);
 
 
 		void MoveTo(double x, double y);
@@ -170,7 +227,12 @@ namespace AvalonUgh.Code
 	[Script]
 	public static class SupportPhysicsExtensions
 	{
-		public static Obstacle ToObstacle(this ISupportsPhysics e)
+		public static double GetVelocity(this ISupportsVelocity e)
+		{
+			return Math.Sqrt(e.VelocityX * e.VelocityX + e.VelocityY * e.VelocityY);
+		}
+
+		public static Obstacle ToObstacle(this ISupportsObstacle e)
 		{
 			return e.ToObstacle(e.X, e.Y);
 		}
