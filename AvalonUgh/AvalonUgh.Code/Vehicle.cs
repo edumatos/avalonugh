@@ -69,6 +69,38 @@ namespace AvalonUgh.Code
 		readonly Image ColorStripeRed;
 		readonly Image ColorStripeBlue;
 		readonly Image ColorStripeYellow;
+		readonly Image ColorStripeGray;
+
+		readonly Image UnmannedImage;
+
+		bool _Unmanned;
+		public bool IsUnmanned
+		{
+
+			get
+			{
+				return _Unmanned;
+			}
+			set
+			{
+
+				_Unmanned = value;
+
+				if (value)
+				{
+					this.ColorStripe = Colors.Gray;
+					IsAnimated = false;
+					UnmannedImage.Show();
+					frames.ForEach(k => k.Hide());
+				}
+				else
+				{
+					UnmannedImage.Hide();
+					if (frames_SignalNext != null)
+						frames_SignalNext();
+				}
+			}
+		}
 
 		public Color ColorStripe
 		{
@@ -95,9 +127,16 @@ namespace AvalonUgh.Code
 					ColorStripeYellow.Show();
 					return;
 				}
+
+				if (value == Colors.Gray)
+				{
+					ColorStripeGray.Show();
+					return;
+				}
 			}
 		}
 
+		readonly Image[] frames;
 		public Vehicle(int Zoom)
 		{
 			this.Density = 0.4;
@@ -114,7 +153,7 @@ namespace AvalonUgh.Code
 
 			this.IsAnimated = true;
 
-			var frames = Enumerable.Range(0, 6).ToArray(
+			this.frames = Enumerable.Range(0, 6).ToArray(
 				index =>
 					new Image
 					{
@@ -153,17 +192,41 @@ namespace AvalonUgh.Code
 				Visibility = Visibility.Hidden
 			}.AttachTo(this.Container);
 
+			this.ColorStripeGray = new Image
+			{
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_gray_2x2.png").ToSource(),
+				Stretch = Stretch.Fill,
+				Width = this.Width,
+				Height = this.Height,
+				Visibility = Visibility.Hidden
+			}.AttachTo(this.Container);
+
+			this.UnmannedImage = new Image
+			{
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle1_04_2x2.png").ToSource(),
+				Stretch = Stretch.Fill,
+				Width = this.Width,
+				Height = this.Height,
+				Visibility = Visibility.Hidden
+			}.AttachTo(this.Container);
+
+
 			frames.AsCyclicEnumerable().ForEach(
 				(Image value, Action SignalNext) =>
 				{
-					value.Visibility = Visibility.Visible;
+					value.Show();
+					frames_SignalNext = SignalNext;
 
 					(1000 / 30).AtIntervalWithTimer(
 						t =>
 						{
+							if (IsUnmanned)
+								return;
+
 							if (IsAnimated)
 							{
-								value.Visibility = Visibility.Hidden;
+								value.Hide();
+								frames_SignalNext = null;
 								SignalNext();
 								t.Stop();
 							}
@@ -173,7 +236,8 @@ namespace AvalonUgh.Code
 			);
 		}
 
-		
+		Action frames_SignalNext;
+
 		public Obstacle ToObstacle(double x, double y)
 		{
 			return new Obstacle

@@ -112,11 +112,11 @@ namespace AvalonUgh.Code
 					}
 				);
 
-				this.Actors.WhereNot(k => k.IsPanicing).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+				this.Actors.Where(k => k.Animation != Actor.AnimationEnum.Panic).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 					actor_ =>
 					{
 						// we did will hit a tree
-						actor_.IsPanicing = true;
+						actor_.Animation = Actor.AnimationEnum.Panic;
 					}
 				);
 
@@ -125,7 +125,7 @@ namespace AvalonUgh.Code
 			var actor = twin as Actor;
 			if (actor != null)
 			{
-				Obstacles = new Obstacle[0];
+				Obstacles = new Obstacle[0].AsEnumerable();
 			}
 
 			var rock = twin as Rock;
