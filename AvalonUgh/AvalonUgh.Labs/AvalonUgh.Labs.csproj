@@ -96,6 +96,9 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level03.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level04.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

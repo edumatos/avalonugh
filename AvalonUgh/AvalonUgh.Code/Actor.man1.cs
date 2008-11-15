@@ -8,9 +8,10 @@ namespace AvalonUgh.Code
 {
 	partial class Actor
 	{
+		[Script]
 		public class man1 : Actor
 		{
-			public man1()
+			public man1(int Zoom): base(Zoom)
 			{
 
 

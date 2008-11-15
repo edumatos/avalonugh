@@ -14,6 +14,13 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Bird : ISupportsContainer
 	{
+		// PTERODACTYL
+		//-----------
+		//HE IS THE MOST DANGEROUS OF ALL OPPONENTS. IF YOU TOUCH HIM YOUR HELICOPTER
+		//WILL CRASH AT ONCE. JUST BEFORE PTERODACTYL APPEARS YOU WILL HEAR A CRY
+		//AS SOON AS YOU HEAR THIS UNUSUAL NOISE, GET READY TO TAKE EVASIVE ACTION.
+
+
 		public Canvas Container { get; set; }
 
 		public readonly int Zoom;

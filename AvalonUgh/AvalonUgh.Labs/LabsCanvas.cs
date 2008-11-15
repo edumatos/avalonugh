@@ -197,14 +197,9 @@ namespace AvalonUgh.Labs.Shared
 				cave0_2x2 = CreateTile_2x2.FixLastParam("cave0_2x2"),
 				cave1_2x2 = CreateTile_2x2.FixLastParam("cave1_2x2"),
 
-
-
-
-				man0_00_2x2 = CreateSprite_2x2.FixLastParam("man0_00_2x2"),
-				man0_01_2x2 = CreateSprite_2x2.FixLastParam("man0_01_2x2"),
 			};
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level03.txt";
+			var CurrentLevel = KnownAssets.Path.Assets + "/level04.txt";
 
 			Console.WriteLine("loading: " + CurrentLevel);
 
@@ -215,9 +210,9 @@ namespace AvalonUgh.Labs.Shared
 					Console.WriteLine("loading done: " + LevelText.Length + " chars");
 					Console.WriteLine(LevelText);
 
-					var Level = new ASCIIImage(LevelText);
+					var Level = new Level(LevelText, Zoom);
 
-					Console.WriteLine(new { Level.Width, Level.Height }.ToString());
+					Console.WriteLine(new { Level.Text, Level.Code, Level.Background, Level.Water, Level.Map.Width, Level.Map.Height }.ToString());
 
 					var BorderSize = Zoom * 10;
 
@@ -261,7 +256,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 					#region Background
-					Level.ForEach(
+					Level.Map.ForEach(
 						k =>
 						{
 							if (char.IsNumber(k.Value, 0))
@@ -445,31 +440,14 @@ namespace AvalonUgh.Labs.Shared
 					#region sprites
 
 
-					Action<int, Image, Image> FrameChange =
-						(f, a, b) =>
-						{
-							f.AtIntervalWithCounter(
-								c =>
-								{
-									if (c % 2 == 0)
-									{
-										b.Hide();
-										a.Show();
 
-										return;
-									}
+					var actor0 = new Actor.man0(Zoom).AttachContainerTo(this);
 
-									a.Hide();
-									b.Show();
-								}
-							);
-						};
+					actor0.MoveToTile(16.5, 1);
+					var actor1 = new Actor.man0(Zoom).AttachContainerTo(this);
 
+					actor1.MoveToTile(14.5, 1);
 
-					FrameChange(500,
-						Create.man0_00_2x2(16, 1),
-						Create.man0_01_2x2(16, 1)
-					);
 
 					new Sign(Zoom) { Value = 3 }.AttachContainerTo(this).MoveToTile(9, 12);
 					new Sign(Zoom) { Value = 2 }.AttachContainerTo(this).MoveToTile(3, 6);
@@ -482,16 +460,16 @@ namespace AvalonUgh.Labs.Shared
 					var KnownTrees = new List<Tree>();
 
 
-					var WaterHeight = 50 * Zoom;
-					var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
+					//var WaterHeight = 50 * Zoom;
+					//var WaterTop = DefaultHeight - WaterHeight - 9 * Zoom;
 
 					var KnownWater = new Water(
 						new Water.Info
 						{
 							DefaultWidth = DefaultWidth,
 							Zoom = Zoom,
-							WaterHeight = WaterHeight,
-							WaterTop = WaterTop,
+							WaterHeight = Level.WaterHeight,
+							WaterTop = Level.WaterTop,
 
 						}
 					);
@@ -515,7 +493,7 @@ namespace AvalonUgh.Labs.Shared
 						(1000 / 30).AtInterval(
 							delegate
 							{
-								bird1_x -= 2;
+								bird1_x -= 4;
 								if (bird1_x < -(bird1.Width / 2))
 									bird1_x = DefaultWidth + bird1.Width / 2;
 
@@ -555,139 +533,153 @@ namespace AvalonUgh.Labs.Shared
 					KnownRocks.Add(rock1);
 
 					#region vehicle
+
+
+					var xveh = new Vehicle(Zoom);
+					xveh.ColorStripe = Colors.Red;
+					xveh.AttachContainerTo(this);
+					xveh.MoveTo(DefaultWidth / 2, DefaultHeight / 2);
+
+					var twin = new Vehicle(Zoom);
+					twin.ColorStripe = Colors.Blue;
+
+					twin.AttachContainerTo(this);
+					twin.MoveTo(DefaultWidth / 3, DefaultHeight / 4);
+
+					var twin2 = new Vehicle(Zoom);
+					twin2.ColorStripe = Colors.Yellow;
+					twin2.Density = 1.11;
+					twin2.AttachContainerTo(this);
+					twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 2);
+
+					var ph = new Physics
 					{
-
-
-						var xveh = new Vehicle(Zoom);
-						xveh.ColorStripe = Colors.Red;
-
-						double x = DefaultWidth / 2;
-						double y = DefaultHeight / 2;
-
-
-
-						xveh.AttachContainerTo(this);
-						xveh.MoveTo(x, y);
-
-						var twin = new Vehicle(Zoom);
-						twin.ColorStripe = Colors.Blue;
-
-						twin.AttachContainerTo(this);
-						twin.MoveTo(DefaultWidth / 3, DefaultHeight / 4);
-
-						var twin2 = new Vehicle(Zoom);
-						twin2.ColorStripe = Colors.Yellow;
-						twin2.Density = 1.11;
-						twin2.AttachContainerTo(this);
-						twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 2);
-
-						var ph = new Physics
-						{
-							WaterTop = WaterTop,
-							Obstacles = Obstacles,
-							Vehicles = new[]
+						WaterTop = Level.WaterTop,
+						Obstacles = Obstacles,
+						Vehicles = new[]
 							{
 								xveh,
 								twin2,
 								twin
 							}.AsEnumerable(),
-							Rocks = KnownRocks,
-							Trees = KnownTrees
+						Rocks = KnownRocks,
+						Trees = KnownTrees
+					};
+
+
+
+					this.FocusVisualStyle = null;
+					this.Focusable = true;
+					this.Focus();
+
+					this.MouseLeftButtonDown +=
+						(sender, args) =>
+						{
+							this.Focus();
+						};
+
+					var k1 = new KeyboardInput(
+						new KeyboardInput.Arguments
+						{
+							Left = Key.Left,
+							Right = Key.Right,
+							Up = Key.Up,
+							Down = Key.Down,
+							Drop = Key.Space,
+							Enter = Key.Enter,
+
+							InputControl = this,
+							Vehicle = xveh,
+							Water = KnownWater
+						}
+					);
+
+					k1.Drop +=
+						delegate
+						{
+							var rock2 = new Rock(Zoom);
+
+							rock2.AttachContainerTo(this);
+							rock2.MoveTo(xveh.X, xveh.Y);
+							rock2.VelocityX = xveh.VelocityX;
+							rock2.VelocityY = xveh.VelocityY;
+
+							KnownRocks.Add(rock2);
+						};
+
+
+					var k2 = new KeyboardInput(
+						new KeyboardInput.Arguments
+						{
+							Left = Key.A,
+							Right = Key.D,
+							Up = Key.W,
+							Down = Key.S,
+							Drop = Key.Q,
+							Enter = Key.E,
+
+							InputControl = this,
+							Vehicle = twin,
+							Water = KnownWater
+						}
+					);
+
+					k2.Drop +=
+						delegate
+						{
+							var rock2 = new Rock(Zoom);
+
+							rock2.AttachContainerTo(this);
+							rock2.MoveTo(twin.X, twin.Y);
+							rock2.VelocityX = twin.VelocityX;
+							rock2.VelocityY = twin.VelocityY;
+
+							KnownRocks.Add(rock2);
 						};
 
 
 
-						this.FocusVisualStyle = null;
-						this.Focusable = true;
-						this.Focus();
+					(1000 / 40).AtInterval(
+						delegate
+						{
+							k1.Tick();
+							k2.Tick();
 
-						this.MouseLeftButtonDown +=
-							(sender, args) =>
-							{
-								this.Focus();
-							};
+							ph.Apply();
 
-						var k1 = new KeyboardInput(
-							new KeyboardInput.Arguments
-							{
-								Left = Key.Left,
-								Right = Key.Right,
-								Up = Key.Up,
-								Down = Key.Down,
-								Drop = Key.Space,
-								Enter = Key.Enter,
-
-								InputControl = this,
-								Vehicle = xveh,
-								Water = KnownWater
-							}
-						);
-
-						k1.Drop +=
-							delegate
-							{
-								var rock2 = new Rock(Zoom);
-
-								rock2.AttachContainerTo(this);
-								rock2.MoveTo(xveh.X, xveh.Y);
-								rock2.VelocityX = xveh.VelocityX;
-								rock2.VelocityY = xveh.VelocityY;
-
-								KnownRocks.Add(rock2);
-							};
-
-
-						var k2 = new KeyboardInput(
-							new KeyboardInput.Arguments
-							{
-								Left = Key.A,
-								Right = Key.D,
-								Up = Key.W,
-								Down = Key.S,
-								Drop = Key.Q,
-								Enter = Key.E,
-
-								InputControl = this,
-								Vehicle = twin,
-								Water = KnownWater
-							}
-						);
-
-						k2.Drop +=
-							delegate
-							{
-								var rock2 = new Rock(Zoom);
-
-								rock2.AttachContainerTo(this);
-								rock2.MoveTo(twin.X, twin.Y);
-								rock2.VelocityX = twin.VelocityX;
-								rock2.VelocityY = twin.VelocityY;
-
-								KnownRocks.Add(rock2);
-							};
+						}
+					);
 
 
 
-						(1000 / 40).AtInterval(
-							delegate
-							{
-								k1.Tick();
-								k2.Tick();
-
-								ph.Apply();
-
-							}
-						);
-
-
-
-					}
 					#endregion
 
 
 
 					KnownWater.AttachContainerTo(this);
 
+					var ff = new Flashlight(Zoom, DefaultWidth, DefaultHeight - 9 * Zoom);
+
+					ff.AttachContainerTo(this);
+					ff.MoveTo(xveh.X, xveh.Y);
+					ff.Visible = false;
+
+					xveh.LocationChanged +=
+						delegate
+						{
+							if (ff.Visible)
+								ff.MoveTo(
+									xveh.X,
+									xveh.Y
+								);
+						};
+
+					this.KeyUp +=
+						(sender, args) =>
+						{
+							if (args.Key == Key.F)
+								ff.Visible = !ff.Visible;
+						};
 
 					new Image
 					{
