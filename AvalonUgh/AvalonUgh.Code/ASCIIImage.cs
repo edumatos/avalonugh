@@ -5,7 +5,7 @@ using System.Text;
 using ScriptCoreLib;
 using System.IO;
 
-namespace AvalonUgh.Labs.Shared.Extensions
+namespace AvalonUgh.Code
 {
 	[Script]
 	public class ASCIIImage : IEnumerable<ASCIIImage.Entry>

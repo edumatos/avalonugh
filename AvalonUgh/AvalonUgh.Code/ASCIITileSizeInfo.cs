@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 
-namespace AvalonUgh.Labs.Shared.Extensions
+namespace AvalonUgh.Code
 {
 	[Script]
 	public class ASCIITileSizeInfo

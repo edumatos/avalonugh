@@ -14,22 +14,7 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Vehicle : ISupportsContainer
 	{
-		// mass = density / volume
-		// length * width * height = volume
-		// http://ca.youtube.com/watch?v=VDSYXmvjg6M
-		// concrete density = 2.3g / cm^3
-		// wood density = 0.4g / cm^3
-		// water density = 1g / cm^3
-		// air density = 0.001g / cm^3
-
-		// http://www.engineeringtoolbox.com/density-specific-weight-gravity-d_290.html
-
-		// wood density
-		// http://www.engineeringtoolbox.com/wood-density-d_40.html
-		// http://www.engineeringtoolbox.com/accelaration-gravity-d_340.html
-		// http://www.phynet.de/mechanik/dynamik/hydrodynamik/die-auftriebskraft-in-flussigkeiten
-
-
+		public double Acceleration = 0.4;
 		public double Density = 0.4;
 
 		public Canvas Container { get; set; }
@@ -47,6 +32,14 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public int HalfWidth
+		{
+			get
+			{
+				return Width / 2;
+			}
+		}
+
 		public bool IsAnimated { get; set; }
 
 		public double VelocityX { get; set; }
@@ -55,10 +48,7 @@ namespace AvalonUgh.Code
 		public double X { get; set; }
 		public double Y { get; set; }
 
-		public void MoveTo()
-		{
-			MoveTo(X + VelocityX, Y + VelocityY);
-		}
+	
 
 		public void MoveTo(double x, double y)
 		{
