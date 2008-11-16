@@ -191,6 +191,10 @@ namespace AvalonUgh.Labs.Shared
 				platform0_4x2 = CreateTile_4x2.FixLastParam("platform0_4x2"),
 				platform1 = CreateTile.FixLastParam("platform1"),
 
+				flower0 = CreateSprite.FixLastParam("flower0"),
+				fish0 = CreateSprite.FixLastParam("fish0"),
+				fish1 = CreateSprite.FixLastParam("fish1"),
+
 				ridge0 = CreateTile.FixLastParam("ridge0"),
 				ridge0_2x2 = CreateTile_2x2.FixLastParam("ridge0_2x2"),
 
@@ -443,6 +447,34 @@ namespace AvalonUgh.Labs.Shared
 
 					Create.weed0_2x2(0, 14);
 
+					Create.flower0(0, 6);
+
+					var fish_x = -PrimitiveTile.Width;
+
+					new[]
+					{
+						Create.fish0(2, 12),
+						Create.fish1(2, 12)
+					}.AsCyclicEnumerable().ForEach(
+						(fish, next) =>
+						{
+							fish_x += 1 * Zoom;
+							if (fish_x > DefaultWidth)
+								fish_x = -PrimitiveTile.Width;
+
+							fish.MoveTo(fish_x, PrimitiveTile.Heigth * 12 * Zoom);
+
+							fish.Show();
+
+							(1000 / 15).AtDelay(
+								delegate
+								{
+									fish.Hide();
+									next();
+								}
+							);
+						}
+					);
 
 					#region sprites
 
@@ -636,9 +668,9 @@ namespace AvalonUgh.Labs.Shared
 								{
 									Animation = Actor.AnimationEnum.Panic
 								};
-								
+
 								actor5.MoveTo(xveh.X, xveh.Y);
-								
+
 								actor5.AttachContainerTo(this);
 
 								KnownActors.Add(actor5);
