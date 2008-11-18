@@ -490,11 +490,7 @@ namespace AvalonUgh.Labs.Shared
 					actor2.MoveToTile(12.5, 1);
 
 
-					//new Sign(Zoom) { Value = 3 }.AttachContainerTo(this).MoveToTile(9, 12);
-					//new Sign(Zoom) { Value = 2 }.AttachContainerTo(this).MoveToTile(3, 6);
-					//new Sign(Zoom) { Value = 1 }.AttachContainerTo(this).MoveToTile(14, 2);
-
-
+				
 
 
 					var KnownRocks = new List<Rock>();
