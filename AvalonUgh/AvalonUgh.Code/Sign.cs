@@ -12,7 +12,7 @@ using System.Windows;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Sign : ISupportsContainer
+	public class Sign : ISupportsContainer, ISupportsMoveTo
 	{
 		public Canvas Container { get; set; }
 
@@ -41,10 +41,6 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public void MoveBaseTo(double x, double y)
-		{
-			MoveTo(x, y - HalfHeight);
-		}
 
 		public void MoveTo(double x, double y)
 		{

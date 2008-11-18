@@ -3,8 +3,7 @@
 # code: xxx000
 # background: 002
 # 
-# water can be between 0 and 200
-# water: 100
+# water: 26
 ####################
 S444S2       S2S2SSS
 222244       2233C2S
@@ -24,6 +23,7 @@ SSSS44SSS2S  4444S2S
 SSSS44S233S  C24433S
 SSSS442233S  224433S
 # sign: 152;3
+# rock: 96
 SSSSPPP2BBBP2PPPSS2S
 SSSR2R22SSS22R2R222S
 SSS22RRRSSSRR2222RSS

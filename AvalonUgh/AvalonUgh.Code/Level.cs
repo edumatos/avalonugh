@@ -66,6 +66,7 @@ namespace AvalonUgh.Code
 
 		public readonly List<Tree> KnownTrees = new List<Tree>();
 		public readonly List<Sign> KnownSigns = new List<Sign>();
+		public readonly List<Rock> KnownRocks = new List<Rock>();
 
 		public void CreateTree(string value)
 		{
@@ -76,6 +77,17 @@ namespace AvalonUgh.Code
 			{
 
 			}.AddTo(KnownTrees).MoveBaseTo(x, y);
+		}
+
+		public void CreateRock(string value)
+		{
+			var x = int.Parse(value) * Zoom;
+			var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+			new Rock(Zoom)
+			{
+
+			}.AddTo(KnownRocks).MoveBaseTo(x, y);
 		}
 
 		public void CreateSign(string value)
@@ -104,6 +116,7 @@ namespace AvalonUgh.Code
 				{"wind", e => Wind = e},
 				{"tree", CreateTree},
 				{"sign", CreateSign},
+				{"rock", CreateRock},
 			};
 
 			this.Map = new ASCIIImage(
