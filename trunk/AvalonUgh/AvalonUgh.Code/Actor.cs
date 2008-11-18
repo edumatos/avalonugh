@@ -10,8 +10,10 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public abstract partial class Actor : ISupportsContainer, ISupportsPhysics
+	public abstract partial class Actor : ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged
 	{
+		public Level Level { get; set; }
+
 		public double Density { get; set; }
 		public int Stability { get; set; }
 
@@ -28,6 +30,16 @@ namespace AvalonUgh.Code
 		public Image[] PanicFrames;
 		public int PanicInterval = 100;
 
+		public void StabilityReached()
+		{
+			if (Level == null)
+				return;
+
+			if (this.ToObstacle().Bottom < this.Level.WaterTop)
+			{
+				this.Animation = AnimationEnum.Idle;
+			}
+		}
 
 		public Actor(int Zoom)
 		{
@@ -149,6 +161,7 @@ namespace AvalonUgh.Code
 		public double Y { get; set; }
 
 
+		public event Action LocationChanged;
 
 		public void MoveTo(double x, double y)
 		{
@@ -156,6 +169,10 @@ namespace AvalonUgh.Code
 			this.Y = y;
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
+
+
+			if (LocationChanged != null)
+				LocationChanged();
 		}
 
 
@@ -177,5 +194,7 @@ namespace AvalonUgh.Code
 				//SupportsVelocity = this
 			};
 		}
+
+		public bool RespectPlatforms { get; set; }
 	}
 }

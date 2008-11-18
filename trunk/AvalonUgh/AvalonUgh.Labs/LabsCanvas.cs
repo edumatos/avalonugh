@@ -446,6 +446,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 					Create.weed0_2x2(0, 14);
+					Create.weed0_2x2(2, 14);
 
 					Create.flower0(0, 6);
 
@@ -489,15 +490,14 @@ namespace AvalonUgh.Labs.Shared
 					actor2.MoveToTile(12.5, 1);
 
 
-					new Sign(Zoom) { Value = 3 }.AttachContainerTo(this).MoveToTile(9, 12);
-					new Sign(Zoom) { Value = 2 }.AttachContainerTo(this).MoveToTile(3, 6);
-					new Sign(Zoom) { Value = 1 }.AttachContainerTo(this).MoveToTile(14, 2);
+					//new Sign(Zoom) { Value = 3 }.AttachContainerTo(this).MoveToTile(9, 12);
+					//new Sign(Zoom) { Value = 2 }.AttachContainerTo(this).MoveToTile(3, 6);
+					//new Sign(Zoom) { Value = 1 }.AttachContainerTo(this).MoveToTile(14, 2);
 
 
 
 
 					var KnownRocks = new List<Rock>();
-					var KnownTrees = new List<Tree>();
 					var KnownBirds = new List<Bird>();
 					var KnownActors = new List<Actor>
 					{
@@ -517,10 +517,10 @@ namespace AvalonUgh.Labs.Shared
 						}
 					);
 
-					var tree1 = new Tree(Zoom).AttachContainerTo(this);
+					Level.KnownTrees.ToArray().AttachContainerTo(this);
+					Level.KnownSigns.ToArray().AttachContainerTo(this);
 
-					tree1.MoveToTile(4.5, 5);
-					KnownTrees.Add(tree1);
+				
 
 					#endregion
 
@@ -598,7 +598,7 @@ namespace AvalonUgh.Labs.Shared
 
 					var ph = new Physics
 					{
-						WaterTop = Level.WaterTop,
+						Level = Level,
 						Obstacles = Obstacles,
 						Vehicles = new[]
 							{
@@ -607,7 +607,6 @@ namespace AvalonUgh.Labs.Shared
 								twin
 							}.AsEnumerable(),
 						Rocks = KnownRocks,
-						Trees = KnownTrees,
 						Birds = KnownBirds,
 						Actors = KnownActors
 					};
@@ -653,21 +652,26 @@ namespace AvalonUgh.Labs.Shared
 							KnownRocks.Add(rock2);
 						};
 
+					var FlashlightTracker = new LocationTracker { Target = xveh };
+
 					k1.Enter +=
 						delegate
 						{
 							if (xveh.IsUnmanned)
 							{
 								xveh.IsUnmanned = false;
-
+								FlashlightTracker.Target = xveh;
 							}
 							else
 							{
 								xveh.IsUnmanned = true;
 								var actor5 = new Actor.man0(Zoom)
 								{
-									Animation = Actor.AnimationEnum.Panic
+									Animation = Actor.AnimationEnum.Panic,
+									RespectPlatforms = true,
+									Level = Level
 								};
+								FlashlightTracker.Target = actor5;
 
 								actor5.MoveTo(xveh.X, xveh.Y);
 
@@ -734,13 +738,13 @@ namespace AvalonUgh.Labs.Shared
 					ff.MoveTo(xveh.X, xveh.Y);
 					ff.Visible = false;
 
-					xveh.LocationChanged +=
+					FlashlightTracker.LocationChanged +=
 						delegate
 						{
 							if (ff.Visible)
 								ff.MoveTo(
-									xveh.X,
-									xveh.Y
+									FlashlightTracker.Target.X,
+									FlashlightTracker.Target.Y
 								);
 						};
 

@@ -11,12 +11,11 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Physics
 	{
-		public double WaterTop;
+		public Level Level;
 
 		public IEnumerable<Obstacle> Obstacles;
 		public IEnumerable<Vehicle> Vehicles;
 		public IEnumerable<Rock> Rocks;
-		public IEnumerable<Tree> Trees;
 		public IEnumerable<Bird> Birds;
 		public IEnumerable<Actor> Actors;
 
@@ -60,7 +59,7 @@ namespace AvalonUgh.Code
 				return;
 
 			// y relative to water
-			var y = twin.Y - WaterTop;
+			var y = twin.Y - this.Level.WaterTop;
 
 
 			// 0..1 how much volume is in air
@@ -125,7 +124,8 @@ namespace AvalonUgh.Code
 			var actor = twin as Actor;
 			if (actor != null)
 			{
-				Obstacles = new Obstacle[0].AsEnumerable();
+				if (!actor.RespectPlatforms)
+					Obstacles = new Obstacle[0].AsEnumerable();
 			}
 
 			var rock = twin as Rock;
@@ -136,10 +136,10 @@ namespace AvalonUgh.Code
 					if (!rock.IsSleeping)
 					{
 						Obstacles = Obstacles.Concat(
-							this.Trees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
+							this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
 						);
 
-						this.Trees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+						this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 							tree =>
 							{
 								// we did will hit a tree
@@ -208,6 +208,11 @@ namespace AvalonUgh.Code
 			if (twin.GetVelocity() < 0.5)
 			{
 				twin.Stability++;
+
+				if (twin.Stability > 3)
+				{
+					twin.StabilityReached();
+				}
 			}
 			else
 			{
@@ -216,8 +221,6 @@ namespace AvalonUgh.Code
 
 			newX = twin.X + twin.VelocityX;
 			newY = twin.Y + twin.VelocityY;
-
-
 
 			twin.MoveTo(newX, newY);
 
@@ -247,6 +250,7 @@ namespace AvalonUgh.Code
 	public interface ISupportsPhysics : ISupportsVelocity, ISupportsObstacle
 	{
 		int Stability { get; set; }
+		void StabilityReached();
 
 		bool PhysicsDisabled { get; }
 

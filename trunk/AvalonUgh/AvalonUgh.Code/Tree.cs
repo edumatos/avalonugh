@@ -41,6 +41,10 @@ namespace AvalonUgh.Code
 		public double Y { get; set; }
 
 
+		public void MoveBaseTo(double x, double y)
+		{
+			MoveTo(x, y - HalfHeight);
+		}
 
 		public void MoveTo(double x, double y)
 		{

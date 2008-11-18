@@ -12,9 +12,13 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Vehicle : ISupportsContainer, ISupportsVelocity, ISupportsPhysics
+	public class Vehicle : ISupportsContainer, ISupportsVelocity, ISupportsPhysics, ISupportsLocationChanged
 	{
 		public int Stability { get; set; }
+
+		public void StabilityReached()
+		{
+		}
 
 		public bool PhysicsDisabled { get; set; }
 
@@ -165,42 +169,6 @@ namespace AvalonUgh.Code
 					}.AttachTo(this.Container)
 			);
 
-			this.ColorStripeRed = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_red_2x2.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = this.Width,
-				Height = this.Height,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Container);
-
-			this.ColorStripeBlue = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_blue_2x2.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = this.Width,
-				Height = this.Height,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Container);
-
-			this.ColorStripeYellow = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_yellow_2x2.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = this.Width,
-				Height = this.Height,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Container);
-
-			this.ColorStripeGray = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_gray_2x2.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = this.Width,
-				Height = this.Height,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Container);
-
 			this.UnmannedImage = new Image
 			{
 				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle1_04_2x2.png").ToSource(),
@@ -209,6 +177,26 @@ namespace AvalonUgh.Code
 				Height = this.Height,
 				Visibility = Visibility.Hidden
 			}.AttachTo(this.Container);
+
+			Func<string, Image> CreateStripe =
+				color =>
+					new Image
+					{
+						Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_" + color + "_2x2.png").ToSource(),
+						Stretch = Stretch.Fill,
+						Width = this.Width,
+						Height = this.Height,
+						Visibility = Visibility.Hidden
+					}.AttachTo(this.Container);
+
+			this.ColorStripeRed = CreateStripe("red");
+			this.ColorStripeBlue  = CreateStripe("blue");
+			this.ColorStripeYellow = CreateStripe("yellow");
+			this.ColorStripeGray = CreateStripe("gray");
+			
+
+		
+
 
 
 			frames.AsCyclicEnumerable().ForEach(
