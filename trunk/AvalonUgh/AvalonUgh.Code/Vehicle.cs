@@ -14,6 +14,11 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Vehicle : ISupportsContainer, ISupportsVelocity, ISupportsPhysics, ISupportsLocationChanged
 	{
+		// a vehicle can carry a rock
+		// and throw it at trees and animals
+		public Rock CurrentWeapon { get; set; }
+
+
 		public int Stability { get; set; }
 
 		public void StabilityReached()

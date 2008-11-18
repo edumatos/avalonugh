@@ -12,7 +12,7 @@ using System.Windows.Media;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Tree : ISupportsContainer, ISupportsObstacle
+	public class Tree : ISupportsContainer, ISupportsObstacle, ISupportsMoveTo
 	{
 		public Canvas Container { get; set; }
 
@@ -40,11 +40,6 @@ namespace AvalonUgh.Code
 		public double X { get; set; }
 		public double Y { get; set; }
 
-
-		public void MoveBaseTo(double x, double y)
-		{
-			MoveTo(x, y - HalfHeight);
-		}
 
 		public void MoveTo(double x, double y)
 		{

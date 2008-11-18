@@ -15,7 +15,6 @@ namespace AvalonUgh.Code
 
 		public IEnumerable<Obstacle> Obstacles;
 		public IEnumerable<Vehicle> Vehicles;
-		public IEnumerable<Rock> Rocks;
 		public IEnumerable<Bird> Birds;
 		public IEnumerable<Actor> Actors;
 
@@ -49,7 +48,7 @@ namespace AvalonUgh.Code
 		public void Apply()
 		{
 			this.Vehicles.ForEach(Apply);
-			this.Rocks.ForEach(Apply);
+			this.Level.KnownRocks.ForEach(Apply);
 			this.Actors.ForEach(Apply);
 		}
 
@@ -99,17 +98,24 @@ namespace AvalonUgh.Code
 
 			var Obstacles = this.Obstacles;
 
-			if (twin is Vehicle)
+			var veh = twin as Vehicle;
+			if (veh != null)
 			{
 				Obstacles = Obstacles.Concat(this.Vehicles.Where(k => k != twin).Select(k => k.ToObstacle()));
 
-				this.Rocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-					rock_ =>
-					{
-						rock_.PhysicsDisabled = true;
-						rock_.Container.Hide();
-					}
-				);
+				if (veh.CurrentWeapon == null)
+				{
+					// we can pickup a rock for our weapon now
+
+					this.Level.KnownRocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+						rock_ =>
+						{
+							rock_.PhysicsDisabled = true;
+							veh.CurrentWeapon = rock_;
+							rock_.Container.Hide();
+						}
+					);
+				}
 
 				this.Actors.Where(k => k.Animation != Actor.AnimationEnum.Panic).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 					actor_ =>
@@ -253,25 +259,37 @@ namespace AvalonUgh.Code
 	}
 
 	[Script]
-	public interface ISupportsPhysics : ISupportsVelocity, ISupportsObstacle
+	public interface ISupportsMoveTo
+	{
+
+
+		int HalfHeight { get; }
+		int HalfWidth { get; }
+
+		void MoveTo(double x, double y);
+	}
+
+	[Script]
+	public interface ISupportsPhysics : ISupportsVelocity, ISupportsObstacle, ISupportsMoveTo
 	{
 		int Stability { get; set; }
 		void StabilityReached();
 
 		bool PhysicsDisabled { get; }
 
-		int HalfHeight { get; }
-		int HalfWidth { get; }
+		
 		double Density { get; set; }
-
-
-
-		void MoveTo(double x, double y);
 	}
 
 	[Script]
 	public static class SupportPhysicsExtensions
 	{
+	
+
+		public static void MoveBaseTo(this ISupportsMoveTo e, double x, double y)
+		{
+			e.MoveTo(x, y - e.HalfHeight);
+		}
 		public static double GetVelocity(this ISupportsVelocity e)
 		{
 			return Math.Sqrt(e.VelocityX * e.VelocityX + e.VelocityY * e.VelocityY);

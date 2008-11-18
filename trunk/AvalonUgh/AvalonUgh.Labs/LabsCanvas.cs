@@ -515,6 +515,7 @@ namespace AvalonUgh.Labs.Shared
 
 					Level.KnownTrees.ToArray().AttachContainerTo(this);
 					Level.KnownSigns.ToArray().AttachContainerTo(this);
+					Level.KnownRocks.ToArray().AttachContainerTo(this);
 
 				
 
@@ -565,12 +566,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					var rock1 = new Rock(Zoom);
-
-					rock1.AttachContainerTo(this);
-					rock1.MoveTo(DefaultWidth / 2, DefaultHeight / 3);
-
-					KnownRocks.Add(rock1);
+					
 
 					#region vehicle
 
@@ -602,7 +598,6 @@ namespace AvalonUgh.Labs.Shared
 								twin2,
 								twin
 							}.AsEnumerable(),
-						Rocks = KnownRocks,
 						Birds = KnownBirds,
 						Actors = KnownActors
 					};
@@ -638,14 +633,22 @@ namespace AvalonUgh.Labs.Shared
 					k1.Drop +=
 						delegate
 						{
-							var rock2 = new Rock(Zoom);
+							var rock = xveh.CurrentWeapon;
 
-							rock2.AttachContainerTo(this);
-							rock2.MoveTo(xveh.X, xveh.Y);
-							rock2.VelocityX = xveh.VelocityX;
-							rock2.VelocityY = xveh.VelocityY;
+							if (rock == null)
+								return;
 
-							KnownRocks.Add(rock2);
+							rock.MoveTo(xveh.X, xveh.Y);
+							rock.VelocityX = xveh.VelocityX;
+							rock.VelocityY = xveh.VelocityY;
+
+							rock.Container.Show();
+							rock.PhysicsDisabled = false;
+							rock.Stability = 0;
+
+							xveh.CurrentWeapon = null;
+
+					
 						};
 
 					var FlashlightTracker = new LocationTracker { Target = xveh };
