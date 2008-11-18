@@ -74,6 +74,8 @@ namespace AvalonUgh.Code
 			{
 				_Animation = value;
 
+				Console.WriteLine(new { ActorAnimation = value }.ToString());
+
 				if (value != AnimationEnum.Idle)
 					this.IdleFrames.ForEach(k => k.Hide());
 

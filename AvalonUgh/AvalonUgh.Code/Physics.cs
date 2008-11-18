@@ -114,6 +114,11 @@ namespace AvalonUgh.Code
 				this.Actors.Where(k => k.Animation != Actor.AnimationEnum.Panic).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 					actor_ =>
 					{
+						// we did hit an actor that repsects platforms
+						// as such he cannot fall thro it to water
+						if (actor_.RespectPlatforms)
+							return;
+
 						// we did will hit a tree
 						actor_.Animation = Actor.AnimationEnum.Panic;
 					}
@@ -209,7 +214,8 @@ namespace AvalonUgh.Code
 			{
 				twin.Stability++;
 
-				if (twin.Stability > 3)
+				// how stable must the object be?
+				if (twin.Stability == 10)
 				{
 					twin.StabilityReached();
 				}
