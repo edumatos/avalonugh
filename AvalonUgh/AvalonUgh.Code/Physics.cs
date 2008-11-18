@@ -210,12 +210,12 @@ namespace AvalonUgh.Code
 				}
 			}
 
-			if (twin.GetVelocity() < 0.5)
+			if (twin.GetVelocity() < 0.1)
 			{
 				twin.Stability++;
 
 				// how stable must the object be?
-				if (twin.Stability == 10)
+				if (twin.Stability == 3)
 				{
 					twin.StabilityReached();
 				}
