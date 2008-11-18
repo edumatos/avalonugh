@@ -5,6 +5,7 @@ using System.Text;
 using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
@@ -27,53 +28,90 @@ namespace AvalonUgh.Code
 		public const int BackgroundImageWidth = 320;
 		public const int BackgroundImageHeight = 200;
 
-		public bool ParseProperty(string e)
-		{
-			const string Comment = "#";
-			const string Assignment = ":";
+		const string Comment = "#";
+		const string Assignment = ":";
 
+		int TileRowsProcessed;
+
+		public bool DoCommand(string e)
+		{
 			if (!e.StartsWith(Comment))
+			{
+				TileRowsProcessed++;
 				return false;
+			}
 
 			var i = e.IndexOf(Assignment);
 
 			if (i > 0)
 			{
 				var Key = e.Substring(Comment.Length, i - Comment.Length).Trim().ToLower();
-				if (SetProperty.ContainsKey(Key))
+				if (Commands.ContainsKey(Key))
 				{
 					var Value = e.Substring(i + Assignment.Length).Trim();
 
-					SetProperty[Key](Value);
+					Commands[Key](Value);
 				}
 			}
 
 			return true;
+
 		}
 
-		readonly Dictionary<string, Action<string>> SetProperty;
+
+
+		readonly Dictionary<string, Action<string>> Commands;
 
 		public readonly int Zoom;
+
+		public readonly List<Tree> KnownTrees = new List<Tree>();
+		public readonly List<Sign> KnownSigns = new List<Sign>();
+
+		public void CreateTree(string value)
+		{
+			var x = int.Parse(value) * Zoom;
+			var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+			new Tree(Zoom)
+			{
+
+			}.AddTo(KnownTrees).MoveBaseTo(x, y);
+		}
+
+		public void CreateSign(string value)
+		{
+			var args = value.Split(';');
+
+			var x = int.Parse(args[0]) * Zoom;
+			var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+			new Sign(Zoom)
+			{
+				Value = int.Parse(args[1])
+			}.AddTo(KnownSigns).MoveBaseTo(x, y);
+		}
 
 		public Level(string source, int Zoom)
 		{
 			this.Zoom = Zoom;
 
-			SetProperty = new Dictionary<string, Action<string>>
+			Commands = new Dictionary<string, Action<string>>
 			{
 				{"text", e => Text = e},
 				{"code", e => Code = e},
 				{"background", e => Background = e},
 				{"water", e => Water = e},
-				{"wind", e => Wind = e}
+				{"wind", e => Wind = e},
+				{"tree", CreateTree},
+				{"sign", CreateSign},
 			};
 
 			this.Map = new ASCIIImage(
 				new ASCIIImage.ConstructorArguments
 				{
 					value = source,
-					IsComment = ParseProperty
-		
+					IsComment = DoCommand
+
 				}
 			);
 

@@ -90,8 +90,14 @@ namespace AvalonUgh.Code
 		public void Tick()
 		{
 			var xveh = a.Vehicle;
+
+
+			if (xveh.IsUnmanned)
+				return;
+
 			Func<Key, bool> IsKeyDown =
-			k => KeyState[k];
+				k => KeyState[k];
+
 			if (KeyState.Any(k => k.Value))
 			{
 				xveh.IsAnimated = true;

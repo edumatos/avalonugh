@@ -16,6 +16,18 @@ namespace AvalonUgh.Code
 	{
 		public int Stability { get; set; }
 
+		public void StabilityReached()
+		{
+			if (this.IsSleeping)
+				5000.AtDelay(
+					delegate
+					{
+						this.IsSleeping = false;
+						this.UpdateFrame();
+					}
+				);
+		}
+
 		public bool ReadyForPickup
 		{
 			get
@@ -158,13 +170,7 @@ namespace AvalonUgh.Code
 			this.UpdateFrame();
 
 
-			5000.AtDelay(
-				delegate
-				{
-					this.IsSleeping = false;
-					this.UpdateFrame();
-				}
-			);
+
 		}
 	}
 }

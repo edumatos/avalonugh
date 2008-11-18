@@ -24,15 +24,39 @@ namespace AvalonUgh.Code
 		readonly Rectangle BlindRight;
 		readonly Rectangle BlindBottom;
 
-		readonly Image flashlight;
+		readonly Image flashlight_x96;
+		readonly Image flashlight_x128;
 
-		const int Size = 96;
+		int _Size = 128;
+
+		public int Size
+		{
+			get
+			{
+				return _Size;
+			}
+
+			set
+			{
+				_Size = value;
+			}
+		}
+
+		public double X { get; set; }
+		public double Y { get; set; }
 
 		public void MoveTo(double x, double y)
 		{
+			this.X = x;
+			this.Y = y;
+
 			var h = Size * Zoom / 2;
 
-			flashlight.MoveTo(x - h, y - h);
+			if (Size == 96)
+				flashlight_x96.MoveTo(x - h, y - h);
+
+			if (Size == 128)
+				flashlight_x128.MoveTo(x - h, y - h);
 
 			BlindTop.MoveTo(0, y - h - Height);
 			BlindBottom.MoveTo(0, y + h);
@@ -73,12 +97,21 @@ namespace AvalonUgh.Code
 
 			this.Container.ClipToBounds = true;
 
-			this.flashlight = new Image
+			this.flashlight_x96 = new Image
 			{
 				Source = (Assets.Shared.KnownAssets.Path.Assets + "/flashlight_x96.png").ToSource(),
 				Stretch = Stretch.Fill,
-				Width = Size * Zoom,
-				Height = Size * Zoom,
+				Width = 96 * Zoom,
+				Height = 96 * Zoom,
+				Visibility = System.Windows.Visibility.Hidden
+			}.AttachTo(this.Container);
+
+			this.flashlight_x128 = new Image
+			{
+				Source = (Assets.Shared.KnownAssets.Path.Assets + "/flashlight_x128.png").ToSource(),
+				Stretch = Stretch.Fill,
+				Width = 128 * Zoom,
+				Height = 128 * Zoom,
 			}.AttachTo(this.Container);
 
 
