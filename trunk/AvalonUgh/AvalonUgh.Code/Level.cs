@@ -49,7 +49,7 @@ namespace AvalonUgh.Code
 
 		int TileRowsProcessed;
 
-		public bool DoCommand(string e)
+		public bool DoCommand(AttributeDictonary Commands, string e)
 		{
 			if (!e.StartsWith(Comment))
 			{
@@ -76,7 +76,6 @@ namespace AvalonUgh.Code
 
 
 
-		readonly Dictionary<string, Action<string>> Commands;
 
 		public readonly int Zoom;
 
@@ -84,40 +83,9 @@ namespace AvalonUgh.Code
 		public readonly List<Sign> KnownSigns = new List<Sign>();
 		public readonly List<Rock> KnownRocks = new List<Rock>();
 
-		public void CreateTree(string value)
-		{
-			var x = int.Parse(value) * Zoom;
-			var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
 
-			new Tree(Zoom)
-			{
 
-			}.AddTo(KnownTrees).MoveBaseTo(x, y);
-		}
-
-		public void CreateRock(string value)
-		{
-			var x = int.Parse(value) * Zoom;
-			var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
-
-			new Rock(Zoom)
-			{
-
-			}.AddTo(KnownRocks).MoveBaseTo(x, y);
-		}
-
-		public void CreateSign(string value)
-		{
-			var args = value.Split(';');
-
-			var x = int.Parse(args[0]) * Zoom;
-			var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
-
-			new Sign(Zoom)
-			{
-				Value = int.Parse(args[1])
-			}.AddTo(KnownSigns).MoveBaseTo(x, y);
-		}
+		
 
 		public int ActualWidth
 		{
@@ -139,17 +107,56 @@ namespace AvalonUgh.Code
 		{
 			this.Zoom = Zoom;
 
-
-
-			Commands = new Dictionary<string, Action<string>>
+			var Create = new
 			{
-				{"tree", CreateTree},
-				{"sign", CreateSign},
-				{"rock", CreateRock},
+				Tree = (Attribute.Int32)"tree",
+				Rock = (Attribute.Int32)"rock",
+				Sign = (Attribute.Int32_Int32)"sign"
 			};
 
-			new KeyValuePair<string, Action<string>>[]
+			Create.Tree.Assigned +=
+				x_ =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+					new Tree(Zoom)
+					{
+
+					}.AddTo(KnownTrees).MoveBaseTo(x, y);
+				};
+
+			Create.Rock.Assigned +=
+				x_ =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+					new Rock(Zoom)
+					{
+
+					}.AddTo(KnownRocks).MoveBaseTo(x, y);
+				};
+
+			Create.Sign.Assigned +=
+				(x_, SignValue) =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+					new Sign(Zoom)
+					{
+						Value = SignValue
+					}.AddTo(KnownSigns).MoveBaseTo(x, y);
+				};
+
+		
+			var Commands = new AttributeDictonary
 			{
+				Create.Rock,
+				Create.Sign,
+				Create.Tree,
+
 				AttributeWind,
 				AttributeWater,
 				AttributeBackgroundWidth,
@@ -157,14 +164,14 @@ namespace AvalonUgh.Code
 				AttributeCode,
 				AttributeText,
 				AttributeBackground
-			}.ForEach(Commands.Add);
+			};
 
 
 			this.Map = new ASCIIImage(
 				new ASCIIImage.ConstructorArguments
 				{
 					value = source,
-					IsComment = DoCommand
+					IsComment = k => DoCommand(Commands, k)
 
 				}
 			);

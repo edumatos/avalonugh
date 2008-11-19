@@ -12,6 +12,16 @@ namespace AvalonUgh.Code
 {
 	partial class Level
 	{
+		[Script]
+		public sealed class AttributeDictonary : Dictionary<string, Action<string>>
+		{
+			public void Add(Attribute e)
+			{
+				KeyValuePair<string, Action<string>> i = e;
+
+				this.Add(i);
+			}
+		}
 
 		[Script]
 		public abstract class Attribute
@@ -42,6 +52,9 @@ namespace AvalonUgh.Code
 			{
 				public int Value;
 
+				public event Action<int> Assigned;
+
+
 				public static implicit operator Attribute.Int32(string Key)
 				{
 					return new Attribute.Int32 { Key = Key }.Apply(
@@ -50,6 +63,39 @@ namespace AvalonUgh.Code
 								v =>
 								{
 									k.Value = int.Parse(v);
+
+									if (k.Assigned != null)
+										k.Assigned(k.Value);
+								}
+					);
+				}
+			}
+
+			[Script]
+			public sealed class Int32_Int32 : Attribute
+			{
+				public int Value0;
+				public int Value1;
+
+				public event Action<int, int> Assigned;
+
+				public static implicit operator Attribute.Int32_Int32(string Key)
+				{
+					return new Attribute.Int32_Int32 { Key = Key }.Apply(
+						k =>
+							k.Assign =
+								v =>
+								{
+									var p = v.Split(';');
+
+									if (p.Length > 0)
+										k.Value0 = int.Parse(p[0]);
+
+									if (p.Length > 1)
+										k.Value1 = int.Parse(p[1]);
+
+									if (k.Assigned != null)
+										k.Assigned(k.Value0, k.Value1);
 								}
 					);
 				}
@@ -57,7 +103,6 @@ namespace AvalonUgh.Code
 
 
 			protected string Key;
-
 
 			protected Action<string> Assign;
 
