@@ -56,6 +56,7 @@ namespace AvalonUgh.Labs.Shared
 					Console.WriteLine(LevelText);
 
 					var Level = new Level(LevelText, Zoom);
+
 					var View = new View(DefaultWidth, DefaultHeight, Level);
 
 					Console.WriteLine(new { Text = Level.AttributeText.Value, Code = Level.AttributeCode.Value, Background = Level.AttributeBackground.Value, Water = Level.AttributeWater, Level.Map.Width, Level.Map.Height }.ToString());
@@ -230,38 +231,17 @@ namespace AvalonUgh.Labs.Shared
 
 					var BorderSize = Zoom * 10;
 
+					var ZoomedBorder = Level.ZoomedBorder;
+
 					var Obstacles = new List<Obstacle>
 					{
-						#region Borders
-						new Obstacle
-						{
-							Left = 0,
-							Top = -BorderSize,
-							Right = DefaultWidth,
-							Bottom = -12 * Zoom
-						},
-						new Obstacle
-						{
-							Left = -BorderSize,
-							Top = 0,
-							Right = -16 * Zoom,
-							Bottom = DefaultHeight
-						},
-						new Obstacle
-						{
-							Left = DefaultWidth + 16 * Zoom,
-							Top = 0,
-							Right = DefaultWidth + 16 * Zoom + BorderSize,
-							Bottom = DefaultHeight
-						},
-						new Obstacle
-						{
-							Left = 0,
-							Top = DefaultHeight ,
-							Right = DefaultWidth,
-							Bottom = DefaultHeight + BorderSize
-						},
-#endregion
+						Level.BorderObstacleTop,
+						Level.BorderObstacleRight,
+						Level.BorderObstacleLeft,
+						Level.BorderObstacleBottom,
+
+					
+					
 
 					};
 

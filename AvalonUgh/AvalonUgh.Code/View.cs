@@ -143,7 +143,7 @@ namespace AvalonUgh.Code
 
 			// center bottom
 			this.MoveContentTo(
-				(width - ContentActualWidth) / 2, 
+				(width - ContentActualWidth) / 2,
 				(height - ContentActualHeight) / 2
 			);
 
@@ -153,13 +153,43 @@ namespace AvalonUgh.Code
 				ContentExtendedHeight
 			).AttachContainerTo(this.FlashlightContainer);
 
+			this.Flashlight.Visible = false;
+			this.Flashlight.VisibleChanged +=
+				delegate
+				{
+					// - no performance boost at all at this time
+
+					//if (!this.Flashlight.Visible)
+					//{
+					//    this.Content.ClipTo(
+					//        MaxShakeSize - (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2,
+					//        MaxShakeSize - (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2,
+					//        ContentExtendedWidth,
+					//        ContentExtendedHeight
+					//    );
+					//}
+				};
 			this.LocationTracker.LocationChanged +=
 				delegate
 				{
-					this.Flashlight.MoveTo(
-						this.LocationTracker.X + (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2,
-						this.LocationTracker.Y + (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2
-					);
+					if (this.Flashlight.Visible)
+					{
+						var x = this.LocationTracker.X + (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
+						var y = this.LocationTracker.Y + (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2;
+
+						// - no performance boost at all at this time
+						//this.Content.ClipTo(
+						//    Convert.ToInt32(this.LocationTracker.X - this.Flashlight.Size * this.Level.Zoom / 2),
+						//    Convert.ToInt32(this.LocationTracker.Y - this.Flashlight.Size * this.Level.Zoom / 2),
+						//    this.Flashlight.Size * this.Level.Zoom,
+						//    this.Flashlight.Size * this.Level.Zoom
+						//);
+
+						this.Flashlight.MoveTo(
+							x,
+							y
+						);
+					}
 				};
 
 			// if the level is less in height than the view then dock to bottom
