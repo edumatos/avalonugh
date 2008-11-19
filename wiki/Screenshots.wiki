@@ -15,3 +15,5 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/010.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/011.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/012.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/013.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/014.png]
