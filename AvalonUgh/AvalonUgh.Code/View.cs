@@ -7,6 +7,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
+using ScriptCoreLib.Shared.Avalon.Tween;
 
 namespace AvalonUgh.Code
 {
@@ -153,6 +154,7 @@ namespace AvalonUgh.Code
 				ContentExtendedHeight
 			).AttachContainerTo(this.FlashlightContainer);
 
+			this.Flashlight.Container.Opacity = 0.5;
 			this.Flashlight.Visible = false;
 			this.Flashlight.VisibleChanged +=
 				delegate
@@ -169,9 +171,12 @@ namespace AvalonUgh.Code
 					//    );
 					//}
 				};
+
+			this.LocationTracker.LocationChanged += new Action(Autoscroll);
 			this.LocationTracker.LocationChanged +=
 				delegate
 				{
+
 					if (this.Flashlight.Visible)
 					{
 						var x = this.LocationTracker.X + (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
@@ -194,6 +199,62 @@ namespace AvalonUgh.Code
 
 			// if the level is less in height than the view then dock to bottom
 			// to support the statusbar over there which might or might not be there
+
+		}
+
+		Action<int, int> AutoscrollTween;
+
+		void Autoscroll()
+		{
+			if (this.LocationTracker.Target == null)
+				return;
+
+
+			var w = this.ContentActualWidth;
+			var h = this.ContentActualHeight;
+
+
+			if (w < this.ContainerWidth)
+				if (h < this.ContainerHeight)
+					return;
+
+			var x = Convert.ToInt32(this.LocationTracker.X);
+			var y = Convert.ToInt32(this.LocationTracker.Y);
+
+			const int TweenPercision = 2;
+
+			if (AutoscrollTween == null)
+				AutoscrollTween = NumericOmitter.Of(NumericEmitter.Of(
+					(ax_, ay_) =>
+					{
+						var a = new
+						{
+							x = ax_ / (double)TweenPercision,
+							y = ay_ / (double)TweenPercision
+						};
+
+						//Console.WriteLine(
+						//    a.ToString()
+						//);
+
+						// margin from the edge
+						var mx = this.ContainerWidth / 4;
+						var my = this.ContainerHeight / 4;
+
+
+						var px = ((a.x - mx) / (w - mx * 2)).Max(0).Min(1);
+						var py = ((a.y - my) / (h - my * 2)).Max(0).Min(1);
+
+						var dx = this.ContainerWidth - w;
+						var dy = this.ContainerHeight - h;
+
+						MoveContentTo(px * dx, py * dy);
+					}
+				));
+
+			AutoscrollTween(x * TweenPercision, y * TweenPercision);
+
+
 		}
 
 		public void MoveContentTo(double x, double y)

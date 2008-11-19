@@ -20,7 +20,7 @@ namespace AvalonUgh.Labs.Shared
 	{
 		public const int Zoom = 2;
 
-		public const int DefaultWidth = 320 * Zoom;
+		public const int DefaultWidth = 300 * Zoom;
 		public const int DefaultHeight = 200 * Zoom;
 
 
@@ -44,7 +44,7 @@ namespace AvalonUgh.Labs.Shared
 
 			
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level05.txt";
+			var CurrentLevel = KnownAssets.Path.Assets + "/level06.txt";
 
 			Console.WriteLine("loading: " + CurrentLevel);
 
@@ -57,7 +57,8 @@ namespace AvalonUgh.Labs.Shared
 
 					var Level = new Level(LevelText, Zoom);
 
-					var View = new View(DefaultWidth, DefaultHeight, Level);
+					// subtract statusbar
+					var View = new View(DefaultWidth, DefaultHeight - 9 * Zoom, Level);
 
 					Console.WriteLine(new { Text = Level.AttributeText.Value, Code = Level.AttributeCode.Value, Background = Level.AttributeBackground.Value, Water = Level.AttributeWater, Level.Map.Width, Level.Map.Height }.ToString());
 
@@ -229,21 +230,9 @@ namespace AvalonUgh.Labs.Shared
 					if (Level.BackgroundImage != null)
 						Level.BackgroundImage.AttachTo(this);
 
-					var BorderSize = Zoom * 10;
 
-					var ZoomedBorder = Level.ZoomedBorder;
 
-					var Obstacles = new List<Obstacle>
-					{
-						Level.BorderObstacleTop,
-						Level.BorderObstacleRight,
-						Level.BorderObstacleLeft,
-						Level.BorderObstacleBottom,
-
-					
-					
-
-					};
+				
 
 
 
@@ -308,7 +297,7 @@ namespace AvalonUgh.Labs.Shared
 							// platform
 							if (k.Value == "P")
 							{
-								Obstacles.Add(
+								Level.KnownObstacles.Add(
 									new Obstacle
 									{
 										Tile = Tile,
@@ -390,7 +379,7 @@ namespace AvalonUgh.Labs.Shared
 							// bridge
 							if (k.Value == "B")
 							{
-								Obstacles.Add(
+								Level.KnownObstacles.Add(
 									new Obstacle
 									{
 										Tile = Tile,
@@ -449,9 +438,8 @@ namespace AvalonUgh.Labs.Shared
 					}.AsCyclicEnumerable().ForEach(
 						(fish, next) =>
 						{
-							fish_x += 1 * Zoom;
-							if (fish_x > DefaultWidth)
-								fish_x = -PrimitiveTile.Width;
+							fish_x = (fish_x + 1 * Zoom) %  View.ContentActualWidth;
+							
 
 							fish.MoveTo(fish_x, Level.WaterTop + Level.WaterHeight / 3 );
 
@@ -520,8 +508,9 @@ namespace AvalonUgh.Labs.Shared
 							delegate
 							{
 								bird1_x -= 4;
+
 								if (bird1_x < -(bird1.Width / 2))
-									bird1_x = DefaultWidth + bird1.Width / 2;
+									bird1_x = View.ContentActualWidth + bird1.Width / 2;
 
 								bird1.MoveTo(bird1_x, bird1_y);
 							}
@@ -541,7 +530,7 @@ namespace AvalonUgh.Labs.Shared
 							{
 								bird2_x -= 2;
 								if (bird2_x < -(bird2.Width / 2))
-									bird2_x = DefaultWidth + bird2.Width / 2;
+									bird2_x = View.ContentActualWidth + bird2.Width / 2;
 
 								bird2.MoveTo(bird2_x, bird2_y);
 							}
@@ -577,7 +566,6 @@ namespace AvalonUgh.Labs.Shared
 					var ph = new Physics
 					{
 						Level = Level,
-						Obstacles = Obstacles,
 						Vehicles = new[]
 							{
 								xveh,
@@ -662,7 +650,7 @@ namespace AvalonUgh.Labs.Shared
 
 								actor5.MoveTo(xveh.X, xveh.Y);
 
-								actor5.AttachContainerTo(this);
+								actor5.AttachContainerTo(View.Entities);
 
 								KnownActors.Add(actor5);
 							}
@@ -722,7 +710,7 @@ namespace AvalonUgh.Labs.Shared
 					{
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/statusbar.png").ToSource(),
 						Stretch = Stretch.Fill,
-						Width = DefaultWidth,
+						Width = 320 * Zoom,
 						Height = 9 * Zoom,
 					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * Zoom);
 
