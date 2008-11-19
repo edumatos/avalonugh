@@ -657,7 +657,9 @@ namespace AvalonUgh.Labs.Shared
 					
 						};
 
-					var FlashlightTracker = new LocationTracker { Target = xveh };
+					var FlashlightTracker = View.LocationTracker;
+					
+					FlashlightTracker.Target = xveh;
 
 					k1.Enter +=
 						delegate
@@ -725,28 +727,13 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					var ff = new Flashlight(Zoom, DefaultWidth, DefaultHeight - 9 * Zoom);
-
-					ff.Container.Opacity = 0.5;
-					ff.AttachContainerTo(this);
-					ff.MoveTo(xveh.X, xveh.Y);
-					ff.Visible = false;
-
-					FlashlightTracker.LocationChanged +=
-						delegate
-						{
-							if (ff.Visible)
-								ff.MoveTo(
-									FlashlightTracker.Target.X,
-									FlashlightTracker.Target.Y
-								);
-						};
+					
 
 					this.KeyUp +=
 						(sender, args) =>
 						{
 							if (args.Key == Key.F)
-								ff.Visible = !ff.Visible;
+								View.Flashlight.Visible = !View.Flashlight.Visible;
 						};
 
 					View.AttachContainerTo(this);
