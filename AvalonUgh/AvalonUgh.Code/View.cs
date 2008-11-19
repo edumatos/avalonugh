@@ -224,7 +224,7 @@ namespace AvalonUgh.Code
 			const int TweenPercision = 2;
 
 			if (AutoscrollTween == null)
-				AutoscrollTween = NumericOmitter.Of(NumericEmitter.Of(
+				AutoscrollTween = NumericEmitter.Of(
 					(ax_, ay_) =>
 					{
 						var a = new
@@ -250,7 +250,7 @@ namespace AvalonUgh.Code
 
 						MoveContentTo(px * dx, py * dy);
 					}
-				));
+				);
 
 			AutoscrollTween(x * TweenPercision, y * TweenPercision);
 

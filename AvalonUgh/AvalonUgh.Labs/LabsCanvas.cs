@@ -18,11 +18,12 @@ namespace AvalonUgh.Labs.Shared
 	[Script]
 	public class LabsCanvas : Canvas
 	{
-		public const int Zoom = 2;
+		public const int Zoom = 3;
 
-		public const int DefaultWidth = 320 * Zoom;
-		public const int DefaultHeight = 200 * Zoom;
+		public const int DefaultWidth = 640;
+		public const int DefaultHeight = 400;
 
+		public const int StatusbarZoom = 2;
 
 		public LabsCanvas()
 		{
@@ -58,7 +59,9 @@ namespace AvalonUgh.Labs.Shared
 					var Level = new Level(LevelText, Zoom);
 
 					// subtract statusbar
-					var View = new View(DefaultWidth, DefaultHeight - 9 * Zoom, Level);
+					var View = new View(DefaultWidth, DefaultHeight - 9 * StatusbarZoom, Level);
+
+					View.Flashlight.Visible = true;
 
 					Console.WriteLine(
 						new
@@ -720,9 +723,9 @@ namespace AvalonUgh.Labs.Shared
 					{
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/statusbar.png").ToSource(),
 						Stretch = Stretch.Fill,
-						Width = 320 * Zoom,
-						Height = 9 * Zoom,
-					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * Zoom);
+						Width = 320 * StatusbarZoom,
+						Height = 9 * StatusbarZoom,
+					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * StatusbarZoom);
 
 					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 				}
