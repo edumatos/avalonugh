@@ -2,6 +2,8 @@
 # text: Introducing Actors
 # code: xxx000
 # background: 002
+# background-width: 320
+# background-height: 200
 # 
 # water: 26
 ####################

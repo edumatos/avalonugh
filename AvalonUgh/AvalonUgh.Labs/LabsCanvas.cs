@@ -205,7 +205,7 @@ namespace AvalonUgh.Labs.Shared
 
 			};
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level04.txt";
+			var CurrentLevel = KnownAssets.Path.Assets + "/level05.txt";
 
 			Console.WriteLine("loading: " + CurrentLevel);
 
@@ -217,8 +217,9 @@ namespace AvalonUgh.Labs.Shared
 					Console.WriteLine(LevelText);
 
 					var Level = new Level(LevelText, Zoom);
+					var View = new View(DefaultWidth, DefaultHeight, Level);
 
-					Console.WriteLine(new { Level.Text, Level.Code, Level.Background, Level.Water, Level.Map.Width, Level.Map.Height }.ToString());
+					Console.WriteLine(new { Text = Level.AttributeText.Value, Code = Level.AttributeCode.Value, Background = Level.AttributeBackground.Value, Water = Level.AttributeWater, Level.Map.Width, Level.Map.Height }.ToString());
 
 
 					if (Level.BackgroundImage != null)
@@ -512,15 +513,6 @@ namespace AvalonUgh.Labs.Shared
 					
 
 
-					var KnownWater = new Water(
-						new Water.Info
-						{
-							DefaultWidth = DefaultWidth,
-							Level = Level,
-							WaterColorBottom = Colors.Green
-
-						}
-					);
 
 					Level.KnownTrees.ToArray().AttachContainerTo(this);
 					Level.KnownSigns.ToArray().AttachContainerTo(this);
@@ -635,7 +627,7 @@ namespace AvalonUgh.Labs.Shared
 
 							InputControl = this,
 							Vehicle = xveh,
-							Water = KnownWater
+							Water = Level.KnownWater
 						}
 					);
 
@@ -702,7 +694,7 @@ namespace AvalonUgh.Labs.Shared
 
 							InputControl = this,
 							Vehicle = twin,
-							Water = KnownWater
+							Water = Level.KnownWater
 						}
 					);
 
@@ -727,7 +719,6 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					KnownWater.AttachContainerTo(this);
 
 					var ff = new Flashlight(Zoom, DefaultWidth, DefaultHeight - 9 * Zoom);
 
@@ -751,6 +742,8 @@ namespace AvalonUgh.Labs.Shared
 							if (args.Key == Key.F)
 								ff.Visible = !ff.Visible;
 						};
+
+					View.AttachContainerTo(this);
 
 					new Image
 					{
