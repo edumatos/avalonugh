@@ -28,6 +28,8 @@ namespace AvalonUgh.Code
 		public const int BackgroundImageWidth = 320;
 		public const int BackgroundImageHeight = 200;
 
+		public readonly List<Cave> KnownCaves = new List<Cave>();
+
 		const string Comment = "#";
 		const string Assignment = ":";
 

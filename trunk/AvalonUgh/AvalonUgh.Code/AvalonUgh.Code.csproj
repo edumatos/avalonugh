@@ -77,6 +77,7 @@
     <Compile Include="Actor.man0.cs" />
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
+    <Compile Include="Cave.cs" />
     <Compile Include="Flashlight.cs" />
     <Compile Include="KeyboardInput.cs" />
     <Compile Include="Level.cs" />
