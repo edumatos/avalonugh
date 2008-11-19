@@ -32,7 +32,7 @@ namespace AvalonUgh.Code
 
 		public readonly ASCIIImage Map;
 
-		public Water KnownWater { get; set; }
+		//public Water KnownWater { get; set; }
 
 		public readonly int WaterTop;
 		public readonly int WaterHeight;
@@ -195,18 +195,6 @@ namespace AvalonUgh.Code
 			// water top should depend on tiles found instead
 			this.WaterHeight = this.AttributeWater.Value * Zoom;
 			this.WaterTop = this.ActualHeight - this.WaterHeight;
-
-
-			this.KnownWater = new Water(
-				new Water.Info
-				{
-					DefaultWidth = this.ActualWidth,
-					Level = this,
-
-					// maybe the map should be able to set this color?
-					WaterColorBottom = Colors.Green
-				}
-			);
 
 			// at this point we need to load the map tiles
 		}

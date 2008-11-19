@@ -632,7 +632,7 @@ namespace AvalonUgh.Labs.Shared
 
 							InputControl = this,
 							Vehicle = xveh,
-							Water = Level.KnownWater
+							View = View
 						}
 					);
 
@@ -701,7 +701,7 @@ namespace AvalonUgh.Labs.Shared
 
 							InputControl = this,
 							Vehicle = twin,
-							Water = Level.KnownWater
+							View = View
 						}
 					);
 

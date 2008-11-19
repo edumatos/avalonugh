@@ -26,7 +26,7 @@ namespace AvalonUgh.Code
 			public Key Drop;
 			public Key Enter;
 
-			public Water Water;
+			public View View;
 		}
 
 		Dictionary<Key, bool> KeyState;
@@ -114,7 +114,7 @@ namespace AvalonUgh.Code
 			}
 			else if (IsKeyDown(a.Down))
 			{
-				if (xveh.Y > a.Water.Args.Level.WaterTop)
+				if (xveh.Y > a.View.Level.WaterTop)
 					xveh.IsAnimated = false;
 				else
 					xveh.VelocityY += xveh.Acceleration;
