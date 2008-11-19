@@ -21,19 +21,32 @@ namespace AvalonUgh.Code
 
 		public Canvas Background { get; set; }
 
+		public Canvas Content { get; set; }
+
 		public Canvas Platforms { get; set; }
 
 		public Canvas Entities { get; set; }
 
 		public Canvas Water { get; set; }
-		
+
 		public Canvas Spotlight { get; set; }
 
-		
+
 		public Canvas TouchOverlay { get; set; }
 
 		public Level Level { get; set; }
-		
+
+		public int ContentActualWidth
+		{
+			get { return this.Level.ActualWidth; }
+		}
+
+		public int ContentActualHeight
+		{
+			get { return this.Level.ActualHeight; }
+		}
+
+
 		public View(int width, int height, Level level)
 		{
 			// for the fist configuration we do need to know all the 
@@ -49,18 +62,39 @@ namespace AvalonUgh.Code
 
 			this.Level = level;
 
+
+			this.Content = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Container);
+
+			this.Platforms = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
+
+			this.Entities = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
+
 			this.Water = new Canvas
 			{
-				Width = this.Level.ActualWidth,
-				Height = this.Level.ActualHeight
-			}.AttachTo(this.Container);
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
 
 			this.Level.KnownWater.AttachContainerTo(this.Water);
 
+			this.Content.MoveTo(0, height - ContentActualHeight);
+			
 			// if the level is less in height than the view then dock to bottom
 			// to support the statusbar over there which might or might not be there
 		}
 
-	
+
 	}
 }
