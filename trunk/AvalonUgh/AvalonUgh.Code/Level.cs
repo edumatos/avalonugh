@@ -87,6 +87,7 @@ namespace AvalonUgh.Code
 		public readonly List<Tree> KnownTrees = new List<Tree>();
 		public readonly List<Sign> KnownSigns = new List<Sign>();
 		public readonly List<Rock> KnownRocks = new List<Rock>();
+		public readonly List<Obstacle> KnownObstacles = new List<Obstacle>();
 
 
 
@@ -244,6 +245,13 @@ namespace AvalonUgh.Code
 				Right = this.ActualWidth + ZoomedBorder.Right,
 				Bottom = this.ActualHeight + ZoomedBorder.Bottom + BorderSize
 			};
+
+			this.KnownObstacles.AddRange(
+				this.BorderObstacleTop,
+				this.BorderObstacleRight,
+				this.BorderObstacleLeft,
+				this.BorderObstacleBottom
+			);
 		}
 
 

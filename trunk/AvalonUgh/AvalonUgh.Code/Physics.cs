@@ -13,7 +13,6 @@ namespace AvalonUgh.Code
 	{
 		public Level Level;
 
-		public IEnumerable<Obstacle> Obstacles;
 		public IEnumerable<Vehicle> Vehicles;
 		public IEnumerable<Bird> Birds;
 		public IEnumerable<Actor> Actors;
@@ -96,7 +95,7 @@ namespace AvalonUgh.Code
 			var vehX = twin.ToObstacle(newX, twin.Y);
 			var vehY = twin.ToObstacle(twin.X, newY);
 
-			var Obstacles = this.Obstacles;
+			var Obstacles = this.Level.KnownObstacles.AsEnumerable();
 
 			var veh = twin as Vehicle;
 			if (veh != null)
@@ -221,9 +220,19 @@ namespace AvalonUgh.Code
 				twin.Stability++;
 
 				// how stable must the object be?
-				if (twin.Stability == 3)
+				if (twin.Stability >= 3)
 				{
-					twin.StabilityReached();
+					if (twin.Stability == 3)
+					{
+						twin.StabilityReached();
+
+
+					}
+
+					twin.VelocityX = 0;
+					twin.VelocityY = 0;
+
+					return;
 				}
 			}
 			else
