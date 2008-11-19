@@ -305,8 +305,14 @@ namespace AvalonUgh.Labs.Shared
 
 								if (Is_2x2)
 								{
+									Level.KnownCaves.Add(
+										new Cave
+										{
+											Location = k,
+											Image = Create.cave0_2x2(k.X, k.Y)
+										}
+									);
 									//if ((k.X * k.Y) % 2 == 0)
-									Create.cave0_2x2(k.X, k.Y);
 									//else
 									//    Create.cave1_2x2(k.X, k.Y);
 									return;
@@ -463,7 +469,7 @@ namespace AvalonUgh.Labs.Shared
 							if (fish_x > DefaultWidth)
 								fish_x = -PrimitiveTile.Width;
 
-							fish.MoveTo(fish_x, PrimitiveTile.Heigth * 12 * Zoom);
+							fish.MoveTo(fish_x, Level.WaterTop + Level.WaterHeight / 3 );
 
 							fish.Show();
 
@@ -479,28 +485,31 @@ namespace AvalonUgh.Labs.Shared
 
 					#region sprites
 
+					var KnownActors = new List<Actor>();
 
-
-					var actor0 = new Actor.man1(Zoom).AttachContainerTo(this);
-					var actor1 = new Actor.man0(Zoom).AttachContainerTo(this);
-					var actor2 = new Actor.woman0(Zoom).AttachContainerTo(this);
-
-					actor0.MoveToTile(16.5, 1);
-					actor1.MoveToTile(14.5, 1);
-					actor2.MoveToTile(12.5, 1);
-
-
-				
-
-
-					var KnownRocks = new List<Rock>();
-					var KnownBirds = new List<Bird>();
-					var KnownActors = new List<Actor>
+					new Actor[]
 					{
-						actor0,
-						actor1,
-						actor2
-					};
+						new Actor.man1(Zoom).AttachContainerTo(this),
+						new Actor.man0(Zoom).AttachContainerTo(this),
+						new Actor.woman0(Zoom).AttachContainerTo(this),
+					}.ForEach(
+						(actor, index) =>
+						{
+							var cave = Level.KnownCaves.AtModulus(index);
+
+							actor.MoveTo(
+								(cave.Location.X + 1) * PrimitiveTile.Width * Zoom,
+								(cave.Location.Y + 1) * PrimitiveTile.Heigth * Zoom
+							);
+
+							KnownActors.Add(actor);
+						}
+					);
+
+
+
+					var KnownBirds = new List<Bird>();
+					
 
 
 					var KnownWater = new Water(
@@ -697,18 +706,7 @@ namespace AvalonUgh.Labs.Shared
 						}
 					);
 
-					k2.Drop +=
-						delegate
-						{
-							var rock2 = new Rock(Zoom);
-
-							rock2.AttachContainerTo(this);
-							rock2.MoveTo(twin.X, twin.Y);
-							rock2.VelocityX = twin.VelocityX;
-							rock2.VelocityY = twin.VelocityY;
-
-							KnownRocks.Add(rock2);
-						};
+					
 
 
 

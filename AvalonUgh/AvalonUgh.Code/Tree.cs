@@ -95,7 +95,15 @@ namespace AvalonUgh.Code
 					{
 						ShowFrame.blink();
 
-						100.AtDelay(ShowFrame.ok);
+						100.AtDelay(
+							delegate
+							{
+								if (IsSleeping)
+									return;
+
+								ShowFrame.ok();
+							}
+						);
 					};
 				};
 
