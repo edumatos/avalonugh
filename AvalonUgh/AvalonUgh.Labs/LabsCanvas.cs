@@ -20,7 +20,7 @@ namespace AvalonUgh.Labs.Shared
 	{
 		public const int Zoom = 2;
 
-		public const int DefaultWidth = 300 * Zoom;
+		public const int DefaultWidth = 320 * Zoom;
 		public const int DefaultHeight = 200 * Zoom;
 
 
@@ -42,7 +42,7 @@ namespace AvalonUgh.Labs.Shared
 			).ToArray();
 
 
-			
+
 
 			var CurrentLevel = KnownAssets.Path.Assets + "/level06.txt";
 
@@ -60,7 +60,17 @@ namespace AvalonUgh.Labs.Shared
 					// subtract statusbar
 					var View = new View(DefaultWidth, DefaultHeight - 9 * Zoom, Level);
 
-					Console.WriteLine(new { Text = Level.AttributeText.Value, Code = Level.AttributeCode.Value, Background = Level.AttributeBackground.Value, Water = Level.AttributeWater, Level.Map.Width, Level.Map.Height }.ToString());
+					Console.WriteLine(
+						new
+						{
+							Text = Level.AttributeText.Value,
+							Code = Level.AttributeCode.Value,
+							Background = Level.AttributeBackground.Value,
+							Water = Level.AttributeWater.Value,
+							Level.Map.Width,
+							Level.Map.Height
+						}.ToString()
+					);
 
 					#region x
 					#region CreateCustom
@@ -232,7 +242,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-				
+
 
 
 
@@ -438,10 +448,10 @@ namespace AvalonUgh.Labs.Shared
 					}.AsCyclicEnumerable().ForEach(
 						(fish, next) =>
 						{
-							fish_x = (fish_x + 1 * Zoom) %  View.ContentActualWidth;
-							
+							fish_x = (fish_x + 1 * Zoom) % View.ContentActualWidth;
 
-							fish.MoveTo(fish_x, Level.WaterTop + Level.WaterHeight / 3 );
+
+							fish.MoveTo(fish_x, Level.WaterTop + Level.WaterHeight / 3);
 
 							fish.Show();
 
@@ -483,7 +493,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 					var KnownBirds = new List<Bird>();
-					
+
 
 
 
@@ -491,7 +501,7 @@ namespace AvalonUgh.Labs.Shared
 					Level.KnownSigns.ToArray().AttachContainerTo(View.Entities);
 					Level.KnownRocks.ToArray().AttachContainerTo(View.Entities);
 
-				
+
 
 					#endregion
 
@@ -541,7 +551,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					
+
 
 					#region vehicle
 
@@ -622,11 +632,11 @@ namespace AvalonUgh.Labs.Shared
 
 							xveh.CurrentWeapon = null;
 
-					
+
 						};
 
 					var FlashlightTracker = View.LocationTracker;
-					
+
 					FlashlightTracker.Target = xveh;
 
 					k1.Enter +=
@@ -673,7 +683,7 @@ namespace AvalonUgh.Labs.Shared
 						}
 					);
 
-					
+
 
 
 
@@ -695,7 +705,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					
+
 
 					this.KeyUp +=
 						(sender, args) =>

@@ -27,20 +27,10 @@ namespace AvalonUgh.Code
 		readonly Image flashlight_x96;
 		readonly Image flashlight_x128;
 
-		int _Size = 128;
 
-		public int Size
-		{
-			get
-			{
-				return _Size;
-			}
 
-			set
-			{
-				_Size = value;
-			}
-		}
+		public readonly int Size;
+
 
 		public double X { get; set; }
 		public double Y { get; set; }
@@ -58,11 +48,18 @@ namespace AvalonUgh.Code
 			if (Size == 128)
 				flashlight_x128.MoveTo(x - h, y - h);
 
-			BlindTop.MoveTo(0, y - h - Height);
-			BlindBottom.MoveTo(0, y + h);
+			BlindTop.MoveTo(x - h, y - h - Height);
+			BlindBottom.MoveTo(x - Width, y + h);
 
-			BlindLeft.MoveTo(x - h - Width, 0);
-			BlindRight.MoveTo(x + h, 0);
+			//BlindTop.Hide();
+			//BlindBottom.Hide();
+
+			//BlindLeft.Hide();
+			//BlindRight.Hide();
+
+
+			BlindLeft.MoveTo(x - h - Width, y - Height);
+			BlindRight.MoveTo(x + h, y - h);
 		}
 
 
@@ -90,6 +87,7 @@ namespace AvalonUgh.Code
 		}
 		public Flashlight(int Zoom, int Width, int Height)
 		{
+			this.Size = 128;
 			this.Zoom = Zoom;
 			this.Width = Width;
 			this.Height = Height;
@@ -119,10 +117,11 @@ namespace AvalonUgh.Code
 				Height = 128 * Zoom,
 			}.AttachTo(this.Container);
 
+			var h = Size * Zoom / 2;
 
 			this.BlindTop = new Rectangle
 			{
-				Width = Width,
+				Width = Width + h,
 				Height = Height,
 				Fill = Brushes.Black
 			}.AttachTo(this.Container);
@@ -130,20 +129,20 @@ namespace AvalonUgh.Code
 			this.BlindLeft = new Rectangle
 			{
 				Width = Width,
-				Height = Height,
+				Height = Height + h,
 				Fill = Brushes.Black
 			}.AttachTo(this.Container);
 
 			this.BlindRight = new Rectangle
 			{
 				Width = Width,
-				Height = Height,
+				Height = Height + h,
 				Fill = Brushes.Black
 			}.AttachTo(this.Container);
 
 			this.BlindBottom = new Rectangle
 			{
-				Width = Width,
+				Width = Width + h,
 				Height = Height,
 				Fill = Brushes.Black
 			}.AttachTo(this.Container);
