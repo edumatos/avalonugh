@@ -30,6 +30,11 @@ namespace AvalonUgh.Code
 		public readonly Attribute.Int32 AttributeWater = "water";
 		public readonly Attribute.Int32 AttributeWind = "wind";
 
+		public readonly Attribute.Int32 AttributeBorderTop = "border-top";
+		public readonly Attribute.Int32 AttributeBorderLeft = "border-left";
+		public readonly Attribute.Int32 AttributeBorderRight = "border-right";
+		public readonly Attribute.Int32 AttributeBorderBottom = "border-bottom";
+
 		public readonly ASCIIImage Map;
 
 		//public Water KnownWater { get; set; }
@@ -85,7 +90,7 @@ namespace AvalonUgh.Code
 
 
 
-		
+
 
 		public int ActualWidth
 		{
@@ -150,7 +155,7 @@ namespace AvalonUgh.Code
 					}.AddTo(KnownSigns).MoveBaseTo(x, y);
 				};
 
-		
+
 			var Commands = new AttributeDictonary
 			{
 				Create.Rock,
@@ -163,7 +168,13 @@ namespace AvalonUgh.Code
 				AttributeBackgroundHeight,
 				AttributeCode,
 				AttributeText,
-				AttributeBackground
+				AttributeBackground,
+
+				AttributeBorderTop,
+				AttributeBorderLeft, 
+				AttributeBorderRight,
+				AttributeBorderBottom 
+
 			};
 
 
@@ -197,6 +208,71 @@ namespace AvalonUgh.Code
 			this.WaterTop = this.ActualHeight - this.WaterHeight;
 
 			// at this point we need to load the map tiles
+
+			var BorderSize = Zoom * 10;
+			var ZoomedBorder = this.ZoomedBorder;
+
+			this.BorderObstacleTop = new Obstacle
+			{
+				Left = -ZoomedBorder.Left,
+				Top = -ZoomedBorder.Top - BorderSize,
+				Right = this.ActualWidth + ZoomedBorder.Right,
+				Bottom = -ZoomedBorder.Top
+			};
+
+			this.BorderObstacleRight = new Obstacle
+			{
+				Left = this.ActualWidth + ZoomedBorder.Right,
+				Top = -ZoomedBorder.Top,
+				Right = this.ActualWidth + ZoomedBorder.Right + BorderSize,
+				Bottom = this.ActualHeight + ZoomedBorder.Bottom
+			};
+
+			this.BorderObstacleLeft = new Obstacle
+			{
+				Left = -ZoomedBorder.Left - BorderSize,
+				Top = -ZoomedBorder.Top,
+				Right = -ZoomedBorder.Left,
+				Bottom = this.ActualHeight + ZoomedBorder.Bottom
+			};
+
+
+			this.BorderObstacleBottom = new Obstacle
+			{
+				Left = -ZoomedBorder.Left ,
+				Top = this.ActualHeight + ZoomedBorder.Bottom,
+				Right = this.ActualWidth + ZoomedBorder.Right,
+				Bottom = this.ActualHeight + ZoomedBorder.Bottom + BorderSize
+			};
 		}
+
+
+		[Script]
+		public class ZoomedBorderType
+		{
+			public int Left;
+			public int Right;
+			public int Top;
+			public int Bottom;
+		}
+
+		public ZoomedBorderType ZoomedBorder
+		{
+			get
+			{
+				return new ZoomedBorderType
+				{
+					Left = this.AttributeBorderLeft.Value * this.Zoom,
+					Top = this.AttributeBorderTop.Value * this.Zoom,
+					Right = this.AttributeBorderRight.Value * this.Zoom,
+					Bottom = this.AttributeBorderBottom.Value * this.Zoom,
+				};
+			}
+		}
+
+		public Obstacle BorderObstacleTop { get; set; }
+		public Obstacle BorderObstacleRight { get; set; }
+		public Obstacle BorderObstacleLeft { get; set; }
+		public Obstacle BorderObstacleBottom { get; set; }
 	}
 }

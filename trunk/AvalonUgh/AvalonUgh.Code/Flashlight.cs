@@ -66,6 +66,8 @@ namespace AvalonUgh.Code
 		}
 
 
+		public event Action VisibleChanged;
+
 		bool _Visible = true;
 		public bool Visible
 		{
@@ -81,6 +83,9 @@ namespace AvalonUgh.Code
 					this.Container.Show();
 				else
 					this.Container.Hide();
+
+				if (this.VisibleChanged != null)
+					this.VisibleChanged();
 			}
 		}
 		public Flashlight(int Zoom, int Width, int Height)
