@@ -190,7 +190,7 @@ namespace AvalonUgh.Code
 			return new Obstacle
 			{
 				Left = x - HalfWidth / 2,
-				Top = y - HalfHeight / 2,
+				Top = y,
 				Right = x + HalfWidth / 2,
 				Bottom = y + HalfHeight,
 				//SupportsVelocity = this

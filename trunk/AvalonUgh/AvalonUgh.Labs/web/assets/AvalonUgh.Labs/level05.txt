@@ -24,7 +24,7 @@ P2P2PP2
 # sign: 152;3
 # rock: 96
     PPP2BBBP2PPP    
-   R2R22   22R2R    
-SSS22RRRSSSRR2222RSS
+   R2R22   22R2R2    
+   22RRR   RR2222R  
 ####################
 # end
