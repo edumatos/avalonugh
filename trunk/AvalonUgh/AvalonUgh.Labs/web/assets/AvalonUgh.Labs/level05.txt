@@ -1,0 +1,30 @@
+# Avalon UGH Level 04
+# text: Introducing Actors
+# code: xxx000
+# background: 001
+# background-width: 320
+# background-height: 200
+# 
+# water: 26
+####################
+                 C2S
+                 22S
+# sign: 232;2
+             PP2P2P2
+                  22
+SC2                 
+S22                 
+# tree: 80
+# tree: 112
+# sign: 56;1
+P2P2PP2             
+                    
+             C2     
+             22     
+# sign: 152;3
+# rock: 96
+    PPP2BBBP2PPP    
+   R2R22   22R2R    
+SSS22RRRSSSRR2222RSS
+####################
+# end

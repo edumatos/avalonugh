@@ -238,7 +238,7 @@ namespace AvalonUgh.Code
 				Left = x - this.HalfWidth + 6 * this.Zoom,
 				Right = x + this.HalfWidth - 6 * this.Zoom,
 				Top = y - this.HalfHeight + 4 * this.Zoom,
-				Bottom = y + this.HalfHeight,
+				Bottom = y + this.HalfHeight - this.Zoom,
 
 				SupportsVelocity = this
 			};
