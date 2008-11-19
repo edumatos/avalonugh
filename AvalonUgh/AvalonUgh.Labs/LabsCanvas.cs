@@ -452,10 +452,10 @@ namespace AvalonUgh.Labs.Shared
 					#endregion
 
 
-					Create.weed0_2x2(0, 14);
-					Create.weed0_2x2(2, 14);
+					//Create.weed0_2x2(0, 14);
+					//Create.weed0_2x2(2, 14);
 
-					Create.flower0(0, 6);
+					//Create.flower0(0, 6);
 
 					var fish_x = -PrimitiveTile.Width;
 
