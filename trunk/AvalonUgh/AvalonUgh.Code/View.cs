@@ -30,10 +30,11 @@ namespace AvalonUgh.Code
 
 		public Canvas Entities { get; set; }
 
+		public Canvas ContentExtendedContainer { get; set; }
+
 		public Canvas WaterContainer { get; set; }
 
 		public Canvas FlashlightContainer { get; set; }
-
 
 		public Canvas TouchOverlay { get; set; }
 
@@ -96,7 +97,8 @@ namespace AvalonUgh.Code
 			this.Content = new Canvas
 			{
 				Width = this.ContentActualWidth,
-				Height = this.ContentActualHeight
+				Height = this.ContentActualHeight,
+				ClipToBounds = true
 			}.AttachTo(this.Container);
 
 			this.Platforms = new Canvas
@@ -111,19 +113,31 @@ namespace AvalonUgh.Code
 				Height = this.ContentActualHeight
 			}.AttachTo(this.Content);
 
-			this.WaterContainer = new Canvas
+			this.ContentExtendedContainer = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
 				Height = this.ContentExtendedHeight
 			}.AttachTo(this.Container);
+
+			this.WaterContainer = new Canvas
+			{
+				Width = this.ContentExtendedWidth,
+				Height = this.ContentExtendedHeight
+			}.AttachTo(this.ContentExtendedContainer);
 
 			this.FlashlightContainer = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
 				Height = this.ContentExtendedHeight
-			}.AttachTo(this.Container);
+			}.AttachTo(this.ContentExtendedContainer);
 
-			//this.Level.KnownWater.AttachContainerTo(this.Water);
+			this.TouchOverlay = new Canvas
+			{
+				Width = this.ContentExtendedWidth,
+				Height = this.ContentExtendedHeight,
+				Background = Brushes.Tan,
+				Opacity = 0.2
+			}.AttachTo(this.ContentExtendedContainer);
 
 			new Water(
 				new Water.Info
@@ -133,7 +147,6 @@ namespace AvalonUgh.Code
 
 					WaterTop = this.Level.WaterTop + MaxShakeSize + (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2,
 					Zoom = this.Level.Zoom,
-					//Level = this.Level,
 
 					// maybe the map should be able to set this color?
 					WaterColorBottom = Colors.Green
@@ -154,7 +167,9 @@ namespace AvalonUgh.Code
 				ContentExtendedHeight
 			).AttachContainerTo(this.FlashlightContainer);
 
-			this.Flashlight.Container.Opacity = 0.5;
+			this.AutoscrollEnabled = this.Level.AttributeAutoscroll;
+
+			this.Flashlight.Container.Opacity = this.Level.AttributeFlashlightOpacity.Value.Max(0).Min(255) / 255.0;
 			this.Flashlight.Visible = false;
 			this.Flashlight.VisibleChanged +=
 				delegate
@@ -204,8 +219,13 @@ namespace AvalonUgh.Code
 
 		Action<int, int> AutoscrollTween;
 
+		public bool AutoscrollEnabled { get; set; }
+
 		void Autoscroll()
 		{
+			if (!AutoscrollEnabled)
+				return;
+
 			if (this.LocationTracker.Target == null)
 				return;
 
@@ -262,8 +282,7 @@ namespace AvalonUgh.Code
 			var ex = x - MaxShakeSize - (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
 			var ey = y - MaxShakeSize - (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2;
 
-			this.FlashlightContainer.MoveTo(ex, ey);
-			this.WaterContainer.MoveTo(ex, ey);
+			this.ContentExtendedContainer.MoveTo(ex, ey);
 
 			this.Content.MoveTo(
 				x,
