@@ -35,6 +35,9 @@ namespace AvalonUgh.Code
 		public readonly Attribute.Int32 AttributeBorderRight = "border-right";
 		public readonly Attribute.Int32 AttributeBorderBottom = "border-bottom";
 
+		public readonly Attribute.Int32 AttributeFlashlightOpacity = "flashlight-opacity";
+		public readonly Attribute.Int32 AttributeAutoscroll = "autoscroll";
+
 		public readonly ASCIIImage Map;
 
 		//public Water KnownWater { get; set; }
@@ -111,6 +114,8 @@ namespace AvalonUgh.Code
 
 		public Level(string source, int Zoom)
 		{
+			this.AttributeFlashlightOpacity.Value = 255;
+
 			this.Zoom = Zoom;
 
 			var Create = new
@@ -174,8 +179,10 @@ namespace AvalonUgh.Code
 				AttributeBorderTop,
 				AttributeBorderLeft, 
 				AttributeBorderRight,
-				AttributeBorderBottom 
+				AttributeBorderBottom,
 
+				AttributeFlashlightOpacity,
+				AttributeAutoscroll
 			};
 
 

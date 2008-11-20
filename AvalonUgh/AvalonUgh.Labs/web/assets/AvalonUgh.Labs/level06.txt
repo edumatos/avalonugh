@@ -6,6 +6,8 @@
 # border-top: 32
 # border-bottom: 32
 # water: 26
+# autoscroll: 1
+# flashlight-opacity: 200
 ####################
 SSSSSSSSSSSSSSSSSSSSSS
 S444S2S444SSSS2S2SSSSS

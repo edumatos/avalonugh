@@ -23,6 +23,11 @@ namespace AvalonUgh.Code
 
 		public void StabilityReached()
 		{
+			// we have landed!
+			// if we are on a platform which has a cave
+			// we would need to notify the passengers of our arrivel
+
+			Console.WriteLine("ready for boarding!");
 		}
 
 		public bool PhysicsDisabled { get; set; }

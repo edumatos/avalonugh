@@ -69,6 +69,11 @@ namespace AvalonUgh.Code
 								}
 					);
 				}
+
+				public static implicit operator bool(Attribute.Int32 e)
+				{
+					return e.Value > 0;
+				}
 			}
 
 			[Script]

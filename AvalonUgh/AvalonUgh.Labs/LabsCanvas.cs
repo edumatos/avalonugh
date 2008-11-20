@@ -18,7 +18,9 @@ namespace AvalonUgh.Labs.Shared
 	[Script]
 	public class LabsCanvas : Canvas
 	{
-		public const int Zoom = 3;
+		// the game should include all original levels
+
+		public const int Zoom = 2;
 
 		public const int DefaultWidth = 640;
 		public const int DefaultHeight = 400;
