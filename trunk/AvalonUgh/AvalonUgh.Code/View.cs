@@ -18,7 +18,7 @@ namespace AvalonUgh.Code
 	/// the active player be it a vehicle or an actor
 	/// </summary>
 	[Script]
-	public class View : ISupportsContainer
+	public partial class View : ISupportsContainer
 	{
 		public Canvas Container { get; set; }
 
@@ -37,6 +37,8 @@ namespace AvalonUgh.Code
 		public Canvas FilmScratchContainer { get; set; }
 
 		public Canvas FlashlightContainer { get; set; }
+
+		public Canvas ColorOverlay { get; set; }
 
 		public Canvas TouchOverlay { get; set; }
 
@@ -89,8 +91,11 @@ namespace AvalonUgh.Code
 
 			this.Container = new Canvas
 			{
+
 				Width = width,
-				Height = height
+				Height = height,
+				Background = Brushes.Black,
+				ClipToBounds = true
 			};
 
 			this.Level = level;
@@ -140,12 +145,21 @@ namespace AvalonUgh.Code
 				Height = this.ContentExtendedHeight
 			}.AttachTo(this.ContentExtendedContainer);
 
+			this.ColorOverlay = new Canvas
+			{
+				Width = this.ContentExtendedWidth,
+				Height = this.ContentExtendedHeight,
+				Background = Brushes.Tan,
+				Opacity = 0.3,
+				Visibility = System.Windows.Visibility.Hidden
+			}.AttachTo(this.ContentExtendedContainer);
+
 			this.TouchOverlay = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
 				Height = this.ContentExtendedHeight,
 				Background = Brushes.Tan,
-				Opacity = 0.2
+				Opacity = 0
 			}.AttachTo(this.ContentExtendedContainer);
 
 			new Water(
@@ -224,67 +238,10 @@ namespace AvalonUgh.Code
 			// if the level is less in height than the view then dock to bottom
 			// to support the statusbar over there which might or might not be there
 
+			AttachFilmScratchEffect();
 		}
 
-		Action<int, int> AutoscrollTween;
-
-		public bool AutoscrollEnabled { get; set; }
-
-		void Autoscroll()
-		{
-			if (!AutoscrollEnabled)
-				return;
-
-			if (this.LocationTracker.Target == null)
-				return;
-
-
-			var w = this.ContentActualWidth;
-			var h = this.ContentActualHeight;
-
-
-			if (w < this.ContainerWidth)
-				if (h < this.ContainerHeight)
-					return;
-
-			var x = Convert.ToInt32(this.LocationTracker.X);
-			var y = Convert.ToInt32(this.LocationTracker.Y);
-
-			const int TweenPercision = 2;
-
-			if (AutoscrollTween == null)
-				AutoscrollTween = NumericEmitter.Of(
-					(ax_, ay_) =>
-					{
-						var a = new
-						{
-							x = ax_ / (double)TweenPercision,
-							y = ay_ / (double)TweenPercision
-						};
-
-						//Console.WriteLine(
-						//    a.ToString()
-						//);
-
-						// margin from the edge
-						var mx = this.ContainerWidth / 4;
-						var my = this.ContainerHeight / 4;
-
-
-						var px = ((a.x - mx) / (w - mx * 2)).Max(0).Min(1);
-						var py = ((a.y - my) / (h - my * 2)).Max(0).Min(1);
-
-						var dx = this.ContainerWidth - w;
-						var dy = this.ContainerHeight - h;
-
-						MoveContentTo(px * dx, py * dy);
-					}
-				);
-
-			AutoscrollTween(x * TweenPercision, y * TweenPercision);
-
-
-		}
+		
 
 		public double ContentX { get; set; }
 		public double ContentY { get; set; }
