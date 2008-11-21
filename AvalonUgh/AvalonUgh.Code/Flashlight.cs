@@ -35,8 +35,14 @@ namespace AvalonUgh.Code
 		public double X { get; set; }
 		public double Y { get; set; }
 
-		public void MoveTo(double x, double y)
+		public void MoveTo(double x_, double y_)
 		{
+			var x = Convert.ToInt32(x_);
+			var y = Convert.ToInt32(y_);
+
+			x += x % Zoom;
+			y += y % Zoom;
+
 			this.X = x;
 			this.Y = y;
 
