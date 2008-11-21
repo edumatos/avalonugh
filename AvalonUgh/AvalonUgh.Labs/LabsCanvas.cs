@@ -22,7 +22,7 @@ namespace AvalonUgh.Labs.Shared
 
 		public const int Zoom = 2;
 
-		public const int DefaultWidth = 640;
+		public const int DefaultWidth = 800;
 		public const int DefaultHeight = 400;
 
 		public const int StatusbarZoom = 2;
@@ -34,7 +34,13 @@ namespace AvalonUgh.Labs.Shared
 
 			this.ClipToBounds = true;
 
-			Colors.Black.ToGradient(Colors.Red, DefaultHeight / 4).Select(
+			new[]
+			{
+				Colors.Black,
+				Colors.Yellow,
+				Colors.Red,
+				Colors.Black
+			}.ToGradient(DefaultHeight / 4).Select(
 				(c, i) =>
 					new Rectangle
 					{
@@ -717,53 +723,21 @@ namespace AvalonUgh.Labs.Shared
 						{
 							if (args.Key == Key.F)
 								View.Flashlight.Visible = !View.Flashlight.Visible;
+
+							if (args.Key == Key.G)
+								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
 						};
 
 					View.AttachContainerTo(this);
 
-					var Scratches = 
-						Enumerable.Range(1, 9).Select( 
-						//Assets.Shared.KnownAssets.Default.FileNames.Where(k => k.StartsWith(Assets.Shared.KnownAssets.Path.FilmScratch)).Select(
-						index =>
-							new Image
-							{
-								Source = (Assets.Shared.KnownAssets.Path.FilmScratch + "/" + index.ToString().PadLeft(2, '0') + ".png").ToSource(),
-								Stretch = Stretch.Fill,
-								Width = 32,
-								Height = 32,
-							}.AttachTo(View.FilmScratchContainer)
-					).ToArray();
 
-					var Shaker = new Random();
-					(1000 / 15).AtInterval(
-						delegate
-						{
-							if (!View.Flashlight.Visible)
-								return;
-
-							foreach (var s in Scratches)
-							{
-								s.MoveTo(
-									Shaker.NextDouble() * View.ContentExtendedWidth - 16,
-									Shaker.NextDouble() * View.ContentExtendedHeight - 16
-									);
-							}
-
-							var Shake = 2.0;
-
-							View.FlashlightContainer.Opacity = (Shaker.NextDouble() * 0.3 + 0.8).Min(1);
-							View.ContentShakeX = (Shaker.NextDouble() * Shake) - Shake / 2;
-							View.ContentShakeY = (Shaker.NextDouble() * Shake) - Shake / 2;
-							View.MoveContentTo();
-						}
-					);
 					new Image
 					{
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/statusbar.png").ToSource(),
 						Stretch = Stretch.Fill,
 						Width = 320 * StatusbarZoom,
 						Height = 9 * StatusbarZoom,
-					}.AttachTo(this).MoveTo(0, DefaultHeight - 9 * StatusbarZoom);
+					}.AttachTo(this).MoveTo((DefaultWidth - 320 * Zoom) / 2, DefaultHeight - 9 * StatusbarZoom);
 
 					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 				}

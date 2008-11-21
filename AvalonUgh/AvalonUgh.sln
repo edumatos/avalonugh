@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Labs.XBAP", "Aval
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Comparision", "AvalonUgh.Comparision\AvalonUgh.Comparision.csproj", "{C5FAF197-B077-4176-AEFC-7D1DD0D4C4F8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Public", "Public", "{B35AD758-4CA6-4479-B36A-766C68AF4A08}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,5 +48,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C5FAF197-B077-4176-AEFC-7D1DD0D4C4F8} = {B35AD758-4CA6-4479-B36A-766C68AF4A08}
+		{BD588EEB-ADE9-42A8-A81A-98E697FDB908} = {B35AD758-4CA6-4479-B36A-766C68AF4A08}
 	EndGlobalSection
 EndGlobal
