@@ -46,35 +46,39 @@ namespace AvalonUgh.Comparision.Server
 			Console.WriteLine("<title>" + "Avalon Ugh!".WithBranding() + "</title>");
 
 			Console.WriteLine("<link rel='stylesheet' type='text/css' href='assets/AvalonUgh.Comparision/WebPage.css' />");
-			
+
 			Console.WriteLine("</head>");
 			Console.WriteLine("<body>");
 
+			Console.WriteLine("<a href='?'>");
 			(AvalonUgh.Comparision.Shared.KnownAssets.Path.Assets + "/jsc.png").ToImageToConsole();
+			Console.WriteLine("</a>");
 
-		
 
 			Action<int, int, string> CreateIFrame =
-				(w, h, src) => Console.WriteLine("<iframe  width='" + w + "' height='" + h + "' src='" + src + "' ></iframe>"); ;
+				(w, h, src) => Console.WriteLine("<iframe frameborder='0' width='" + w + "' height='" + h + "' src='" + src + "' ></iframe>"); ;
 
-			Action<string> CreateVersion =
-				src =>
+			Action<string, string> CreateVersion =
+				(title, src) =>
 				{
 					if (!File.Exists(src))
 						return;
 
-					CreateIFrame(LabsCanvas.DefaultWidth, LabsCanvas.DefaultHeight, src);
+					Console.WriteLine("<h2><a href='?" + title + "'>" + title + "</a></h2>");
+
+					if (Native.SuperGlobals.Server[Native.SuperGlobals.ServerVariables.QUERY_STRING] == title)
+						CreateIFrame(LabsCanvas.DefaultWidth, LabsCanvas.DefaultHeight, src);
 				};
 
 			Console.WriteLine("<center>");
 
-			CreateVersion("LabsDocument.htm");
-			CreateVersion("LabsDocument.htm");
-			CreateVersion("AvalonUgh.Labs.XBAP.xbap");
+			CreateVersion("JavaScript", "LabsDocument.htm");
+			CreateVersion("Flash", "LabsFlash.htm");
+			CreateVersion("XBAP", "AvalonUgh.Labs.XBAP.xbap");
 
 			Console.WriteLine("</center>");
 
-			
+
 
 			Console.WriteLine("</body>");
 			Console.WriteLine("</html>");

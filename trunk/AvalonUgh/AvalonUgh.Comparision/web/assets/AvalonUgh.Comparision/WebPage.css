@@ -10,8 +10,11 @@ body
 	background-repeat: repeat-x;
 }
 
+a img { border: 0; }
+
 iframe
 {
 	border: 0;
 	margin: 2em;
+	overflow: hidden;
 }
