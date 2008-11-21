@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Code", "AvalonUgh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Promotion", "AvalonUgh.Promotion\AvalonUgh.Promotion.csproj", "{3B971BB0-A45D-47BB-A1B5-383F08426F09}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Labs.XBAP", "AvalonUgh.Labs.XBAP\AvalonUgh.Labs.XBAP.csproj", "{7E40B219-114C-4E89-AFD9-4A546474B63A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{3B971BB0-A45D-47BB-A1B5-383F08426F09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B971BB0-A45D-47BB-A1B5-383F08426F09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B971BB0-A45D-47BB-A1B5-383F08426F09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E40B219-114C-4E89-AFD9-4A546474B63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E40B219-114C-4E89-AFD9-4A546474B63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E40B219-114C-4E89-AFD9-4A546474B63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E40B219-114C-4E89-AFD9-4A546474B63A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
