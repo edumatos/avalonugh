@@ -721,11 +721,13 @@ namespace AvalonUgh.Labs.Shared
 
 					View.AttachContainerTo(this);
 
-					var Scratches = Assets.Shared.KnownAssets.Default.FileNames.Where(k => k.StartsWith(Assets.Shared.KnownAssets.Path.FilmScratch)).Select(
-						Source =>
+					var Scratches = 
+						Enumerable.Range(1, 9).Select( 
+						//Assets.Shared.KnownAssets.Default.FileNames.Where(k => k.StartsWith(Assets.Shared.KnownAssets.Path.FilmScratch)).Select(
+						index =>
 							new Image
 							{
-								Source = Source.ToSource(),
+								Source = (Assets.Shared.KnownAssets.Path.FilmScratch + "/" + index.ToString().PadLeft(2, '0') + ".png").ToSource(),
 								Stretch = Stretch.Fill,
 								Width = 32,
 								Height = 32,
