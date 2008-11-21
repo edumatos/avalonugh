@@ -34,6 +34,8 @@ namespace AvalonUgh.Code
 
 		public Canvas WaterContainer { get; set; }
 
+		public Canvas FilmScratchContainer { get; set; }
+
 		public Canvas FlashlightContainer { get; set; }
 
 		public Canvas TouchOverlay { get; set; }
@@ -124,6 +126,13 @@ namespace AvalonUgh.Code
 				Width = this.ContentExtendedWidth,
 				Height = this.ContentExtendedHeight
 			}.AttachTo(this.ContentExtendedContainer);
+
+			this.FilmScratchContainer = new Canvas
+			{
+				Width = this.ContentExtendedWidth,
+				Height = this.ContentExtendedHeight
+			}.AttachTo(this.ContentExtendedContainer);
+
 
 			this.FlashlightContainer = new Canvas
 			{
@@ -277,8 +286,31 @@ namespace AvalonUgh.Code
 
 		}
 
+		public double ContentX { get; set; }
+		public double ContentY { get; set; }
+
+		public double ContentShakeX { get; set; }
+		public double ContentShakeY { get; set; }
+
+		public void MoveContentTo()
+		{
+			InternalMoveContentTo(ContentX + ContentShakeX, ContentY + ContentShakeY);
+		}
+
 		public void MoveContentTo(double x, double y)
 		{
+			ContentX = x;
+			ContentY = y;
+
+			MoveContentTo();
+		}
+
+		private void InternalMoveContentTo(double x_, double y_)
+		{
+			var x = Convert.ToInt32(x_);
+			var y = Convert.ToInt32(y_);
+
+
 			var ex = x - MaxShakeSize - (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
 			var ey = y - MaxShakeSize - (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2;
 

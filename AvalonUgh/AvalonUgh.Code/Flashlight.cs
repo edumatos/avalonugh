@@ -40,8 +40,6 @@ namespace AvalonUgh.Code
 			var x = Convert.ToInt32(x_);
 			var y = Convert.ToInt32(y_);
 
-			x += x % Zoom;
-			y += y % Zoom;
 
 			this.X = x;
 			this.Y = y;

@@ -721,6 +721,39 @@ namespace AvalonUgh.Labs.Shared
 
 					View.AttachContainerTo(this);
 
+					var Scratches = Assets.Shared.KnownAssets.Default.FileNames.Where(k => k.StartsWith(Assets.Shared.KnownAssets.Path.FilmScratch)).Select(
+						Source =>
+							new Image
+							{
+								Width = 32,
+								Height = 32,
+								Source = Source.ToSource()
+							}.AttachTo(View.FilmScratchContainer)
+					).ToArray();
+
+					var Shaker = new Random();
+					(1000 / 15).AtInterval(
+						delegate
+						{
+							if (!View.Flashlight.Visible)
+								return;
+
+							foreach (var s in Scratches)
+							{
+								s.MoveTo(
+									Shaker.NextDouble() * View.ContentExtendedWidth - 16,
+									Shaker.NextDouble() * View.ContentExtendedHeight - 16
+									);
+							}
+
+							var Shake = 2.0;
+
+							View.FlashlightContainer.Opacity = (Shaker.NextDouble() * 0.3 + 0.8).Min(1);
+							View.ContentShakeX = (Shaker.NextDouble() * Shake) - Shake / 2;
+							View.ContentShakeY = (Shaker.NextDouble() * Shake) - Shake / 2;
+							View.MoveContentTo();
+						}
+					);
 					new Image
 					{
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/statusbar.png").ToSource(),

@@ -245,6 +245,17 @@
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\flashlight_x128.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\01.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\02.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\03.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\04.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\05.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\06.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\07.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\08.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\09.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
