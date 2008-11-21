@@ -4,7 +4,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7E40B219-114C-4E89-AFD9-4A546474B63A}</ProjectGuid>
+    <ProjectGuid>{BD588EEB-ADE9-42A8-A81A-98E697FDB908}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AvalonUgh.Labs.XBAP</RootNamespace>
@@ -20,22 +20,19 @@
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>True</SignManifests>
     <ManifestKeyFile>AvalonUgh.Labs.XBAP_TemporaryKey.pfx</ManifestKeyFile>
-    <ManifestCertificateThumbprint>FBA0F828A9AEE3CFF774192E45DB49D67CE1ED6C</ManifestCertificateThumbprint>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <ManifestCertificateThumbprint>432258525B751A89E8FCA972DF89A4CCF8614FAF</ManifestCertificateThumbprint>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>false</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://zproxy.planet.ee/AvalonUgh/xbap/</InstallUrl>
-    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
-    <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>1</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>false</BootstrapperEnabled>

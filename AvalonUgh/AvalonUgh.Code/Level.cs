@@ -200,7 +200,10 @@ namespace AvalonUgh.Code
 
 			var BackgroundImageSource = Assets.Shared.KnownAssets.Path.Backgrounds + "/" + this.AttributeBackground.Value + ".png";
 
-			if (Assets.Shared.KnownAssets.Default.FileNames.Contains(BackgroundImageSource))
+			// cannot use FileNames in partial trust at this time
+
+			//if (Assets.Shared.KnownAssets.Default.FileNames.Contains(BackgroundImageSource))
+			if (!string.IsNullOrEmpty(this.AttributeBackground.Value))
 			{
 				this.BackgroundImage = new Image
 				{
@@ -247,7 +250,7 @@ namespace AvalonUgh.Code
 
 			this.BorderObstacleBottom = new Obstacle
 			{
-				Left = -ZoomedBorder.Left ,
+				Left = -ZoomedBorder.Left,
 				Top = this.ActualHeight + ZoomedBorder.Bottom,
 				Right = this.ActualWidth + ZoomedBorder.Right,
 				Bottom = this.ActualHeight + ZoomedBorder.Bottom + BorderSize
