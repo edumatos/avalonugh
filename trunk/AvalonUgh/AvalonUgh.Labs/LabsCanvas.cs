@@ -725,9 +725,10 @@ namespace AvalonUgh.Labs.Shared
 						Source =>
 							new Image
 							{
+								Source = Source.ToSource(),
+								Stretch = Stretch.Fill,
 								Width = 32,
 								Height = 32,
-								Source = Source.ToSource()
 							}.AttachTo(View.FilmScratchContainer)
 					).ToArray();
 
