@@ -11,6 +11,10 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public abstract class SpriteSelector : View.SelectorInfo
 	{
-		
+		public SpriteSelector()
+		{
+			PercisionX = PrimitiveTile.Width / 2;
+			PercisionY = PrimitiveTile.Heigth;
+		}
 	}
 }

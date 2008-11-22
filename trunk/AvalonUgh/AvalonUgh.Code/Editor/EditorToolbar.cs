@@ -208,11 +208,9 @@ namespace AvalonUgh.Code.Editor
 		private void AddButtons(Func<int> ButtonsWidth, Action<Image, View.SelectorInfo[]> AddButton, Action<string, View.SelectorInfo[]> AddButton_2x2, Action<string, View.SelectorInfo[]> AddButton_1x1)
 		{
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/stone1_2x2.png",
-				new[]
-				{
-				    new Editor.Tiles.StoneTile()
-				}
+				Editor.Tiles.StoneSelector.Sizes
 			);
+
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png", null);
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png", null);
@@ -222,7 +220,7 @@ namespace AvalonUgh.Code.Editor
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
 				new[]
 					{
-						new Editor.Tiles.FenceTile()
+						new Editor.Tiles.FenceSelector()
 					}
 			);
 
@@ -237,13 +235,13 @@ namespace AvalonUgh.Code.Editor
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png",
 				new[]
 				{
-				    new Editor.Sprites.SignSelector()
+				    new Editor.Sprites.SignSelector.Size_1x1()
 				}	
 			);
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/rock0.png",
 				new[]
 				{
-					new Editor.Sprites.RockSelector()
+					new Editor.Sprites.RockSelector.Size_1x1()
 				}	
 			);
 

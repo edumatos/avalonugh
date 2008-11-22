@@ -9,7 +9,7 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using System.Windows;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
 	public class Sign : ISupportsContainer, ISupportsMoveTo, ISupportsObstacle, IDisposable

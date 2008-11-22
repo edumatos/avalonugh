@@ -9,8 +9,12 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public abstract class Tile : View.SelectorInfo
+	public abstract class TileSelector : View.SelectorInfo
 	{
-		
+		public TileSelector()
+		{
+			PercisionX = PrimitiveTile.Width;
+			PercisionY = PrimitiveTile.Heigth;
+		}
 	}
 }

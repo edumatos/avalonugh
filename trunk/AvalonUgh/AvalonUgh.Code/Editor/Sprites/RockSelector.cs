@@ -10,28 +10,33 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class RockSelector : SpriteSelector
+	public class RockSelector
 	{
-		public RockSelector()
+		[Script]
+		public class Size_1x1 : SpriteSelector
 		{
-			Width = PrimitiveTile.Width;
-			Height = PrimitiveTile.Heigth;
-			PercisionX = PrimitiveTile.Width / 2;
-			PercisionY = PrimitiveTile.Heigth;
+			public Size_1x1()
+			{
+				PrimitiveTileCountX = 1;
+				PrimitiveTileCountY = 1;
 
-			Invoke =
-				(View, Selector, Position) =>
-				{
-					// add a new fence tile
 
-					new Rock(View.Level.Zoom)
+
+				Invoke =
+					(View, Selector, Position) =>
 					{
-						Selector = this
-					}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownRocks).MoveTo(
-						(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
-						(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
-					);
-				};
+						// add a new fence tile
+
+						new Rock(View.Level.Zoom)
+						{
+							Selector = this
+						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownRocks).MoveTo(
+							(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
+							(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
+						);
+					};
+			}
 		}
+
 	}
 }

@@ -10,7 +10,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
 	public class Tree : ISupportsContainer, ISupportsObstacle, ISupportsMoveTo, IDisposable

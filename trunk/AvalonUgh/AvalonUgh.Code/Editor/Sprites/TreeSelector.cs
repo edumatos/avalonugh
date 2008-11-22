@@ -30,7 +30,10 @@ namespace AvalonUgh.Code.Editor.Sprites
 					var x = x_ * Level.Zoom;
 					var y = Level.TileRowsProcessed * PrimitiveTile.Heigth * Level.Zoom;
 
-
+					// at this time we do have the level reference
+					// but we do not have the view reference
+					// this should enable us to change levels
+					// in the same view
 					new Tree(Level.Zoom)
 					{
 

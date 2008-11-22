@@ -8,6 +8,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Media;
 using System.Windows;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code
 {

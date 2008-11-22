@@ -10,34 +10,37 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class SignSelector : SpriteSelector
+	public class SignSelector
 	{
-		public SignSelector()
+		[Script]
+		public class Size_1x1 : SpriteSelector
 		{
-			Width = PrimitiveTile.Width;
-			Height = PrimitiveTile.Heigth;
-			PercisionX = PrimitiveTile.Width / 2;
-			PercisionY = PrimitiveTile.Heigth;
+			public Size_1x1()
+			{
+				PrimitiveTileCountX = 1;
+				PrimitiveTileCountY = 1;
 
-			var c = 0;
+				var c = 0;
 
-			Invoke =
-				(View, Selector, Position) =>
-				{
-					
-					DemolishSelector.InternalInvoke(View, Selector, Position);
-
-					c++;
-
-					new Sign(View.Level.Zoom)
+				Invoke =
+					(View, Selector, Position) =>
 					{
-						Value = c % 6,
-						Selector = this
-					}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownSigns).MoveTo(
-						(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
-						(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
-					);
-				};
+
+						DemolishSelector.InternalInvoke(View, Selector, Position);
+
+						c++;
+
+						new Sign(View.Level.Zoom)
+						{
+							Value = c % 6,
+							Selector = this
+						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownSigns).MoveTo(
+							(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
+							(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
+						);
+					};
+			}
 		}
+
 	}
 }

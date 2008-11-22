@@ -16,8 +16,9 @@ namespace AvalonUgh.Code.Editor
 		{
 			public Size_1x1()
 			{
-				Width = PrimitiveTile.Width;
-				Height = PrimitiveTile.Heigth;
+				PrimitiveTileCountX = 1;
+				PrimitiveTileCountY = 1;
+
 				PercisionX = PrimitiveTile.Width;
 				PercisionY = PrimitiveTile.Heigth;
 
@@ -30,8 +31,9 @@ namespace AvalonUgh.Code.Editor
 		{
 			public Size_2x2()
 			{
-				Width = PrimitiveTile.Width * 2;
-				Height = PrimitiveTile.Heigth *2;
+				PrimitiveTileCountX = 2;
+				PrimitiveTileCountY = 2;
+
 				PercisionX = PrimitiveTile.Width;
 				PercisionY = PrimitiveTile.Heigth;
 
