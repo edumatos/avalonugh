@@ -1,4 +1,5 @@
 #summary Screenshots of the game in development over time
+#labels screenshot,Featured
 
 = Screenshots=
 
@@ -19,3 +20,5 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/014.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/015.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/016.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/017.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/018.png]
