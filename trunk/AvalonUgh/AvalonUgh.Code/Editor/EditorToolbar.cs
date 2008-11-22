@@ -19,7 +19,8 @@ namespace AvalonUgh.Code.Editor
 	[Script]
 	public class EditorToolbar : Window
 	{
-		public event Action<View.SelectorInfo> EditorSelectorChanged;
+		public View.SelectorInfo EditorSelector;
+		public event Action EditorSelectorChanged;
 
 		[Script]
 		public class  Button
@@ -108,6 +109,8 @@ namespace AvalonUgh.Code.Editor
 
 			SelectionMarkerMove(Padding - 2, Padding - 2);
 
+			bool DefaultSelectionMade = false;
+
 			#region AddButton
 			Action<Image, View.SelectorInfo[]> AddButton =
 				(Image, EditorSelector) =>
@@ -140,19 +143,20 @@ namespace AvalonUgh.Code.Editor
 							Image.Opacity = 1;
 						};
 
-					TouchOverlay.MouseLeftButtonUp +=
+					Action Select =
 						delegate
 						{
-							
 							SelectionMarkerMove(x - 2, y - 2);
 
 
 							if (EditorSelectorCycle.MoveNext())
 							{
+								DefaultSelectionMade = true;
 								SelectionMarker.Fill = Brushes.LightGreen;
 
+								this.EditorSelector = EditorSelectorCycle.Current;
 								if (EditorSelectorChanged != null)
-									EditorSelectorChanged(EditorSelectorCycle.Current);
+									EditorSelectorChanged();
 							}
 							else
 							{
@@ -160,6 +164,15 @@ namespace AvalonUgh.Code.Editor
 							}
 						};
 
+					TouchOverlay.MouseLeftButtonUp +=
+						delegate
+						{
+							Select();
+							
+						};
+
+					if (!DefaultSelectionMade)
+						Select();
 
 					new Button
 					{
