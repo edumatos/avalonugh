@@ -216,11 +216,21 @@ namespace AvalonUgh.Code.Editor
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png", null);
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png", null);
+			
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png", null);
+
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
+				new[]
+					{
+						new Editor.Tiles.FenceTile()
+					}
+			);
+
 
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png", 
 				new []
 				{
-					new Editor.Sprites.TreeSelector()
+					new Editor.Sprites.TreeSelector.Size_2x2()
 				}
 			);
 
@@ -239,14 +249,7 @@ namespace AvalonUgh.Code.Editor
 
 			
 
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
-				new[]
-				{
-				    new Editor.Tiles.FenceTile()
-				}
-			);
-
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png", null);
+		
 
 			var Demolish = 
 				new Image

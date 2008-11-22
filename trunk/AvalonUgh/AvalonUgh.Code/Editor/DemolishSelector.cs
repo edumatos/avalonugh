@@ -55,7 +55,9 @@ namespace AvalonUgh.Code.Editor
 			};
 
 			// we will remove the first object we 
-			View.Level.GetRemovableEntities().FirstOrDefault(k => k.Obstacle.Intersects(o)).Apply(k => k.Dispose());
+			var a = View.Level.GetRemovableEntities().Where(k => k.Obstacle.Intersects(o)).ToArray();
+			
+			a.ForEach(k => k.Dispose());
 
 		}
 	}

@@ -10,29 +10,67 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class TreeSelector : SpriteSelector
+	public class TreeSelector
 	{
+		public readonly Level.Attribute.Int32 Attribute = "tree";
+		public readonly Level Level;
 
-		public TreeSelector()
+		public TreeSelector(Level Level)
 		{
-			Width = PrimitiveTile.Width * 2;
-			Height = PrimitiveTile.Heigth * 2;
-			PercisionX = PrimitiveTile.Width / 2;
-			PercisionY = PrimitiveTile.Heigth;
+			// we need to know the context in which our attribute
+			// is called
+			this.Level = Level;
 
-			Invoke =
-				(View, Selector, Position) =>
+			// if the level is loading
+			// this attribute will be assigned
+			// each time the tree command is found
+			Attribute.Assigned +=
+				x_ =>
 				{
-					// add a new fence tile
+					var x = x_ * Level.Zoom;
+					var y = Level.TileRowsProcessed * PrimitiveTile.Heigth * Level.Zoom;
 
-					new Tree(View.Level.Zoom)
+
+					new Tree(Level.Zoom)
 					{
-						Selector = this
-					}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownTrees).MoveTo(
-						(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
-						(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
-					);
+
+					}.AddTo(Level.KnownTrees).MoveBaseTo(x, y);
 				};
 		}
+
+		// clicking on the toolbar will shuffle between those sizes
+		// also while loading tiles the map will tell us which size to use
+		public View.SelectorInfo[] Sizes =
+			new[]
+			{
+				new Size_2x2()
+			};
+
+		[Script]
+		public class Size_2x2 : SpriteSelector
+		{
+			public Size_2x2()
+			{
+				Width = PrimitiveTile.Width * 2;
+				Height = PrimitiveTile.Heigth * 2;
+				PercisionX = PrimitiveTile.Width / 2;
+				PercisionY = PrimitiveTile.Heigth;
+
+				Invoke =
+					(View, Selector, Position) =>
+					{
+						DemolishSelector.InternalInvoke(View, Selector, Position);
+
+						new Tree(View.Level.Zoom)
+						{
+							Selector = this
+						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownTrees).MoveTo(
+							(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
+							(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
+						);
+					};
+			}
+		}
+
 	}
 }
