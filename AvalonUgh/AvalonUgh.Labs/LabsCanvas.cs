@@ -733,7 +733,9 @@ namespace AvalonUgh.Labs.Shared
 					et.AttachContainerTo(this);
 
 					et.EditorSelectorChanged +=
-						EditorSelector => View.EditorSelector = EditorSelector;
+						() => View.EditorSelector = et.EditorSelector;
+
+					View.EditorSelector = et.EditorSelector;
 
 					GameContent.KeyUp +=
 						(sender, args) =>
