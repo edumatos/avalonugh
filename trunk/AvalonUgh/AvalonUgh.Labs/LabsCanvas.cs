@@ -722,6 +722,11 @@ namespace AvalonUgh.Labs.Shared
 
 					View.Flashlight.Visible = false;
 
+					var et = new EditorToolbar(this);
+
+					et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
+
+					et.AttachContainerTo(this);
 
 					GameContent.KeyUp +=
 						(sender, args) =>
@@ -731,6 +736,9 @@ namespace AvalonUgh.Labs.Shared
 
 							if (args.Key == Key.G)
 								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
+
+							if (args.Key == Key.T)
+								et.Container.ToggleVisible();
 						};
 
 					View.AttachContainerTo(GameContent);
@@ -745,10 +753,7 @@ namespace AvalonUgh.Labs.Shared
 					}.AttachTo(GameContent).MoveTo((DefaultWidth - 320 * StatusbarZoom) / 2, DefaultHeight - 9 * StatusbarZoom);
 
 
-					var et = new EditorToolbar(this);
-
-					
-					et.AttachContainerTo(this);
+				
 
 
 					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
