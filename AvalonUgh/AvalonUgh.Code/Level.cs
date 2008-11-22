@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
+using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code
 {
@@ -55,7 +56,7 @@ namespace AvalonUgh.Code
 		const string Comment = "#";
 		const string Assignment = ":";
 
-		int TileRowsProcessed;
+		public int TileRowsProcessed;
 
 		public bool DoCommand(AttributeDictonary Commands, string e)
 		{
@@ -112,30 +113,34 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		readonly TreeSelector TreeSelector;
+
 		public Level(string source, int Zoom)
 		{
+			this.TreeSelector = new TreeSelector(this);
+
 			this.AttributeFlashlightOpacity.Value = 255;
 
 			this.Zoom = Zoom;
 
 			var Create = new
 			{
-				Tree = (Attribute.Int32)"tree",
+				//Tree = (Attribute.Int32)"tree",
 				Rock = (Attribute.Int32)"rock",
 				Sign = (Attribute.Int32_Int32)"sign"
 			};
 
-			Create.Tree.Assigned +=
-				x_ =>
-				{
-					var x = x_ * Zoom;
-					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+			//Create.Tree.Assigned +=
+			//    x_ =>
+			//    {
+			//        var x = x_ * Zoom;
+			//        var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
 
-					new Tree(Zoom)
-					{
+			//        new Tree(Zoom)
+			//        {
 
-					}.AddTo(KnownTrees).MoveBaseTo(x, y);
-				};
+			//        }.AddTo(KnownTrees).MoveBaseTo(x, y);
+			//    };
 
 			Create.Rock.Assigned +=
 				x_ =>
@@ -166,7 +171,9 @@ namespace AvalonUgh.Code
 			{
 				Create.Rock,
 				Create.Sign,
-				Create.Tree,
+				//Create.Tree,
+
+				this.TreeSelector.Attribute,
 
 				AttributeWind,
 				AttributeWater,
