@@ -117,7 +117,7 @@ namespace AvalonUgh.Code
 		}
 
 		[Script]
-		public class SelectorInfo
+		public class SelectorInfo 
 		{
 			public int Width;
 			public int Height;
@@ -129,6 +129,7 @@ namespace AvalonUgh.Code
 			public int PercisionY;
 
 			public Action<View, SelectorInfo, SelectorPosition> Invoke;
+
 		}
 
 		[Script]

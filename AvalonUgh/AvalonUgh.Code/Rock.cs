@@ -8,12 +8,15 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using System.Windows;
+using System.Windows.Threading;
 
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Rock : ISupportsContainer, ISupportsPhysics
+	public class Rock : ISupportsContainer, ISupportsPhysics , IDisposable
 	{
+		public View.SelectorInfo Selector { get; set; }
+
 		public int Stability { get; set; }
 
 		public void StabilityReached()
@@ -141,8 +144,7 @@ namespace AvalonUgh.Code
 				};
 
 			ShowFrame.up();
-			10000.AtInterval(UpdateFrame);
-
+			AnimationTimer = 10000.AtInterval(UpdateFrame);
 		}
 
 		public readonly Action UpdateFrame;
@@ -171,6 +173,14 @@ namespace AvalonUgh.Code
 
 
 
+		}
+
+		DispatcherTimer AnimationTimer;
+
+		public void Dispose()
+		{
+			this.Container.Orphanize();
+			AnimationTimer.Stop();
 		}
 	}
 }

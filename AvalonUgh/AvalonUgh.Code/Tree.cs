@@ -8,12 +8,15 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Tree : ISupportsContainer, ISupportsObstacle, ISupportsMoveTo
+	public class Tree : ISupportsContainer, ISupportsObstacle, ISupportsMoveTo, IDisposable
 	{
+		public View.SelectorInfo Selector { get; set; }
+
 		public Canvas Container { get; set; }
 
 		public readonly int Zoom;
@@ -108,7 +111,7 @@ namespace AvalonUgh.Code
 				};
 
 			ShowFrame.ok();
-			1000.AtInterval(UpdateFrame);
+			this.AnimationTimer = 1000.AtInterval(UpdateFrame);
 
 		}
 
@@ -147,6 +150,14 @@ namespace AvalonUgh.Code
 					this.UpdateFrame();
 				}
 			);
+		}
+
+		DispatcherTimer AnimationTimer;
+
+		public void Dispose()
+		{
+			this.Container.Orphanize();
+			AnimationTimer.Stop();
 		}
 	}
 }

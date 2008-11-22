@@ -258,9 +258,11 @@ namespace AvalonUgh.Code.Editor
 
 			AddButton(
 				Demolish,
-				new[]
+				new View.SelectorInfo[]
 				{
-				    new Editor.DemolishSelector()
+				    new Editor.DemolishSelector.Size_1x1(),
+				    new Editor.DemolishSelector.Size_2x2()
+
 				}
 			
 			);
