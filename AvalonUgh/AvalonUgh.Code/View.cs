@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using ScriptCoreLib.Shared.Avalon.Tween;
+using System.Windows.Shapes;
 
 namespace AvalonUgh.Code
 {
@@ -27,6 +28,7 @@ namespace AvalonUgh.Code
 		public Canvas Content { get; set; }
 
 		public Canvas Platforms { get; set; }
+		public Canvas PlatformsInfoOverlay { get; set; }
 
 		public Canvas Entities { get; set; }
 
@@ -39,6 +41,8 @@ namespace AvalonUgh.Code
 		public Canvas FlashlightContainer { get; set; }
 
 		public Canvas ColorOverlay { get; set; }
+
+		public Canvas InfoOverlay { get; set; }
 
 		public Canvas TouchOverlay { get; set; }
 
@@ -114,6 +118,12 @@ namespace AvalonUgh.Code
 				Height = this.ContentActualHeight
 			}.AttachTo(this.Content);
 
+			this.PlatformsInfoOverlay = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
+
 			this.Entities = new Canvas
 			{
 				Width = this.ContentActualWidth,
@@ -154,6 +164,13 @@ namespace AvalonUgh.Code
 				Visibility = System.Windows.Visibility.Hidden
 			}.AttachTo(this.ContentExtendedContainer);
 
+			this.InfoOverlay = new Canvas
+			{
+				Width = this.ContentExtendedWidth,
+				Height = this.ContentExtendedHeight
+			}.AttachTo(this.ContentExtendedContainer);
+
+
 			this.TouchOverlay = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
@@ -185,7 +202,7 @@ namespace AvalonUgh.Code
 			);
 
 			this.Flashlight = new Flashlight(
-				this.Level.Zoom,
+				this.Level.Zoom ,
 				ContentExtendedWidth,
 				ContentExtendedHeight
 			).AttachContainerTo(this.FlashlightContainer);
@@ -235,13 +252,56 @@ namespace AvalonUgh.Code
 					}
 				};
 
-			// if the level is less in height than the view then dock to bottom
-			// to support the statusbar over there which might or might not be there
 
 			AttachFilmScratchEffect();
+
+
+			var TouchTileSelector2 = new Rectangle
+			{
+				//Width = 100,
+				//Height = 100,
+				Width = PrimitiveTile.Width * this.Level.Zoom,
+				Height = PrimitiveTile.Heigth * this.Level.Zoom,
+				Fill = Brushes.Yellow,
+				Opacity = 0.5
+			}.MoveTo(64, 64).AttachTo(this.PlatformsInfoOverlay);
+
+			var TouchTileSelector = new Rectangle
+			{
+				//Width = 100,
+				//Height = 100,
+				Width = PrimitiveTile.Width * this.Level.Zoom,
+				Height = PrimitiveTile.Heigth * this.Level.Zoom,
+				Fill = Brushes.Red,
+				Opacity = 0.2
+			}.MoveTo(64, 64).AttachTo(this.InfoOverlay);
+
+			this.TouchOverlay.MouseMove +=
+				(sender, args) =>
+				{
+					var p = args.GetPosition(this.TouchOverlay);
+
+					TouchTileSelector.MoveTo(p.X, p.Y);
+
+					var x = p.X - MaxShakeSize - (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
+					var y = p.Y - MaxShakeSize - (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2;
+
+					// lets center the selector
+					x -= PrimitiveTile.Width * this.Level.Zoom / 2;
+					y -= PrimitiveTile.Width * this.Level.Zoom / 2;
+
+					var PercisionX = PrimitiveTile.Width * this.Level.Zoom / 2;
+					var PercisionY = PrimitiveTile.Heigth * this.Level.Zoom / 2;
+
+					x = Math.Round(x / PercisionX) * PercisionX;
+					y = Math.Round(y / PercisionY) * PercisionY;
+
+
+					TouchTileSelector2.MoveTo(x, y);
+				};
 		}
 
-		
+
 
 		public double ContentX { get; set; }
 		public double ContentY { get; set; }

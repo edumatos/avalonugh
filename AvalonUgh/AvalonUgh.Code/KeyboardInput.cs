@@ -52,7 +52,10 @@ namespace AvalonUgh.Code
 				(sender, args) =>
 				{
 					if (KeyState.ContainsKey(args.Key))
+					{
 						KeyState[args.Key] = true;
+						args.Handled = true;
+					}
 				};
 
 
@@ -60,7 +63,10 @@ namespace AvalonUgh.Code
 				(sender, args) =>
 				{
 					if (KeyState.ContainsKey(args.Key))
+					{
 						KeyState[args.Key] = false;
+						args.Handled = true;
+					}
 				};
 
 			e.InputControl.KeyUp +=
@@ -71,6 +77,7 @@ namespace AvalonUgh.Code
 						if (Drop != null)
 							Drop();
 
+						args.Handled = true;
 					}
 
 					if (args.Key == e.Enter)
@@ -78,6 +85,7 @@ namespace AvalonUgh.Code
 						if (Enter != null)
 							Enter();
 
+						args.Handled = true;
 					}
 				};
 

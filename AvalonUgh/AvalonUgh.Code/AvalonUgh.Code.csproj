@@ -45,6 +45,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Avalon.dll</HintPath>
     </Reference>
+    <Reference Include="ScriptCoreLib.Avalon.TiledImageButton, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Avalon.TiledImageButton.dll</HintPath>
+    </Reference>
     <Reference Include="ScriptCoreLib.Query, Version=3.5.3238.20715, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Query.dll</HintPath>
@@ -78,6 +82,7 @@
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
     <Compile Include="Cave.cs" />
+    <Compile Include="EditorToolbar.cs" />
     <Compile Include="View.AutoscrollTween.cs" />
     <Compile Include="View.AttachFilmScratchEffect.cs" />
     <Compile Include="Level.Attribute.cs" />

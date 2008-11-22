@@ -22,7 +22,7 @@ namespace AvalonUgh.Labs.Shared
 
 		public const int Zoom = 2;
 
-		public const int DefaultWidth = 800;
+		public const int DefaultWidth = 640;
 		public const int DefaultHeight = 400;
 
 		public const int StatusbarZoom = 2;
@@ -50,7 +50,11 @@ namespace AvalonUgh.Labs.Shared
 					}.MoveTo(0, i * 4).AttachTo(this)
 			).ToArray();
 
-
+			var GameContent = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this);
 
 
 			var CurrentLevel = KnownAssets.Path.Assets + "/level06.txt";
@@ -599,14 +603,14 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					this.FocusVisualStyle = null;
-					this.Focusable = true;
-					this.Focus();
+					GameContent.FocusVisualStyle = null;
+					GameContent.Focusable = true;
+					GameContent.Focus();
 
-					this.MouseLeftButtonDown +=
+					GameContent.MouseLeftButtonDown +=
 						(sender, args) =>
 						{
-							this.Focus();
+							GameContent.Focus();
 						};
 
 					var k1 = new KeyboardInput(
@@ -619,7 +623,7 @@ namespace AvalonUgh.Labs.Shared
 							Drop = Key.Space,
 							Enter = Key.Enter,
 
-							InputControl = this,
+							InputControl = GameContent,
 							Vehicle = xveh,
 							View = View
 						}
@@ -688,7 +692,7 @@ namespace AvalonUgh.Labs.Shared
 							Drop = Key.Q,
 							Enter = Key.E,
 
-							InputControl = this,
+							InputControl = GameContent,
 							Vehicle = twin,
 							View = View
 						}
@@ -716,9 +720,10 @@ namespace AvalonUgh.Labs.Shared
 
 
 
+					View.Flashlight.Visible = false;
 
 
-					this.KeyUp +=
+					GameContent.KeyUp +=
 						(sender, args) =>
 						{
 							if (args.Key == Key.F)
@@ -728,7 +733,7 @@ namespace AvalonUgh.Labs.Shared
 								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
 						};
 
-					View.AttachContainerTo(this);
+					View.AttachContainerTo(GameContent);
 
 
 					new Image
@@ -737,7 +742,14 @@ namespace AvalonUgh.Labs.Shared
 						Stretch = Stretch.Fill,
 						Width = 320 * StatusbarZoom,
 						Height = 9 * StatusbarZoom,
-					}.AttachTo(this).MoveTo((DefaultWidth - 320 * Zoom) / 2, DefaultHeight - 9 * StatusbarZoom);
+					}.AttachTo(GameContent).MoveTo((DefaultWidth - 320 * StatusbarZoom) / 2, DefaultHeight - 9 * StatusbarZoom);
+
+
+					var et = new EditorToolbar(this);
+
+					
+					et.AttachContainerTo(this);
+
 
 					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 				}
