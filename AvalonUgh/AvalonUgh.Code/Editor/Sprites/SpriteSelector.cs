@@ -6,10 +6,10 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 
-namespace AvalonUgh.Code.Editor
+namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public abstract class Sprite : View.SelectorInfo
+	public abstract class SpriteSelector : View.SelectorInfo
 	{
 		
 	}

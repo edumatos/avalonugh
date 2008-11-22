@@ -7,12 +7,12 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 
-namespace AvalonUgh.Code.Editor
+namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class TreeSprite : Sprite
+	public class TreeSelector : SpriteSelector
 	{
-		public TreeSprite()
+		public TreeSelector()
 		{
 			Width = PrimitiveTile.Width * 2;
 			Height = PrimitiveTile.Heigth * 2;
