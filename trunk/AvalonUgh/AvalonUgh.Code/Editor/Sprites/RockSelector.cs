@@ -26,7 +26,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 					new Rock(View.Level.Zoom)
 					{
-
+						Selector = this
 					}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownRocks).MoveTo(
 						(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
 						(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom

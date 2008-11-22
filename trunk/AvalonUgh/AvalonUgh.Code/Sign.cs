@@ -14,6 +14,8 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Sign : ISupportsContainer, ISupportsMoveTo
 	{
+		public View.SelectorInfo Selector { get; set; }
+
 		public Canvas Container { get; set; }
 
 		public readonly int Zoom;
