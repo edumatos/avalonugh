@@ -292,5 +292,60 @@ namespace AvalonUgh.Code
 		public Obstacle BorderObstacleRight { get; set; }
 		public Obstacle BorderObstacleLeft { get; set; }
 		public Obstacle BorderObstacleBottom { get; set; }
+
+
+
+		[Script]
+		public class RemovableObject
+		{
+			public Obstacle Obstacle;
+			public Action Dispose;
+		}
+
+		public IEnumerable<RemovableObject> GetRemovableEntities()
+		{
+			return
+				this.KnownTrees.Select(
+					Entity =>
+						new RemovableObject
+						{
+							Obstacle = Entity.ToObstacle(),
+							Dispose =
+								delegate
+								{
+									this.KnownTrees.Remove(Entity);
+									Entity.Dispose();
+								}
+						}
+				).Concat(
+					this.KnownRocks.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownRocks.Remove(Entity);
+										Entity.Dispose();
+									}
+							}
+					)
+				).Concat(
+					this.KnownSigns.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownSigns.Remove(Entity);
+										Entity.Dispose();
+									}
+							}
+					)
+				);
+		}
 	}
 }

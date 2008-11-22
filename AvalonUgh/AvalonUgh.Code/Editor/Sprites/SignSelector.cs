@@ -19,13 +19,19 @@ namespace AvalonUgh.Code.Editor.Sprites
 			PercisionX = PrimitiveTile.Width / 2;
 			PercisionY = PrimitiveTile.Heigth;
 
+			var c = 0;
+
 			Invoke =
 				(View, Selector, Position) =>
 				{
-					// add a new fence tile
+					
+					DemolishSelector.InternalInvoke(View, Selector, Position);
+
+					c++;
 
 					new Sign(View.Level.Zoom)
 					{
+						Value = c % 6,
 						Selector = this
 					}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownSigns).MoveTo(
 						(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,

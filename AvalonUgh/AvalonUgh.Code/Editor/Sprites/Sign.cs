@@ -12,7 +12,7 @@ using System.Windows;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Sign : ISupportsContainer, ISupportsMoveTo
+	public class Sign : ISupportsContainer, ISupportsMoveTo, ISupportsObstacle, IDisposable
 	{
 		public View.SelectorInfo Selector { get; set; }
 
@@ -94,6 +94,21 @@ namespace AvalonUgh.Code
 
 		readonly Action UpdateFrame;
 
+		public Obstacle ToObstacle(double x, double y)
+		{
+			return new Obstacle
+			{
+				Left = x - HalfWidth,
+				Top = y - HalfHeight,
+				Right = x + HalfWidth,
+				Bottom = y + HalfHeight,
+				//SupportsVelocity = this
+			};
+		}
 
+		public void Dispose()
+		{
+			this.OrphanizeContainer();
+		}
 	}
 }
