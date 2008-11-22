@@ -728,6 +728,9 @@ namespace AvalonUgh.Labs.Shared
 
 					et.AttachContainerTo(this);
 
+					et.EditorSelectorChanged +=
+						EditorSelector => View.EditorSelector = EditorSelector;
+
 					GameContent.KeyUp +=
 						(sender, args) =>
 						{
@@ -738,7 +741,10 @@ namespace AvalonUgh.Labs.Shared
 								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
 
 							if (args.Key == Key.T)
+							{
 								et.Container.ToggleVisible();
+								View.EditorSelectorRectangle.ToggleVisible();
+							}
 						};
 
 					View.AttachContainerTo(GameContent);

@@ -82,6 +82,13 @@
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
     <Compile Include="Cave.cs" />
+    <Compile Include="Editor\TreeSprite.cs" />
+    <Compile Include="Editor\Sprite.cs" />
+    <Compile Include="Editor\EmptyTile.cs" />
+    <Compile Include="Editor\StoneTile.cs" />
+    <Compile Include="Editor\Tile.cs" />
+    <Compile Include="Editor\FenceTile.cs" />
+    <Compile Include="View.EditorSelector.cs" />
     <Compile Include="EditorToolbar.cs" />
     <Compile Include="View.AutoscrollTween.cs" />
     <Compile Include="View.AttachFilmScratchEffect.cs" />

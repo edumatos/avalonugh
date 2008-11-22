@@ -202,7 +202,7 @@ namespace AvalonUgh.Code
 			);
 
 			this.Flashlight = new Flashlight(
-				this.Level.Zoom ,
+				this.Level.Zoom,
 				ContentExtendedWidth,
 				ContentExtendedHeight
 			).AttachContainerTo(this.FlashlightContainer);
@@ -254,53 +254,8 @@ namespace AvalonUgh.Code
 
 
 			AttachFilmScratchEffect();
-
-
-			var TouchTileSelector2 = new Rectangle
-			{
-				//Width = 100,
-				//Height = 100,
-				Width = PrimitiveTile.Width * this.Level.Zoom,
-				Height = PrimitiveTile.Heigth * this.Level.Zoom,
-				Fill = Brushes.Yellow,
-				Opacity = 0.5
-			}.MoveTo(64, 64).AttachTo(this.PlatformsInfoOverlay);
-
-			var TouchTileSelector = new Rectangle
-			{
-				//Width = 100,
-				//Height = 100,
-				Width = PrimitiveTile.Width * this.Level.Zoom,
-				Height = PrimitiveTile.Heigth * this.Level.Zoom,
-				Fill = Brushes.Red,
-				Opacity = 0.2
-			}.MoveTo(64, 64).AttachTo(this.InfoOverlay);
-
-			this.TouchOverlay.MouseMove +=
-				(sender, args) =>
-				{
-					var p = args.GetPosition(this.TouchOverlay);
-
-					TouchTileSelector.MoveTo(p.X, p.Y);
-
-					var x = p.X - MaxShakeSize - (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
-					var y = p.Y - MaxShakeSize - (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2;
-
-					// lets center the selector
-					x -= PrimitiveTile.Width * this.Level.Zoom / 2;
-					y -= PrimitiveTile.Width * this.Level.Zoom / 2;
-
-					var PercisionX = PrimitiveTile.Width * this.Level.Zoom / 2;
-					var PercisionY = PrimitiveTile.Heigth * this.Level.Zoom / 2;
-
-					x = Math.Round(x / PercisionX) * PercisionX;
-					y = Math.Round(y / PercisionY) * PercisionY;
-
-
-					TouchTileSelector2.MoveTo(x, y);
-				};
+			AttachEditorSelector();
 		}
-
 
 
 		public double ContentX { get; set; }
