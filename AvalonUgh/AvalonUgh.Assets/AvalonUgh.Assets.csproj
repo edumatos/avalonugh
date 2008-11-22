@@ -64,7 +64,6 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\bridge0.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\sign2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone0.png" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +254,9 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\07.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\08.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.FilmScratch\09.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\btn_demolish.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
