@@ -9,9 +9,9 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public class EmptyTile : Tile
+	public class DemolishSelector : View.SelectorInfo
 	{
-		public EmptyTile()
+		public DemolishSelector()
 		{
 			Width = PrimitiveTile.Width;
 			Height = PrimitiveTile.Heigth;

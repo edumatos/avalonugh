@@ -6,12 +6,12 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 
-namespace AvalonUgh.Code.Editor
+namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class StoneTile : Tile
+	public class FenceTile : Tile
 	{
-		public StoneTile()
+		public FenceTile()
 		{
 			Width = PrimitiveTile.Width;
 			Height = PrimitiveTile.Heigth;
@@ -25,7 +25,7 @@ namespace AvalonUgh.Code.Editor
 
 					new Image
 					{
-						Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0.png").ToSource(),
+						Source = (Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png").ToSource(),
 						Stretch = System.Windows.Media.Stretch.Fill,
 						Width = Selector.Width * View.Level.Zoom,
 						Height = Selector.Height * View.Level.Zoom,

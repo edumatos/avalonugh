@@ -14,7 +14,7 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Input;
 using ScriptCoreLib.Shared.Avalon.Tween;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Editor
 {
 	[Script]
 	public class EditorToolbar : Window
@@ -210,7 +210,7 @@ namespace AvalonUgh.Code
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/stone1_2x2.png",
 				new[]
 				{
-				    new Editor.StoneTile()
+				    new Editor.Tiles.StoneTile()
 				}
 			);
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
@@ -220,19 +220,29 @@ namespace AvalonUgh.Code
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png", 
 				new []
 				{
-					new Editor.TreeSprite()
+					new Editor.Sprites.TreeSelector()
 				}
 			);
 
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png", null);
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/rock0.png", null);
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png",
+				new[]
+				{
+				    new Editor.Sprites.SignSelector()
+				}	
+			);
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/rock0.png",
+				new[]
+				{
+					new Editor.Sprites.RockSelector()
+				}	
+			);
 
 			
 
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
 				new[]
 				{
-				    new Editor.FenceTile()
+				    new Editor.Tiles.FenceTile()
 				}
 			);
 
@@ -250,7 +260,7 @@ namespace AvalonUgh.Code
 				Demolish,
 				new[]
 				{
-				    new Editor.EmptyTile()
+				    new Editor.DemolishSelector()
 				}
 			
 			);
