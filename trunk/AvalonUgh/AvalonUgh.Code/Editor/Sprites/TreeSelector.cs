@@ -12,6 +12,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class TreeSelector : SpriteSelector
 	{
+
 		public TreeSelector()
 		{
 			Width = PrimitiveTile.Width * 2;

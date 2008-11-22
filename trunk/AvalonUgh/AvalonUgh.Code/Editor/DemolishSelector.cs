@@ -38,9 +38,9 @@ namespace AvalonUgh.Code.Editor
 				Invoke = InternalInvoke;
 			}
 		}
-	
 
-		static void InternalInvoke(View View, View.SelectorInfo Selector, View.SelectorPosition Position)
+
+		public static void InternalInvoke(View View, View.SelectorInfo Selector, View.SelectorPosition Position)
 		{
 			var z = View.Level.Zoom;
 			var x = Position.ContentX * z;
@@ -55,7 +55,7 @@ namespace AvalonUgh.Code.Editor
 			};
 
 			// we will remove the first object we 
-			View.GetRemovableObjects().FirstOrDefault(k => k.Obstacle.Intersects(o)).Apply(k => k.Dispose());
+			View.Level.GetRemovableEntities().FirstOrDefault(k => k.Obstacle.Intersects(o)).Apply(k => k.Dispose());
 
 		}
 	}

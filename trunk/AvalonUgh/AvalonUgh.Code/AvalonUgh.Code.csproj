@@ -99,12 +99,12 @@
     <Compile Include="KeyboardInput.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LocationTracker.cs" />
-    <Compile Include="Sign.cs" />
+    <Compile Include="Editor\Sprites\Sign.cs" />
     <Compile Include="Obstacle.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="PrimitiveTile.cs" />
-    <Compile Include="Rock.cs" />
-    <Compile Include="Tree.cs" />
+    <Compile Include="Editor\Sprites\Rock.cs" />
+    <Compile Include="Editor\Sprites\Tree.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View.cs" />

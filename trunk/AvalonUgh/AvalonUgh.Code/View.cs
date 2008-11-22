@@ -294,43 +294,5 @@ namespace AvalonUgh.Code
 			);
 		}
 
-		[Script]
-		public class RemovableObject
-		{
-			public Obstacle Obstacle;
-			public Action Dispose;
-		}
-
-		public IEnumerable<RemovableObject> GetRemovableObjects()
-		{
-			return
-				this.Level.KnownTrees.Select(
-					Entity =>
-						new RemovableObject
-						{
-							Obstacle = Entity.ToObstacle(),
-							Dispose =
-								delegate
-								{
-									this.Level.KnownTrees.Remove(Entity);
-									Entity.Dispose();
-								}
-						}
-				).Concat(
-					this.Level.KnownRocks.Select(
-						Entity =>
-							new RemovableObject
-							{
-								Obstacle = Entity.ToObstacle(),
-								Dispose =
-									delegate
-									{
-										this.Level.KnownRocks.Remove(Entity);
-										Entity.Dispose();
-									}
-							}
-					)
-				);
-		}
 	}
 }
