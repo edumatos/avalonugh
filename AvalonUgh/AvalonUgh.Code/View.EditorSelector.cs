@@ -119,8 +119,26 @@ namespace AvalonUgh.Code
 		[Script]
 		public class SelectorInfo 
 		{
-			public int Width;
-			public int Height;
+			public int Width { get; set; }
+			public int Height { get; set; }
+
+			public int PrimitiveTileCountX
+			{
+				
+				set
+				{
+					Width = value * PrimitiveTile.Width;
+				}
+			}
+
+			public int PrimitiveTileCountY
+			{
+				set
+				{
+					Height = value * PrimitiveTile.Heigth;
+				}
+			}
+
 
 			public int HalfWidth { get { return Width / 2; } }
 			public int HalfHeight { get { return Height / 2; } }

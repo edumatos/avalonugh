@@ -9,15 +9,13 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class FenceTile : Tile
+	public class FenceSelector : TileSelector
 	{
-		public FenceTile()
+		public FenceSelector()
 		{
-			Width = PrimitiveTile.Width;
-			Height = PrimitiveTile.Heigth;
-			PercisionX = PrimitiveTile.Width;
-			PercisionY = PrimitiveTile.Heigth;
-
+			PrimitiveTileCountX = 1;
+			PrimitiveTileCountY = 1;
+		
 			Invoke =
 				(View, Selector, Position) =>
 				{

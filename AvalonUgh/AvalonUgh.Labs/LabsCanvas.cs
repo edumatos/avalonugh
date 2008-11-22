@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using System.Windows.Input;
 using AvalonUgh.Code;
 using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.Editor.Tiles;
 
 namespace AvalonUgh.Labs.Shared
 {
@@ -58,7 +59,7 @@ namespace AvalonUgh.Labs.Shared
 			}.AttachTo(this);
 
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level06.txt";
+			var CurrentLevel = KnownAssets.Path.Assets + "/level07.txt";
 
 			Console.WriteLine("loading: " + CurrentLevel);
 
@@ -364,8 +365,10 @@ namespace AvalonUgh.Labs.Shared
 							}
 
 							// stone
-							if (k.Value == "S")
+							if (k.Value == StoneSelector.Identifier)
 							{
+								StoneSelector.AttachToLevel(k, Tile, Level);
+
 								if (Is_4x2)
 								{
 									Create.stone0_4x2(k.X, k.Y);
