@@ -12,12 +12,21 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.TiledImageButton;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Input;
+using ScriptCoreLib.Shared.Avalon.Tween;
 
 namespace AvalonUgh.Code
 {
 	[Script]
 	public class EditorToolbar : Window
 	{
+		public event Action<View.SelectorInfo> EditorSelectorChanged;
+
+		[Script]
+		public class  Button
+		{
+			public Image Image;
+			public Rectangle TouchOverlay;
+		}
 
 		public EditorToolbar(Canvas DragContainer)
 		{
@@ -47,113 +56,13 @@ namespace AvalonUgh.Code
 			//Navbar.AttachContainerTo(this).MoveContainerTo(Padding, Padding);
 
 
+		
 
-			var Buttons =
-				new[]
-				{
-					new 
-					{
-						Image = default(Image),
-						TouchOverlay = default(Rectangle),
-					}
-				}.ToList();
-			
-			Buttons.Clear();
-
+			var Buttons = new List<Button>();
+		
 			Func<int> ButtonsWidth = () => Padding + Buttons.Count * (PrimitiveTile.Width * 2 + Padding);
 
-			#region AddButton
-			Action<Image> AddButton =
-				Image =>
-				{
-					var x = ButtonsWidth();
-
-					Image.AttachTo(this);
-
-					var TouchOverlay = new Rectangle
-					{
-						Width = PrimitiveTile.Width * 2,
-						Height = PrimitiveTile.Heigth * 2,
-						Fill = Brushes.Red,
-						Opacity = 0,
-						Cursor = Cursors.Hand
-					}.AttachTo(this).MoveTo(x, Padding);
-
-					TouchOverlay.MouseEnter +=
-						delegate
-						{
-							Image.Opacity = 0.6;
-						};
-
-					TouchOverlay.MouseLeave +=
-						delegate
-						{
-							Image.Opacity = 1;
-						};
-
-
-					new
-					{
-						Image,
-						TouchOverlay
-					}.AddTo(Buttons);
-				};
-			Action<string> AddButton_2x2 =
-				AssetSource =>
-				{
-					AddButton(
-						new Image
-						{
-							Source = AssetSource.ToSource(),
-							Width = PrimitiveTile.Width * 2,
-							Height = PrimitiveTile.Heigth * 2
-						}.MoveTo(ButtonsWidth(), Padding)
-					);
-
-					
-				};
-
-			Action<string> AddButton_1x1 =
-				AssetSource =>
-				{
-					AddButton(
-						new Image
-						{
-							Source = AssetSource.ToSource(),
-							Width = PrimitiveTile.Width,
-							Height = PrimitiveTile.Heigth
-						}.MoveTo(
-							ButtonsWidth() + PrimitiveTile.Width / 2,
-							Padding + PrimitiveTile.Width / 2
-						)
-					);
-
-
-				};
-			#endregion
-
-
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/stone1_2x2.png");
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png");
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png");
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png");
-
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png");
-
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png");
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/rock0.png");
-
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png");
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png");
-
-			AddButton(
-				new Image
-				{
-					Source = (Assets.Shared.KnownAssets.Path.Assets + "/btn_demolish.png").ToSource(),
-					Width = 20,
-					Height = 20
-				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 10, Padding +  PrimitiveTile.Heigth - 10)
-			);
+			CreateButtons(Buttons, ButtonsWidth);
 
 			this.Width = ButtonsWidth();
 			this.Update();
@@ -181,6 +90,170 @@ namespace AvalonUgh.Code
 			LevelText.GotFocus += delegate { LevelTextBackground.Opacity = 0.7; };
 			LevelText.LostFocus += delegate { LevelTextBackground.Opacity = 0.2; };
 			#endregion
+		}
+
+		private void CreateButtons(List<Button> Buttons, Func<int> ButtonsWidth)
+		{
+			var SelectionMarker = new Rectangle
+			{
+				Fill = Brushes.LightGreen,
+				Opacity = 0.5,
+				Width = PrimitiveTile.Width * 2 + 4,
+				Height = PrimitiveTile.Heigth * 2 + 4
+			}.AttachTo(this);
+
+			Action<int, int> SelectionMarkerMove = NumericEmitter.Of(
+				(x, y) => SelectionMarker.MoveTo(x, y)
+			);
+
+			SelectionMarkerMove(Padding - 2, Padding - 2);
+
+			#region AddButton
+			Action<Image, View.SelectorInfo[]> AddButton =
+				(Image, EditorSelector) =>
+				{
+					var EditorSelectorCycle = EditorSelector.AsCyclicEnumerable().GetEnumerator();
+
+					var x = ButtonsWidth();
+					var y = Padding;
+
+					Image.AttachTo(this);
+
+					var TouchOverlay = new Rectangle
+					{
+						Width = PrimitiveTile.Width * 2,
+						Height = PrimitiveTile.Heigth * 2,
+						Fill = Brushes.Red,
+						Opacity = 0,
+						Cursor = Cursors.Hand
+					}.AttachTo(this).MoveTo(x, y);
+
+					TouchOverlay.MouseEnter +=
+						delegate
+						{
+							Image.Opacity = 0.6;
+						};
+
+					TouchOverlay.MouseLeave +=
+						delegate
+						{
+							Image.Opacity = 1;
+						};
+
+					TouchOverlay.MouseLeftButtonUp +=
+						delegate
+						{
+							
+							SelectionMarkerMove(x - 2, y - 2);
+
+
+							if (EditorSelectorCycle.MoveNext())
+							{
+								SelectionMarker.Fill = Brushes.LightGreen;
+
+								if (EditorSelectorChanged != null)
+									EditorSelectorChanged(EditorSelectorCycle.Current);
+							}
+							else
+							{
+								SelectionMarker.Fill = Brushes.Red;
+							}
+						};
+
+
+					new Button
+					{
+						Image = Image,
+						TouchOverlay = TouchOverlay
+					}.AddTo(Buttons);
+				};
+			Action<string, View.SelectorInfo[]> AddButton_2x2 =
+				(Image, EditorSelector) =>
+				{
+					AddButton(
+						new Image
+						{
+							Source = Image.ToSource(),
+							Width = PrimitiveTile.Width * 2,
+							Height = PrimitiveTile.Heigth * 2
+						}.MoveTo(ButtonsWidth(), Padding)
+					, EditorSelector);
+
+
+				};
+
+			Action<string, View.SelectorInfo[]> AddButton_1x1 =
+				(Image, EditorSelector) =>
+				{
+					AddButton(
+						new Image
+						{
+							Source = Image.ToSource(),
+							Width = PrimitiveTile.Width,
+							Height = PrimitiveTile.Heigth
+						}.MoveTo(
+							ButtonsWidth() + PrimitiveTile.Width / 2,
+							Padding + PrimitiveTile.Width / 2
+						)
+					, EditorSelector);
+
+
+				};
+			#endregion
+
+
+			AddButtons(ButtonsWidth, AddButton, AddButton_2x2, AddButton_1x1);
+		}
+
+		private void AddButtons(Func<int> ButtonsWidth, Action<Image, View.SelectorInfo[]> AddButton, Action<string, View.SelectorInfo[]> AddButton_2x2, Action<string, View.SelectorInfo[]> AddButton_1x1)
+		{
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/stone1_2x2.png",
+				new[]
+				{
+				    new Editor.StoneTile()
+				}
+			);
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png", null);
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png", null);
+
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png", 
+				new []
+				{
+					new Editor.TreeSprite()
+				}
+			);
+
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png", null);
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/rock0.png", null);
+
+			
+
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
+				new[]
+				{
+				    new Editor.FenceTile()
+				}
+			);
+
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png", null);
+
+			var Demolish = 
+				new Image
+				{
+					Source = (Assets.Shared.KnownAssets.Path.Assets + "/btn_demolish.png").ToSource(),
+					Width = 20,
+					Height = 20
+				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 10, Padding + PrimitiveTile.Heigth - 10);
+
+			AddButton(
+				Demolish,
+				new[]
+				{
+				    new Editor.EmptyTile()
+				}
+			
+			);
 		}
 	}
 }
