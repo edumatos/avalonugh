@@ -18,16 +18,16 @@ namespace AvalonUgh.Code
 		private void AttachFilmScratchEffect()
 		{
 			var Scratches =
-								 Enumerable.Range(1, 9).Select(
-								 index =>
-									 new Image
-									 {
-										 Source = (Assets.Shared.KnownAssets.Path.FilmScratch + "/" + index.ToString().PadLeft(2, '0') + ".png").ToSource(),
-										 Stretch = Stretch.Fill,
-										 Width = 32,
-										 Height = 32,
-									 }.AttachTo(this.FilmScratchContainer)
-							 ).ToArray();
+				 Enumerable.Range(1, 9).Select(
+				 index =>
+					 new Image
+					 {
+						 Source = (Assets.Shared.KnownAssets.Path.FilmScratch + "/" + index.ToString().PadLeft(2, '0') + ".png").ToSource(),
+						 Stretch = Stretch.Fill,
+						 Width = 32,
+						 Height = 32,
+					 }.AttachTo(this.FilmScratchContainer)
+			 ).ToArray();
 
 			this.IsFilmScratchEffectEnabledChanged +=
 				delegate
@@ -45,7 +45,7 @@ namespace AvalonUgh.Code
 
 			var Shaker = new Random();
 
-			(1000 / 15).AtInterval(
+			(1000 / 20).AtInterval(
 				delegate
 				{
 					if (!this.IsFilmScratchEffectEnabled)
@@ -61,7 +61,6 @@ namespace AvalonUgh.Code
 
 					var Shake = 2.0;
 
-					Console.WriteLine("shake");
 
 					this.FlashlightContainer.Opacity = (Shaker.NextDouble() * 0.3 + 0.8).Min(1);
 					this.ContentShakeX = (Shaker.NextDouble() * Shake) - Shake / 2;
