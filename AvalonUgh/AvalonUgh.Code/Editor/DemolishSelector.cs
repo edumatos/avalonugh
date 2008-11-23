@@ -27,7 +27,7 @@ namespace AvalonUgh.Code.Editor
 		{
 			public Size_1x1() : base(1, 1)
 			{
-				Invoke = InternalInvoke;
+				Invoke = (v, p) => InternalInvoke(v, this, p);
 			}
 		}
 
@@ -38,11 +38,12 @@ namespace AvalonUgh.Code.Editor
 				: base(2, 2)
 			{
 
-				Invoke = InternalInvoke;
+				Invoke = (v, p) => InternalInvoke(v, this, p);
 			}
 		}
 
 
+	
 		public static void InternalInvoke(View View, View.SelectorInfo Selector, View.SelectorPosition Position)
 		{
 			var z = View.Level.Zoom;
