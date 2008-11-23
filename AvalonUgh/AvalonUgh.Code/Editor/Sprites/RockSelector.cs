@@ -26,6 +26,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 					(View, Position) =>
 					{
 						// add a new fence tile
+						RemoveEntities(this, View.Level, Position);
 
 						new Rock(View.Level.Zoom)
 						{

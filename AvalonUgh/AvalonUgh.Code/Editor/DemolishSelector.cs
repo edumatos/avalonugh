@@ -16,14 +16,14 @@ namespace AvalonUgh.Code.Editor
 			{
 				new Size_1x1(),
 				new Size_2x2(),
-				//new Size_4x2(),
+				new Size_4x4(),
 				//new Size_2x4(),
 				//new Size_2x3(),
 				//new Size_2x1(),
 			};
 
 		[Script]
-		public class Size_1x1 : Tiles.TileSelector
+		internal class Size_1x1 : Tiles.TileSelector
 		{
 			public Size_1x1() : base(1, 1)
 			{
@@ -32,7 +32,7 @@ namespace AvalonUgh.Code.Editor
 		}
 
 		[Script]
-		public class Size_2x2 : Tiles.TileSelector
+		internal class Size_2x2 : Tiles.TileSelector
 		{
 			public Size_2x2()
 				: base(2, 2)
@@ -40,10 +40,25 @@ namespace AvalonUgh.Code.Editor
 
 				Invoke = (v, p) => InternalInvoke(v, this, p);
 			}
+
+		
 		}
 
 
+		[Script]
+		internal class Size_4x4 : Tiles.TileSelector
+		{
+			public Size_4x4()
+				: base(4, 4)
+			{
+
+				Invoke = (v, p) => InternalInvoke(v, this, p);
+			}
+
+
+		}
 	
+
 		public static void InternalInvoke(View View, View.SelectorInfo Selector, View.SelectorPosition Position)
 		{
 			var z = View.Level.Zoom;
@@ -54,14 +69,21 @@ namespace AvalonUgh.Code.Editor
 			{
 				Left = x,
 				Top = y,
-				Right = x + Selector.Width * 2,
-				Bottom = y + Selector.Height * 2
+				Right = x + Selector.Width * z,
+				Bottom = y + Selector.Height * z
 			};
 
 			// we will remove the first object we 
 			var a = View.Level.GetRemovableEntities().Where(k => k.Obstacle.Intersects(o)).ToArray();
-			
-			a.ForEach(k => k.Dispose());
+
+			if (a.Any())
+			{
+				a.ForEach(k => k.Dispose());
+
+				return;
+			}
+
+			View.Level.GetRemovablePlatforms().Where(k => k.Obstacle.Intersects(o)).ToArray().ForEach(k => k.Dispose());
 
 		}
 	}

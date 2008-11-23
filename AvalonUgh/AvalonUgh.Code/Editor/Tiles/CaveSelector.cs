@@ -30,10 +30,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public class Size_2x2 : TileSelector
 		{
 
-			public Size_2x2()
+			public Size_2x2() : base(2, 2)
 			{
-				PrimitiveTileCountX = 2;
-				PrimitiveTileCountY = 2;
 
 				var Caves = new[]
 				{
