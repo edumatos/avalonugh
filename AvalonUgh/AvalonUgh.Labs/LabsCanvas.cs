@@ -286,37 +286,17 @@ namespace AvalonUgh.Labs.Shared
 
 
 							// ridge
-							if (k.Value == "R")
+							if (k.Value == RidgeSelector.Identifier)
 							{
+								RidgeSelector.AttachToLevel(k, Tile, Level);
 
-								if (Is_2x2)
-								{
-									Create.ridge0_2x2(k.X, k.Y);
-									return;
-								}
-
-								Create.ridge0(k.X, k.Y);
 								return;
 							}
 
 							// cave
 							if (k.Value == CaveSelector.Identifier)
 							{
-
-								if (Is_2x2)
-								{
-									Level.KnownCaves.Add(
-										new Cave
-										{
-											Location = k,
-											Image = Create.cave0_2x2(k.X, k.Y)
-										}
-									);
-									//if ((k.X * k.Y) % 2 == 0)
-									//else
-									//    Create.cave1_2x2(k.X, k.Y);
-									return;
-								}
+								CaveSelector.AttachToLevel(k, Tile, Level);
 
 								return;
 							}
@@ -467,11 +447,11 @@ namespace AvalonUgh.Labs.Shared
 						{
 							actor.AttachContainerTo(View.Entities);
 
-							var cave = Level.KnownCaves.AtModulus(index);
+							var cave = Level.KnownCaves.ToArray().AtModulus(index);
 
 							actor.MoveTo(
-								(cave.Location.X + 1) * PrimitiveTile.Width * Zoom,
-								(cave.Location.Y + 1) * PrimitiveTile.Heigth * Zoom
+								(cave.Position.TileX + 1) * PrimitiveTile.Width * Zoom,
+								(cave.Position.TileY + 1) * PrimitiveTile.Heigth * Zoom
 							);
 
 							KnownActors.Add(actor);

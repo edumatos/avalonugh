@@ -2,28 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ScriptCoreLib;
 using System.Windows.Controls;
+using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public static class StoneSelector
+	public class RidgeSelector
 	{
-		public const string Identifier = "S";
+		public const string Identifier = "R";
 
-
-		internal static readonly View.SelectorInfo[] Sizes =
+		public static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
 			{
 				new Size_Generic(1, 1, 1),
-				new Size_Generic(2, 2, 2),
-				new Size_Generic(4, 2, 1),
-				new Size_Generic(2, 4, 1),
-				new Size_Generic(2, 3, 1),
-				new Size_Generic(2, 1, 1),
+				new Size_Generic(2, 2, 1),
 			};
 
 		[Script]
@@ -31,7 +27,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 		{
 
 			public Size_Generic(int x, int y, int variations)
-				: base(x, y, variations, "stone")
+				: base(x, y, variations, "ridge")
 			{
 			
 			}
@@ -41,19 +37,17 @@ namespace AvalonUgh.Code.Editor.Tiles
 				Name.Index = (Name.Index + 1) % Name.IndexCount;
 
 				RemovePlatforms(this, Level, Position);
+				RemoveEntities(this, Level, Position);
 
-				var u = new Stone(Level, this)
+				var u = new Ridge(Level, this)
 				{
 					Position = Position,
 					Image = ToImage(Level, Position)
 				};
 
-				Level.KnownStones.Add(u);
+				Level.KnownRidges.Add(u);
 			}
 		}
-
-
-
 
 		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{

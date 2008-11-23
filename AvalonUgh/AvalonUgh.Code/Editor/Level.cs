@@ -54,8 +54,8 @@ namespace AvalonUgh.Code
 		/// The caves are important because actors need to exit and enter them
 		/// </summary>
 		public readonly BindingList<Cave> KnownCaves = new BindingList<Cave>();
-
 		public readonly BindingList<Stone> KnownStones = new BindingList<Stone>();
+		public readonly BindingList<Ridge> KnownRidges = new BindingList<Ridge>();
 
 
 		const string Comment = "#";
@@ -329,34 +329,34 @@ namespace AvalonUgh.Code
 									Entity.Image.Orphanize();
 								}
 						}
-				//).Concat(
-				//    this.KnownRocks.Select(
-				//        Entity =>
-				//            new RemovableObject
-				//            {
-				//                Obstacle = Entity.ToObstacle(),
-				//                Dispose =
-				//                    delegate
-				//                    {
-				//                        this.KnownRocks.Remove(Entity);
-				//                        Entity.Dispose();
-				//                    }
-				//            }
-				//    )
-				//).Concat(
-				//    this.KnownSigns.Select(
-				//        Entity =>
-				//            new RemovableObject
-				//            {
-				//                Obstacle = Entity.ToObstacle(),
-				//                Dispose =
-				//                    delegate
-				//                    {
-				//                        this.KnownSigns.Remove(Entity);
-				//                        Entity.Dispose();
-				//                    }
-				//            }
-				//    )
+				).Concat(
+					this.KnownCaves.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownCaves.Remove(Entity);
+										Entity.Image.Orphanize();
+									}
+							}
+					)
+				).Concat(
+					this.KnownRidges.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownRidges.Remove(Entity);
+										Entity.Image.Orphanize();
+									}
+							}
+					)
 				);
 		}
 

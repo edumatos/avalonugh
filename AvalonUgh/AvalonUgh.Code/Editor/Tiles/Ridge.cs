@@ -8,11 +8,14 @@ using System.Windows.Controls;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class Cave : Tile
+	public class Ridge : Tile
 	{
-		public Cave(Level Level, TileSelector Selector)
+
+		public Ridge(Level Level, TileSelector Selector)
 			: base(Level, Selector)
 		{
 		}
+
+		
 	}
 }

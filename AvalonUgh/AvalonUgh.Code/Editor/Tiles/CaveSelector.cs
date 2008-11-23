@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
@@ -14,52 +15,62 @@ namespace AvalonUgh.Code.Editor.Tiles
 	{
 		public const string Identifier = "C";
 
-		public static readonly View.SelectorInfo[] Sizes =
+		internal static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
 			{
-				//new Size_1x1()
-				new Size_2x2()
-				//new Size_4x2(),
-				//new Size_2x4(),
-				//new Size_2x3(),
-				//new Size_2x1(),
+				new Size_Generic(2, 2, 2),
 			};
 
-
 		[Script]
-		public class Size_2x2 : TileSelector
+		private class Size_Generic : TileSelector.Named
 		{
 
-			public Size_2x2() : base(2, 2)
+			public Size_Generic(int x, int y, int variations)
+				: base(x, y, variations, "cave")
 			{
-
-				var Caves = new[]
-				{
-					(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png"),
-					(Assets.Shared.KnownAssets.Path.Tiles + "/cave1_2x2.png"),
-				};
-
-				var CavesCyclic = Caves.AsCyclicEnumerable().GetEnumerator();
-
-				Invoke =
-					(View,  Position) =>
-					{
-						// add a new fence tile
-
-						new Image
-						{
-							Source = CavesCyclic.Take().ToSource(),
-							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = this.Width * View.Level.Zoom,
-							Height = this.Height * View.Level.Zoom,
-						}.AttachTo(View.Platforms).MoveTo(
-							Position.ContentX * View.Level.Zoom,
-							Position.ContentY * View.Level.Zoom
-						);
-					};
+			
 			}
 
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				Name.Index = (Name.Index + 1) % Name.IndexCount;
+
+				RemovePlatforms(this, Level, Position);
+
+				var u = new Cave(Level, this)
+				{
+					Position = Position,
+					Image = ToImage(Level, Position)
+				};
+
+				Level.KnownCaves.Add(u);
+			}
 		}
 
+		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		{
+			var Selector = Sizes.SingleOrDefault(
+				k => k.Equals(Tile)
+			);
+
+			if (Selector == null)
+			{
+				Console.WriteLine(
+					new { InvalidSize = new { Tile.Width, Tile.Height }, Identifier, Position.X, Position.Y }.ToString()
+				);
+
+				return;
+			}
+
+			Selector.CreateTo(Level,
+				new View.SelectorPosition
+				{
+					TileX = Position.X,
+					TileY = Position.Y,
+					ContentX = Position.X * PrimitiveTile.Width,
+					ContentY = Position.Y * PrimitiveTile.Heigth,
+				}
+			);
+		}
 	}
 }

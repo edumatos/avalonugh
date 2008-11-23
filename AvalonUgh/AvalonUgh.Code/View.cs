@@ -193,6 +193,15 @@ namespace AvalonUgh.Code
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
+			this.Level.KnownCaves.ForEachNewItem(
+				k => k.Image.AttachTo(this.Platforms)
+			);
+
+			this.Level.KnownRidges.ForEachNewItem(
+				k => k.Image.AttachTo(this.Platforms)
+			);
+
+
 
 			new Water(
 				new Water.Info
