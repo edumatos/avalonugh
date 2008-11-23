@@ -23,7 +23,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View, Position) =>
 					{
 						// add a new fence tile
 
@@ -31,8 +31,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 						{
 							Selector = this
 						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownRocks).MoveTo(
-							(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
-							(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
+							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
+							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
 						);
 					};
 			}

@@ -23,7 +23,7 @@ namespace AvalonUgh.Code.Editor
 		public event Action EditorSelectorChanged;
 
 		[Script]
-		public class  Button
+		public class Button
 		{
 			public Image Image;
 			public Rectangle TouchOverlay;

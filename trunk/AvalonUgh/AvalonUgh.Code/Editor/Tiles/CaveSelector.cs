@@ -12,6 +12,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	[Script]
 	public class CaveSelector
 	{
+		public const string Identifier = "C";
 
 		public static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
@@ -43,7 +44,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 				var CavesCyclic = Caves.AsCyclicEnumerable().GetEnumerator();
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View,  Position) =>
 					{
 						// add a new fence tile
 
@@ -51,8 +52,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							Source = CavesCyclic.Take().ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = Selector.Width * View.Level.Zoom,
-							Height = Selector.Height * View.Level.Zoom,
+							Width = this.Width * View.Level.Zoom,
+							Height = this.Height * View.Level.Zoom,
 						}.AttachTo(View.Platforms).MoveTo(
 							Position.ContentX * View.Level.Zoom,
 							Position.ContentY * View.Level.Zoom

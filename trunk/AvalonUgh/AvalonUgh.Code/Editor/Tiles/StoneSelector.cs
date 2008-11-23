@@ -32,9 +32,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 			{
 				PrimitiveTileCountX = 1;
 				PrimitiveTileCountY = 1;
-			
+
 				Invoke =
-					(View, Selector, Position) =>
+					(View, Position) =>
 					{
 						// add a new fence tile
 
@@ -42,8 +42,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0.png").ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = Selector.Width * View.Level.Zoom,
-							Height = Selector.Height * View.Level.Zoom,
+							Width = this.Width * View.Level.Zoom,
+							Height = this.Height * View.Level.Zoom,
 						}.AttachTo(View.Platforms).MoveTo(
 							Position.ContentX * View.Level.Zoom,
 							Position.ContentY * View.Level.Zoom
@@ -56,11 +56,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x2 : TileSelector
 		{
-			public Size_2x2() : base(2, 2)
+			public Size_2x2()
+				: base(2, 2)
 			{
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View, Position) =>
 					{
 						// add a new fence tile
 
@@ -68,8 +69,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone1_2x2.png").ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = Selector.Width * View.Level.Zoom,
-							Height = Selector.Height * View.Level.Zoom,
+							Width = this.Width * View.Level.Zoom,
+							Height = this.Height * View.Level.Zoom,
 						}.AttachTo(View.Platforms).MoveTo(
 							Position.ContentX * View.Level.Zoom,
 							Position.ContentY * View.Level.Zoom
@@ -81,11 +82,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_4x2 : TileSelector
 		{
-			public Size_4x2() : base(4, 2)
+			public Size_4x2()
+				: base(4, 2)
 			{
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View, Position) =>
 					{
 						// add a new fence tile
 
@@ -93,8 +95,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0_4x2.png").ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = Selector.Width * View.Level.Zoom,
-							Height = Selector.Height * View.Level.Zoom,
+							Width = this.Width * View.Level.Zoom,
+							Height = this.Height * View.Level.Zoom,
 						}.AttachTo(View.Platforms).MoveTo(
 							Position.ContentX * View.Level.Zoom,
 							Position.ContentY * View.Level.Zoom
@@ -108,11 +110,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x4 : TileSelector
 		{
-			public Size_2x4() : base(2, 4)
+			public Size_2x4()
+				: base(2, 4)
 			{
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View, Position) =>
 					{
 						// add a new fence tile
 
@@ -120,8 +123,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0_2x4.png").ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = Selector.Width * View.Level.Zoom,
-							Height = Selector.Height * View.Level.Zoom,
+							Width = this.Width * View.Level.Zoom,
+							Height = this.Height * View.Level.Zoom,
 						}.AttachTo(View.Platforms).MoveTo(
 							Position.ContentX * View.Level.Zoom,
 							Position.ContentY * View.Level.Zoom
@@ -133,11 +136,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x3 : TileSelector
 		{
-			public Size_2x3() : base(2, 3)
+			public Size_2x3()
+				: base(2, 3)
 			{
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View, Position) =>
 					{
 						// add a new fence tile
 
@@ -145,8 +149,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0_2x3.png").ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = Selector.Width * View.Level.Zoom,
-							Height = Selector.Height * View.Level.Zoom,
+							Width = this.Width * View.Level.Zoom,
+							Height = this.Height * View.Level.Zoom,
 						}.AttachTo(View.Platforms).MoveTo(
 							Position.ContentX * View.Level.Zoom,
 							Position.ContentY * View.Level.Zoom
@@ -158,39 +162,52 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x1 : TileSelector
 		{
-			public Size_2x1() : base(2, 1)
+			public Size_2x1()
+				: base(2, 1)
 			{
 
-				Invoke =
-					(View, Selector, Position) =>
+			}
+
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				var u = new Stone
+				{
+					Position = Position,
+					Image = new Image
 					{
-						// add a new fence tile
+						Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0_2x1.png").ToSource(),
+						Stretch = System.Windows.Media.Stretch.Fill,
+					}
+				};
 
-						new Image
-						{
-							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0_2x1.png").ToSource(),
-							Stretch = System.Windows.Media.Stretch.Fill,
-							//Width = Selector.Width * View.Level.Zoom,
-							//Height = Selector.Height * View.Level.Zoom,
-						}
-						.AttachTo(View.Platforms)
-						.WithZoom(View.Level.Zoom)
-						.MoveTo(Position.ContentX, Position.ContentY)
-						.SizeTo(this.Width, this.Height);
+				u.Image
+				.WithZoom(Level.Zoom)
+				.MoveTo(Position.ContentX, Position.ContentY)
+				.SizeTo(this.Width, this.Height);
 
-						
-						//.MoveTo(
-						//    Position.ContentX * View.Level.Zoom,
-						//    Position.ContentY * View.Level.Zoom
-						//);
-					};
+				Level.KnownStones.Add(u);
 			}
 		}
 
 
-		public static void AttachToLevel(ASCIIImage.Entry k, ASCIITileSizeInfo Tile, Level Level)
+		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{
-			
+			var Selector = Sizes.SingleOrDefault(
+				k => k.Equals(Tile)
+			);
+
+			if (Selector == null)
+				return;
+
+			Selector.CreateTo(Level,
+				new View.SelectorPosition
+				{
+					TileX = Position.X,
+					TileY = Position.Y,
+					ContentX = Position.X * PrimitiveTile.Width,
+					ContentY = Position.Y * PrimitiveTile.Heigth,
+				}
+			);
 		}
 	}
 }

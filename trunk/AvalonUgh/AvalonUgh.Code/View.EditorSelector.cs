@@ -89,20 +89,21 @@ namespace AvalonUgh.Code
 					ToContentPosition(args,
 						(x, y) =>
 						{
-							if (this.EditorSelector.Invoke != null)
-							{
-								this.EditorSelector.Invoke(this, this.EditorSelector,
-									new SelectorPosition
+							var p = new SelectorPosition
 									{
 										ContentX = x,
 										ContentY = y,
 
 										TileX = x / PrimitiveTile.Width,
 										TileY = y / PrimitiveTile.Heigth,
-									}
-								);
+									};
+
+							if (this.EditorSelector.Invoke != null)
+							{
+								this.EditorSelector.Invoke(this, p);
 							}
 
+							this.EditorSelector.CreateTo(this.Level, p);
 						}
 					);
 				};
@@ -122,9 +123,23 @@ namespace AvalonUgh.Code
 			public int Width { get; set; }
 			public int Height { get; set; }
 
+			public bool Equals(ASCIITileSizeInfo e)
+			{
+				if (e.Width != this.PrimitiveTileCountX)
+					return false;
+
+				if (e.Height != this.PrimitiveTileCountY)
+					return false;
+
+				return true;
+			}
+
 			public int PrimitiveTileCountX
 			{
-				
+				get
+				{
+					return Width / PrimitiveTile.Width;
+				}
 				set
 				{
 					Width = value * PrimitiveTile.Width;
@@ -133,6 +148,10 @@ namespace AvalonUgh.Code
 
 			public int PrimitiveTileCountY
 			{
+				get
+				{
+					return Height / PrimitiveTile.Heigth;
+				}
 				set
 				{
 					Height = value * PrimitiveTile.Heigth;
@@ -146,7 +165,12 @@ namespace AvalonUgh.Code
 			public int PercisionX;
 			public int PercisionY;
 
-			public Action<View, SelectorInfo, SelectorPosition> Invoke;
+			public Action<View, SelectorPosition> Invoke;
+
+			public virtual void CreateTo(Level Level, SelectorPosition Position)
+			{
+
+			}
 
 		}
 

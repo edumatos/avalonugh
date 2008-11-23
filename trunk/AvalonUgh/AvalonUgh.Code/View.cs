@@ -102,6 +102,7 @@ namespace AvalonUgh.Code
 				ClipToBounds = true
 			};
 
+			// Content actual size depends on level
 			this.Level = level;
 
 
@@ -179,6 +180,14 @@ namespace AvalonUgh.Code
 				Opacity = 0
 			}.AttachTo(this.ContentExtendedContainer);
 
+			
+			// this level is now frozen to this view!
+			// unless we unbind from events being created
+			this.Level.KnownStones.ForEachNewItem(
+				k => k.Image.AttachTo(this.Platforms)
+			);
+
+
 			new Water(
 				new Water.Info
 				{
@@ -255,6 +264,8 @@ namespace AvalonUgh.Code
 
 			AttachFilmScratchEffect();
 			AttachEditorSelector();
+
+			
 		}
 
 

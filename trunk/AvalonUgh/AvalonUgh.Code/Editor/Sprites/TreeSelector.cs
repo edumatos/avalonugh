@@ -60,16 +60,16 @@ namespace AvalonUgh.Code.Editor.Sprites
 				PercisionY = PrimitiveTile.Heigth;
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View,  Position) =>
 					{
-						DemolishSelector.InternalInvoke(View, Selector, Position);
+						DemolishSelector.InternalInvoke(View, this, Position);
 
 						new Tree(View.Level.Zoom)
 						{
 							Selector = this
 						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownTrees).MoveTo(
-							(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
-							(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
+							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
+							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
 						);
 					};
 			}

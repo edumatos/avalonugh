@@ -8,6 +8,8 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Code.Editor.Tiles;
+using System.ComponentModel;
 
 namespace AvalonUgh.Code
 {
@@ -52,6 +54,9 @@ namespace AvalonUgh.Code
 		/// The caves are important because actors need to exit and enter them
 		/// </summary>
 		public readonly List<Cave> KnownCaves = new List<Cave>();
+
+		public readonly BindingList<Stone> KnownStones = new BindingList<Stone>();
+
 
 		const string Comment = "#";
 		const string Assignment = ":";

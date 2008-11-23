@@ -23,10 +23,10 @@ namespace AvalonUgh.Code.Editor.Sprites
 				var c = 0;
 
 				Invoke =
-					(View, Selector, Position) =>
+					(View,  Position) =>
 					{
 
-						DemolishSelector.InternalInvoke(View, Selector, Position);
+						DemolishSelector.InternalInvoke(View, this, Position);
 
 						c++;
 
@@ -35,8 +35,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 							Value = c % 6,
 							Selector = this
 						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownSigns).MoveTo(
-							(Position.ContentX + Selector.HalfWidth) * View.Level.Zoom,
-							(Position.ContentY + Selector.HalfHeight) * View.Level.Zoom
+							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
+							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
 						);
 					};
 			}

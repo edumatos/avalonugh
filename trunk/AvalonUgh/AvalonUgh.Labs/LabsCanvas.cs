@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Windows.Controls;
-using ScriptCoreLib;
-using ScriptCoreLib.Shared.Avalon.Extensions;
-using ScriptCoreLib.Shared.Lambda;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using System.Windows.Input;
 using AvalonUgh.Code;
 using AvalonUgh.Code.Editor;
 using AvalonUgh.Code.Editor.Tiles;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Labs.Shared
 {
@@ -369,37 +369,37 @@ namespace AvalonUgh.Labs.Shared
 							{
 								StoneSelector.AttachToLevel(k, Tile, Level);
 
-								if (Is_4x2)
-								{
-									Create.stone0_4x2(k.X, k.Y);
-									return;
-								}
+								//if (Is_4x2)
+								//{
+								//    Create.stone0_4x2(k.X, k.Y);
+								//    return;
+								//}
 
-								if (Is_2x4)
-								{
-									Create.stone0_2x4(k.X, k.Y);
-									return;
-								}
+								//if (Is_2x4)
+								//{
+								//    Create.stone0_2x4(k.X, k.Y);
+								//    return;
+								//}
 
-								if (Is_2x3)
-								{
-									Create.stone0_2x3(k.X, k.Y);
-									return;
-								}
+								//if (Is_2x3)
+								//{
+								//    Create.stone0_2x3(k.X, k.Y);
+								//    return;
+								//}
 
-								if (Is_2x2)
-								{
-									Create.stone1_2x2(k.X, k.Y);
-									return;
-								}
+								//if (Is_2x2)
+								//{
+								//    Create.stone1_2x2(k.X, k.Y);
+								//    return;
+								//}
 
-								if (Is_2x1)
-								{
-									Create.stone0_2x1(k.X, k.Y);
-									return;
-								}
+								//if (Is_2x1)
+								//{
+								//    Create.stone0_2x1(k.X, k.Y);
+								//    return;
+								//}
 
-								Create.stone0(k.X, k.Y);
+								//Create.stone0(k.X, k.Y);
 								return;
 							}
 
