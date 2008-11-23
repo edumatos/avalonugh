@@ -88,7 +88,13 @@ namespace AvalonUgh.Code.Editor
 
 
 
-			LevelText.GotFocus += delegate { LevelTextBackground.Opacity = 0.7; };
+			LevelText.GotFocus += delegate 
+			{ 
+				LevelTextBackground.Opacity = 0.7;
+			
+				// now we should serialize 
+			};
+
 			LevelText.LostFocus += delegate { LevelTextBackground.Opacity = 0.2; };
 			#endregion
 		}
