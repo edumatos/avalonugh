@@ -60,6 +60,7 @@
     <Compile Include="IAssemblyReferenceToken.cs" />
     <Compile Include="KnownAssets.cs" />
     <Compile Include="KnownEmbeddedAssets.cs" />
+    <Compile Include="NameFormat.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -102,6 +102,13 @@ namespace AvalonUgh.Code
 				ClipToBounds = true
 			};
 
+			this.Background = new Canvas
+			{
+
+				Width = width,
+				Height = height,
+			}.AttachTo(this.Container);
+
 			// Content actual size depends on level
 			this.Level = level;
 
@@ -110,7 +117,6 @@ namespace AvalonUgh.Code
 			{
 				Width = this.ContentActualWidth,
 				Height = this.ContentActualHeight,
-				ClipToBounds = true
 			}.AttachTo(this.Container);
 
 			this.Platforms = new Canvas
