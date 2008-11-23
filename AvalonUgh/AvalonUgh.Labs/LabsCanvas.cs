@@ -59,7 +59,7 @@ namespace AvalonUgh.Labs.Shared
 			}.AttachTo(this);
 
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level07.txt";
+			var CurrentLevel = KnownAssets.Path.Assets + "/level08.txt";
 
 			Console.WriteLine("loading: " + CurrentLevel);
 
@@ -254,10 +254,7 @@ namespace AvalonUgh.Labs.Shared
 					};
 					#endregion
 
-					if (Level.BackgroundImage != null)
-						Level.BackgroundImage.AttachTo(View.Background);
-
-
+				
 
 
 
@@ -394,8 +391,8 @@ namespace AvalonUgh.Labs.Shared
 								return;
 							}
 
-							if (k.Value != " ")
-								Create.fence0(k.X, k.Y);
+							//if (k.Value != " ")
+							//    Create.fence0(k.X, k.Y);
 						}
 					);
 
@@ -437,26 +434,26 @@ namespace AvalonUgh.Labs.Shared
 
 					var KnownActors = new List<Actor>();
 
-					new Actor[]
-					{
-						new Actor.man1(Zoom),
-						new Actor.man0(Zoom),
-						new Actor.woman0(Zoom),
-					}.ForEach(
-						(actor, index) =>
-						{
-							actor.AttachContainerTo(View.Entities);
+					//new Actor[]
+					//{
+					//    new Actor.man1(Zoom),
+					//    new Actor.man0(Zoom),
+					//    new Actor.woman0(Zoom),
+					//}.ForEach(
+					//    (actor, index) =>
+					//    {
+					//        actor.AttachContainerTo(View.Entities);
 
-							var cave = Level.KnownCaves.ToArray().AtModulus(index);
+					//        var cave = Level.KnownCaves.ToArray().AtModulus(index);
 
-							actor.MoveTo(
-								(cave.Position.TileX + 1) * PrimitiveTile.Width * Zoom,
-								(cave.Position.TileY + 1) * PrimitiveTile.Heigth * Zoom
-							);
+					//        actor.MoveTo(
+					//            (cave.Position.TileX + 1) * PrimitiveTile.Width * Zoom,
+					//            (cave.Position.TileY + 1) * PrimitiveTile.Heigth * Zoom
+					//        );
 
-							KnownActors.Add(actor);
-						}
-					);
+					//        KnownActors.Add(actor);
+					//    }
+					//);
 
 
 
