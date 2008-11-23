@@ -6,6 +6,7 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
@@ -16,6 +17,38 @@ namespace AvalonUgh.Code.Editor.Tiles
 			: this(1, 1)
 		{
 
+		}
+
+		[Script]
+		public class Named : TileSelector
+		{
+			public readonly NameFormat Name;
+
+			public Named(int x, int y, int variations, string Name) : base(x,y)
+			{
+				this.Name = new NameFormat
+				{
+					Name = Name,
+					IndexCount = variations,
+					Width = x,
+					Height = y,
+				};
+			}
+
+			public Image ToImage(Level Level, View.SelectorPosition Position)
+			{
+				var u = new Image
+					{
+						Source = (Assets.Shared.KnownAssets.Path.Tiles + "/" + Name.ToString() + ".png").ToSource(),
+						Stretch = System.Windows.Media.Stretch.Fill,
+					};
+
+				u.WithZoom(Level.Zoom)
+					.MoveTo(Position.ContentX, Position.ContentY)
+					.SizeTo(this.Width, this.Height);
+
+				return u;
+			}
 		}
 
 		public TileSelector(int PrimitiveTileCountX, int PrimitiveTileCountY)
@@ -47,5 +80,24 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			Level.GetRemovablePlatforms().Where(k => k.Obstacle.Intersects(o)).ToArray().ForEach(k => k.Dispose());
 		}
+
+		public static void RemoveEntities(View.SelectorInfo Selector, Level Level, View.SelectorPosition Position)
+		{
+			var z = Level.Zoom;
+			var x = Position.ContentX * z;
+			var y = Position.ContentY * z;
+
+			var o = new Obstacle
+			{
+				Left = x,
+				Top = y,
+				Right = x + Selector.Width * z,
+				Bottom = y + Selector.Height * z
+			};
+
+
+			Level.GetRemovableEntities().Where(k => k.Obstacle.Intersects(o)).ToArray().ForEach(k => k.Dispose());
+		}
+
 	}
 }

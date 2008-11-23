@@ -96,7 +96,7 @@ namespace AvalonUgh.Code
 			var vehX = twin.ToObstacle(newX, twin.Y);
 			var vehY = twin.ToObstacle(twin.X, newY);
 
-			var Obstacles = this.Level.KnownObstacles.AsEnumerable();
+			var Obstacles = this.Level.KnownObstacles.AsEnumerable().Concat(Level.KnownRidges.Select(k => k.ToObstacle()));
 
 			var veh = twin as Vehicle;
 			if (veh != null)
