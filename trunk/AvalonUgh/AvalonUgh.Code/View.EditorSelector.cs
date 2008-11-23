@@ -60,6 +60,10 @@ namespace AvalonUgh.Code
 					x = Math.Round(x / PercisionX) * PercisionX;
 					y = Math.Round(y / PercisionY) * PercisionY;
 
+					x = x.Max(0).Min(PrimitiveTile.Width * Level.Map.Width - EditorSelector.Width);
+					y = y.Max(0).Min(PrimitiveTile.Heigth * Level.Map.Height - EditorSelector.Height);
+
+
 					handler(Convert.ToInt32(x), Convert.ToInt32(y));
 				};
 
@@ -110,15 +114,15 @@ namespace AvalonUgh.Code
 
 			this.EditorSelector = new SelectorInfo
 			{
-				Width = PrimitiveTile.Width * 2,
-				Height = PrimitiveTile.Heigth * 3,
+				Width = PrimitiveTile.Width,
+				Height = PrimitiveTile.Heigth,
 				PercisionX = PrimitiveTile.Width,
 				PercisionY = PrimitiveTile.Heigth,
 			};
 		}
 
 		[Script]
-		public class SelectorInfo 
+		public class SelectorInfo
 		{
 			public int Width { get; set; }
 			public int Height { get; set; }
@@ -186,7 +190,7 @@ namespace AvalonUgh.Code
 
 		public Rectangle EditorSelectorRectangle;
 
-		public SelectorInfo EditorSelector;
+		public SelectorInfo EditorSelector { get; set; }
 
 	}
 }

@@ -53,7 +53,7 @@ namespace AvalonUgh.Code
 		/// <summary>
 		/// The caves are important because actors need to exit and enter them
 		/// </summary>
-		public readonly List<Cave> KnownCaves = new List<Cave>();
+		public readonly BindingList<Cave> KnownCaves = new BindingList<Cave>();
 
 		public readonly BindingList<Stone> KnownStones = new BindingList<Stone>();
 

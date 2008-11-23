@@ -96,10 +96,10 @@
     <Compile Include="Editor\EditorToolbar.cs" />
     <Compile Include="View.AutoscrollTween.cs" />
     <Compile Include="View.AttachFilmScratchEffect.cs" />
-    <Compile Include="Level.Attribute.cs" />
+    <Compile Include="Editor\Level.Attribute.cs" />
     <Compile Include="Flashlight.cs" />
     <Compile Include="KeyboardInput.cs" />
-    <Compile Include="Level.cs" />
+    <Compile Include="Editor\Level.cs" />
     <Compile Include="LocationTracker.cs" />
     <Compile Include="Editor\Sprites\Sign.cs" />
     <Compile Include="Obstacle.cs" />
