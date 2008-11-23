@@ -111,6 +111,9 @@ namespace AvalonUgh.Code
 
 			// Content actual size depends on level
 			this.Level = level;
+			
+			if (Level.BackgroundImage != null)
+				Level.BackgroundImage.AttachTo(this.Background);
 
 
 			this.Content = new Canvas

@@ -1,0 +1,25 @@
+# Avalon UGH Level 05 
+# - A really small map
+#
+# text: Introducing Actors
+# code: xxx000
+# border-top: 32
+# border-bottom: 32
+# water: 26
+# autoscroll: 1
+# flashlight-opacity: 200
+# background: 001
+# background-width: 320
+# background-height: 200
+####################
+       S              
+     S-|              
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+####################
+# end
