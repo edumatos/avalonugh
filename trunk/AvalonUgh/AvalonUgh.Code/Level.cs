@@ -314,6 +314,52 @@ namespace AvalonUgh.Code
 			public Action Dispose;
 		}
 
+		public IEnumerable<RemovableObject> GetRemovablePlatforms()
+		{
+			return
+				this.KnownStones.Select(
+					Entity =>
+						new RemovableObject
+						{
+							Obstacle = Entity.ToObstacle(),
+							Dispose =
+								delegate
+								{
+									this.KnownStones.Remove(Entity);
+									Entity.Image.Orphanize();
+								}
+						}
+				//).Concat(
+				//    this.KnownRocks.Select(
+				//        Entity =>
+				//            new RemovableObject
+				//            {
+				//                Obstacle = Entity.ToObstacle(),
+				//                Dispose =
+				//                    delegate
+				//                    {
+				//                        this.KnownRocks.Remove(Entity);
+				//                        Entity.Dispose();
+				//                    }
+				//            }
+				//    )
+				//).Concat(
+				//    this.KnownSigns.Select(
+				//        Entity =>
+				//            new RemovableObject
+				//            {
+				//                Obstacle = Entity.ToObstacle(),
+				//                Dispose =
+				//                    delegate
+				//                    {
+				//                        this.KnownSigns.Remove(Entity);
+				//                        Entity.Dispose();
+				//                    }
+				//            }
+				//    )
+				);
+		}
+
 		public IEnumerable<RemovableObject> GetRemovableEntities()
 		{
 			return

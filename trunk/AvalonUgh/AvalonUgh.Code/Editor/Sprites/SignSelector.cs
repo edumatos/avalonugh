@@ -26,7 +26,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 					(View,  Position) =>
 					{
 
-						DemolishSelector.InternalInvoke(View, this, Position);
+						RemoveEntities(this, View.Level, Position);
 
 						c++;
 

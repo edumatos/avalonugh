@@ -62,7 +62,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				Invoke =
 					(View,  Position) =>
 					{
-						DemolishSelector.InternalInvoke(View, this, Position);
+						RemoveEntities(this, View.Level, Position);
 
 						new Tree(View.Level.Zoom)
 						{
