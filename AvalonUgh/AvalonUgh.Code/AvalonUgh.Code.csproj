@@ -81,12 +81,13 @@
     <Compile Include="Actor.man0.cs" />
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
-    <Compile Include="Cave.cs" />
+    <Compile Include="Editor\Tiles\Cave.cs" />
     <Compile Include="Editor\Sprites\SignSelector.cs" />
     <Compile Include="Editor\Sprites\RockSelector.cs" />
     <Compile Include="Editor\Sprites\TreeSelector.cs" />
     <Compile Include="Editor\Sprites\SpriteSelector.cs" />
     <Compile Include="Editor\DemolishSelector.cs" />
+    <Compile Include="Editor\Tiles\CaveSelector.cs" />
     <Compile Include="Editor\Tiles\StoneSelector.cs" />
     <Compile Include="Editor\Tiles\TileSelector.cs" />
     <Compile Include="Editor\Tiles\FenceSelector.cs" />
