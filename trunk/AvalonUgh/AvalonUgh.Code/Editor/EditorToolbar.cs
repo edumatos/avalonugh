@@ -224,16 +224,20 @@ namespace AvalonUgh.Code.Editor
 				Editor.Tiles.StoneSelector.Sizes
 			);
 
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png",
+				Editor.Tiles.CaveSelector.Sizes
+			);
+
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png", null);
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png", null);
+			
 			
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png", null);
 
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
 				new[]
 					{
-						new Editor.Tiles.FenceSelector()
+						new Editor.Tiles.FenceSelector.Size_1x1()
 					}
 			);
 
@@ -270,16 +274,7 @@ namespace AvalonUgh.Code.Editor
 					Height = 20
 				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 10, Padding + PrimitiveTile.Heigth - 10);
 
-			AddButton(
-				Demolish,
-				new View.SelectorInfo[]
-				{
-				    new Editor.DemolishSelector.Size_1x1(),
-				    new Editor.DemolishSelector.Size_2x2()
-
-				}
-			
-			);
+			AddButton(Demolish, Editor.DemolishSelector.Sizes);
 		}
 	}
 }

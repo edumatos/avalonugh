@@ -12,7 +12,16 @@ namespace AvalonUgh.Code.Editor.Tiles
 	public abstract class TileSelector : View.SelectorInfo
 	{
 		public TileSelector()
+			: this(1, 1)
 		{
+
+		}
+
+		public TileSelector(int PrimitiveTileCountX, int PrimitiveTileCountY)
+		{
+			this.PrimitiveTileCountX = PrimitiveTileCountX;
+			this.PrimitiveTileCountY = PrimitiveTileCountY;
+
 			PercisionX = PrimitiveTile.Width;
 			PercisionY = PrimitiveTile.Heigth;
 		}

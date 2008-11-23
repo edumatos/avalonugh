@@ -11,31 +11,32 @@ namespace AvalonUgh.Code.Editor
 	[Script]
 	public class DemolishSelector
 	{
-		[Script]
-		public class Size_1x1 :  View.SelectorInfo
-		{
-			public Size_1x1()
+		public static readonly View.SelectorInfo[] Sizes =
+			new View.SelectorInfo[]
 			{
-				PrimitiveTileCountX = 1;
-				PrimitiveTileCountY = 1;
+				new Size_1x1(),
+				new Size_2x2(),
+				//new Size_4x2(),
+				//new Size_2x4(),
+				//new Size_2x3(),
+				//new Size_2x1(),
+			};
 
-				PercisionX = PrimitiveTile.Width;
-				PercisionY = PrimitiveTile.Heigth;
-
+		[Script]
+		public class Size_1x1 : Tiles.TileSelector
+		{
+			public Size_1x1() : base(1, 1)
+			{
 				Invoke = InternalInvoke;
 			}
 		}
 
 		[Script]
-		public class Size_2x2 : View.SelectorInfo
+		public class Size_2x2 : Tiles.TileSelector
 		{
 			public Size_2x2()
+				: base(2, 2)
 			{
-				PrimitiveTileCountX = 2;
-				PrimitiveTileCountY = 2;
-
-				PercisionX = PrimitiveTile.Width;
-				PercisionY = PrimitiveTile.Heigth;
 
 				Invoke = InternalInvoke;
 			}

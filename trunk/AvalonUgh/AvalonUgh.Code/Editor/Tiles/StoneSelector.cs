@@ -56,11 +56,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x2 : TileSelector
 		{
-			public Size_2x2()
+			public Size_2x2() : base(2, 2)
 			{
-				PrimitiveTileCountX = 2;
-				PrimitiveTileCountY = 2;
-				
 
 				Invoke =
 					(View, Selector, Position) =>
@@ -84,10 +81,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_4x2 : TileSelector
 		{
-			public Size_4x2()
+			public Size_4x2() : base(4, 2)
 			{
-				PrimitiveTileCountX = 4;
-				PrimitiveTileCountY = 2;
 
 				Invoke =
 					(View, Selector, Position) =>
@@ -113,10 +108,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x4 : TileSelector
 		{
-			public Size_2x4()
+			public Size_2x4() : base(2, 4)
 			{
-				PrimitiveTileCountX = 2;
-				PrimitiveTileCountY = 4;
 
 				Invoke =
 					(View, Selector, Position) =>
@@ -140,10 +133,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x3 : TileSelector
 		{
-			public Size_2x3()
+			public Size_2x3() : base(2, 3)
 			{
-				PrimitiveTileCountX = 2;
-				PrimitiveTileCountY = 3;
 
 				Invoke =
 					(View, Selector, Position) =>
@@ -167,10 +158,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public class Size_2x1 : TileSelector
 		{
-			public Size_2x1()
+			public Size_2x1() : base(2, 1)
 			{
-				PrimitiveTileCountX = 2;
-				PrimitiveTileCountY = 1;
 
 				Invoke =
 					(View, Selector, Position) =>
@@ -181,12 +170,19 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/stone0_2x1.png").ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = Selector.Width * View.Level.Zoom,
-							Height = Selector.Height * View.Level.Zoom,
-						}.AttachTo(View.Platforms).MoveTo(
-							Position.ContentX * View.Level.Zoom,
-							Position.ContentY * View.Level.Zoom
-						);
+							//Width = Selector.Width * View.Level.Zoom,
+							//Height = Selector.Height * View.Level.Zoom,
+						}
+						.AttachTo(View.Platforms)
+						.WithZoom(View.Level.Zoom)
+						.MoveTo(Position.ContentX, Position.ContentY)
+						.SizeTo(this.Width, this.Height);
+
+						
+						//.MoveTo(
+						//    Position.ContentX * View.Level.Zoom,
+						//    Position.ContentY * View.Level.Zoom
+						//);
 					};
 			}
 		}

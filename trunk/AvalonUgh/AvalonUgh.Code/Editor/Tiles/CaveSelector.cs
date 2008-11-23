@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ScriptCoreLib;
 using System.Windows.Controls;
+using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class FenceSelector 
+	public class CaveSelector
 	{
 
 		public static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
 			{
-				new Size_1x1()
-				//new Size_2x2(),
+				//new Size_1x1()
+				new Size_2x2()
 				//new Size_4x2(),
 				//new Size_2x4(),
 				//new Size_2x3(),
@@ -25,11 +26,21 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 
 		[Script]
-		public class Size_1x1 : TileSelector
+		public class Size_2x2 : TileSelector
 		{
 
-			public Size_1x1() 
+			public Size_2x2()
 			{
+				PrimitiveTileCountX = 2;
+				PrimitiveTileCountY = 2;
+
+				var Caves = new[]
+				{
+					(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png"),
+					(Assets.Shared.KnownAssets.Path.Tiles + "/cave1_2x2.png"),
+				};
+
+				var CavesCyclic = Caves.AsCyclicEnumerable().GetEnumerator();
 
 				Invoke =
 					(View, Selector, Position) =>
@@ -38,7 +49,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 						new Image
 						{
-							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png").ToSource(),
+							Source = CavesCyclic.Take().ToSource(),
 							Stretch = System.Windows.Media.Stretch.Fill,
 							Width = Selector.Width * View.Level.Zoom,
 							Height = Selector.Height * View.Level.Zoom,
@@ -50,5 +61,6 @@ namespace AvalonUgh.Code.Editor.Tiles
 			}
 
 		}
+
 	}
 }
