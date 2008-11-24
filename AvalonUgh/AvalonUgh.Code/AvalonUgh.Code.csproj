@@ -81,6 +81,7 @@
     <Compile Include="Actor.man0.cs" />
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
+    <Compile Include="Editor\Level.ToString.cs" />
     <Compile Include="Editor\Tiles\Cave.cs" />
     <Compile Include="Editor\Sprites\SignSelector.cs" />
     <Compile Include="Editor\Sprites\RockSelector.cs" />

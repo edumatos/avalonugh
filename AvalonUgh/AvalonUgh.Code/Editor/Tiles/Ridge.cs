@@ -16,6 +16,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 		{
 		}
 
+
+
+		public override string GetIdentifier()
+		{
+			return RidgeSelector.Identifier;
+		}
 		
 	}
 }

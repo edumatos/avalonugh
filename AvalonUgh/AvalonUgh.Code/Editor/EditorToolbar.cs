@@ -32,7 +32,7 @@ namespace AvalonUgh.Code.Editor
 		public EditorToolbar(Canvas DragContainer)
 		{
 
-			this.Padding = 6;
+			this.Padding = 8;
 
 			var DraggableArea = new Rectangle
 			{
@@ -57,15 +57,20 @@ namespace AvalonUgh.Code.Editor
 			//Navbar.AttachContainerTo(this).MoveContainerTo(Padding, Padding);
 
 
-		
+
 
 			var Buttons = new List<Button>();
-		
+
 			Func<int> ButtonsWidth = () => Padding + Buttons.Count * (PrimitiveTile.Width * 2 + Padding);
 
 			CreateButtons(Buttons, ButtonsWidth);
 
 			this.Width = ButtonsWidth();
+			this.Height = this.Width * 2 / 3;
+
+			DraggableArea.Width = this.Width;
+			DraggableArea.Height = this.Height;
+
 			this.Update();
 
 			#region LevelText
@@ -77,27 +82,30 @@ namespace AvalonUgh.Code.Editor
 				Height = Height - PrimitiveTile.Heigth * 2 - Padding * 3,
 			}.AttachTo(this).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding + Padding);
 
-			var LevelText = new TextBox
+			this.LevelText = new TextBox
 			{
+				//FontFamily = new FontFamily("Courier New"),
 				AcceptsReturn = true,
-				Width = Width - Padding - Padding,
+				Width = Width - Padding * 2,
 				Height = Height - PrimitiveTile.Heigth * 2 - Padding * 3,
 				Background = Brushes.Transparent,
 				BorderThickness = new Thickness(0)
-			}.AttachTo(this).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding + Padding);
+			}.AttachTo(this).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding * 2);
 
 
 
-			LevelText.GotFocus += delegate 
-			{ 
+			this.LevelText.GotFocus += delegate
+			{
 				LevelTextBackground.Opacity = 0.7;
-			
+
 				// now we should serialize 
 			};
 
 			LevelText.LostFocus += delegate { LevelTextBackground.Opacity = 0.2; };
 			#endregion
 		}
+
+		public readonly TextBox LevelText;
 
 		private void CreateButtons(List<Button> Buttons, Func<int> ButtonsWidth)
 		{
@@ -174,7 +182,7 @@ namespace AvalonUgh.Code.Editor
 						delegate
 						{
 							Select();
-							
+
 						};
 
 					if (!DefaultSelectionMade)
@@ -235,11 +243,11 @@ namespace AvalonUgh.Code.Editor
 			);
 
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png", 
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png",
 				Editor.Tiles.RidgeSelector.Sizes
 			);
-			
-			
+
+
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png", null);
 
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
@@ -250,8 +258,8 @@ namespace AvalonUgh.Code.Editor
 			);
 
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png", 
-				new []
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png",
+				new[]
 				{
 					new Editor.Sprites.TreeSelector.Size_2x2()
 				}
@@ -261,20 +269,20 @@ namespace AvalonUgh.Code.Editor
 				new[]
 				{
 				    new Editor.Sprites.SignSelector.Size_1x1()
-				}	
+				}
 			);
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/rock0.png",
 				new[]
 				{
 					new Editor.Sprites.RockSelector.Size_1x1()
-				}	
+				}
 			);
 
-			
 
-		
 
-			var Demolish = 
+
+
+			var Demolish =
 				new Image
 				{
 					Source = (Assets.Shared.KnownAssets.Path.Assets + "/btn_demolish.png").ToSource(),

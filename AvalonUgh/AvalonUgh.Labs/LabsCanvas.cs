@@ -683,6 +683,12 @@ namespace AvalonUgh.Labs.Shared
 
 					View.EditorSelector = et.EditorSelector;
 
+					et.LevelText.GotFocus +=
+						delegate
+						{
+							et.LevelText.Text = Level.ToString();
+						};
+
 					GameContent.KeyUp +=
 						(sender, args) =>
 						{
