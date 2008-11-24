@@ -14,5 +14,10 @@ namespace AvalonUgh.Code.Editor.Tiles
 			: base(Level, Selector)
 		{
 		}
+
+		public override string GetIdentifier()
+		{
+			return CaveSelector.Identifier;
+		}
 	}
 }

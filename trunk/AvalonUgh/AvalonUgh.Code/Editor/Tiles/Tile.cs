@@ -46,5 +46,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		}
 
 		#endregion
+
+
+		public abstract string GetIdentifier();
 	}
 }
