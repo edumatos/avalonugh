@@ -59,6 +59,7 @@ namespace AvalonUgh.Code
 		public readonly BindingList<Ridge> KnownRidges = new BindingList<Ridge>();
 		public readonly BindingList<Fence> KnownFences = new BindingList<Fence>();
 		public readonly BindingList<Platform> KnownPlatforms = new BindingList<Platform>();
+		public readonly BindingList<Bridge> KnownBridges = new BindingList<Bridge>();
 
 
 		const string Comment = "#";
@@ -384,6 +385,20 @@ namespace AvalonUgh.Code
 									delegate
 									{
 										this.KnownPlatforms.Remove(Entity);
+										Entity.Image.Orphanize();
+									}
+							}
+					)
+				).Concat(
+					this.KnownBridges.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownBridges.Remove(Entity);
 										Entity.Image.Orphanize();
 									}
 							}

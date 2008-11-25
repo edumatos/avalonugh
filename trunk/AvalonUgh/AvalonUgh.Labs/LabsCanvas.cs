@@ -322,42 +322,48 @@ namespace AvalonUgh.Labs.Shared
 								return;
 							}
 
-							
-							
-
-
-
 							// bridge
-							if (k.Value == "B")
+							if (k.Value == BridgeSelector.Identifier)
 							{
-								Level.KnownObstacles.Add(
-									new Obstacle
-									{
-										Tile = Tile,
-										Position = k,
-										Left = k.X * 16 * Zoom,
-										Top = k.Y * 12 * Zoom,
-										Right = (k.X + Tile.Width) * 16 * Zoom,
-										Bottom = (k.Y + Tile.Height) * 12 * Zoom
-									}
-								);
+								BridgeSelector.AttachToLevel(k, Tile, Level);
 
-								if (k[-1, 0] != "B")
-								{
-									Create.bridge0left(k.X, k.Y);
-									return;
-								}
-
-								if (k[1, 0] != "B")
-								{
-									Create.bridge0right(k.X, k.Y);
-									return;
-								}
-
-
-								Create.bridge0(k.X, k.Y);
 								return;
 							}
+							
+
+
+
+							//// bridge
+							//if (k.Value == "B")
+							//{
+							//    Level.KnownObstacles.Add(
+							//        new Obstacle
+							//        {
+							//            Tile = Tile,
+							//            Position = k,
+							//            Left = k.X * 16 * Zoom,
+							//            Top = k.Y * 12 * Zoom,
+							//            Right = (k.X + Tile.Width) * 16 * Zoom,
+							//            Bottom = (k.Y + Tile.Height) * 12 * Zoom
+							//        }
+							//    );
+
+							//    if (k[-1, 0] != "B")
+							//    {
+							//        Create.bridge0left(k.X, k.Y);
+							//        return;
+							//    }
+
+							//    if (k[1, 0] != "B")
+							//    {
+							//        Create.bridge0right(k.X, k.Y);
+							//        return;
+							//    }
+
+
+							//    Create.bridge0(k.X, k.Y);
+							//    return;
+							//}
 
 
 						
