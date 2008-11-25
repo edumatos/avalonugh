@@ -84,7 +84,7 @@ namespace AvalonUgh.Code.Editor
 
 			this.LevelText = new TextBox
 			{
-				//FontFamily = new FontFamily("Courier New"),
+				FontFamily = new FontFamily("Courier New"),
 				AcceptsReturn = true,
 				Width = Width - Padding * 2,
 				Height = Height - PrimitiveTile.Heigth * 2 - Padding * 3,
