@@ -64,6 +64,7 @@ namespace AvalonUgh.Code
 				WriteTiles(this.KnownCaves.ToArray());
 				WriteTiles(this.KnownRidges.ToArray());
 				WriteTiles(this.KnownFences.ToArray());
+				WriteTiles(this.KnownPlatforms.ToArray());
 
 
 				foreach (var x in Map)

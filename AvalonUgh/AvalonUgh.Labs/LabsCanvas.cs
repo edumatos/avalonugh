@@ -315,48 +315,14 @@ namespace AvalonUgh.Labs.Shared
 							}
 
 							// platform
-							if (k.Value == "P")
+							if (k.Value == PlatformSelector.Identifier)
 							{
-								Level.KnownObstacles.Add(
-									new Obstacle
-									{
-										Tile = Tile,
-										Position = k,
-										Left = k.X * 16 * Zoom,
-										Top = k.Y * 12 * Zoom,
-										Right = (k.X + Tile.Width) * 16 * Zoom,
-										Bottom = (k.Y + Tile.Height) * 12 * Zoom
-									}
-								);
+								PlatformSelector.AttachToLevel(k, Tile, Level);
 
-								if (Is_2x3)
-								{
-									Create.platform0_2x3(k.X, k.Y);
-									return;
-								}
-
-								if (Is_4x2)
-								{
-									Create.platform0_4x2(k.X, k.Y);
-									return;
-								}
-
-								if (Is_2x1)
-								{
-									Create.platform0_2x1(k.X, k.Y);
-									return;
-								}
-
-								if (Is_2x2)
-								{
-									Create.platform0_2x2(k.X, k.Y);
-									return;
-								}
-
-								Create.platform0(k.X, k.Y);
 								return;
 							}
 
+							
 							
 
 
