@@ -234,6 +234,18 @@ namespace AvalonUgh.Code.Editor
 
 		private void AddButtons(Func<int> ButtonsWidth, Action<Image, View.SelectorInfo[]> AddButton, Action<string, View.SelectorInfo[]> AddButton_2x2, Action<string, View.SelectorInfo[]> AddButton_1x1)
 		{
+			var Arrow =
+				new Image
+				{
+					Source = (Assets.Shared.KnownAssets.Path.Assets + "/Aero_Arrow.png").ToSource(),
+					Width = 32,
+					Height = 32
+				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 16, Padding + PrimitiveTile.Heigth - 16);
+
+			AddButton(Arrow,
+					new[] { new View.SelectorInfo() }
+				);
+
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/stone1_2x2.png",
 				Editor.Tiles.StoneSelector.Sizes
 			);
@@ -243,6 +255,7 @@ namespace AvalonUgh.Code.Editor
 			);
 
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
+
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png",
 				Editor.Tiles.RidgeSelector.Sizes
 			);
@@ -251,10 +264,7 @@ namespace AvalonUgh.Code.Editor
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png", null);
 
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
-				new[]
-					{
-						new Editor.Tiles.FenceSelector.Size_1x1()
-					}
+				Editor.Tiles.FenceSelector.Sizes
 			);
 
 
@@ -291,6 +301,10 @@ namespace AvalonUgh.Code.Editor
 				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 10, Padding + PrimitiveTile.Heigth - 10);
 
 			AddButton(Demolish, Editor.DemolishSelector.Sizes);
+
+	
 		}
+
+
 	}
 }

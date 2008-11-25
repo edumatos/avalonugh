@@ -298,6 +298,22 @@ namespace AvalonUgh.Labs.Shared
 								return;
 							}
 
+							// fence
+							if (k.Value == FenceSelector.Identifier)
+							{
+								FenceSelector.AttachToLevel(k, Tile, Level);
+
+								return;
+							}
+
+							// stone
+							if (k.Value == StoneSelector.Identifier)
+							{
+								StoneSelector.AttachToLevel(k, Tile, Level);
+
+								return;
+							}
+
 							// platform
 							if (k.Value == "P")
 							{
@@ -341,13 +357,7 @@ namespace AvalonUgh.Labs.Shared
 								return;
 							}
 
-							// stone
-							if (k.Value == StoneSelector.Identifier)
-							{
-								StoneSelector.AttachToLevel(k, Tile, Level);
-
-								return;
-							}
+							
 
 
 
@@ -384,15 +394,10 @@ namespace AvalonUgh.Labs.Shared
 							}
 
 
-							// fence
-							if (k.Value == "F")
-							{
-								Create.fence0(k.X, k.Y);
-								return;
-							}
+						
 
-							//if (k.Value != " ")
-							//    Create.fence0(k.X, k.Y);
+							
+
 						}
 					);
 

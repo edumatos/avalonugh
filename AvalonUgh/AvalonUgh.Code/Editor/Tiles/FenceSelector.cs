@@ -9,46 +9,67 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class FenceSelector 
+	public static class FenceSelector 
 	{
+		public const string Identifier = "F";
 
 		public static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
 			{
-				new Size_1x1()
-				//new Size_2x2(),
-				//new Size_4x2(),
-				//new Size_2x4(),
-				//new Size_2x3(),
-				//new Size_2x1(),
+				new Size_Generic(1, 1, 1),
+	
 			};
 
-
 		[Script]
-		public class Size_1x1 : TileSelector
+		private class Size_Generic : TileSelector.Named
 		{
 
-			public Size_1x1() 
+			public Size_Generic(int x, int y, int variations)
+				: base(x, y, variations, "fence")
 			{
 
-				Invoke =
-					(View,  Position) =>
-					{
-						// add a new fence tile
-
-						new Image
-						{
-							Source = (Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png").ToSource(),
-							Stretch = System.Windows.Media.Stretch.Fill,
-							Width = this.Width * View.Level.Zoom,
-							Height = this.Height * View.Level.Zoom,
-						}.AttachTo(View.Platforms).MoveTo(
-							Position.ContentX * View.Level.Zoom,
-							Position.ContentY * View.Level.Zoom
-						);
-					};
 			}
 
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				Name.Index = (Name.Index + 1) % Name.IndexCount;
+
+				RemovePlatforms(this, Level, Position);
+
+				var u = new Fence(Level, this)
+				{
+					Position = Position,
+					Image = ToImage(Level, Position)
+				};
+
+				Level.KnownFences.Add(u);
+			}
+		}
+
+		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		{
+			var Selector = Sizes.SingleOrDefault(
+				k => k.Equals(Tile)
+			);
+
+			if (Selector == null)
+			{
+				Console.WriteLine(
+					new { InvalidSize = new { Tile.Width, Tile.Height }, Identifier, Position.X, Position.Y }.ToString()
+				);
+
+				return;
+			}
+
+			Selector.CreateTo(Level,
+				new View.SelectorPosition
+				{
+					TileX = Position.X,
+					TileY = Position.Y,
+					ContentX = Position.X * PrimitiveTile.Width,
+					ContentY = Position.Y * PrimitiveTile.Heigth,
+				}
+			);
 		}
 	}
 }

@@ -204,6 +204,11 @@ namespace AvalonUgh.Code
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
+			this.Level.KnownFences.ForEachNewItem(
+				k => k.Image.AttachTo(this.Platforms)
+			);
+
+
 
 
 			new Water(

@@ -99,5 +99,31 @@ namespace AvalonUgh.Code.Editor.Tiles
 			Level.GetRemovableEntities().Where(k => k.Obstacle.Intersects(o)).ToArray().ForEach(k => k.Dispose());
 		}
 
+		public static void AttachToLevel(View.SelectorInfo[] Sizes, ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		{
+			
+			var Selector = Sizes.SingleOrDefault(
+				k => k.Equals(Tile)
+			);
+
+			if (Selector == null)
+			{
+				Console.WriteLine(
+					new { InvalidSize = new { Tile.Width, Tile.Height }, Tile.Value, Position.X, Position.Y }.ToString()
+				);
+
+				return;
+			}
+
+			Selector.CreateTo(Level,
+				new View.SelectorPosition
+				{
+					TileX = Position.X,
+					TileY = Position.Y,
+					ContentX = Position.X * PrimitiveTile.Width,
+					ContentY = Position.Y * PrimitiveTile.Heigth,
+				}
+			);
+		}
 	}
 }
