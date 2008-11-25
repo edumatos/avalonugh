@@ -12,6 +12,8 @@
 # background-width: 320
 # background-height: 200
 ####################
+S-S---S-S---S---S---S-
+| |   | |   |   |   |
 S---S-S---S-SS-S-SSSSS
 |   | |   | S| | C-SSS
 S-S-| S-SS| SSS| | SSS
