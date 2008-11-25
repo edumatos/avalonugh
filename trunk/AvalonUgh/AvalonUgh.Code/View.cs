@@ -9,6 +9,7 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using System.Windows.Shapes;
+using AvalonUgh.Code.Editor;
 
 namespace AvalonUgh.Code
 {

@@ -8,7 +8,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Editor
 {
 	partial class Level
 	{

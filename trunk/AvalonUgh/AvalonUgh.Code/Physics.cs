@@ -6,6 +6,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Lambda;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Code.Editor;
 
 namespace AvalonUgh.Code
 {
@@ -139,6 +140,7 @@ namespace AvalonUgh.Code
 					Obstacles = new Obstacle[0].AsEnumerable();
 			}
 
+			#region Rock
 			var rock = twin as Rock;
 			if (rock != null)
 			{
@@ -176,6 +178,8 @@ namespace AvalonUgh.Code
 
 				}
 			}
+			#endregion
+
 
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
 			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));

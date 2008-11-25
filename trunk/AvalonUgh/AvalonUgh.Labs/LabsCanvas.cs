@@ -58,6 +58,10 @@ namespace AvalonUgh.Labs.Shared
 				Height = DefaultHeight
 			}.AttachTo(this);
 
+			var et = new EditorToolbar(this);
+
+			et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
+			et.AttachContainerTo(this);
 
 			var CurrentLevel = KnownAssets.Path.Assets + "/level09.txt";
 
@@ -75,7 +79,7 @@ namespace AvalonUgh.Labs.Shared
 					// subtract statusbar
 					var View = new View(DefaultWidth, DefaultHeight - 9 * StatusbarZoom, Level);
 
-					View.Flashlight.Visible = true;
+					//View.Flashlight.Visible = true;
 
 					Console.WriteLine(
 						new
@@ -190,26 +194,29 @@ namespace AvalonUgh.Labs.Shared
 
 					var KnownActors = new List<Actor>();
 
-					//new Actor[]
-					//{
-					//    new Actor.man1(Zoom),
-					//    new Actor.man0(Zoom),
-					//    new Actor.woman0(Zoom),
-					//}.ForEach(
-					//    (actor, index) =>
-					//    {
-					//        actor.AttachContainerTo(View.Entities);
+					var ActorPool = new Func<Actor>[]
+					{
+						() => new Actor.man0(Zoom),
+						() => new Actor.man1(Zoom),
+						() => new Actor.woman0(Zoom),
+					}.AsCyclicEnumerable().GetEnumerator();
 
-					//        var cave = Level.KnownCaves.ToArray().AtModulus(index);
+					Level.KnownCaves.ForEachNewOrExistingItem(
+						cave =>
+						{
+							var actor = ActorPool.Take()();
 
-					//        actor.MoveTo(
-					//            (cave.Position.TileX + 1) * PrimitiveTile.Width * Zoom,
-					//            (cave.Position.TileY + 1) * PrimitiveTile.Heigth * Zoom
-					//        );
+							actor.AttachContainerTo(View.Entities);
 
-					//        KnownActors.Add(actor);
-					//    }
-					//);
+
+							actor.MoveTo(
+								(cave.Position.TileX + 1) * PrimitiveTile.Width * Zoom,
+								(cave.Position.TileY + 1) * PrimitiveTile.Heigth * Zoom
+							);
+
+							KnownActors.Add(actor);
+						}
+					);
 
 
 
@@ -280,19 +287,19 @@ namespace AvalonUgh.Labs.Shared
 					var xveh = new Vehicle(Zoom);
 					xveh.ColorStripe = Colors.Red;
 					xveh.AttachContainerTo(View.Entities);
-					xveh.MoveTo(Level.ActualWidth / 2, Level.ActualHeight / 2);
+					xveh.MoveTo(Level.ActualWidth / 2, 0);
 
 					var twin = new Vehicle(Zoom);
 					twin.ColorStripe = Colors.Blue;
 
 					twin.AttachContainerTo(View.Entities);
-					twin.MoveTo(Level.ActualWidth  * 2/ 3, Level.ActualHeight / 3);
+					twin.MoveTo(Level.ActualWidth  * 2/ 3, 0);
 
 					var twin2 = new Vehicle(Zoom);
 					twin2.ColorStripe = Colors.Yellow;
 					twin2.Density = 1.11;
 					twin2.AttachContainerTo(View.Entities);
-					twin2.MoveTo(Level.ActualWidth / 3, Level.ActualHeight / 3);
+					twin2.MoveTo(Level.ActualWidth / 3, 0);
 
 					var ph = new Physics
 					{
@@ -428,11 +435,7 @@ namespace AvalonUgh.Labs.Shared
 
 					View.Flashlight.Visible = false;
 
-					var et = new EditorToolbar(this);
-
-					et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
-
-					et.AttachContainerTo(this);
+					
 
 					et.EditorSelectorChanged +=
 						() => View.EditorSelector = et.EditorSelector;
