@@ -58,6 +58,13 @@ namespace AvalonUgh.Code.Editor
 
 
 
+			this.LevelText = new TextBox
+			{
+				FontFamily = new FontFamily("Courier New"),
+				AcceptsReturn = true,
+				Background = Brushes.Transparent,
+				BorderThickness = new Thickness(0)
+			};
 
 			var Buttons = new List<Button>();
 
@@ -82,15 +89,12 @@ namespace AvalonUgh.Code.Editor
 				Height = Height - PrimitiveTile.Heigth * 2 - Padding * 3,
 			}.AttachTo(this).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding + Padding);
 
-			this.LevelText = new TextBox
-			{
-				FontFamily = new FontFamily("Courier New"),
-				AcceptsReturn = true,
-				Width = Width - Padding * 2,
-				Height = Height - PrimitiveTile.Heigth * 2 - Padding * 3,
-				Background = Brushes.Transparent,
-				BorderThickness = new Thickness(0)
-			}.AttachTo(this).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding * 2);
+
+
+			this.LevelText.AttachTo(this).SizeTo(
+				Width - Padding * 2,
+				Height - PrimitiveTile.Heigth * 2 - Padding * 3
+			).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding * 2);
 
 
 
@@ -123,7 +127,6 @@ namespace AvalonUgh.Code.Editor
 
 			SelectionMarkerMove(Padding - 2, Padding - 2);
 
-			bool DefaultSelectionMade = false;
 
 			#region AddButton
 			Action<Image, View.SelectorInfo[]> AddButton =
@@ -165,7 +168,6 @@ namespace AvalonUgh.Code.Editor
 
 							if (EditorSelectorCycle.MoveNext())
 							{
-								DefaultSelectionMade = true;
 								SelectionMarker.Fill = Brushes.LightGreen;
 
 								this.EditorSelector = EditorSelectorCycle.Current;
@@ -185,8 +187,20 @@ namespace AvalonUgh.Code.Editor
 
 						};
 
-					if (!DefaultSelectionMade)
+
+
+					if (Buttons.Count == 0)
+					{
 						Select();
+
+
+						// first button shall be default
+						this.LevelText.GotFocus +=
+							delegate
+							{
+								Select();
+							};
+					}
 
 					new Button
 					{
@@ -254,7 +268,7 @@ namespace AvalonUgh.Code.Editor
 				Editor.Tiles.CaveSelector.Sizes
 			);
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", 
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png",
 				Editor.Tiles.PlatformSelector.Sizes
 			);
 
@@ -263,7 +277,9 @@ namespace AvalonUgh.Code.Editor
 			);
 
 
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png", null);
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png",
+				Editor.Tiles.BridgeSelector.Sizes
+			);
 
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
 				Editor.Tiles.FenceSelector.Sizes
@@ -304,7 +320,7 @@ namespace AvalonUgh.Code.Editor
 
 			AddButton(Demolish, Editor.DemolishSelector.Sizes);
 
-	
+
 		}
 
 

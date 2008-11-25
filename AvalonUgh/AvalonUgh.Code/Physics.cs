@@ -97,6 +97,7 @@ namespace AvalonUgh.Code
 			var vehY = twin.ToObstacle(twin.X, newY);
 
 			var Obstacles = this.Level.KnownObstacles.AsEnumerable()
+				.Concat(Level.KnownBridges.Select(k => k.ToObstacle()))
 				.Concat(Level.KnownRidges.Select(k => k.ToObstacle()))
 				.Concat(Level.KnownPlatforms.Select(k => k.ToObstacle()));
 
