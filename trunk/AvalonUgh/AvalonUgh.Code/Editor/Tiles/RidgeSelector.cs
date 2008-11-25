@@ -67,8 +67,6 @@ namespace AvalonUgh.Code.Editor.Tiles
 			Selector.CreateTo(Level,
 				new View.SelectorPosition
 				{
-					TileX = Position.X,
-					TileY = Position.Y,
 					ContentX = Position.X * PrimitiveTile.Width,
 					ContentY = Position.Y * PrimitiveTile.Heigth,
 				}

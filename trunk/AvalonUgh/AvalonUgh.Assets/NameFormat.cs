@@ -7,7 +7,7 @@ using ScriptCoreLib;
 namespace AvalonUgh.Assets.Shared
 {
 	[Script]
-	public class NameFormat
+	public sealed class NameFormat
 	{
 		// platform0_2x1.png
 
@@ -19,6 +19,18 @@ namespace AvalonUgh.Assets.Shared
 		public int Width = 1;
 		
 		public int Height = 1;
+
+		public NameFormat Clone()
+		{
+			return new NameFormat
+			{
+				Name = Name,
+				Index = Index,
+				IndexCount = IndexCount,
+				Width = Width,
+				Height = Height
+			};
+		}
 
 		public override string ToString()
 		{

@@ -98,8 +98,7 @@ namespace AvalonUgh.Code
 										ContentX = x,
 										ContentY = y,
 
-										TileX = x / PrimitiveTile.Width,
-										TileY = y / PrimitiveTile.Heigth,
+									
 									};
 
 							if (this.EditorSelector.Invoke != null)
@@ -189,8 +188,11 @@ namespace AvalonUgh.Code
 			public int ContentX;
 			public int ContentY;
 
-			public int TileX;
-			public int TileY;
+			public int TileX { get { return ContentX / PrimitiveTile.Width; }}
+
+			public int TileY { get { return ContentY/ PrimitiveTile.Heigth; }}
+
+		
 		}
 
 		public Rectangle EditorSelectorRectangle;

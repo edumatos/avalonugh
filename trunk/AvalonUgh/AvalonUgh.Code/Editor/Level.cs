@@ -105,7 +105,6 @@ namespace AvalonUgh.Code
 
 
 
-
 		public int ActualWidth
 		{
 			get
@@ -309,7 +308,19 @@ namespace AvalonUgh.Code
 		public Obstacle BorderObstacleLeft { get; set; }
 		public Obstacle BorderObstacleBottom { get; set; }
 
+		public IEnumerable<Obstacle> ToObstacles()
+		{
+			var Bridges = this.KnownBridges.Select(k => k.ToObstacle());
+			var Ridges = this.KnownRidges.Select(k => k.ToObstacle());
+			var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
 
+
+			return
+				this.KnownObstacles.AsEnumerable()
+				.Concat(Bridges)
+				.Concat(Ridges)
+				.Concat(Platforms);
+		}
 
 		[Script]
 		public class RemovableObject
