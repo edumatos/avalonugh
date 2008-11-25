@@ -208,6 +208,10 @@ namespace AvalonUgh.Code
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
+			this.Level.KnownPlatforms.ForEachNewItem(
+				k => k.Image.AttachTo(this.Platforms)
+			);
+
 
 
 

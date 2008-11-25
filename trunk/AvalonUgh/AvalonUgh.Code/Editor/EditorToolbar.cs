@@ -254,7 +254,9 @@ namespace AvalonUgh.Code.Editor
 				Editor.Tiles.CaveSelector.Sizes
 			);
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", null);
+			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png", 
+				Editor.Tiles.PlatformSelector.Sizes
+			);
 
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png",
 				Editor.Tiles.RidgeSelector.Sizes
