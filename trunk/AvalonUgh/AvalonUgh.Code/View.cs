@@ -192,29 +192,33 @@ namespace AvalonUgh.Code
 			
 			// this level is now frozen to this view!
 			// unless we unbind from events being created
-			this.Level.KnownStones.ForEachNewItem(
+
+			#region sync the level platforms into view
+			this.Level.KnownStones.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
-			this.Level.KnownCaves.ForEachNewItem(
+			this.Level.KnownCaves.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
-			this.Level.KnownRidges.ForEachNewItem(
+			this.Level.KnownRidges.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
-			this.Level.KnownFences.ForEachNewItem(
+			this.Level.KnownFences.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
-			this.Level.KnownPlatforms.ForEachNewItem(
+			this.Level.KnownPlatforms.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
-			this.Level.KnownBridges.ForEachNewItem(
+			this.Level.KnownBridges.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
+
+			#endregion
 
 
 

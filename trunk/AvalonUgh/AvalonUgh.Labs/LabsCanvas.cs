@@ -59,7 +59,7 @@ namespace AvalonUgh.Labs.Shared
 			}.AttachTo(this);
 
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level08.txt";
+			var CurrentLevel = KnownAssets.Path.Assets + "/level09.txt";
 
 			Console.WriteLine("loading: " + CurrentLevel);
 
@@ -128,111 +128,20 @@ namespace AvalonUgh.Labs.Shared
 						};
 					#endregion
 
-					#region CreateCustom
-					Func<int, int, string, string, Image> CreateCustom_2x3 =
-						(x, y, tile, path) =>
-						{
-							var w = 16 * Zoom;
-							var h = 12 * Zoom;
-
-							return new Image
-							{
-								Source = (path + "/" + tile + ".png").ToSource(),
-								Stretch = Stretch.Fill,
-								Width = w * 2,
-								Height = h * 3,
-
-
-							}.MoveTo(x * w, y * h).AttachTo(View.Platforms);
-						};
-					#endregion
-
-					#region CreateCustom
-					Func<int, int, string, string, Image> CreateCustom_2x4 =
-						(x, y, tile, path) =>
-						{
-							var w = 16 * Zoom;
-							var h = 12 * Zoom;
-
-							return new Image
-							{
-								Source = (path + "/" + tile + ".png").ToSource(),
-								Stretch = Stretch.Fill,
-								Width = w * 2,
-								Height = h * 4,
-
-
-							}.MoveTo(x * w, y * h).AttachTo(View.Platforms);
-						};
-					#endregion
-
-					#region CreateCustom
-					Func<int, int, string, string, Image> CreateCustom_2x1 =
-						(x, y, tile, path) =>
-						{
-							var w = 16 * Zoom;
-							var h = 12 * Zoom;
-
-							return new Image
-							{
-								Source = (path + "/" + tile + ".png").ToSource(),
-								Stretch = Stretch.Fill,
-								Width = w * 2,
-								Height = h * 1,
-
-
-							}.MoveTo(x * w, y * h).AttachTo(View.Platforms);
-						};
-					#endregion
-
-					#region CreateCustom
-					Func<int, int, string, string, Image> CreateCustom_4x2 =
-						(x, y, tile, path) =>
-						{
-							var w = 16 * Zoom;
-							var h = 12 * Zoom;
-
-							return new Image
-							{
-								Source = (path + "/" + tile + ".png").ToSource(),
-								Stretch = Stretch.Fill,
-								Width = w * 4,
-								Height = h * 2,
-
-
-							}.MoveTo(x * w, y * h).AttachTo(View.Platforms);
-						};
-					#endregion
-
-
-					var CreateTile = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
-					var CreateTile_2x1 = CreateCustom_2x1.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
-					var CreateTile_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
-					var CreateTile_2x3 = CreateCustom_2x3.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
-					var CreateTile_2x4 = CreateCustom_2x4.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
-					var CreateTile_4x2 = CreateCustom_4x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Tiles);
-
+				
+			
 					var CreateSprite = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 					var CreateSprite_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 
 
 					var Create = new
 					{
-					
-
-						bridge0 = CreateTile.FixLastParam("bridge0"),
-						bridge0left = CreateTile.FixLastParam("bridge0left"),
-						bridge0right = CreateTile.FixLastParam("bridge0right"),
-
-
 						flower0 = CreateSprite.FixLastParam("flower0"),
 						fish0 = CreateSprite.FixLastParam("fish0"),
 						fish1 = CreateSprite.FixLastParam("fish1"),
 
 					
 						weed0_2x2 = CreateSprite_2x2.FixLastParam("weed0_00_2x2"),
-
-					
 
 					};
 					#endregion
@@ -244,66 +153,6 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-
-					#region Background
-					Level.Map.ForEach(
-						k =>
-						{
-							var Tile = new ASCIITileSizeInfo(k);
-
-							// ridge
-							if (k.Value == RidgeSelector.Identifier)
-							{
-								RidgeSelector.AttachToLevel(k, Tile, Level);
-
-								return;
-							}
-
-							// cave
-							if (k.Value == CaveSelector.Identifier)
-							{
-								CaveSelector.AttachToLevel(k, Tile, Level);
-
-								return;
-							}
-
-							// fence
-							if (k.Value == FenceSelector.Identifier)
-							{
-								FenceSelector.AttachToLevel(k, Tile, Level);
-
-								return;
-							}
-
-							// stone
-							if (k.Value == StoneSelector.Identifier)
-							{
-								StoneSelector.AttachToLevel(k, Tile, Level);
-
-								return;
-							}
-
-							// platform
-							if (k.Value == PlatformSelector.Identifier)
-							{
-								PlatformSelector.AttachToLevel(k, Tile, Level);
-
-								return;
-							}
-
-							// bridge
-							if (k.Value == BridgeSelector.Identifier)
-							{
-								BridgeSelector.AttachToLevel(k, Tile, Level);
-
-								return;
-							}
-							
-
-						}
-					);
-
-					#endregion
 
 
 					//Create.weed0_2x2(0, 14);
@@ -431,19 +280,19 @@ namespace AvalonUgh.Labs.Shared
 					var xveh = new Vehicle(Zoom);
 					xveh.ColorStripe = Colors.Red;
 					xveh.AttachContainerTo(View.Entities);
-					xveh.MoveTo(DefaultWidth / 2, DefaultHeight / 2);
+					xveh.MoveTo(Level.ActualWidth / 2, Level.ActualHeight / 2);
 
 					var twin = new Vehicle(Zoom);
 					twin.ColorStripe = Colors.Blue;
 
 					twin.AttachContainerTo(View.Entities);
-					twin.MoveTo(DefaultWidth / 3, DefaultHeight / 4);
+					twin.MoveTo(Level.ActualWidth  * 2/ 3, Level.ActualHeight / 3);
 
 					var twin2 = new Vehicle(Zoom);
 					twin2.ColorStripe = Colors.Yellow;
 					twin2.Density = 1.11;
 					twin2.AttachContainerTo(View.Entities);
-					twin2.MoveTo(DefaultWidth * 2 / 3, DefaultHeight / 2);
+					twin2.MoveTo(Level.ActualWidth / 3, Level.ActualHeight / 3);
 
 					var ph = new Physics
 					{

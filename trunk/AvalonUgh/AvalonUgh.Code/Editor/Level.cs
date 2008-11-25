@@ -277,6 +277,71 @@ namespace AvalonUgh.Code
 				this.BorderObstacleLeft,
 				this.BorderObstacleBottom
 			);
+
+
+
+
+			#region Background
+			this.Map.ForEach(
+				k =>
+				{
+					var Tile = new ASCIITileSizeInfo(k);
+
+					// ridge
+					if (k.Value == RidgeSelector.Identifier)
+					{
+						RidgeSelector.AttachToLevel(k, Tile, this);
+
+						return;
+					}
+
+					// cave
+					if (k.Value == CaveSelector.Identifier)
+					{
+						CaveSelector.AttachToLevel(k, Tile, this);
+
+						return;
+					}
+
+					// fence
+					if (k.Value == FenceSelector.Identifier)
+					{
+						FenceSelector.AttachToLevel(k, Tile, this);
+
+						return;
+					}
+
+					// stone
+					if (k.Value == StoneSelector.Identifier)
+					{
+						StoneSelector.AttachToLevel(k, Tile, this);
+
+						return;
+					}
+
+					// platform
+					if (k.Value == PlatformSelector.Identifier)
+					{
+						PlatformSelector.AttachToLevel(k, Tile, this);
+
+						return;
+					}
+
+					// bridge
+					if (k.Value == BridgeSelector.Identifier)
+					{
+						BridgeSelector.AttachToLevel(k, Tile, this);
+
+						return;
+					}
+
+
+				}
+			);
+
+			#endregion
+
+
 		}
 
 
