@@ -77,8 +77,8 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform0.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\bridge0left.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\bridge0right.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\bridge1.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\bridge2.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0.png" />

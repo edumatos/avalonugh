@@ -218,38 +218,21 @@ namespace AvalonUgh.Labs.Shared
 
 					var Create = new
 					{
-						fence0 = CreateTile.FixLastParam("fence0"),
-
-						stone0 = CreateTile.FixLastParam("stone0"),
-						stone0_2x1 = CreateTile_2x1.FixLastParam("stone0_2x1"),
-						stone1_2x2 = CreateTile_2x2.FixLastParam("stone1_2x2"),
-						stone0_2x3 = CreateTile_2x3.FixLastParam("stone0_2x3"),
-						stone0_2x4 = CreateTile_2x4.FixLastParam("stone0_2x4"),
-						stone0_4x2 = CreateTile_4x2.FixLastParam("stone0_4x2"),
+					
 
 						bridge0 = CreateTile.FixLastParam("bridge0"),
 						bridge0left = CreateTile.FixLastParam("bridge0left"),
 						bridge0right = CreateTile.FixLastParam("bridge0right"),
 
 
-						platform0 = CreateTile.FixLastParam("platform0"),
-						platform0_2x1 = CreateTile_2x1.FixLastParam("platform0_2x1"),
-						platform0_2x2 = CreateTile_2x2.FixLastParam("platform0_2x2"),
-						platform0_2x3 = CreateTile_2x3.FixLastParam("platform0_2x3"),
-						platform0_4x2 = CreateTile_4x2.FixLastParam("platform0_4x2"),
-						platform1 = CreateTile.FixLastParam("platform1"),
-
 						flower0 = CreateSprite.FixLastParam("flower0"),
 						fish0 = CreateSprite.FixLastParam("fish0"),
 						fish1 = CreateSprite.FixLastParam("fish1"),
 
-						ridge0 = CreateTile.FixLastParam("ridge0"),
-						ridge0_2x2 = CreateTile_2x2.FixLastParam("ridge0_2x2"),
-
+					
 						weed0_2x2 = CreateSprite_2x2.FixLastParam("weed0_00_2x2"),
 
-						cave0_2x2 = CreateTile_2x2.FixLastParam("cave0_2x2"),
-						cave1_2x2 = CreateTile_2x2.FixLastParam("cave1_2x2"),
+					
 
 					};
 					#endregion
@@ -266,21 +249,7 @@ namespace AvalonUgh.Labs.Shared
 					Level.Map.ForEach(
 						k =>
 						{
-							if (char.IsNumber(k.Value, 0))
-								return;
-
 							var Tile = new ASCIITileSizeInfo(k);
-
-							var Is_2x1 = Tile.Width == 2 && Tile.Height == 1;
-							var Is_2x2 = Tile.Width == 2 && Tile.Height == 2;
-							var Is_2x3 = Tile.Width == 2 && Tile.Height == 3;
-							var Is_2x4 = Tile.Width == 2 && Tile.Height == 4;
-							var Is_4x2 = Tile.Width == 4 && Tile.Height == 2;
-
-
-
-
-
 
 							// ridge
 							if (k.Value == RidgeSelector.Identifier)
@@ -329,45 +298,6 @@ namespace AvalonUgh.Labs.Shared
 
 								return;
 							}
-							
-
-
-
-							//// bridge
-							//if (k.Value == "B")
-							//{
-							//    Level.KnownObstacles.Add(
-							//        new Obstacle
-							//        {
-							//            Tile = Tile,
-							//            Position = k,
-							//            Left = k.X * 16 * Zoom,
-							//            Top = k.Y * 12 * Zoom,
-							//            Right = (k.X + Tile.Width) * 16 * Zoom,
-							//            Bottom = (k.Y + Tile.Height) * 12 * Zoom
-							//        }
-							//    );
-
-							//    if (k[-1, 0] != "B")
-							//    {
-							//        Create.bridge0left(k.X, k.Y);
-							//        return;
-							//    }
-
-							//    if (k[1, 0] != "B")
-							//    {
-							//        Create.bridge0right(k.X, k.Y);
-							//        return;
-							//    }
-
-
-							//    Create.bridge0(k.X, k.Y);
-							//    return;
-							//}
-
-
-						
-
 							
 
 						}

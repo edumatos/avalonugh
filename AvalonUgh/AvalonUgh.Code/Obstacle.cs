@@ -47,5 +47,16 @@ namespace AvalonUgh.Code
 
 			return false;
 		}
+
+		public Obstacle WithOffset(double x, double y)
+		{
+			return new Obstacle
+			{
+				Left = this.Left + x,
+				Right = this.Right + x,
+				Top = this.Top + y,
+				Bottom = this.Bottom + y,
+			};
+		}
 	}
 }

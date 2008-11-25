@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Controls;
 using ScriptCoreLib;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
@@ -21,6 +22,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 			this.Level = Level;
 			this.Selector = Selector;
 		}
+
+		public NameFormat Name;
 
 		#region ISupportsObstacle Members
 
