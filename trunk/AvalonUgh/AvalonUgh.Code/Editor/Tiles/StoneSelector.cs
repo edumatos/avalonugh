@@ -10,7 +10,7 @@ using AvalonUgh.Assets.Shared;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public static class StoneSelector
+	public static class StoneSelector 
 	{
 		public const string Identifier = "S";
 
@@ -58,28 +58,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{
-			var Selector = Sizes.SingleOrDefault(
-				k => k.Equals(Tile)
-			);
-
-			if (Selector == null)
-			{
-				Console.WriteLine(
-					new { InvalidSize = new { Tile.Width, Tile.Height }, Identifier, Position.X, Position.Y }.ToString()
-				);
-
-				return;
-			}
-
-			Selector.CreateTo(Level,
-				new View.SelectorPosition
-				{
-					TileX = Position.X,
-					TileY = Position.Y,
-					ContentX = Position.X * PrimitiveTile.Width,
-					ContentY = Position.Y * PrimitiveTile.Heigth,
-				}
-			);
+			TileSelector.AttachToLevel(Sizes, Position, Tile, Level);
 		}
 	}
 }

@@ -89,6 +89,7 @@
     <Compile Include="Editor\Sprites\SpriteSelector.cs" />
     <Compile Include="Editor\DemolishSelector.cs" />
     <Compile Include="Editor\Tiles\CaveSelector.cs" />
+    <Compile Include="Editor\Tiles\Fence.cs" />
     <Compile Include="Editor\Tiles\RidgeSelector.cs" />
     <Compile Include="Editor\Tiles\Ridge.cs" />
     <Compile Include="Editor\Tiles\Stone.cs" />

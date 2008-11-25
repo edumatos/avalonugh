@@ -176,6 +176,11 @@ namespace AvalonUgh.Code
 
 			}
 
+			public SelectorInfo()
+			{
+				PercisionX = 1;
+				PercisionY = 1;
+			}
 		}
 
 		[Script]
