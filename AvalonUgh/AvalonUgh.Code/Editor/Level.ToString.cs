@@ -10,7 +10,7 @@ using System.Windows.Media;
 using System.IO;
 using AvalonUgh.Code.Editor.Tiles;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Editor
 {
 	partial class Level
 	{

@@ -12,7 +12,7 @@ using AvalonUgh.Code.Editor.Tiles;
 using System.ComponentModel;
 using System.IO;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Editor
 {
 	[Script]
 	public partial class Level

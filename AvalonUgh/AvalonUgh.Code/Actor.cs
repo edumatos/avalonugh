@@ -6,6 +6,7 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Editor;
 
 namespace AvalonUgh.Code
 {
