@@ -44,6 +44,8 @@ namespace AvalonUgh.Code
 
 		public Actor(int Zoom)
 		{
+			this.RespectPlatforms = true;
+
 			this.Density = 0.3;
 			this.Zoom = Zoom;
 
@@ -96,7 +98,9 @@ namespace AvalonUgh.Code
 		{
 			get
 			{
-				return Animation != AnimationEnum.Panic;
+				return false;
+
+				//return Animation != AnimationEnum.Panic;
 			}
 		}
 
@@ -124,7 +128,13 @@ namespace AvalonUgh.Code
 				i =>
 				{
 					if (Animation != AnimationEnum.Panic)
+					{
+						// yet if we are falling?
+						if (VelocityY > 0.2)
+							this.Animation = AnimationEnum.Panic;
+
 						return;
+					}
 
 					this.PanicFrames.ForEach(
 						(k, j) =>

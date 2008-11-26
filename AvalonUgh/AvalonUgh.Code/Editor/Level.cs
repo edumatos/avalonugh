@@ -373,18 +373,62 @@ namespace AvalonUgh.Code.Editor
 		public Obstacle BorderObstacleLeft { get; set; }
 		public Obstacle BorderObstacleBottom { get; set; }
 
+		Func<IEnumerable<Obstacle>> ToObstacles_Cache;
 		public IEnumerable<Obstacle> ToObstacles()
 		{
-			var Bridges = this.KnownBridges.Select(k => k.ToObstacle());
-			var Ridges = this.KnownRidges.Select(k => k.ToObstacle());
-			var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
+			if (ToObstacles_Cache == null)
+			{
+				var value = default(IEnumerable<Obstacle>);
+				var dirty = true;
+
+				this.KnownBridges.ListChanged +=
+					delegate
+					{
+						dirty = true;
+					};
+
+				this.KnownRidges.ListChanged +=
+					delegate
+					{
+						dirty = true;
+					};
+
+				this.KnownPlatforms.ListChanged +=
+					delegate
+					{
+						dirty = true;
+					};
+
+				Action value_Update =
+					delegate
+					{
+						var Bridges = this.KnownBridges.Select(k => k.ToObstacle());
+						var Ridges = this.KnownRidges.Select(k => k.ToObstacle());
+						var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
 
 
-			return
-				this.KnownObstacles.AsEnumerable()
-				.Concat(Bridges)
-				.Concat(Ridges)
-				.Concat(Platforms);
+						value = this.KnownObstacles.AsEnumerable()
+							.Concat(Bridges)
+							.Concat(Ridges)
+							.Concat(Platforms).ToArray().AsEnumerable();
+					};
+
+				ToObstacles_Cache =
+					delegate
+					{
+						if (dirty)
+						{
+							value_Update();
+							dirty = false;
+						}
+
+						return value;
+					};
+
+			}
+
+			return ToObstacles_Cache();
+
 		}
 
 		[Script]
