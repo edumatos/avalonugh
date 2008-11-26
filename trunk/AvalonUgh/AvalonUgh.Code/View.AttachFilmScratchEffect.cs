@@ -26,6 +26,7 @@ namespace AvalonUgh.Code
 						 Stretch = Stretch.Fill,
 						 Width = 32,
 						 Height = 32,
+						 Visibility = System.Windows.Visibility.Hidden
 					 }.AttachTo(this.FilmScratchContainer)
 			 ).ToArray();
 

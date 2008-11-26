@@ -5,15 +5,13 @@
 # code: xxx000
 # border-top: 32
 # border-bottom: 32
-# water: 26
+# water: 20
 # autoscroll: 0
 # flashlight-opacity: 255
 # background: 001
 # background-width: 320
 # background-height: 200
 ####################
-S-S---S--S--S---S---
-| |   |  |  |   |   
 S---S-S---S-SS-S-SSS
 |   | |   | S| | C-S
 S-S-| S-SS| SSS| | S
@@ -23,15 +21,16 @@ S-S-| S-SS| SSS| | S
 SC-S| S-SSS-SSSSSSSS
 S| S| | SS-S-SSSSSSS
 # tree: 80			
-# tree: 112			
 # sign: 56;1		
 P-P-PP-S-| SSS-S-SSS
-SSSSS-SSS-S-|| | S-S
-SSSS| S-| S-SC-| | S
-SSSSSS| | | || | | S
+| SSS-SSS-S-|| | S-S
+S-S---S--S--S---S---
+| |   |  |  |   |   
+SSSSS-S-S-S-SC-S-S--
+SSSSSS| | | || | |  
 # sign: 152;3		
 # rock: 96			
-SSSSPPP-BBBP-PPPSS-S
+SSSSP-P-BBBP-PP-SS-S
 SSSR-R| SSS| R-R-| S
 SSS| RRRSSSRR| | RSS
 ####################
