@@ -31,6 +31,9 @@ namespace AvalonUgh.Code
 		public Image[] PanicFrames;
 		public int PanicInterval = 100;
 
+		public Image[] TalkFrames = new Image[0];
+		public int TalkInterval = 100;
+
 		public void StabilityReached()
 		{
 			if (Level == null)
@@ -38,7 +41,8 @@ namespace AvalonUgh.Code
 
 			if (this.ToObstacle().Bottom < this.Level.WaterTop)
 			{
-				this.Animation = AnimationEnum.Idle;
+				if (this.Animation == AnimationEnum.Panic)
+					this.Animation = AnimationEnum.Idle;
 			}
 		}
 
@@ -62,6 +66,7 @@ namespace AvalonUgh.Code
 		public enum AnimationEnum
 		{
 			Idle,
+			Talk,
 			Panic
 		}
 
@@ -81,15 +86,19 @@ namespace AvalonUgh.Code
 
 				if (value != AnimationEnum.Idle)
 					this.IdleFrames.ForEach(k => k.Hide());
-
 				if (value != AnimationEnum.Panic)
 					this.PanicFrames.ForEach(k => k.Hide());
+				if (value != AnimationEnum.Talk)
+					this.TalkFrames.ForEach(k => k.Hide());
 
 				if (value == AnimationEnum.Idle)
 					this.IdleFrames.First().Show();
 
 				if (value == AnimationEnum.Panic)
 					this.PanicFrames.First().Show();
+
+				if (value == AnimationEnum.Talk)
+					this.TalkFrames.First().Show();
 			}
 		}
 
@@ -116,6 +125,24 @@ namespace AvalonUgh.Code
 						(k, j) =>
 						{
 							if (j == i % this.IdleFrames.Length)
+								k.Show();
+							else
+								k.Hide();
+						}
+					);
+				}
+			);
+
+			this.TalkInterval.AtIntervalWithCounter(
+				i =>
+				{
+					if (Animation != AnimationEnum.Talk)
+						return;
+
+					this.TalkFrames.ForEach(
+						(k, j) =>
+						{
+							if (j == i % this.TalkFrames.Length)
 								k.Show();
 							else
 								k.Hide();

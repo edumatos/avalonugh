@@ -196,7 +196,7 @@ namespace AvalonUgh.Labs.Shared
 
 					var ActorPool = new Func<Actor>[]
 					{
-						() => new Actor.man0(Zoom) {Level = Level },
+						() => new Actor.man0(Zoom) {Level = Level, Animation = Actor.AnimationEnum.Talk },
 						() => new Actor.man1(Zoom)  {Level = Level },
 						() => new Actor.woman0(Zoom)  {Level = Level },
 					}.AsCyclicEnumerable().GetEnumerator();
