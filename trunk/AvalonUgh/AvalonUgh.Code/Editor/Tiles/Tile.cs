@@ -37,15 +37,28 @@ namespace AvalonUgh.Code.Editor.Tiles
 			get { return (Position.ContentY + Selector.HalfHeight) * Level.Zoom; }
 		}
 
+		double ObstacleCache_X;
+		double ObstacleCache_Y;
+		Obstacle ObstacleCache_Value;
+
 		public Obstacle ToObstacle(double x, double y)
 		{
-			return new Obstacle
+			if (ObstacleCache_X == x)
+				if (ObstacleCache_Y == y)
+					if (ObstacleCache_Value != null)
+						return ObstacleCache_Value;
+
+			ObstacleCache_X = x;
+			ObstacleCache_Y = y;
+			ObstacleCache_Value = new Obstacle
 			{
 				Left = x - Selector.HalfWidth * Level.Zoom,
 				Top = y - Selector.HalfHeight * Level.Zoom,
 				Right = x + Selector.HalfWidth * Level.Zoom,
 				Bottom = y + Selector.HalfHeight * Level.Zoom,
 			};
+
+			return ObstacleCache_Value;
 		}
 
 		#endregion

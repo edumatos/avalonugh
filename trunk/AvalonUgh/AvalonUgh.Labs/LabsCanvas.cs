@@ -132,8 +132,8 @@ namespace AvalonUgh.Labs.Shared
 						};
 					#endregion
 
-				
-			
+
+
 					var CreateSprite = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 					var CreateSprite_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 
@@ -144,13 +144,13 @@ namespace AvalonUgh.Labs.Shared
 						fish0 = CreateSprite.FixLastParam("fish0"),
 						fish1 = CreateSprite.FixLastParam("fish1"),
 
-					
+
 						weed0_2x2 = CreateSprite_2x2.FixLastParam("weed0_00_2x2"),
 
 					};
 					#endregion
 
-				
+
 
 
 
@@ -196,9 +196,9 @@ namespace AvalonUgh.Labs.Shared
 
 					var ActorPool = new Func<Actor>[]
 					{
-						() => new Actor.man0(Zoom),
-						() => new Actor.man1(Zoom),
-						() => new Actor.woman0(Zoom),
+						() => new Actor.man0(Zoom) {Level = Level },
+						() => new Actor.man1(Zoom)  {Level = Level },
+						() => new Actor.woman0(Zoom)  {Level = Level },
 					}.AsCyclicEnumerable().GetEnumerator();
 
 					Level.KnownCaves.ForEachNewOrExistingItem(
@@ -293,7 +293,7 @@ namespace AvalonUgh.Labs.Shared
 					twin.ColorStripe = Colors.Blue;
 
 					twin.AttachContainerTo(View.Entities);
-					twin.MoveTo(Level.ActualWidth  * 2/ 3, 0);
+					twin.MoveTo(Level.ActualWidth * 2 / 3, 0);
 
 					var twin2 = new Vehicle(Zoom);
 					twin2.ColorStripe = Colors.Yellow;
@@ -435,7 +435,7 @@ namespace AvalonUgh.Labs.Shared
 
 					View.Flashlight.Visible = false;
 
-					
+
 
 					et.EditorSelectorChanged +=
 						() => View.EditorSelector = et.EditorSelector;
@@ -476,7 +476,7 @@ namespace AvalonUgh.Labs.Shared
 					}.AttachTo(GameContent).MoveTo((DefaultWidth - 320 * StatusbarZoom) / 2, DefaultHeight - 9 * StatusbarZoom);
 
 
-				
+
 
 
 					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();

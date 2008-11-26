@@ -10,7 +10,7 @@ using AvalonUgh.Assets.Shared;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public static class StoneSelector 
+	public static class StoneSelector
 	{
 		public const string Identifier = "S";
 
@@ -19,12 +19,20 @@ namespace AvalonUgh.Code.Editor.Tiles
 			new View.SelectorInfo[]
 			{
 				new Size_Generic(1, 1, 1),
+
 				new Size_Generic(1, 2, 1),
+				new Size_Generic(2, 1, 1),
+				
+
 				new Size_Generic(2, 2, 2),
+
+			
+				
+				new Size_Generic(2, 3, 1),
+				new Size_Generic(3, 2, 1),
+
 				new Size_Generic(4, 2, 1),
 				new Size_Generic(2, 4, 1),
-				new Size_Generic(2, 3, 1),
-				new Size_Generic(2, 1, 1),
 			};
 
 		[Script]
@@ -34,7 +42,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 			public Size_Generic(int x, int y, int variations)
 				: base(x, y, variations, "stone")
 			{
-			
+
 			}
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
