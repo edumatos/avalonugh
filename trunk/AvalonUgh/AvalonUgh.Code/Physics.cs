@@ -101,39 +101,40 @@ namespace AvalonUgh.Code
 
 			var veh = twin as Vehicle;
 			if (veh != null)
-			{
-				Obstacles = Obstacles.Concat(this.Vehicles.Where(k => k != twin).Select(k => k.ToObstacle()));
-
-				if (veh.CurrentWeapon == null)
+				if (!veh.IsUnmanned)
 				{
-					// we can pickup a rock for our weapon now
+					Obstacles = Obstacles.Concat(this.Vehicles.Where(k => k != twin).Where(k => !k.IsUnmanned).Select(k => k.ToObstacle()));
 
-					this.Level.KnownRocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-						rock_ =>
+					if (veh.CurrentWeapon == null)
+					{
+						// we can pickup a rock for our weapon now
+
+						this.Level.KnownRocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+							rock_ =>
+							{
+								rock_.PhysicsDisabled = true;
+								veh.CurrentWeapon = rock_;
+								rock_.Container.Hide();
+							}
+						);
+					}
+
+					this.Actors.Where(k => k.Animation != Actor.AnimationEnum.Panic).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+						actor_ =>
 						{
-							rock_.PhysicsDisabled = true;
-							veh.CurrentWeapon = rock_;
-							rock_.Container.Hide();
+							actor_.RespectPlatforms = false;
+
+							//// we did hit an actor that repsects platforms
+							//// as such he cannot fall thro it to water
+							//if (actor_.RespectPlatforms)
+							//    return;
+
+							//// we did will hit a tree
+							//actor_.Animation = Actor.AnimationEnum.Panic;
 						}
 					);
+
 				}
-
-				this.Actors.Where(k => k.Animation != Actor.AnimationEnum.Panic).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-					actor_ =>
-					{
-						actor_.RespectPlatforms = false;
-
-						//// we did hit an actor that repsects platforms
-						//// as such he cannot fall thro it to water
-						//if (actor_.RespectPlatforms)
-						//    return;
-
-						//// we did will hit a tree
-						//actor_.Animation = Actor.AnimationEnum.Panic;
-					}
-				);
-
-			}
 
 			var actor = twin as Actor;
 			if (actor != null)
@@ -293,14 +294,14 @@ namespace AvalonUgh.Code
 
 		bool PhysicsDisabled { get; }
 
-		
+
 		double Density { get; set; }
 	}
 
 	[Script]
 	public static class SupportPhysicsExtensions
 	{
-	
+
 
 		public static void MoveBaseTo(this ISupportsMoveTo e, double x, double y)
 		{
