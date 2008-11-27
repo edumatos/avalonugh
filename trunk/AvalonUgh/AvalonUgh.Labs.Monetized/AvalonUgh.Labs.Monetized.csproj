@@ -44,6 +44,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Avalon.dll</HintPath>
     </Reference>
+    <Reference Include="ScriptCoreLib.Mochi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Mochi.dll</HintPath>
+    </Reference>
     <Reference Include="ScriptCoreLib.Query, Version=1.0.2666.38864, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\util\jsc\bin\ScriptCoreLib.Query.dll</HintPath>
@@ -75,6 +79,10 @@
     <ProjectReference Include="..\AvalonUgh.Labs\AvalonUgh.Labs.csproj">
       <Project>{57C28841-F6A7-4F07-8ADF-9FCA405C0F6B}</Project>
       <Name>AvalonUgh.Labs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AvalonUgh.Promotion\AvalonUgh.Promotion.csproj">
+      <Project>{3B971BB0-A45D-47BB-A1B5-383F08426F09}</Project>
+      <Name>AvalonUgh.Promotion</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
