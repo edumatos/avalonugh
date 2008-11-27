@@ -29,7 +29,7 @@ namespace AvalonUgh.Code
 			public View View;
 		}
 
-		Dictionary<Key, bool> KeyState;
+		public readonly Dictionary<Key, bool> KeyState;
 
 		public event Action Enter;
 		public event Action Drop;
@@ -95,47 +95,10 @@ namespace AvalonUgh.Code
 
 		}
 
-		public void Tick()
-		{
-			var xveh = a.Vehicle;
+		public bool IsPressedDown { get { return KeyState[a.Down]; } }
+		public bool IsPressedUp { get { return KeyState[a.Up]; } }
+		public bool IsPressedLeft { get { return KeyState[a.Left]; } }
+		public bool IsPressedRight { get { return KeyState[a.Right]; } }
 
-
-			if (xveh.IsUnmanned)
-				return;
-
-			Func<Key, bool> IsKeyDown =
-				k => KeyState[k];
-
-			if (KeyState.Any(k => k.Value))
-			{
-				xveh.IsAnimated = true;
-			}
-			else
-			{
-				xveh.IsAnimated = false;
-			}
-
-
-			if (IsKeyDown(a.Up))
-			{
-				xveh.VelocityY -= xveh.Acceleration * 2;
-			}
-			else if (IsKeyDown(a.Down))
-			{
-				if (xveh.Y > a.View.Level.WaterTop)
-					xveh.IsAnimated = false;
-				else
-					xveh.VelocityY += xveh.Acceleration;
-			}
-
-			if (IsKeyDown(a.Left))
-			{
-				xveh.VelocityX -= xveh.Acceleration;
-			}
-			else if (IsKeyDown(a.Right))
-			{
-				xveh.VelocityX += xveh.Acceleration;
-			}
-		}
 	}
 }

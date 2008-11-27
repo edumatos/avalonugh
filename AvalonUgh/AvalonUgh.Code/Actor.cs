@@ -11,7 +11,8 @@ using AvalonUgh.Code.Editor;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public abstract partial class Actor : ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged
+	public abstract partial class Actor :
+		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput
 	{
 		public Level Level { get; set; }
 
@@ -236,5 +237,14 @@ namespace AvalonUgh.Code
 		}
 
 		public bool RespectPlatforms { get; set; }
+
+		#region ISupportsPlayerInput Members
+
+		public void AddAcceleration(PlayerInput e)
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }
