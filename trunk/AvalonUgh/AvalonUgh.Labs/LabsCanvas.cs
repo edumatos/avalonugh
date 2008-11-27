@@ -326,6 +326,9 @@ namespace AvalonUgh.Labs.Shared
 							GameContent.Focus();
 						};
 
+
+					View.LocationTracker.Target = xveh;
+
 					var k1 = new KeyboardInput(
 						new KeyboardInput.Arguments
 						{
@@ -342,14 +345,6 @@ namespace AvalonUgh.Labs.Shared
 						}
 					);
 
-					
-
-					var FlashlightTracker = View.LocationTracker;
-
-					FlashlightTracker.Target = xveh;
-
-					
-
 					var k3 = new PlayerInput
 					{
 						Keyboard = k1,
@@ -362,7 +357,7 @@ namespace AvalonUgh.Labs.Shared
 							if (xveh.IsUnmanned)
 							{
 								xveh.IsUnmanned = false;
-								FlashlightTracker.Target = xveh;
+								View.LocationTracker.Target = xveh;
 							}
 							else
 							{
@@ -373,7 +368,7 @@ namespace AvalonUgh.Labs.Shared
 									RespectPlatforms = true,
 									Level = Level
 								};
-								FlashlightTracker.Target = actor5;
+								View.LocationTracker.Target = actor5;
 
 								actor5.MoveTo(xveh.X, xveh.Y);
 
