@@ -33,6 +33,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly Attribute.Int32 AttributeBackgroundHeight = "background-height";
 		public readonly Attribute.Int32 AttributeWater = "water";
 		public readonly Attribute.Int32 AttributeWind = "wind";
+		public readonly Attribute.Int32 AttributeGravity = "gravity";
 
 		public readonly Attribute.Int32 AttributeBorderTop = "border-top";
 		public readonly Attribute.Int32 AttributeBorderLeft = "border-left";
@@ -376,56 +377,32 @@ namespace AvalonUgh.Code.Editor
 		Func<IEnumerable<Obstacle>> ToObstacles_Cache;
 		public IEnumerable<Obstacle> ToObstacles()
 		{
+			// we will recalculate tile obstacles only when they actually change
 			if (ToObstacles_Cache == null)
-			{
-				var value = default(IEnumerable<Obstacle>);
-				var dirty = true;
-
-				this.KnownBridges.ListChanged +=
-					delegate
-					{
-						dirty = true;
-					};
-
-				this.KnownRidges.ListChanged +=
-					delegate
-					{
-						dirty = true;
-					};
-
-				this.KnownPlatforms.ListChanged +=
-					delegate
-					{
-						dirty = true;
-					};
-
-				Action value_Update =
-					delegate
-					{
-						var Bridges = this.KnownBridges.Select(k => k.ToObstacle());
-						var Ridges = this.KnownRidges.Select(k => k.ToObstacle());
-						var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
-
-
-						value = this.KnownObstacles.AsEnumerable()
-							.Concat(Bridges)
-							.Concat(Ridges)
-							.Concat(Platforms).ToArray().AsEnumerable();
-					};
-
 				ToObstacles_Cache =
-					delegate
+					new IBindingList[]
 					{
-						if (dirty)
+						KnownBridges,
+						KnownRidges,
+						KnownPlatforms
+					}.WhereListChanged(
+						delegate
 						{
-							value_Update();
-							dirty = false;
+							Console.WriteLine("ToObstacles");
+
+							var Bridges = this.KnownBridges.Select(k => k.ToObstacle());
+							var Ridges = this.KnownRidges.Select(k => k.ToObstacle());
+							var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
+
+
+							var value = this.KnownObstacles.AsEnumerable()
+								.Concat(Bridges)
+								.Concat(Ridges)
+								.Concat(Platforms).ToArray().AsEnumerable();
+
+							return value;
 						}
-
-						return value;
-					};
-
-			}
+					);
 
 			return ToObstacles_Cache();
 

@@ -16,7 +16,7 @@ namespace AvalonUgh.Code.Input
 		{
 			public UIElement InputControl;
 
-			public Vehicle Vehicle;
+			//public Vehicle Vehicle;
 
 			public Key Left;
 			public Key Right;
@@ -26,7 +26,7 @@ namespace AvalonUgh.Code.Input
 			public Key Drop;
 			public Key Enter;
 
-			public View View;
+			//public View View;
 		}
 
 		public readonly Dictionary<Key, bool> KeyState;
