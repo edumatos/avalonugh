@@ -87,6 +87,8 @@ namespace AvalonUgh.Code
 
 				if (this.VisibleChanged != null)
 					this.VisibleChanged();
+
+				MoveTo(this.X, this.Y);
 			}
 		}
 		public Flashlight(int Zoom, int Width, int Height)

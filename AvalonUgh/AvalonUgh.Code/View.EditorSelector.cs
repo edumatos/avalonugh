@@ -25,7 +25,7 @@ namespace AvalonUgh.Code
 				Width = PrimitiveTile.Width * this.Level.Zoom,
 				Height = PrimitiveTile.Heigth * this.Level.Zoom,
 				Fill = Brushes.Yellow,
-				Opacity = 0.2
+				Opacity = 0.2,
 			}.MoveTo(64, 64).AttachTo(this.PlatformsInfoOverlay);
 
 

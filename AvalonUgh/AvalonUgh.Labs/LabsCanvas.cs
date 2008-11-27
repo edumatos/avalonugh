@@ -342,32 +342,21 @@ namespace AvalonUgh.Labs.Shared
 						}
 					);
 
-					k1.Drop +=
-						delegate
-						{
-							var rock = xveh.CurrentWeapon;
-
-							if (rock == null)
-								return;
-
-							rock.MoveTo(xveh.X, xveh.Y);
-							rock.VelocityX = xveh.VelocityX;
-							rock.VelocityY = xveh.VelocityY;
-
-							rock.Container.Show();
-							rock.PhysicsDisabled = false;
-							rock.Stability = 0;
-
-							xveh.CurrentWeapon = null;
-
-
-						};
+					
 
 					var FlashlightTracker = View.LocationTracker;
 
 					FlashlightTracker.Target = xveh;
 
-					k1.Enter +=
+					
+
+					var k3 = new PlayerInput
+					{
+						Keyboard = k1,
+						Touch = View.TouchInput
+					};
+
+					k3.Enter +=
 						delegate
 						{
 							if (xveh.IsUnmanned)
@@ -394,6 +383,26 @@ namespace AvalonUgh.Labs.Shared
 							}
 						};
 
+					k3.Drop +=
+						delegate
+						{
+							var rock = xveh.CurrentWeapon;
+
+							if (rock == null)
+								return;
+
+							rock.MoveTo(xveh.X, xveh.Y);
+							rock.VelocityX = xveh.VelocityX;
+							rock.VelocityY = xveh.VelocityY;
+
+							rock.Container.Show();
+							rock.PhysicsDisabled = false;
+							rock.Stability = 0;
+
+							xveh.CurrentWeapon = null;
+
+
+						};
 
 					var k2 = new KeyboardInput(
 						new KeyboardInput.Arguments
@@ -410,7 +419,6 @@ namespace AvalonUgh.Labs.Shared
 							View = View
 						}
 					);
-
 
 
 
