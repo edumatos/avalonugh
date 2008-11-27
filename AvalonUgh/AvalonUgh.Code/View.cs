@@ -10,6 +10,7 @@ using System.Windows.Media;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using System.Windows.Shapes;
 using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Code
 {
@@ -301,9 +302,29 @@ namespace AvalonUgh.Code
 			AttachFilmScratchEffect();
 			AttachEditorSelector();
 
-			this.TouchInput = new TouchInput(this.TouchOverlay);
+			this.TouchInput = new TouchInput(this.TouchOverlay)
+			{
+				OffsetX = ContentOffsetX,
+				OffsetY = ContentOffsetY,
+			};			  
 		}
 
+
+		public double ContentOffsetX
+		{
+			get
+			{
+				return (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
+			}
+		}
+
+		public double ContentOffsetY
+		{
+			get
+			{
+				return (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2; 
+			}
+		}
 
 		public double ContentX { get; set; }
 		public double ContentY { get; set; }

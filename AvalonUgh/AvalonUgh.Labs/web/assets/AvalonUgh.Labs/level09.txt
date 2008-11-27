@@ -6,11 +6,11 @@
 # border-top: 32
 # border-bottom: 32
 # water: 20
-# autoscroll: 0
-# flashlight-opacity: 255
-# background: 001
-# background-width: 320
-# background-height: 200
+# autoscroll: 1
+# flashlight-opacity: 160
+## background: 001
+## background-width: 320
+## background-height: 200
 ####################
 S---S-S---S-SS-S-SSS
 |   | |   | S| | C-S

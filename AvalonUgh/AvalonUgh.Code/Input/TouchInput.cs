@@ -8,13 +8,17 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Threading;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Input
 {
 	[Script]
 	public class TouchInput
 	{
-		public double DeltaX;
-		public double DeltaY;
+		// our touch input should be relative to content
+		public double OffsetX;
+		public double OffsetY;
+
+		public double X;
+		public double Y;
 
 		public event Action Click;
 		public event Action DoubleClick;
@@ -35,7 +39,8 @@ namespace AvalonUgh.Code
 					Offset = new { p.X, p.Y };
 					IsPressed = true;
 
-				
+					this.X = p.X - OffsetX;
+					this.Y = p.Y - OffsetY;
 				};
 
 
@@ -47,10 +52,9 @@ namespace AvalonUgh.Code
 
 					var p = args.GetPosition(Container);
 
-					var CurrentOffset = new { p.X, p.Y };
 
-					this.DeltaX = CurrentOffset.X - Offset.X;
-					this.DeltaY = CurrentOffset.Y - Offset.Y;
+					this.X = p.X - OffsetX;
+					this.Y = p.Y - OffsetY;
 				};
 
 
@@ -66,23 +70,29 @@ namespace AvalonUgh.Code
 
 					var CurrentOffset = new { p.X, p.Y };
 
-					this.DeltaX = CurrentOffset.X - Offset.X;
-					this.DeltaY = CurrentOffset.Y - Offset.Y;
+					var DeltaX = Math.Abs(CurrentOffset.X - Offset.X);
+					var DeltaY = Math.Abs(CurrentOffset.Y - Offset.Y);
 
 					if (DeltaX > 12)
 						return;
 					if (DeltaY > 12)
 						return;
 
+
+
 					if (EnableClick == null)
 					{
 						EnableClick = 500.AtDelay(
 							delegate
 							{
+								EnableClick = null;
+
+								if (IsPressed)
+									return;
+
 								if (this.Click != null)
 									this.Click();
 
-								EnableClick = null;
 							}
 						);
 					}
@@ -95,7 +105,7 @@ namespace AvalonUgh.Code
 							this.DoubleClick();
 					}
 
-					
+
 
 					Offset = null;
 				};

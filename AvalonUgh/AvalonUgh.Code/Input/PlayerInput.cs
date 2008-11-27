@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Input
 {
 	[Script]
 	public class PlayerInput
@@ -70,11 +70,13 @@ namespace AvalonUgh.Code
 
 		void InternalTouch_DoubleClick()
 		{
+			Console.WriteLine("DoubleClick");
 			InternalKeyboard_Enter();
 		}
 
 		void InternalTouch_Click()
 		{
+			Console.WriteLine("Click");
 			InternalKeyboard_Drop();
 			
 		}

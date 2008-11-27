@@ -10,6 +10,8 @@ using System.Windows;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Sprites;
 using System.Windows.Input;
+using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Code
 {
@@ -18,6 +20,8 @@ namespace AvalonUgh.Code
 		ISupportsContainer, ISupportsVelocity, ISupportsPhysics,
 		ISupportsLocationChanged, ISupportsPlayerInput
 	{
+		public Level CurrentLevel { get; set; }
+
 		// a vehicle can carry a rock
 		// and throw it at trees and animals
 		public Rock CurrentWeapon { get; set; }
@@ -275,27 +279,46 @@ namespace AvalonUgh.Code
 				xveh.IsAnimated = false;
 			}
 
+			var y = 0.0;
 
 			if (e.Keyboard.IsPressedUp)
-			{
-				xveh.VelocityY -= xveh.Acceleration * 2;
-			}
-			else if (e.Keyboard.IsPressedDown)
-			{
-				//if (xveh.Y > a.View.Level.WaterTop)
-				//    xveh.IsAnimated = false;
-				//else
-				xveh.VelocityY += xveh.Acceleration;
-			}
+				y -= xveh.Acceleration * 2;
+
+			if (e.Keyboard.IsPressedDown)
+				y += xveh.Acceleration;
+			//{
+
+			//    if (xveh.Y > this.CurrentLevel.WaterTop)
+			//        xveh.IsAnimated = false;
+			//    else
+			//        xveh.VelocityY += xveh.Acceleration;
+			//}
+
+			var x = 0.0;
 
 			if (e.Keyboard.IsPressedLeft)
+				x -= xveh.Acceleration;
+
+			if (e.Keyboard.IsPressedRight)
+				x += xveh.Acceleration;
+
+			if (e.Touch.IsPressed)
 			{
-				xveh.VelocityX -= xveh.Acceleration;
+				var DeltaX = e.Touch.X - xveh.X;
+				var DeltaY = e.Touch.Y - xveh.Y;
+
+				var ay = (DeltaY / 64).Min(1).Max(-1);
+
+				if (ay < 0)
+					ay *= 2;
+
+				x += xveh.Acceleration * (DeltaX / 64).Min(1).Max(-1);
+				y += xveh.Acceleration * ay;
 			}
-			else if (e.Keyboard.IsPressedRight)
-			{
-				xveh.VelocityX += xveh.Acceleration;
-			}
+
+
+			xveh.VelocityX += x;
+			xveh.VelocityY += y;
 		}
 
 		#endregion
