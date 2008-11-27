@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Comparision", "Av
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Public", "Public", "{B35AD758-4CA6-4479-B36A-766C68AF4A08}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monetized", "Monetized", "{9CDD8CFA-BA6D-4020-850D-D180B4621FCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Labs.Monetized", "AvalonUgh.Labs.Monetized\AvalonUgh.Labs.Monetized.csproj", "{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,10 @@ Global
 		{C5FAF197-B077-4176-AEFC-7D1DD0D4C4F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5FAF197-B077-4176-AEFC-7D1DD0D4C4F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5FAF197-B077-4176-AEFC-7D1DD0D4C4F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -52,5 +60,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{C5FAF197-B077-4176-AEFC-7D1DD0D4C4F8} = {B35AD758-4CA6-4479-B36A-766C68AF4A08}
 		{BD588EEB-ADE9-42A8-A81A-98E697FDB908} = {B35AD758-4CA6-4479-B36A-766C68AF4A08}
+		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD} = {9CDD8CFA-BA6D-4020-850D-D180B4621FCD}
 	EndGlobalSection
 EndGlobal

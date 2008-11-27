@@ -26,7 +26,7 @@ namespace AvalonUgh.Labs.Shared
 
 		public const int Zoom = 2;
 
-		public const int DefaultWidth = 640;
+		public const int DefaultWidth = 800;
 		public const int DefaultHeight = 400;
 
 		public const int StatusbarZoom = 2;
