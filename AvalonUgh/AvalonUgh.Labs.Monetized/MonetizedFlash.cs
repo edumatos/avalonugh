@@ -16,14 +16,29 @@ namespace AvalonUgh.Labs.Monetized.ActionScript
 	using TargetFlash = global::AvalonUgh.Labs.ActionScript.LabsFlash;
 
 
-	/// <summary>
-	/// Default flash player entrypoint class. See 'tools/build.bat' for adding more entrypoints.
-	/// </summary>
-	[Script, ScriptApplicationEntryPoint]
+	[Script]
+	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight, backgroundColor = 0)]
+	public class MonetizedFlashLean : TargetFlash
+	{
+		// this class is to be used
+		// on mochiads with versioning and crypt
+		// as ve define the key as a field here
+
+		public static string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
+
+		// multiplayer shall be enabled via hyperlink to nonobas version
+	}
+
+	
+	[Script]
 	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight, backgroundColor = 0)]
 	[Frame(typeof(MochiPreloader))]
 	public class MonetizedFlash : TargetFlash
 	{
+		// this class is to be used
+		// on nonoba to get ads and multiplayer support
+
+		// multiplayer shall be enabled internally
 	}
 
 	[Script]

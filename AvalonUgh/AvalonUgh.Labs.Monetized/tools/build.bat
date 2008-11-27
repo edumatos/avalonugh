@@ -17,6 +17,7 @@ if '%ERRORLEVEL%' == '-1' (
 )
 :: Namespace name, type name
 @call :mxmlc AvalonUgh/Labs/Monetized/ActionScript MonetizedFlash
+@call :mxmlc AvalonUgh/Labs/Monetized/ActionScript MonetizedFlashLean
 
 goto :eof
 
