@@ -28,9 +28,15 @@ namespace AvalonUgh.Assets.Shared
 				Index = Index,
 				IndexCount = IndexCount,
 				Width = Width,
-				Height = Height
+				Height = Height,
+				AnimationFrame = AnimationFrame,
+				AnimationFramePadding = AnimationFramePadding
 			};
 		}
+
+		public string AnimationFrameName;
+		public int AnimationFrame = -1;
+		public int AnimationFramePadding = 2;
 
 		public override string ToString()
 		{
@@ -40,6 +46,15 @@ namespace AvalonUgh.Assets.Shared
 				if (Height == 1)
 					return n;
 
+			if (AnimationFrame >= 0)
+			{
+				n += "_" + (AnimationFrame + "").PadLeft(AnimationFramePadding, '0');
+			}
+
+			if (!string.IsNullOrEmpty(AnimationFrameName))
+			{
+				n += "_" + AnimationFrameName;
+			}
 
 			return n + "_" + Width + "x" + Height;
 		}
