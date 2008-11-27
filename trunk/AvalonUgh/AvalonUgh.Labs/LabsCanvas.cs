@@ -13,6 +13,7 @@ using AvalonUgh.Code.Editor.Tiles;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Labs.Shared
 {
@@ -25,7 +26,7 @@ namespace AvalonUgh.Labs.Shared
 		public const int Zoom = 2;
 
 		public const int DefaultWidth = 640;
-		public const int DefaultHeight = 400;
+		public const int DefaultHeight = 200;
 
 		public const int StatusbarZoom = 2;
 
@@ -284,8 +285,12 @@ namespace AvalonUgh.Labs.Shared
 					#region vehicle
 
 
-					var xveh = new Vehicle(Zoom);
-					xveh.ColorStripe = Colors.Red;
+					var xveh = new Vehicle(Zoom)
+					{
+						ColorStripe = Colors.Red,
+						CurrentLevel = Level
+					};
+
 					xveh.AttachContainerTo(View.Entities);
 					xveh.MoveTo(Level.ActualWidth / 2, 0);
 

@@ -6,7 +6,7 @@ using ScriptCoreLib;
 using System.Windows.Input;
 using System.Windows;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Input
 {
 	[Script]
 	public class KeyboardInput

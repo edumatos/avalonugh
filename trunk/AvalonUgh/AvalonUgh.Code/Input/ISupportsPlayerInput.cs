@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Input
 {
 	[Script]
 	public interface ISupportsPlayerInput
