@@ -119,7 +119,7 @@
     <Compile Include="PrimitiveTile.cs" />
     <Compile Include="Editor\Sprites\Rock.cs" />
     <Compile Include="Editor\Sprites\Tree.cs" />
-    <Compile Include="Vehicle.cs" />
+    <Compile Include="Editor\Sprites\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View.cs" />
     <Compile Include="Water.cs" />
