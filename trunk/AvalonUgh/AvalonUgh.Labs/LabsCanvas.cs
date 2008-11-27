@@ -399,21 +399,21 @@ namespace AvalonUgh.Labs.Shared
 
 						};
 
-					var k2 = new KeyboardInput(
-						new KeyboardInput.Arguments
-						{
-							Left = Key.A,
-							Right = Key.D,
-							Up = Key.W,
-							Down = Key.S,
-							Drop = Key.Q,
-							Enter = Key.E,
+					//var k2 = new KeyboardInput(
+					//    new KeyboardInput.Arguments
+					//    {
+					//        Left = Key.A,
+					//        Right = Key.D,
+					//        Up = Key.W,
+					//        Down = Key.S,
+					//        Drop = Key.Q,
+					//        Enter = Key.E,
 
-							InputControl = GameContent,
-							Vehicle = twin,
-							View = View
-						}
-					);
+					//        InputControl = GameContent,
+					//        Vehicle = twin,
+					//        View = View
+					//    }
+					//);
 
 
 
@@ -421,8 +421,10 @@ namespace AvalonUgh.Labs.Shared
 					(1000 / 40).AtInterval(
 						delegate
 						{
-							k1.Tick();
-							k2.Tick();
+							xveh.AddAcceleration(k3);
+
+							//k1.Tick();
+							//k2.Tick();
 
 							ph.Apply();
 

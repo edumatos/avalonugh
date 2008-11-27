@@ -9,11 +9,14 @@ using System.Windows.Media;
 using System.Windows;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Sprites;
+using System.Windows.Input;
 
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Vehicle : ISupportsContainer, ISupportsVelocity, ISupportsPhysics, ISupportsLocationChanged
+	public class Vehicle :
+		ISupportsContainer, ISupportsVelocity, ISupportsPhysics,
+		ISupportsLocationChanged, ISupportsPlayerInput
 	{
 		// a vehicle can carry a rock
 		// and throw it at trees and animals
@@ -201,12 +204,12 @@ namespace AvalonUgh.Code
 					}.AttachTo(this.Container);
 
 			this.ColorStripeRed = CreateStripe("red");
-			this.ColorStripeBlue  = CreateStripe("blue");
+			this.ColorStripeBlue = CreateStripe("blue");
 			this.ColorStripeYellow = CreateStripe("yellow");
 			this.ColorStripeGray = CreateStripe("gray");
-			
 
-		
+
+
 
 
 
@@ -249,6 +252,53 @@ namespace AvalonUgh.Code
 				SupportsVelocity = this
 			};
 		}
+
+		#region ISupportsPlayerInput Members
+
+		public void AddAcceleration(PlayerInput e)
+		{
+			var xveh = this;
+
+			if (xveh.IsUnmanned)
+			{
+				// why are we even called?
+				return;
+			}
+
+
+			if (e.Keyboard.KeyState.Any(k => k.Value))
+			{
+				xveh.IsAnimated = true;
+			}
+			else
+			{
+				xveh.IsAnimated = false;
+			}
+
+
+			if (e.Keyboard.IsPressedUp)
+			{
+				xveh.VelocityY -= xveh.Acceleration * 2;
+			}
+			else if (e.Keyboard.IsPressedDown)
+			{
+				//if (xveh.Y > a.View.Level.WaterTop)
+				//    xveh.IsAnimated = false;
+				//else
+				xveh.VelocityY += xveh.Acceleration;
+			}
+
+			if (e.Keyboard.IsPressedLeft)
+			{
+				xveh.VelocityX -= xveh.Acceleration;
+			}
+			else if (e.Keyboard.IsPressedRight)
+			{
+				xveh.VelocityX += xveh.Acceleration;
+			}
+		}
+
+		#endregion
 	}
 
 }
