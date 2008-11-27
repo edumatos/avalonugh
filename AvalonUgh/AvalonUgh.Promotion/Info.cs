@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AvalonUgh.Promotion
 {
-	public static class Info
+	public static partial class Info
 	{
 		public const string Title = "Avalon Ugh";
 
@@ -16,6 +16,8 @@ namespace AvalonUgh.Promotion
 
 
 		public const string FlashGameLicense = "http://www.flashgamelicense.com/view_game.php?game_id=3419";
+
+		public const string Resolution = "800x400";
 
 	}
 }

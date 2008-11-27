@@ -67,8 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionScript\MonetizedFlash.cs" />
-    <Compile Include="KnownAssets.cs" />
+    <Compile Include="MonetizedFlash.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IAssemblyReferenceToken.cs" />
   </ItemGroup>
@@ -84,9 +83,6 @@
       <Project>{3B971BB0-A45D-47BB-A1B5-383F08426F09}</Project>
       <Name>AvalonUgh.Promotion</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs.Monetized\Preview.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
