@@ -26,7 +26,7 @@ namespace AvalonUgh.Labs.Shared
 		public const int Zoom = 2;
 
 		public const int DefaultWidth = 640;
-		public const int DefaultHeight = 200;
+		public const int DefaultHeight = 400;
 
 		public const int StatusbarZoom = 2;
 
@@ -345,8 +345,8 @@ namespace AvalonUgh.Labs.Shared
 							Enter = Key.Enter,
 
 							InputControl = GameContent,
-							Vehicle = xveh,
-							View = View
+							//Vehicle = xveh,
+							//View = View
 						}
 					);
 
