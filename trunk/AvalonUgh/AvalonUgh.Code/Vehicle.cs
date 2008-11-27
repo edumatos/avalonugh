@@ -12,6 +12,7 @@ using AvalonUgh.Code.Editor.Sprites;
 using System.Windows.Input;
 using AvalonUgh.Code.Editor;
 using AvalonUgh.Code.Input;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code
 {
@@ -189,7 +190,9 @@ namespace AvalonUgh.Code
 
 			this.UnmannedImage = new Image
 			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle1_04_2x2.png").ToSource(),
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/" + 
+				new NameFormat { Name = "vehicle", Index = 1, AnimationFrame = 4, Width = 2, Height = 2 } 
+				 + ".png").ToSource(),
 				Stretch = Stretch.Fill,
 				Width = this.Width,
 				Height = this.Height,

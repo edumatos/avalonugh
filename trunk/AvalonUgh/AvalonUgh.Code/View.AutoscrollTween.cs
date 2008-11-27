@@ -76,11 +76,11 @@ namespace AvalonUgh.Code
 					}
 				);
 
+
 			AutoscrollTween(x * TweenPercision, y * TweenPercision);
 
 
 		}
-
 
 	}
 }
