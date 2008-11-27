@@ -38,6 +38,6 @@ using ScriptCoreLib;
 
 [assembly:
 	Script,
-	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Code.Vehicle)),
-	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Code.Vehicle)),
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Code.View)),
+	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Code.View)),
 ]
