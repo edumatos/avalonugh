@@ -101,6 +101,8 @@
     <Compile Include="Editor\Tiles\Tile.cs" />
     <Compile Include="Editor\Tiles\TileSelector.cs" />
     <Compile Include="Editor\Tiles\FenceSelector.cs" />
+    <Compile Include="PlayerInput.cs" />
+    <Compile Include="TouchInput.cs" />
     <Compile Include="View.EditorSelector.cs" />
     <Compile Include="Editor\EditorToolbar.cs" />
     <Compile Include="View.AutoscrollTween.cs" />

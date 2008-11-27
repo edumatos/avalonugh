@@ -46,6 +46,7 @@ namespace AvalonUgh.Code
 		public Canvas InfoOverlay { get; set; }
 
 		public Canvas TouchOverlay { get; set; }
+		public TouchInput TouchInput { get; set; }
 
 		public Level Level { get; set; }
 
@@ -300,7 +301,7 @@ namespace AvalonUgh.Code
 			AttachFilmScratchEffect();
 			AttachEditorSelector();
 
-			
+			this.TouchInput = new TouchInput(this.TouchOverlay);
 		}
 
 
