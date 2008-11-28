@@ -23,6 +23,8 @@ namespace AvalonUgh.Code.Editor
 				var w = this.Map.Width;
 
 				s.WriteLine("# generated map");
+				s.WriteLine("# " + this.AttributeWater);
+
 				s.WriteLine(new String('#', w));
 
 				var Map = Enumerable.Range(0, this.Map.Height).ToArray(i => new string(' ', w));

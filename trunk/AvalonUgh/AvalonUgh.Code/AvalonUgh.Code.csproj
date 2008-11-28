@@ -131,6 +131,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Editor\Level.WaterHeight.cs" />
     <Compile Include="Editor\WaterLevelSelector.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ColorStripe.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ISupportsPlayerInput.cs" />
