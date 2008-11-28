@@ -36,6 +36,15 @@ namespace AvalonUgh.Code
 			}
 		}
 
+
+		public double Height
+		{
+			get
+			{
+				return Bottom - Top;
+			}
+		}
+
 		public bool Intersects(Obstacle e)
 		{
 			if (e.Right > this.Left)

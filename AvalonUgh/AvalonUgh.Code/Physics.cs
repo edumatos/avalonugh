@@ -208,6 +208,7 @@ namespace AvalonUgh.Code
 
 			if (ObstacleY != null)
 			{
+
 				if (ObstacleY.SupportsVelocity != null)
 				{
 					var fy = ObstacleY.SupportsVelocity.VelocityY / 2;
@@ -225,22 +226,25 @@ namespace AvalonUgh.Code
 
 			if (twin.GetVelocity() < 0.1)
 			{
-				twin.Stability++;
-
-				// how stable must the object be?
-				if (twin.Stability >= 10)
+				if (twin.Y < this.Level.WaterTop)
 				{
-					if (twin.Stability == 10)
+					twin.Stability++;
+
+					// how stable must the object be?
+					if (twin.Stability >= 10)
 					{
-						twin.StabilityReached();
+						if (twin.Stability == 10)
+						{
+							twin.StabilityReached();
 
 
+						}
+
+						//twin.VelocityX = 0;
+						//twin.VelocityY = 0;
+
+						//return;
 					}
-
-					twin.VelocityX = 0;
-					twin.VelocityY = 0;
-
-					return;
 				}
 			}
 			else
