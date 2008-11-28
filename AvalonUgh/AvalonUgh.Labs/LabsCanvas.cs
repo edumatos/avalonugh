@@ -7,15 +7,15 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using AvalonUgh.Assets.Shared;
 using AvalonUgh.Code;
 using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Editor.Tiles;
+using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
-using AvalonUgh.Code.Input;
-using AvalonUgh.Code.Editor.Sprites;
-using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Labs.Shared
 {
@@ -200,7 +200,7 @@ namespace AvalonUgh.Labs.Shared
 					var ActorPool = new Func<Actor>[]
 					{
 						() => new Actor.man0(Zoom) {Level = Level, Animation = Actor.AnimationEnum.Talk },
-						() => new Actor.man1(Zoom)  {Level = Level },
+						() => new Actor.man1(Zoom)  {Level = Level, Animation = Actor.AnimationEnum.Talk },
 						() => new Actor.woman0(Zoom)  {Level = Level },
 					}.AsCyclicEnumerable().GetEnumerator();
 

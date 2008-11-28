@@ -44,6 +44,14 @@ namespace AvalonUgh.Code
 					};
 
 
+				this.TalkFrames =
+					new[]
+					{
+						ToFrame(20),
+						ToFrame(21),
+						ToFrame(22)
+					};
+
 
 				Initialize();
 			}
