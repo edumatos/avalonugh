@@ -7,7 +7,6 @@ using ScriptCoreLib.Shared.Lambda;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Editor;
-using AvalonUgh.Code.Sprites;
 
 namespace AvalonUgh.Code
 {
@@ -229,9 +228,9 @@ namespace AvalonUgh.Code
 				twin.Stability++;
 
 				// how stable must the object be?
-				if (twin.Stability >= 3)
+				if (twin.Stability >= 10)
 				{
-					if (twin.Stability == 3)
+					if (twin.Stability == 10)
 					{
 						twin.StabilityReached();
 

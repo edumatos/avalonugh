@@ -8,6 +8,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor;
 using AvalonUgh.Code.Input;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code
 {

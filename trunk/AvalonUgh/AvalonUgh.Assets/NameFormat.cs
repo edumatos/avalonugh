@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ScriptCoreLib;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace AvalonUgh.Assets.Shared
 {
@@ -20,6 +22,8 @@ namespace AvalonUgh.Assets.Shared
 		
 		public int Height = 1;
 
+		public int Zoom = 1;
+
 		public NameFormat Clone()
 		{
 			return new NameFormat
@@ -30,7 +34,10 @@ namespace AvalonUgh.Assets.Shared
 				Width = Width,
 				Height = Height,
 				AnimationFrame = AnimationFrame,
-				AnimationFramePadding = AnimationFramePadding
+				AnimationFramePadding = AnimationFramePadding,
+				AnimationFrameName = AnimationFrameName,
+				ToSource = ToSource,
+				Zoom = Zoom
 			};
 		}
 
@@ -57,6 +64,32 @@ namespace AvalonUgh.Assets.Shared
 			}
 
 			return n + "_" + Width + "x" + Height;
+		}
+
+		public NameFormat ToAnimationFrame(string AnimationFrameName)
+		{
+			var c = this.Clone();
+
+			c.AnimationFrameName = AnimationFrameName;
+
+			return c;
+		}
+
+
+		public Func<NameFormat, ImageSource> ToSource;
+
+		public static implicit operator Image(NameFormat e)
+		{
+			if (e.ToSource == null)
+				throw new ArgumentNullException("e.ToSource");
+
+			return new Image 
+			{
+				Source = e.ToSource(e),
+				Stretch = Stretch.Fill,
+				Width = e.Width * PrimitiveTile.Width * e.Zoom,
+				Height = e.Width * PrimitiveTile.Heigth * e.Zoom,
+			};
 		}
 	}
 }

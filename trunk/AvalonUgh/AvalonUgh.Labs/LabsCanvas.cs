@@ -14,7 +14,8 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Input;
-using AvalonUgh.Code.Sprites;
+using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Labs.Shared
 {

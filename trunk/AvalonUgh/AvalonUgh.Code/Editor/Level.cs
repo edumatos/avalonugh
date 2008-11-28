@@ -11,6 +11,7 @@ using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Editor.Tiles;
 using System.ComponentModel;
 using System.IO;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor
 {

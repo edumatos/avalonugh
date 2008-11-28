@@ -13,7 +13,9 @@ namespace AvalonUgh.Assets
 	/// type mappings but no real type usage.
 	/// </summary>
 	public interface IAssemblyReferenceToken :
-		ScriptCoreLib.Shared.IAssemblyReferenceToken
+		ScriptCoreLib.Shared.IAssemblyReferenceToken,
+		ScriptCoreLib.Shared.Query.IAssemblyReferenceToken,
+		ScriptCoreLib.Shared.Avalon.IAssemblyReferenceToken
 	{
 	}
 }
