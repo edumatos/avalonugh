@@ -9,6 +9,7 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using System.Windows;
 using System.Windows.Threading;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {

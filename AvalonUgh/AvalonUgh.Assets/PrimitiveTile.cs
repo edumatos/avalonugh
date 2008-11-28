@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Assets.Shared
 {
 	[Script]
 	public class PrimitiveTile

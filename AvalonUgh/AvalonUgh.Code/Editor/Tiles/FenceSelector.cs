@@ -5,6 +5,7 @@ using System.Text;
 using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {

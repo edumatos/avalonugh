@@ -67,6 +67,22 @@ namespace AvalonUgh.Code.Input
 
 		#endregion
 
+		public bool HasInput
+		{
+			get
+			{
+
+				if (this.Touch != null)
+					if (this.Touch.IsPressed)
+						return true;
+
+				if (this.Keyboard != null)
+					if (this.Keyboard.KeyState.Any(k => k.Value))
+						return true;
+
+				return false;
+			}
+		}
 
 		void InternalTouch_DoubleClick()
 		{

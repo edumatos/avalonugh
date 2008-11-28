@@ -8,6 +8,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using System.Windows;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code
 {

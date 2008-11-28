@@ -14,12 +14,12 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 
-namespace AvalonUgh.Code.Sprites
+namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class Vehicle :
+	public partial class Vehicle :
 		ISupportsContainer, ISupportsVelocity, ISupportsPhysics,
-		ISupportsLocationChanged, ISupportsPlayerInput
+		ISupportsLocationChanged
 	{
 		public Level CurrentLevel { get; set; }
 
@@ -89,10 +89,7 @@ namespace AvalonUgh.Code.Sprites
 				LocationChanged();
 		}
 
-		readonly Image ColorStripeRed;
-		readonly Image ColorStripeBlue;
-		readonly Image ColorStripeYellow;
-		readonly Image ColorStripeGray;
+
 
 		readonly Image UnmannedImage;
 
@@ -125,40 +122,7 @@ namespace AvalonUgh.Code.Sprites
 			}
 		}
 
-		public Color ColorStripe
-		{
-			set
-			{
-				ColorStripeBlue.Hide();
-				ColorStripeRed.Hide();
-				ColorStripeYellow.Hide();
-
-				if (value == Colors.Red)
-				{
-					ColorStripeRed.Show();
-					return;
-				}
-
-				if (value == Colors.Blue)
-				{
-					ColorStripeBlue.Show();
-					return;
-				}
-
-				if (value == Colors.Yellow)
-				{
-					ColorStripeYellow.Show();
-					return;
-				}
-
-				if (value == Colors.Gray)
-				{
-					ColorStripeGray.Show();
-					return;
-				}
-			}
-		}
-
+	
 		readonly Image[] frames;
 		public Vehicle(int Zoom)
 		{
@@ -199,21 +163,7 @@ namespace AvalonUgh.Code.Sprites
 				Visibility = Visibility.Hidden
 			}.AttachTo(this.Container);
 
-			Func<string, Image> CreateStripe =
-				color =>
-					new Image
-					{
-						Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_" + color + "_2x2.png").ToSource(),
-						Stretch = Stretch.Fill,
-						Width = this.Width,
-						Height = this.Height,
-						Visibility = Visibility.Hidden
-					}.AttachTo(this.Container);
-
-			this.ColorStripeRed = CreateStripe("red");
-			this.ColorStripeBlue = CreateStripe("blue");
-			this.ColorStripeYellow = CreateStripe("yellow");
-			this.ColorStripeGray = CreateStripe("gray");
+			InitializeColorStripe();
 
 
 
@@ -245,6 +195,7 @@ namespace AvalonUgh.Code.Sprites
 			);
 		}
 
+	
 		Action frames_SignalNext;
 
 		public Obstacle ToObstacle(double x, double y)
@@ -260,71 +211,7 @@ namespace AvalonUgh.Code.Sprites
 			};
 		}
 
-		#region ISupportsPlayerInput Members
-
-		public void AddAcceleration(PlayerInput e)
-		{
-			var xveh = this;
-
-			if (xveh.IsUnmanned)
-			{
-				// why are we even called?
-				return;
-			}
-
-
-			if (e.Keyboard.KeyState.Any(k => k.Value))
-			{
-				xveh.IsAnimated = true;
-			}
-			else
-			{
-				xveh.IsAnimated = false;
-			}
-
-			var y = 0.0;
-
-			if (e.Keyboard.IsPressedUp)
-				y -= xveh.Acceleration * 2;
-
-			if (e.Keyboard.IsPressedDown)
-				y += xveh.Acceleration;
-			//{
-
-			//    if (xveh.Y > this.CurrentLevel.WaterTop)
-			//        xveh.IsAnimated = false;
-			//    else
-			//        xveh.VelocityY += xveh.Acceleration;
-			//}
-
-			var x = 0.0;
-
-			if (e.Keyboard.IsPressedLeft)
-				x -= xveh.Acceleration;
-
-			if (e.Keyboard.IsPressedRight)
-				x += xveh.Acceleration;
-
-			if (e.Touch.IsPressed)
-			{
-				var DeltaX = e.Touch.X - xveh.X;
-				var DeltaY = e.Touch.Y - xveh.Y;
-
-				var ay = (DeltaY / 64).Min(1).Max(-1);
-
-				if (ay < 0)
-					ay *= 2;
-
-				x += xveh.Acceleration * (DeltaX / 64).Min(1).Max(-1);
-				y += xveh.Acceleration * ay;
-			}
-
-
-			xveh.VelocityX += x;
-			xveh.VelocityY += y;
-		}
-
-		#endregion
+		
 	}
 
 }
