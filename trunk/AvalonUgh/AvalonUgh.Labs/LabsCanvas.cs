@@ -358,6 +358,8 @@ namespace AvalonUgh.Labs.Shared
 						Touch = View.TouchInput
 					};
 
+					ISupportsPlayerInput k3target = xveh;
+
 					k3.Enter +=
 						delegate
 						{
@@ -365,6 +367,7 @@ namespace AvalonUgh.Labs.Shared
 							{
 								xveh.IsUnmanned = false;
 								View.LocationTracker.Target = xveh;
+								k3target = xveh;
 							}
 							else
 							{
@@ -376,8 +379,9 @@ namespace AvalonUgh.Labs.Shared
 									Level = Level
 								};
 								View.LocationTracker.Target = actor5;
+								k3target = actor5;
 
-								actor5.MoveTo(xveh.X, xveh.Y);
+								actor5.MoveTo(xveh.X, xveh.Y - actor5.ToObstacle().Height);
 
 								actor5.AttachContainerTo(View.Entities);
 
@@ -428,10 +432,8 @@ namespace AvalonUgh.Labs.Shared
 					(1000 / 40).AtInterval(
 						delegate
 						{
-							xveh.AddAcceleration(k3);
+							k3target.AddAcceleration(k3);
 
-							//k1.Tick();
-							//k2.Tick();
 
 							ph.Apply();
 

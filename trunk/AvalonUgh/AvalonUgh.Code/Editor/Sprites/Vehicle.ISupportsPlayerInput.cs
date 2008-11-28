@@ -77,8 +77,13 @@ namespace AvalonUgh.Code.Editor.Sprites
 				}
 			}
 
+
+
 			this.VelocityX += x.Min(1).Max(-1) * this.Acceleration;
 			this.VelocityY += y.Min(1).Max(-2) * this.Acceleration;
+
+			if (this.VelocityY == 0)
+				this.VelocityX *= 0.7;
 		}
 
 		#endregion

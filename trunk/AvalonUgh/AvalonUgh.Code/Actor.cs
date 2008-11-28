@@ -234,9 +234,9 @@ namespace AvalonUgh.Code
 		{
 			return new Obstacle
 			{
-				Left = x - HalfWidth / 2,
+				Left = x - HalfWidth / 3,
 				Top = y,
-				Right = x + HalfWidth / 2,
+				Right = x + HalfWidth / 3,
 				Bottom = y + HalfHeight,
 				//SupportsVelocity = this
 			};
@@ -248,7 +248,25 @@ namespace AvalonUgh.Code
 
 		public void AddAcceleration(PlayerInput e)
 		{
-			throw new NotImplementedException();
+			if (e.Keyboard.IsPressedLeft)
+			{
+				this.VelocityX -= this.Zoom * 0.06;
+			}
+			else if (e.Keyboard.IsPressedRight)
+			{
+				this.VelocityX += this.Zoom * 0.06;
+			}
+			else
+			{
+				if (this.VelocityY == 0)
+					this.VelocityX *= 0.7;
+			}
+
+			if (e.Keyboard.IsPressedUp)
+			{
+				if (this.VelocityY == 0)
+					this.VelocityY -= this.Zoom * 2.5;
+			}
 		}
 
 		#endregion
