@@ -62,8 +62,15 @@ namespace AvalonUgh.Code
 					x = Math.Round(x / PercisionX) * PercisionX;
 					y = Math.Round(y / PercisionY) * PercisionY;
 
-					x = x.Max(0).Min(PrimitiveTile.Width * Level.Map.Width - EditorSelector.Width);
-					y = y.Max(0).Min(PrimitiveTile.Heigth * Level.Map.Height - EditorSelector.Height);
+					var map_width = PrimitiveTile.Width * Level.Map.Width;
+					var map_height = PrimitiveTile.Heigth * Level.Map.Height;
+
+					if (map_width < EditorSelector.Width)
+						x = (map_width - EditorSelector.Width) / 2;
+					else
+						x = x.Max(0).Min(map_width - EditorSelector.Width);
+
+					y = y.Max(0).Min(map_height - EditorSelector.Height);
 
 
 					handler(Convert.ToInt32(x), Convert.ToInt32(y));
@@ -100,7 +107,7 @@ namespace AvalonUgh.Code
 										ContentX = x,
 										ContentY = y,
 
-									
+
 									};
 
 							if (this.EditorSelector.Invoke != null)
@@ -190,11 +197,11 @@ namespace AvalonUgh.Code
 			public int ContentX;
 			public int ContentY;
 
-			public int TileX { get { return ContentX / PrimitiveTile.Width; }}
+			public int TileX { get { return ContentX / PrimitiveTile.Width; } }
 
-			public int TileY { get { return ContentY/ PrimitiveTile.Heigth; }}
+			public int TileY { get { return ContentY / PrimitiveTile.Heigth; } }
 
-		
+
 		}
 
 		public Rectangle EditorSelectorRectangle;

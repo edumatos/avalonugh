@@ -322,6 +322,17 @@ namespace AvalonUgh.Code.Editor
 			AddButton(Demolish, Editor.DemolishSelector.Sizes);
 
 
+			var WaterLevel =
+				new Image
+				{
+					Source = (Assets.Shared.KnownAssets.Path.Assets + "/btn_river.png").ToSource(),
+					Width = 20,
+					Height = 20
+				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 10, Padding + PrimitiveTile.Heigth - 10);
+
+			AddButton(WaterLevel, Editor.WaterLevelSelector.Sizes);
+
+
 		}
 
 
