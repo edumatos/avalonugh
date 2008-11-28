@@ -48,8 +48,7 @@ namespace AvalonUgh.Code.Editor
 
 		//public Water KnownWater { get; set; }
 
-		public readonly int WaterTop;
-		public readonly int WaterHeight;
+	
 
 		public readonly Image BackgroundImage;
 
@@ -231,9 +230,7 @@ namespace AvalonUgh.Code.Editor
 				};
 			}
 
-			// water top should depend on tiles found instead
-			this.WaterHeight = this.AttributeWater.Value * Zoom;
-			this.WaterTop = this.ActualHeight - this.WaterHeight;
+	
 
 			// at this point we need to load the map tiles
 

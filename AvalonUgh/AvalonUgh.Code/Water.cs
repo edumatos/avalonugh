@@ -46,14 +46,14 @@ namespace AvalonUgh.Code
 			this.Container = new Canvas
 			{
 				Width = e.DefaultWidth,
-				Height = e.DefaultHeight - e.WaterTop
+				Height = e.DefaultHeight // - e.WaterTop
 			}.MoveTo(0, e.WaterTop);
 
 		
 			e.WaterColorTop.A = 40;
 			e.WaterColorBottom.A = 60;
 
-			e.WaterColorTop.ToGradient(e.WaterColorBottom, (e.DefaultHeight - e.WaterTop) / e.Zoom).Select(
+			e.WaterColorTop.ToGradient(e.WaterColorBottom, (e.DefaultHeight /*- e.WaterTop*/) / e.Zoom).Select(
 				(c, i) =>
 				{
 					var Opacity = c.A / 255.0;

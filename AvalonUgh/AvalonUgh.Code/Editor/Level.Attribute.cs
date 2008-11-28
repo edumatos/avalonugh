@@ -50,7 +50,21 @@ namespace AvalonUgh.Code.Editor
 			[Script]
 			public sealed class Int32 : Attribute
 			{
-				public int Value;
+				int InternalValue;
+				public int Value
+				{
+					get
+					{
+						return InternalValue;
+					}
+					set
+					{
+						InternalValue = value;
+
+						if (this.Assigned != null)
+							this.Assigned(value);
+					}
+				}
 
 				public event Action<int> Assigned;
 
@@ -64,8 +78,7 @@ namespace AvalonUgh.Code.Editor
 								{
 									k.Value = int.Parse(v);
 
-									if (k.Assigned != null)
-										k.Assigned(k.Value);
+								
 								}
 					);
 				}
@@ -73,6 +86,11 @@ namespace AvalonUgh.Code.Editor
 				public static implicit operator bool(Attribute.Int32 e)
 				{
 					return e.Value > 0;
+				}
+
+				public override string ToString()
+				{
+					return this.Key + ": " + this.Value;
 				}
 			}
 

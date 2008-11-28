@@ -225,13 +225,13 @@ namespace AvalonUgh.Code
 
 
 
-			new Water(
+			var CurrentWater = new Water(
 				new Water.Info
 				{
 					DefaultWidth = this.ContentExtendedWidth,
 					DefaultHeight = this.ContentExtendedHeight,
 
-					WaterTop = this.Level.WaterTop + MaxShakeSize + (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2,
+					WaterTop = Convert.ToInt32( this.Level.WaterTop + ContentOffsetY),
 					Zoom = this.Level.Zoom,
 
 					// maybe the map should be able to set this color?
@@ -239,6 +239,14 @@ namespace AvalonUgh.Code
 				}
 			).AttachContainerTo(this.WaterContainer);
 
+			// we are now listening to water attribute in the context of Level
+			// if the Level changes we need to adjust our binding
+			this.Level.AttributeWater.Assigned +=
+				delegate
+				{
+					CurrentWater.MoveContainerTo(0, Convert.ToInt32( this.Level.WaterTop + ContentOffsetY));
+				};
+			
 			this.LocationTracker = new LocationTracker();
 
 			// center bottom
@@ -314,7 +322,7 @@ namespace AvalonUgh.Code
 		{
 			get
 			{
-				return (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
+				return MaxShakeSize + (this.ContainerWidth - this.ContentActualWidth).Max(0) / 2;
 			}
 		}
 
@@ -322,7 +330,7 @@ namespace AvalonUgh.Code
 		{
 			get
 			{
-				return (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2; 
+				return MaxShakeSize + (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2; 
 			}
 		}
 
