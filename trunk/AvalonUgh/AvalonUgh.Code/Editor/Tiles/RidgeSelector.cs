@@ -18,8 +18,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
 			{
-				new Size_Generic(1, 1, 1),
+				new Size_Generic(1, 1, 2),
 				new Size_Generic(2, 2, 1),
+				new Size_Generic(4, 2, 1),
 			};
 
 		[Script]
