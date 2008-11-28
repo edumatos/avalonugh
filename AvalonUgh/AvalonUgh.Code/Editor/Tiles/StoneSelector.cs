@@ -12,6 +12,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	[Script]
 	public static class StoneSelector
 	{
+		public const string ImageName = "stone";
 		public const string Identifier = "S";
 
 
@@ -33,14 +34,16 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				new Size_Generic(4, 2, 1),
 				new Size_Generic(2, 4, 1),
+
 			};
+
 
 		[Script]
 		private class Size_Generic : TileSelector.Named
 		{
 
 			public Size_Generic(int x, int y, int variations)
-				: base(x, y, variations, "stone")
+				: base(x, y, variations, ImageName)
 			{
 
 			}
@@ -61,6 +64,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 			}
 		}
 
+		
 
 
 

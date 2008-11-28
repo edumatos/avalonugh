@@ -16,6 +16,10 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput
 	{
+		// the woman does not have talk animation
+		// the default waiting position is between the outer edges between
+		// the sign and the cave on the same platform
+
 		public Level Level { get; set; }
 
 		public double Density { get; set; }
