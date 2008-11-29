@@ -189,9 +189,13 @@ namespace AvalonUgh.Code
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
 			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));
 
+			var CollisionAtVelocity = twin.GetVelocity();
+			var CollisionAtVelocityEnabled = false;
 
 			if (ObstacleX != null)
 			{
+				CollisionAtVelocityEnabled = true;
+
 				if (ObstacleX.SupportsVelocity != null)
 				{
 					var fx = ObstacleX.SupportsVelocity.VelocityX / 2;
@@ -207,9 +211,9 @@ namespace AvalonUgh.Code
 				}
 			}
 
-
 			if (ObstacleY != null)
 			{
+				CollisionAtVelocityEnabled = true;
 
 				if (ObstacleY.SupportsVelocity != null)
 				{
@@ -225,6 +229,11 @@ namespace AvalonUgh.Code
 						twin.VelocityY *= -0.5;
 				}
 			}
+
+			if (CollisionAtVelocity > this.Level.Zoom)
+				if (CollisionAtVelocityEnabled)
+					if (this.CollisionAtVelocity != null)
+						this.CollisionAtVelocity(CollisionAtVelocity);
 
 			if (twin.GetVelocity() < 0.01)
 			{
@@ -260,6 +269,8 @@ namespace AvalonUgh.Code
 			twin.MoveTo(newX, newY);
 
 		}
+
+		public event Action<double> CollisionAtVelocity;
 	}
 
 

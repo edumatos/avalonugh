@@ -39,6 +39,27 @@ namespace AvalonUgh.Labs.Shared
 
 			this.ClipToBounds = true;
 
+			//var MusicVolumes = new[] { 0.1, 0.0, 0.1, 0.2 };
+
+			// Func<double> NextMusicVolume = MusicVolumes.AsCyclicEnumerable().GetEnumerator().Take;
+			Func<double> NextMusicVolume = new[] { 0.14, 0.07 }.AsCyclicEnumerator().Take;
+
+			Action<double> SetMusicVolume = null;
+			Action ApplyNextMusicVolume = () => SetMusicVolume(NextMusicVolume());
+
+			(AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3").Apply(
+				(Source, Retry) =>
+				{
+					var Music = Source.PlaySound();
+
+					Music.PlaybackComplete += Retry;
+
+					SetMusicVolume = Music.SetVolume;
+					ApplyNextMusicVolume();
+
+				}
+			);
+
 			new[]
 			{
 				Colors.Black,
@@ -321,6 +342,18 @@ namespace AvalonUgh.Labs.Shared
 						Actors = KnownActors
 					};
 
+					ph.CollisionAtVelocity +=
+						Velocity =>
+						{
+							var Volume = ((Velocity - (Level.Zoom * 2.0)) / (Level.Zoom * 3.0)).Max(0).Min(1);
+
+							Console.WriteLine(new { Volume });
+
+							if (Volume > 0)
+								(Assets.Shared.KnownAssets.Path.Audio + "/bounce.mp3").PlaySound().SetVolume(Volume);
+
+							//Console.WriteLine(Velocity);
+						};
 
 
 					GameContent.FocusVisualStyle = null;
@@ -480,6 +513,7 @@ namespace AvalonUgh.Labs.Shared
 							et.LevelText.Text = Level.ToString();
 						};
 
+
 					GameContent.KeyUp +=
 						(sender, args) =>
 						{
@@ -494,6 +528,9 @@ namespace AvalonUgh.Labs.Shared
 								et.Container.ToggleVisible();
 								View.EditorSelectorRectangle.ToggleVisible();
 							}
+
+							if (args.Key == Key.M)
+								ApplyNextMusicVolume();
 						};
 
 					View.AttachContainerTo(GameContent);

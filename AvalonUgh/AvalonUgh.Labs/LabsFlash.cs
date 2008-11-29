@@ -1,10 +1,10 @@
-﻿using ScriptCoreLib;
-using ScriptCoreLib.ActionScript.flash.display;
-using ScriptCoreLib.ActionScript.flash.text;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using ScriptCoreLib;
 using ScriptCoreLib.ActionScript;
 using ScriptCoreLib.ActionScript.Extensions;
+using ScriptCoreLib.ActionScript.flash.display;
+using ScriptCoreLib.ActionScript.flash.text;
 using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Labs.ActionScript
@@ -20,12 +20,9 @@ namespace AvalonUgh.Labs.ActionScript
 	{
 		public LabsFlash()
 		{
-			KnownEmbeddedResources.Default[AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"].ToSoundAsset().Apply(
-				(music, retry) =>
-				{
-					music.play().soundComplete += delegate { retry(); };
-				}
-			);
+		
+
+		
 
 			// spawn the wpf control
 			AvalonExtensions.AttachToContainer(new TargetCanvas(), this);
