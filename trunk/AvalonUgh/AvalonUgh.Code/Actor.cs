@@ -348,7 +348,11 @@ namespace AvalonUgh.Code
 			if (e.Keyboard.IsPressedUp)
 			{
 				if (this.VelocityY == 0)
+				{
 					this.VelocityY -= this.Zoom * 2.5;
+
+					this.VelocityX *= 1.2;
+				}
 			}
 		}
 
