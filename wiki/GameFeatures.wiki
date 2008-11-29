@@ -45,11 +45,11 @@ Door tiles: 2x2
  # http://hol.abime.net/1791
  # http://www.answers.com/topic/ugh-game
  # http://www.gamespot.com/pc/action/ugh/hints.html?om_act=convert&om_clk=gsbottomnav&tag=quicklinks;cheats
+http://www.dosgamesarchive.com/download/game/87
 
-= Demo =
+= Latest version under development =
 
-[http://code.google.com/p/avalonugh/source/browse/trunk/AvalonUgh/Public/LabsFlash.swf]
-
+http://nonoba.com/zproxy/avalon-ugh
 
 multiplayer level codes:
 onlyshadowsofhooks
