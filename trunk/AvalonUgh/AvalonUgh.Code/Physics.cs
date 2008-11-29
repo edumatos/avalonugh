@@ -119,10 +119,12 @@ namespace AvalonUgh.Code
 						);
 					}
 
-					this.Actors.Where(k => k.Animation != Actor.AnimationEnum.Panic).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+					this.Actors.Where(k => k.CanBeHitByVehicle).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 						actor_ =>
 						{
+							actor_.CanBeHitByVehicle = false;
 							actor_.RespectPlatforms = false;
+							actor_.Animation = Actor.AnimationEnum.Panic;
 
 							//// we did hit an actor that repsects platforms
 							//// as such he cannot fall thro it to water

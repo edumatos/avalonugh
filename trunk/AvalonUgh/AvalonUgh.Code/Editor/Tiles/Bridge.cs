@@ -14,6 +14,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public Bridge(Level Level, TileSelector Selector)
 			: base(Level, Selector)
 		{
+			this.ObstaclePaddingBottom = 4;
 		}
 
 		public override string GetIdentifier()

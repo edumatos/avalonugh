@@ -41,6 +41,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		double ObstacleCache_Y;
 		Obstacle ObstacleCache_Value;
 
+		public int ObstaclePaddingBottom;
+
 		public Obstacle ToObstacle(double x, double y)
 		{
 			if (ObstacleCache_X == x)
@@ -55,7 +57,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 				Left = x - Selector.HalfWidth * Level.Zoom,
 				Top = y - Selector.HalfHeight * Level.Zoom,
 				Right = x + Selector.HalfWidth * Level.Zoom,
-				Bottom = y + Selector.HalfHeight * Level.Zoom,
+				Bottom = y + Selector.HalfHeight - ObstaclePaddingBottom * Level.Zoom,
 			};
 
 			return ObstacleCache_Value;

@@ -53,6 +53,7 @@ namespace AvalonUgh.Code
 					};
 
 				this.WalkLeftFrames = Enumerable.Range(30, 9).ToArray(ToFrame);
+				this.WalkRightFrames = Enumerable.Range(40, 9).ToArray(ToFrame);
 
 				Initialize();
 			}
