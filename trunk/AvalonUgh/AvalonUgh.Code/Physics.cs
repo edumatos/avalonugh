@@ -224,24 +224,24 @@ namespace AvalonUgh.Code
 				}
 			}
 
-			if (twin.GetVelocity() < 0.1)
+			if (twin.GetVelocity() < 0.01)
 			{
 				if (twin.Y < this.Level.WaterTop)
 				{
 					twin.Stability++;
 
 					// how stable must the object be?
-					if (twin.Stability >= 10)
+					if (twin.Stability >= 3)
 					{
-						if (twin.Stability == 10)
+						if (twin.Stability == 3)
 						{
 							twin.StabilityReached();
 
 
 						}
 
-						//twin.VelocityX = 0;
-						//twin.VelocityY = 0;
+						twin.VelocityX = 0;
+						twin.VelocityY = 0;
 
 						//return;
 					}

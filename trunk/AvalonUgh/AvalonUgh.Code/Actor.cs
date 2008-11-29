@@ -41,6 +41,9 @@ namespace AvalonUgh.Code
 		public Image[] TalkFrames = new Image[0];
 		public int TalkInterval = 100;
 
+		public Image[] WalkLeftFrames = new Image[0];
+		public int WalkLeftInterval = 100;
+
 		public void StabilityReached()
 		{
 			if (Level == null)
@@ -74,7 +77,8 @@ namespace AvalonUgh.Code
 		{
 			Idle,
 			Talk,
-			Panic
+			Panic,
+			WalkLeft
 		}
 
 
@@ -97,7 +101,8 @@ namespace AvalonUgh.Code
 					this.PanicFrames.ForEach(k => k.Hide());
 				if (value != AnimationEnum.Talk)
 					this.TalkFrames.ForEach(k => k.Hide());
-
+				if (value != AnimationEnum.WalkLeft)
+					this.WalkLeftFrames.ForEach(k => k.Hide());
 				if (value == AnimationEnum.Idle)
 					this.IdleFrames.First().Show();
 
@@ -158,11 +163,32 @@ namespace AvalonUgh.Code
 				}
 			);
 
+			this.WalkLeftInterval.AtIntervalWithCounter(
+				i =>
+				{
+					if (Animation != AnimationEnum.WalkLeft)
+						return;
+
+					this.WalkLeftFrames.ForEach(
+						(k, j) =>
+						{
+							if (j == i % this.WalkLeftFrames.Length)
+								k.Show();
+							else
+								k.Hide();
+						}
+					);
+				}
+			);
+
 			this.PanicInterval.AtIntervalWithCounter(
 				i =>
 				{
 					if (Animation != AnimationEnum.Panic)
 					{
+						if (Animation == AnimationEnum.WalkLeft)
+							return;
+
 						// yet if we are falling?
 						if (VelocityY > 0.2)
 							this.Animation = AnimationEnum.Panic;
@@ -250,6 +276,9 @@ namespace AvalonUgh.Code
 		{
 			if (e.Keyboard.IsPressedLeft)
 			{
+				if (this.Animation == AnimationEnum.Idle)
+					this.Animation = AnimationEnum.WalkLeft;
+
 				this.VelocityX -= this.Zoom * 0.06;
 			}
 			else if (e.Keyboard.IsPressedRight)
@@ -259,7 +288,16 @@ namespace AvalonUgh.Code
 			else
 			{
 				if (this.VelocityY == 0)
+				{
+
 					this.VelocityX *= 0.7;
+				}
+			}
+
+			if (Math.Abs(this.VelocityX) < Zoom * 0.1)
+			{
+				if (this.Animation == AnimationEnum.WalkLeft)
+					this.Animation = AnimationEnum.Idle;
 			}
 
 			if (e.Keyboard.IsPressedUp)
