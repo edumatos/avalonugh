@@ -14,11 +14,13 @@ namespace AvalonUgh.Code
 {
 	[Script]
 	public abstract partial class Actor :
-		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput
+		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
 		// the woman does not have talk animation
 		// the default waiting position is between the outer edges between
 		// the sign and the cave on the same platform
+
+		public bool CanBeHitByVehicle ;
 
 		public Level Level { get; set; }
 
@@ -44,6 +46,9 @@ namespace AvalonUgh.Code
 		public Image[] WalkLeftFrames = new Image[0];
 		public int WalkLeftInterval = 100;
 
+		public Image[] WalkRightFrames = new Image[0];
+		public int WalkRightInterval = 100;
+
 		public void StabilityReached()
 		{
 			if (Level == null)
@@ -58,6 +63,7 @@ namespace AvalonUgh.Code
 
 		public Actor(int Zoom)
 		{
+			this.CanBeHitByVehicle = true;
 			this.RespectPlatforms = true;
 
 			this.Density = 0.3;
@@ -75,10 +81,12 @@ namespace AvalonUgh.Code
 
 		public enum AnimationEnum
 		{
+			Hidden,
 			Idle,
 			Talk,
 			Panic,
-			WalkLeft
+			WalkLeft,
+			WalkRight
 		}
 
 
@@ -103,6 +111,8 @@ namespace AvalonUgh.Code
 					this.TalkFrames.ForEach(k => k.Hide());
 				if (value != AnimationEnum.WalkLeft)
 					this.WalkLeftFrames.ForEach(k => k.Hide());
+				if (value != AnimationEnum.WalkRight)
+					this.WalkRightFrames.ForEach(k => k.Hide());
 				if (value == AnimationEnum.Idle)
 					this.IdleFrames.First().Show();
 
@@ -111,6 +121,12 @@ namespace AvalonUgh.Code
 
 				if (value == AnimationEnum.Talk)
 					this.TalkFrames.First().Show();
+
+				if (value == AnimationEnum.WalkLeft)
+					this.WalkLeftFrames.First().Show();
+				if (value == AnimationEnum.WalkRight)
+					this.WalkRightFrames.First().Show();
+
 			}
 		}
 
@@ -181,12 +197,33 @@ namespace AvalonUgh.Code
 				}
 			);
 
+			this.WalkRightInterval.AtIntervalWithCounter(
+				i =>
+				{
+					if (Animation != AnimationEnum.WalkRight)
+						return;
+
+					this.WalkRightFrames.ForEach(
+						(k, j) =>
+						{
+							if (j == i % this.WalkRightFrames.Length)
+								k.Show();
+							else
+								k.Hide();
+						}
+					);
+				}
+			);
+
 			this.PanicInterval.AtIntervalWithCounter(
 				i =>
 				{
 					if (Animation != AnimationEnum.Panic)
 					{
 						if (Animation == AnimationEnum.WalkLeft)
+							return;
+
+						if (Animation == AnimationEnum.WalkRight)
 							return;
 
 						// yet if we are falling?
@@ -276,13 +313,18 @@ namespace AvalonUgh.Code
 		{
 			if (e.Keyboard.IsPressedLeft)
 			{
-				if (this.Animation == AnimationEnum.Idle)
+				if (this.Animation != AnimationEnum.WalkLeft)
 					this.Animation = AnimationEnum.WalkLeft;
 
+				// at some point we should not be able to accelerate
 				this.VelocityX -= this.Zoom * 0.06;
 			}
 			else if (e.Keyboard.IsPressedRight)
 			{
+				if (this.Animation != AnimationEnum.WalkRight)
+					this.Animation = AnimationEnum.WalkRight;
+
+
 				this.VelocityX += this.Zoom * 0.06;
 			}
 			else
@@ -298,6 +340,9 @@ namespace AvalonUgh.Code
 			{
 				if (this.Animation == AnimationEnum.WalkLeft)
 					this.Animation = AnimationEnum.Idle;
+
+				if (this.Animation == AnimationEnum.WalkRight)
+					this.Animation = AnimationEnum.Idle;
 			}
 
 			if (e.Keyboard.IsPressedUp)
@@ -305,6 +350,17 @@ namespace AvalonUgh.Code
 				if (this.VelocityY == 0)
 					this.VelocityY -= this.Zoom * 2.5;
 			}
+		}
+
+		#endregion
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			this.Animation = AnimationEnum.Hidden;
+			this.Container.Orphanize();
+
 		}
 
 		#endregion

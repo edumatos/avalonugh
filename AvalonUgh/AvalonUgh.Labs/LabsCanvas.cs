@@ -360,11 +360,28 @@ namespace AvalonUgh.Labs.Shared
 
 					ISupportsPlayerInput k3target = xveh;
 
+					Actor xveh_man = null;
+
 					k3.Enter +=
 						delegate
 						{
 							if (xveh.IsUnmanned)
 							{
+								if (xveh_man != null)
+								{
+
+									if (!xveh_man.ToObstacle().Intersects(xveh.ToObstacle()))
+									{
+										Console.WriteLine("Get closer!");
+										return;
+									}
+
+									KnownActors.Remove(xveh_man);
+
+									xveh_man.Dispose();
+									xveh_man = null;
+								}
+
 								xveh.IsUnmanned = false;
 								View.LocationTracker.Target = xveh;
 								k3target = xveh;
@@ -372,20 +389,21 @@ namespace AvalonUgh.Labs.Shared
 							else
 							{
 								xveh.IsUnmanned = true;
-								var actor5 = new Actor.man0(Zoom)
+								xveh_man = new Actor.man0(Zoom)
 								{
 									Animation = Actor.AnimationEnum.Panic,
 									RespectPlatforms = true,
-									Level = Level
+									Level = Level,
+									CanBeHitByVehicle = false
 								};
-								View.LocationTracker.Target = actor5;
-								k3target = actor5;
+								View.LocationTracker.Target = xveh_man;
+								k3target = xveh_man;
 
-								actor5.MoveTo(xveh.X, xveh.Y - actor5.ToObstacle().Height);
+								xveh_man.MoveTo(xveh.X, xveh.Y - xveh_man.ToObstacle().Height / 2);
 
-								actor5.AttachContainerTo(View.Entities);
+								xveh_man.AttachContainerTo(View.Entities);
 
-								KnownActors.Add(actor5);
+								KnownActors.Add(xveh_man);
 							}
 						};
 
