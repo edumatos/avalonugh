@@ -27,6 +27,16 @@ namespace AvalonUgh.Labs.Monetized.ActionScript
 		public static string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
 
 		// multiplayer shall be enabled via hyperlink to nonobas version
+
+		
+
+		public MonetizedFlashLean()
+		{
+			new TextField
+			{
+				text = "multiplayer disabled"
+			}.AttachTo(this);
+		}
 	}
 
 	
