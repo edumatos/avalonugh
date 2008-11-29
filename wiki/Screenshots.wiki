@@ -25,3 +25,4 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/019.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/020.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/021.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/022.png]
