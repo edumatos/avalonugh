@@ -392,7 +392,29 @@ namespace AvalonUgh.Labs.Shared
 
 					ISupportsPlayerInput k3target = xveh;
 
-					Actor xveh_man = null;
+					Actor xveh_man = new Actor.man0(Zoom)
+					{
+						Animation = Actor.AnimationEnum.Panic,
+						RespectPlatforms = true,
+						Level = Level,
+						CanBeHitByVehicle = false
+					};
+
+					xveh_man.GoldStash.ForEachNewItem(
+						gold =>
+						{
+							(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
+
+							View.ColorOverlay.Background = Brushes.Yellow;
+							View.ColorOverlay.Opacity = 0.7;
+							View.ColorOverlay.Show();
+							View.ColorOverlay.FadeOut();
+						}
+					);
+
+					xveh_man.CurrentVehicle = xveh;
+
+				
 
 					k3.Enter +=
 						delegate
@@ -439,8 +461,9 @@ namespace AvalonUgh.Labs.Shared
 
 									KnownActors.Remove(xveh_man);
 
-									xveh_man.Dispose();
-									xveh_man = null;
+									xveh_man.CurrentVehicle = xveh;
+									xveh_man.OrphanizeContainer();
+									KnownActors.Remove(xveh_man);
 								}
 
 								xveh.IsUnmanned = false;
@@ -450,20 +473,15 @@ namespace AvalonUgh.Labs.Shared
 							else
 							{
 								xveh.IsUnmanned = true;
-								xveh_man = new Actor.man0(Zoom)
-								{
-									Animation = Actor.AnimationEnum.Panic,
-									RespectPlatforms = true,
-									Level = Level,
-									CanBeHitByVehicle = false
-								};
+								xveh_man.CurrentVehicle = null;
+
+
 								View.LocationTracker.Target = xveh_man;
 								k3target = xveh_man;
 
 								xveh_man.MoveTo(xveh.X, xveh.Y - xveh_man.ToObstacle().Height / 2);
 
 								xveh_man.AttachContainerTo(View.Entities);
-
 								KnownActors.Add(xveh_man);
 							}
 						};
