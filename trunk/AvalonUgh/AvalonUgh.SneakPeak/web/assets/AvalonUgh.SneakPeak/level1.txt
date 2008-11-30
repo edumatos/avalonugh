@@ -11,37 +11,94 @@
                                         
                                         
 # tree: 416
+# gold: 488
+# gold: 472
+# gold: 480
+# gold: 384
+# gold: 392
 # sign: 448;3
                        BBP--BBB         
                          |              
                                         
+# gold: 24
+# gold: 40
+# gold: 32
                                         
+# gold: 24
+# gold: 40
+# gold: 32
                                         
+# gold: 24
+# gold: 40
+# gold: 32
                                         
+# gold: 24
+# gold: 40
+# gold: 32
 P-                  P-                  
 # tree: 392
 # tree: 584
 # tree: 64
+# gold: 312
+# gold: 296
+# gold: 304
+# gold: 288
+# gold: 272
+# gold: 608
+# gold: 616
+# gold: 624
+# gold: 632
 # sign: 88;1
 RP--P-S-          P-R-P-P-         P-P-P
+# gold: 424
+# gold: 432
 R|  | |         P-| | | | P-       FC-R-
 # rock: 240
 RR--RS| S-S-  P-| RRRR---R---      F| | 
+# gold: 472
+# gold: 488
+# gold: 480
+# gold: 496
 # sign: 560;2
 R|  S-S-| C- B| S-R--|   |   P-BBBBP-P-R
 R--S| | | | S-S-| |  R--S-S--| S-S---| R
 # tree: 144
+# gold: 216
 # sign: 200;2
 |  || | P--PP-SS-S-SR|  | |  | | |   R-R
 R---SSSB|  S-S-| | |R--S-SSS-S-| SSSF| R
+# gold: 384
+# gold: 392
+# gold: 400
+# gold: 408
+# gold: 216
+# gold: 224
+# gold: 232
+# gold: 104
+# gold: 96
 |   S|BBSS-S-P-| S-S|  R--|| | S--C-R---
+# gold: 424
+# gold: 88
+# gold: 80
 R-S-|BBSS| | | | | |SR-|  P| | |  | |   
 # tree: 456
 # rock: 500
+# gold: 440
+# gold: 64
+# gold: 72
+# gold: 264
+# gold: 184
 # sign: 528;1
 | | BBS-|| | S-S-| S|| R-P---BBBBBP--R--
 R--SSS-S-| | | | S-C-R-| |   S-SS-|  |  
 |  BBBP-BBP-S| | FS| | R---S-S-S-S-S-R--
+# gold: 200
+# gold: 224
+# gold: 216
+# gold: 232
+# gold: 296
+# gold: 288
+# gold: 264
 # gold: 256
 # sign: 280;3
 R---S-| S-| BP--BBBBP-S|   | | | | | |  
