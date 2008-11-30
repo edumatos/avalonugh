@@ -86,7 +86,9 @@ namespace AvalonUgh.Code
 			Talk,
 			Panic,
 			WalkLeft,
-			WalkRight
+			WalkRight,
+			CaveEnter,
+			CaveExit
 		}
 
 
