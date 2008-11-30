@@ -50,6 +50,7 @@ namespace AvalonUgh.Code
 		{
 			this.Vehicles.ForEach(Apply);
 			this.Level.KnownRocks.ForEach(Apply);
+			this.Level.KnownGold.ForEach(Apply);
 			this.Actors.ForEach(Apply);
 		}
 
@@ -143,6 +144,19 @@ namespace AvalonUgh.Code
 			{
 				if (!actor.RespectPlatforms)
 					Obstacles = new Obstacle[0].AsEnumerable();
+
+				foreach(Gold g in this.Level.KnownGold.Where(
+						k => k.ToObstacle().Intersects(actor.ToObstacle())
+					).ToArray())
+				{
+					g.OrphanizeContainer();
+
+					this.Level.KnownGold.Remove(g);
+					
+					actor.GoldStash.Add(g);
+				}
+
+			
 			}
 
 			#region Rock

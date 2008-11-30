@@ -95,6 +95,12 @@ namespace AvalonUgh.Code.Editor
 						);
 
 						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownGold
+							where i.BaseY == index
+							select new Attribute.Int32 { Key = "gold", Value = i.UnscaledX }
+						);
+
+						WriteAttribute.InvokeAsEnumerable(
 							from i in this.KnownSigns
 							where i.BaseY == index
 							select new Attribute.Int32_Int32 { Key = "sign", Value0 = i.UnscaledX, Value1 = i.Value }

@@ -308,6 +308,13 @@ namespace AvalonUgh.Code.Editor
 			);
 
 
+			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/gold0.png",
+				new[]
+						{
+							new Editor.Sprites.GoldSelector.Size_1x1()
+						}
+			);
+
 
 
 

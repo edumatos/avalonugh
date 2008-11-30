@@ -11,6 +11,8 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Tiles;
+using AvalonUgh.Code.Editor.Sprites;
+using System.ComponentModel;
 
 namespace AvalonUgh.Code
 {
@@ -18,6 +20,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public readonly BindingList<Gold> GoldStash = new BindingList<Gold>();
+
 		// the woman does not have talk animation
 		// the default waiting position is between the outer edges between
 		// the sign and the cave on the same platform

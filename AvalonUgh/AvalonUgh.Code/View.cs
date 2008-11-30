@@ -234,6 +234,10 @@ namespace AvalonUgh.Code
 				k => k.AttachContainerTo(this.Entities)
 			);
 
+			this.Level.KnownGold.ForEachNewOrExistingItem(
+				k => k.AttachContainerTo(this.Entities)
+			);
+
 		
 
 			#endregion
