@@ -26,6 +26,7 @@ namespace AvalonUgh.Code
 		// the default waiting position is between the outer edges between
 		// the sign and the cave on the same platform
 
+		public Vehicle CurrentVehicle;
 		public Cave CurrentCave;
 
 		public bool CanBeHitByVehicle;
@@ -194,6 +195,12 @@ namespace AvalonUgh.Code
 		{
 			get
 			{
+				if (CurrentVehicle != null)
+					return true;
+
+				if (CurrentCave != null)
+					return true;
+
 				return false;
 
 				//return Animation != AnimationEnum.Panic;
