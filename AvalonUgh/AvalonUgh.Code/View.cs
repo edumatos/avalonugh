@@ -44,7 +44,7 @@ namespace AvalonUgh.Code
 
 		public Canvas ColorOverlay { get; set; }
 
-		public Canvas InfoOverlay { get; set; }
+		public Canvas ContentInfoOverlay { get; set; }
 
 		public Canvas TouchOverlay { get; set; }
 		public TouchInput TouchInput { get; set; }
@@ -177,7 +177,7 @@ namespace AvalonUgh.Code
 				Visibility = System.Windows.Visibility.Hidden
 			}.AttachTo(this.ContentExtendedContainer);
 
-			this.InfoOverlay = new Canvas
+			this.ContentInfoOverlay = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
 				Height = this.ContentExtendedHeight

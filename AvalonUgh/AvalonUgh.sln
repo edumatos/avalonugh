@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monetized", "Monetized", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Labs.Monetized", "AvalonUgh.Labs.Monetized\AvalonUgh.Labs.Monetized.csproj", "{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.SneakPeak", "AvalonUgh.SneakPeak\AvalonUgh.SneakPeak.csproj", "{72AF9ED2-515F-455E-BF90-DC4810F6EE4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52CF6FE1-9D0D-4178-AD50-FE3EFFE235CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72AF9ED2-515F-455E-BF90-DC4810F6EE4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72AF9ED2-515F-455E-BF90-DC4810F6EE4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72AF9ED2-515F-455E-BF90-DC4810F6EE4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72AF9ED2-515F-455E-BF90-DC4810F6EE4A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
