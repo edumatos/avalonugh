@@ -45,6 +45,11 @@ namespace AvalonUgh.Code.Editor
 								}
 					);
 				}
+
+				public override string ToString()
+				{
+					return this.Key + ": " + this.Value;
+				}
 			}
 
 			[Script]
@@ -78,7 +83,7 @@ namespace AvalonUgh.Code.Editor
 								{
 									k.Value = int.Parse(v);
 
-								
+
 								}
 					);
 				}
@@ -121,6 +126,11 @@ namespace AvalonUgh.Code.Editor
 										k.Assigned(k.Value0, k.Value1);
 								}
 					);
+				}
+
+				public override string ToString()
+				{
+					return this.Key + ": " + this.Value0 + ";" + Value1;
 				}
 			}
 

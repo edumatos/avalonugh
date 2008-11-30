@@ -23,7 +23,16 @@ namespace AvalonUgh.Code.Editor
 				var w = this.Map.Width;
 
 				s.WriteLine("# generated map");
-				s.WriteLine("# " + this.AttributeWater);
+
+				Action<Attribute> WriteAttribute =
+					a => s.WriteLine("# " + a);
+
+				WriteAttribute.AsParamsAction()(
+					AttributeText,
+					AttributeCode,
+					AttributeAutoscroll,
+					AttributeWater
+				);
 
 				s.WriteLine(new String('#', w));
 

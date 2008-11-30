@@ -341,6 +341,16 @@
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\bounce.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_02.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform0_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_3x2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

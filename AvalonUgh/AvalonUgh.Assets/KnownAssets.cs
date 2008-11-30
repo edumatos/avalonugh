@@ -28,6 +28,7 @@ namespace AvalonUgh.Assets
 				public const string Audio = "assets/AvalonUgh.Assets.Audio";
 				public const string Backgrounds = "assets/AvalonUgh.Assets.Backgrounds";
 				public const string FilmScratch = "assets/AvalonUgh.Assets.FilmScratch";
+				public const string Levels = "assets/AvalonUgh.Assets.Levels";
 			}
 
 
