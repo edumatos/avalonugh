@@ -52,4 +52,5 @@ http://www.dosgamesarchive.com/download/game/87
 http://nonoba.com/zproxy/avalon-ugh
 
 multiplayer level codes:
-onlyshadowsofhooks
+ # aloneintothealone
+ # onlyshadowsofhooks
