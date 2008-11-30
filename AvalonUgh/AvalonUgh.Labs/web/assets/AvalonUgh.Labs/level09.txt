@@ -8,6 +8,8 @@
 # water: 20
 # autoscroll: 1
 # flashlight-opacity: 160
+# gravity: 30
+# wind: 9
 ## background: 001
 ## background-width: 320
 ## background-height: 200

@@ -117,62 +117,62 @@ namespace AvalonUgh.Labs.Shared
 						}.ToString()
 					);
 
-					#region x
-					#region CreateCustom
-					Func<int, int, string, string, Image> CreateCustom =
-						(x, y, tile, path) =>
-						{
-							var w = 16 * Zoom;
-							var h = 12 * Zoom;
+					//#region x
+					//#region CreateCustom
+					//Func<int, int, string, string, Image> CreateCustom =
+					//    (x, y, tile, path) =>
+					//    {
+					//        var w = 16 * Zoom;
+					//        var h = 12 * Zoom;
 
-							return new Image
-							{
-								Source = (path + "/" + tile + ".png").ToSource(),
-								Stretch = Stretch.Fill,
-								Width = w,
-								Height = h,
-
-
-							}.MoveTo(x * w, y * h).AttachTo(View.Platforms);
-						};
-					#endregion
-
-					#region CreateCustom
-					Func<int, int, string, string, Image> CreateCustom_2x2 =
-						(x, y, tile, path) =>
-						{
-							var w = 16 * Zoom;
-							var h = 12 * Zoom;
-
-							return new Image
-							{
-								Source = (path + "/" + tile + ".png").ToSource(),
-								Stretch = Stretch.Fill,
-								Width = w * 2,
-								Height = h * 2,
+					//        return new Image
+					//        {
+					//            Source = (path + "/" + tile + ".png").ToSource(),
+					//            Stretch = Stretch.Fill,
+					//            Width = w,
+					//            Height = h,
 
 
-							}.MoveTo(x * w, y * h).AttachTo(View.Platforms);
-						};
-					#endregion
+					//        }.MoveTo(x * w, y * h).AttachTo(View.Platforms);
+					//    };
+					//#endregion
+
+					//#region CreateCustom
+					//Func<int, int, string, string, Image> CreateCustom_2x2 =
+					//    (x, y, tile, path) =>
+					//    {
+					//        var w = 16 * Zoom;
+					//        var h = 12 * Zoom;
+
+					//        return new Image
+					//        {
+					//            Source = (path + "/" + tile + ".png").ToSource(),
+					//            Stretch = Stretch.Fill,
+					//            Width = w * 2,
+					//            Height = h * 2,
+
+
+					//        }.MoveTo(x * w, y * h).AttachTo(View.Platforms);
+					//    };
+					//#endregion
 
 
 
-					var CreateSprite = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
-					var CreateSprite_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
+					//var CreateSprite = CreateCustom.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
+					//var CreateSprite_2x2 = CreateCustom_2x2.FixLastParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Sprites);
 
 
-					var Create = new
-					{
-						flower0 = CreateSprite.FixLastParam("flower0"),
-						fish0 = CreateSprite.FixLastParam("fish0"),
-						fish1 = CreateSprite.FixLastParam("fish1"),
+					//var Create = new
+					//{
+					//    flower0 = CreateSprite.FixLastParam("flower0"),
+					//    fish0 = CreateSprite.FixLastParam("fish0"),
+					//    fish1 = CreateSprite.FixLastParam("fish1"),
 
 
-						weed0_2x2 = CreateSprite_2x2.FixLastParam("weed0_00_2x2"),
+					//    weed0_2x2 = CreateSprite_2x2.FixLastParam("weed0_00_2x2"),
 
-					};
-					#endregion
+					//};
+					//#endregion
 
 
 
@@ -188,31 +188,31 @@ namespace AvalonUgh.Labs.Shared
 
 					//Create.flower0(0, 6);
 
-					var fish_x = -PrimitiveTile.Width;
+					//var fish_x = -PrimitiveTile.Width;
 
-					new[]
-					{
-						Create.fish0(2, 12),
-						Create.fish1(2, 12)
-					}.AsCyclicEnumerable().ForEach(
-						(fish, next) =>
-						{
-							fish_x = (fish_x + 1 * Zoom) % View.ContentActualWidth;
+					//new[]
+					//{
+					//    Create.fish0(2, 12),
+					//    Create.fish1(2, 12)
+					//}.AsCyclicEnumerable().ForEach(
+					//    (fish, next) =>
+					//    {
+					//        fish_x = (fish_x + 1 * Zoom) % View.ContentActualWidth;
 
 
-							fish.MoveTo(fish_x, Level.WaterTop + Level.WaterHeight / 3);
+					//        fish.MoveTo(fish_x, Level.WaterTop + Level.WaterHeight / 3);
 
-							fish.Show();
+					//        fish.Show();
 
-							(1000 / 15).AtDelay(
-								delegate
-								{
-									fish.Hide();
-									next();
-								}
-							);
-						}
-					);
+					//        (1000 / 15).AtDelay(
+					//            delegate
+					//            {
+					//                fish.Hide();
+					//                next();
+					//            }
+					//        );
+					//    }
+					//);
 
 					#region sprites
 
@@ -220,8 +220,8 @@ namespace AvalonUgh.Labs.Shared
 
 					var ActorPool = new Func<Actor>[]
 					{
-						() => new Actor.man0(Zoom) {Level = Level, Animation = Actor.AnimationEnum.Talk },
-						() => new Actor.man1(Zoom)  {Level = Level, Animation = Actor.AnimationEnum.Talk },
+						() => new Actor.man0(Zoom) {Level = Level },
+						() => new Actor.man1(Zoom)  {Level = Level },
 						() => new Actor.woman0(Zoom)  {Level = Level },
 					}.AsCyclicEnumerable().GetEnumerator();
 
@@ -244,7 +244,7 @@ namespace AvalonUgh.Labs.Shared
 
 
 
-					var KnownBirds = new List<Bird>();
+					//var KnownBirds = new List<Bird>();
 
 
 
@@ -257,49 +257,49 @@ namespace AvalonUgh.Labs.Shared
 
 					#endregion
 
-					#region bird
-					{
-						var bird1 = new Bird(Zoom);
-						var bird1_x = DefaultWidth + bird1.Width / 2;
-						var bird1_y = Zoom * 32;
+					//#region bird
+					//{
+					//    var bird1 = new Bird(Zoom);
+					//    var bird1_x = DefaultWidth + bird1.Width / 2;
+					//    var bird1_y = Zoom * 32;
 
-						bird1.AttachContainerTo(View.Entities).MoveTo(bird1_x, bird1_y);
-						KnownBirds.Add(bird1);
+					//    bird1.AttachContainerTo(View.Entities).MoveTo(bird1_x, bird1_y);
+					//    KnownBirds.Add(bird1);
 
-						(1000 / 30).AtInterval(
-							delegate
-							{
-								bird1_x -= 4;
+					//    (1000 / 30).AtInterval(
+					//        delegate
+					//        {
+					//            bird1_x -= 4;
 
-								if (bird1_x < -(bird1.Width / 2))
-									bird1_x = View.ContentActualWidth + bird1.Width / 2;
+					//            if (bird1_x < -(bird1.Width / 2))
+					//                bird1_x = View.ContentActualWidth + bird1.Width / 2;
 
-								bird1.MoveTo(bird1_x, bird1_y);
-							}
-						);
-
-
-						var bird2 = new Bird(Zoom);
-						var bird2_x = DefaultWidth / 2;
-						var bird2_y = Zoom * 70;
-
-						bird2.AttachContainerTo(View.Entities).MoveTo(bird2_x, bird2_y);
-						KnownBirds.Add(bird2);
+					//            bird1.MoveTo(bird1_x, bird1_y);
+					//        }
+					//    );
 
 
-						(1000 / 30).AtInterval(
-							delegate
-							{
-								bird2_x -= 2;
-								if (bird2_x < -(bird2.Width / 2))
-									bird2_x = View.ContentActualWidth + bird2.Width / 2;
+					//    var bird2 = new Bird(Zoom);
+					//    var bird2_x = DefaultWidth / 2;
+					//    var bird2_y = Zoom * 70;
 
-								bird2.MoveTo(bird2_x, bird2_y);
-							}
-						);
+					//    bird2.AttachContainerTo(View.Entities).MoveTo(bird2_x, bird2_y);
+					//    KnownBirds.Add(bird2);
 
-					}
-					#endregion
+
+					//    (1000 / 30).AtInterval(
+					//        delegate
+					//        {
+					//            bird2_x -= 2;
+					//            if (bird2_x < -(bird2.Width / 2))
+					//                bird2_x = View.ContentActualWidth + bird2.Width / 2;
+
+					//            bird2.MoveTo(bird2_x, bird2_y);
+					//        }
+					//    );
+
+					//}
+					//#endregion
 
 
 
@@ -338,16 +338,16 @@ namespace AvalonUgh.Labs.Shared
 								twin2,
 								twin
 							}.AsEnumerable(),
-						Birds = KnownBirds,
+						//Birds = KnownBirds,
 						Actors = KnownActors
 					};
 
 					ph.CollisionAtVelocity +=
 						Velocity =>
 						{
-							var Volume = ((Velocity - (Level.Zoom * 2.0)) / (Level.Zoom * 3.0)).Max(0).Min(1);
+							var Volume = ((Velocity  ) / (Level.Zoom * 2.0)).Max(0).Min(1);
 
-							Console.WriteLine(new { Volume });
+							Console.WriteLine(new { Volume, Velocity });
 
 							if (Volume > 0)
 								(Assets.Shared.KnownAssets.Path.Audio + "/bounce.mp3").PlaySound().SetVolume(Volume);

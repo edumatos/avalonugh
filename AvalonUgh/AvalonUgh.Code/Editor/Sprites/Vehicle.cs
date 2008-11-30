@@ -32,11 +32,26 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void StabilityReached()
 		{
+			if (this.CurrentLevel == null)
+				return;
+
 			// we have landed!
 			// if we are on a platform which has a cave
 			// we would need to notify the passengers of our arrivel
 
-			Console.WriteLine("ready for boarding!");
+
+			var scan = new PlatformScan(this, this.CurrentLevel);
+
+			if (scan.LandingTiles.Any())
+			{
+				Console.WriteLine("ready for boarding!");
+
+			}
+			else
+			{
+				Console.WriteLine("try landing on a platform!");
+
+			}
 		}
 
 		public bool PhysicsDisabled { get; set; }
