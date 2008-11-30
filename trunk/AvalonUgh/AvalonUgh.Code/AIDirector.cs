@@ -12,7 +12,7 @@ namespace AvalonUgh.Code
 	[Script]
 	public class AIDirector
 	{
-		public static void WalkActorToTheCaveAndEnter(Actor a, Cave c)
+		public static void WalkActorToTheCaveAndEnter(Actor a, Cave c, Action done)
 		{
 			a.AIInputEnabled = true;
 
@@ -30,7 +30,7 @@ namespace AvalonUgh.Code
 						Console.WriteLine("we are in front of that cave");
 
 						a.LocationChanged -= AreWeClouseEnough;
-						
+
 						// we need to play this onetime animation ourselves
 						a.PlayAnimation(Actor.AnimationEnum.CaveEnter,
 							delegate
@@ -41,6 +41,9 @@ namespace AvalonUgh.Code
 								a.AIInputEnabled = false;
 
 								Console.WriteLine("inside the cave!");
+
+								if (done != null)
+									done();
 							}
 						);
 

@@ -20,6 +20,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public bool ReadyForGoldPickup = true;
+
 		public readonly BindingList<Gold> GoldStash = new BindingList<Gold>();
 
 		// the woman does not have talk animation
