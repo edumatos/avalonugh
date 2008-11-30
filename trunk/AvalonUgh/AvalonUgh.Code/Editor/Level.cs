@@ -142,7 +142,7 @@ namespace AvalonUgh.Code.Editor
 
 			this.TreeSelector = new TreeSelector(this);
 
-			this.AttributeFlashlightOpacity.Value = 255;
+			this.AttributeFlashlightOpacity.Value = 180;
 
 			this.Zoom = Zoom;
 

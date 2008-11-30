@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Controls;
 using ScriptCoreLib;
 using AvalonUgh.Assets.Shared;
+using System.Windows;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
@@ -35,6 +36,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public double Y
 		{
 			get { return (Position.ContentY + Selector.HalfHeight) * Level.Zoom; }
+		}
+
+		public Point Location
+		{
+			get
+			{
+				return new Point { X = this.X, Y = this.Y };
+			}
 		}
 
 		double ObstacleCache_X;

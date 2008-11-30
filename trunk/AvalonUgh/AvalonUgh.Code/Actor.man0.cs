@@ -54,6 +54,8 @@ namespace AvalonUgh.Code
 
 				this.WalkLeftFrames = Enumerable.Range(30, 9).ToArray(ToFrame);
 				this.WalkRightFrames = Enumerable.Range(40, 9).ToArray(ToFrame);
+				this.CaveEnterFrames = Enumerable.Range(60, 8).ToArray(ToFrame);
+				this.CaveExitFrames = Enumerable.Range(50, 9).ToArray(ToFrame);
 
 				Initialize();
 			}

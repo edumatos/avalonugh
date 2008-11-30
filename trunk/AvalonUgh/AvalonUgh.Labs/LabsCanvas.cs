@@ -401,10 +401,39 @@ namespace AvalonUgh.Labs.Shared
 							{
 								if (xveh_man != null)
 								{
+									// AI is controlling our man
+									// possibly entering the cave already
+									if (xveh_man.AIInputEnabled)
+										return;
 
-									if (!xveh_man.ToObstacle().Intersects(xveh.ToObstacle()))
+									if (xveh_man.CurrentCave != null)
 									{
-										Console.WriteLine("Get closer!");
+										AIDirector.ActorExitAnyCave(xveh_man, Level.KnownCaves.Where(k => k != xveh_man.CurrentCave).Random());
+
+										return;
+									}
+
+									var ManAsObstacle = xveh_man.ToObstacle();
+
+									// are we trying to enter a cave?
+									var NearbyCave = Level.KnownCaves.FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+
+									if (NearbyCave != null)
+									{
+										// we need to align us in front of the cave
+										// and show entering animation
+
+										AIDirector.WalkActorToTheCaveAndEnter(xveh_man, NearbyCave);
+
+										Console.WriteLine("entering a cave");
+
+										return;
+									}
+
+
+									if (!ManAsObstacle.Intersects(xveh.ToObstacle()))
+									{
+										Console.WriteLine("try geting closer to a vehicle!");
 										return;
 									}
 
