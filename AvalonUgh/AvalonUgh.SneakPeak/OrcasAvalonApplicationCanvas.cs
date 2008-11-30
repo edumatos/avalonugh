@@ -15,13 +15,14 @@ using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Input;
 using System.Windows.Input;
 using AvalonUgh.Assets.Shared;
+using ScriptCoreLib.Shared.Avalon.Tween;
 
 namespace AvalonUgh.SneakPeak.Shared
 {
 	[Script]
 	public class OrcasAvalonApplicationCanvas : Canvas
 	{
-		public const int Zoom = 4;
+		public const int Zoom = 3;
 
 		public const int Padding = 0;
 
@@ -57,7 +58,7 @@ namespace AvalonUgh.SneakPeak.Shared
 
 			#endregion
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level0.txt";
+			var CurrentLevel = KnownAssets.Path.Assets + "/level1.txt";
 
 			CurrentLevel.ToStringAsset(
 				LevelText =>
@@ -333,6 +334,10 @@ namespace AvalonUgh.SneakPeak.Shared
 					et.Container.ToggleVisible();
 					View.EditorSelectorRectangle.ToggleVisible();
 
+					var TotalSeconds = 0;
+
+					1000.AtInterval(() => TotalSeconds++);
+
 					Level.KnownGold.ListChanged +=
 						delegate
 						{
@@ -340,10 +345,43 @@ namespace AvalonUgh.SneakPeak.Shared
 
 							if (Level.KnownGold.Count == 0)
 							{
-								View.ColorOverlay.Background = Brushes.Black;
-								View.ColorOverlay.Opacity = 0;
-								View.ColorOverlay.Show();
-								View.ColorOverlay.FadeIn();
+								1000.AtDelay(
+									delegate
+									{
+										View.ColorOverlay.Background = Brushes.Black;
+										View.ColorOverlay.Opacity = 0;
+										View.ColorOverlay.Show();
+										View.ColorOverlay.FadeIn();
+
+										300.AtDelay(
+											delegate
+											{
+												var EndText = new TextBox
+												{
+													AcceptsReturn = true,
+													FontFamily = new FontFamily("Verdana"),
+													Text = "-=Avalon Ugh Sneak Peak =-\n\nYou found all gold items!\n Level Complete in " + TotalSeconds + " seconds",
+													Width = DefaultWidth,
+													TextAlignment = TextAlignment.Center,
+													Foreground = Brushes.Yellow,
+													BorderThickness = new Thickness(0),
+													IsReadOnly = true,
+													Background = Brushes.Transparent
+												}.AttachTo(this);
+
+
+
+												Action<int, int> EndText_Move = NumericEmitter.Of(
+													(x, y) => EndText.MoveTo(x, y)
+												);
+
+												EndText_Move(0, -10);
+												EndText_Move(0, DefaultHeight / 2);
+
+											}
+										);
+									}
+								);
 							}
 						};
 				}

@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documents\description.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.SneakPeak\level1.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.SneakPeak\level0.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.SneakPeak\jsc.png" />
   </ItemGroup>
