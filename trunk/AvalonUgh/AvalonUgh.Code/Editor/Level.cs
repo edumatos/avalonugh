@@ -62,6 +62,16 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Platform> KnownPlatforms = new BindingList<Platform>();
 		public readonly BindingList<Bridge> KnownBridges = new BindingList<Bridge>();
 
+		public  IEnumerable<Tile> KnownLandingTiles
+		{
+			get
+			{
+				var Bridges = KnownBridges.Select(k => (Tile)k);
+				var Platforms = KnownPlatforms.Select(k => (Tile)k);
+
+				return Bridges.Concat(Platforms);
+			}
+		}
 
 		const string Comment = "#";
 		const string Assignment = ":";
@@ -126,6 +136,9 @@ namespace AvalonUgh.Code.Editor
 
 		public Level(string source, int Zoom)
 		{
+			this.AttributeGravity.Value = 30;
+			this.AttributeWind.Value = 0;
+
 			this.TreeSelector = new TreeSelector(this);
 
 			this.AttributeFlashlightOpacity.Value = 255;
@@ -185,6 +198,8 @@ namespace AvalonUgh.Code.Editor
 				this.TreeSelector.Attribute,
 
 				AttributeWind,
+				AttributeGravity,
+
 				AttributeWater,
 				AttributeBackgroundWidth,
 				AttributeBackgroundHeight,
@@ -386,7 +401,7 @@ namespace AvalonUgh.Code.Editor
 					}.WhereListChanged(
 						delegate
 						{
-							Console.WriteLine("ToObstacles");
+							Console.WriteLine("Level.ToObstacles");
 
 							var Bridges = this.KnownBridges.Select(k => k.ToObstacle());
 							var Ridges = this.KnownRidges.Select(k => k.ToObstacle());

@@ -16,7 +16,7 @@ namespace AvalonUgh.Code
 		public Level Level;
 
 		public IEnumerable<Vehicle> Vehicles;
-		public IEnumerable<Bird> Birds;
+		//public IEnumerable<Bird> Birds;
 		public IEnumerable<Actor> Actors;
 
 		// mass = density / volume
@@ -68,7 +68,7 @@ namespace AvalonUgh.Code
 			var WaterVolume = (y / twin.HalfHeight).Min(1).Max(0);
 
 			// add gravity
-			twin.VelocityY += 0.3 * AirVolume;
+			twin.VelocityY += Level.AttributeGravity.Value * 0.01 * AirVolume;
 
 
 			const double WaterDensity = 1.0;
@@ -167,18 +167,18 @@ namespace AvalonUgh.Code
 						);
 
 
-						Obstacles = Obstacles.Concat(
-							this.Birds.Select(k => k.ToObstacle()).ToArray()
-						);
+						//Obstacles = Obstacles.Concat(
+						//    this.Birds.Select(k => k.ToObstacle()).ToArray()
+						//);
 
-						this.Birds.Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-							bird =>
-							{
-								// we did will hit a tree
-								//tree.GoToSleep();
-								rock.GoToSleep();
-							}
-						);
+						//this.Birds.Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+						//    bird =>
+						//    {
+						//        // we did will hit a tree
+						//        //tree.GoToSleep();
+						//        rock.GoToSleep();
+						//    }
+						//);
 					}
 
 				}
@@ -189,22 +189,26 @@ namespace AvalonUgh.Code
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
 			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));
 
-			var CollisionAtVelocity = twin.GetVelocity();
+			var CollisionAtVelocity = 0.0;
 			var CollisionAtVelocityEnabled = false;
 
 			if (ObstacleX != null)
 			{
 				CollisionAtVelocityEnabled = true;
+				CollisionAtVelocity += Math.Pow(twin.VelocityX * 0.5, 2);
 
 				if (ObstacleX.SupportsVelocity != null)
 				{
 					var fx = ObstacleX.SupportsVelocity.VelocityX / 2;
+
+
 					ObstacleX.SupportsVelocity.VelocityX += twin.VelocityX / 2;
 					twin.VelocityX = fx;
 				}
 				else
 				{
-					if (Math.Abs(twin.VelocityX) < 1.0)
+
+					if (Math.Abs(twin.VelocityX) < Level.Zoom)
 						twin.VelocityX = 0;
 					else
 						twin.VelocityX *= -0.5;
@@ -214,6 +218,7 @@ namespace AvalonUgh.Code
 			if (ObstacleY != null)
 			{
 				CollisionAtVelocityEnabled = true;
+				CollisionAtVelocity += Math.Pow(twin.VelocityY * 0.5, 2);
 
 				if (ObstacleY.SupportsVelocity != null)
 				{
@@ -223,17 +228,27 @@ namespace AvalonUgh.Code
 				}
 				else
 				{
-					if (Math.Abs(twin.VelocityY) < 1.0)
+					if (Math.Abs(twin.VelocityY) < Level.Zoom)
 						twin.VelocityY = 0;
 					else
 						twin.VelocityY *= -0.5;
 				}
 			}
+			else
+			{
+				if (twin is Vehicle)
+					twin.VelocityX += Level.AttributeWind.Value * 0.01 * AirVolume;
+			}
 
-			if (CollisionAtVelocity > this.Level.Zoom)
-				if (CollisionAtVelocityEnabled)
+			if (CollisionAtVelocityEnabled)
+			{
+				CollisionAtVelocity = Math.Sqrt(CollisionAtVelocity);
+
+				if (CollisionAtVelocity > this.Level.Zoom)
+
 					if (this.CollisionAtVelocity != null)
 						this.CollisionAtVelocity(CollisionAtVelocity);
+			}
 
 			if (twin.GetVelocity() < 0.01)
 			{
