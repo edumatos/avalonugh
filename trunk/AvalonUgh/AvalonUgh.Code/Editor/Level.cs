@@ -111,6 +111,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Tree> KnownTrees = new BindingList<Tree>();
 		public readonly BindingList<Sign> KnownSigns = new BindingList<Sign>();
 		public readonly BindingList<Rock> KnownRocks = new BindingList<Rock>();
+		public readonly BindingList<Gold> KnownGold = new BindingList<Gold>();
 
 		public readonly List<Obstacle> KnownObstacles = new List<Obstacle>();
 
@@ -150,7 +151,8 @@ namespace AvalonUgh.Code.Editor
 			{
 				//Tree = (Attribute.Int32)"tree",
 				Rock = (Attribute.Int32)"rock",
-				Sign = (Attribute.Int32_Int32)"sign"
+				Gold = (Attribute.Int32)"gold",
+				Sign = (Attribute.Int32_Int32)"sign",
 			};
 
 			//Create.Tree.Assigned +=
@@ -164,6 +166,18 @@ namespace AvalonUgh.Code.Editor
 
 			//        }.AddTo(KnownTrees).MoveBaseTo(x, y);
 			//    };
+
+			Create.Gold.Assigned +=
+				x_ =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+					new Gold(Zoom)
+					{
+
+					}.AddTo(KnownGold).MoveBaseTo(x, y);
+				};
 
 			Create.Rock.Assigned +=
 				x_ =>
@@ -542,6 +556,20 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownRocks.Remove(Entity);
+										Entity.Dispose();
+									}
+							}
+					)
+				).Concat(
+					this.KnownGold.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownGold.Remove(Entity);
 										Entity.Dispose();
 									}
 							}
