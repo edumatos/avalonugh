@@ -1,0 +1,25 @@
+# generated map
+# text: Introducing bird!
+# code: onlyshadowsofhooks
+# autoscroll: 0
+# water: 21
+######################
+             SS-      
+ SSS-S-S-SS-S|| S-SS- 
+ C-| | | || S-| | ||  
+ | |  S-S-| | | S--|  
+ P--P-S-| S-| S-|  |  
+ |  | | | | | | SSS-S-
+ R--RS| S-S-S-| ||| | 
+ |  S-S-| C-| S-S-| | 
+S-S-| | | | | | | S-| 
+| | | | P--PP-SS-S-SS-
+ S-S-SS-|  S-S-| | || 
+ | | || SS-S-| | S-S| 
+ | S--| S| | | | | || 
+ | |  | || | S-S-| SS-
+ S-S-SS-S-S--| | S-C- 
+ | | || | |  | |  S|  
+ | | S| | S--P--BBBBP-
+        | |  |      | 
+######################

@@ -27,8 +27,10 @@ namespace AvalonUgh.Labs.Shared
 
 		public const int Zoom = 2;
 
-		public const int DefaultWidth = 640;
-		public const int DefaultHeight = 400;
+		public const int Padding = 64;
+
+		public const int DefaultWidth = 640 + Padding * 2;
+		public const int DefaultHeight = 400 + Padding * 2;
 
 		public const int StatusbarZoom = 2;
 
@@ -87,7 +89,8 @@ namespace AvalonUgh.Labs.Shared
 			et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
 			et.AttachContainerTo(this);
 
-			var CurrentLevel = KnownAssets.Path.Assets + "/level09.txt";
+			//var CurrentLevel = KnownAssets.Path.Assets + "/level09.txt";
+			var CurrentLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_02.txt";
 
 			Console.WriteLine("loading: " + CurrentLevel);
 
@@ -218,29 +221,29 @@ namespace AvalonUgh.Labs.Shared
 
 					var KnownActors = new List<Actor>();
 
-					var ActorPool = new Func<Actor>[]
-					{
-						() => new Actor.man0(Zoom) {Level = Level },
-						() => new Actor.man1(Zoom)  {Level = Level },
-						() => new Actor.woman0(Zoom)  {Level = Level },
-					}.AsCyclicEnumerable().GetEnumerator();
+					//var ActorPool = new Func<Actor>[]
+					//{
+					//    () => new Actor.man0(Zoom) {Level = Level },
+					//    () => new Actor.man1(Zoom)  {Level = Level },
+					//    () => new Actor.woman0(Zoom)  {Level = Level },
+					//}.AsCyclicEnumerable().GetEnumerator();
 
-					Level.KnownCaves.ForEachNewOrExistingItem(
-						cave =>
-						{
-							var actor = ActorPool.Take()();
+					//Level.KnownCaves.ForEachNewOrExistingItem(
+					//    cave =>
+					//    {
+					//        var actor = ActorPool.Take()();
 
-							actor.AttachContainerTo(View.Entities);
+					//        actor.AttachContainerTo(View.Entities);
 
 
-							actor.MoveTo(
-								(cave.Position.TileX + 1) * PrimitiveTile.Width * Zoom,
-								(cave.Position.TileY + 1) * PrimitiveTile.Heigth * Zoom
-							);
+					//        actor.MoveTo(
+					//            (cave.Position.TileX + 1) * PrimitiveTile.Width * Zoom,
+					//            (cave.Position.TileY + 1) * PrimitiveTile.Heigth * Zoom
+					//        );
 
-							KnownActors.Add(actor);
-						}
-					);
+					//        KnownActors.Add(actor);
+					//    }
+					//);
 
 
 
@@ -315,19 +318,19 @@ namespace AvalonUgh.Labs.Shared
 					};
 
 					xveh.AttachContainerTo(View.Entities);
-					xveh.MoveTo(Level.ActualWidth / 2, 0);
+					xveh.MoveTo(Level.ActualWidth / 2, xveh.HalfHeight);
 
-					var twin = new Vehicle(Zoom);
-					twin.ColorStripe = Colors.Blue;
+					//var twin = new Vehicle(Zoom);
+					//twin.ColorStripe = Colors.Blue;
 
-					twin.AttachContainerTo(View.Entities);
-					twin.MoveTo(Level.ActualWidth * 2 / 3, 0);
+					//twin.AttachContainerTo(View.Entities);
+					//twin.MoveTo(Level.ActualWidth * 2 / 3, 0);
 
-					var twin2 = new Vehicle(Zoom);
-					twin2.ColorStripe = Colors.Yellow;
-					twin2.Density = 1.11;
-					twin2.AttachContainerTo(View.Entities);
-					twin2.MoveTo(Level.ActualWidth / 3, 0);
+					//var twin2 = new Vehicle(Zoom);
+					//twin2.ColorStripe = Colors.Yellow;
+					//twin2.Density = 1.11;
+					//twin2.AttachContainerTo(View.Entities);
+					//twin2.MoveTo(Level.ActualWidth / 3, 0);
 
 					var ph = new Physics
 					{
@@ -335,8 +338,8 @@ namespace AvalonUgh.Labs.Shared
 						Vehicles = new[]
 							{
 								xveh,
-								twin2,
-								twin
+								//twin2,
+								//twin
 							}.AsEnumerable(),
 						//Birds = KnownBirds,
 						Actors = KnownActors
@@ -345,7 +348,7 @@ namespace AvalonUgh.Labs.Shared
 					ph.CollisionAtVelocity +=
 						Velocity =>
 						{
-							var Volume = ((Velocity  ) / (Level.Zoom * 2.0)).Max(0).Min(1);
+							var Volume = ((Velocity) / (Level.Zoom * 2.0)).Max(0).Min(1);
 
 							Console.WriteLine(new { Volume, Velocity });
 
