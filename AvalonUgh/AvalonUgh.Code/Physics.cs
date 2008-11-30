@@ -15,9 +15,7 @@ namespace AvalonUgh.Code
 	{
 		public Level Level;
 
-		//public IEnumerable<Vehicle> Vehicles;
-		//public IEnumerable<Bird> Birds;
-
+	
 		// mass = density / volume
 		// length * width * height = volume
 		// http://ca.youtube.com/watch?v=VDSYXmvjg6M
@@ -49,7 +47,7 @@ namespace AvalonUgh.Code
 		{
 			this.Level.KnownVehicles.ForEach(Apply);
 			this.Level.KnownRocks.ForEach(Apply);
-			this.Level.KnownGold.ForEach(Apply);
+			//this.Level.KnownGold.ForEach(Apply);
 			this.Level.KnownActors.ForEach(Apply);
 		}
 
@@ -68,7 +66,7 @@ namespace AvalonUgh.Code
 			var WaterVolume = (y / twin.HalfHeight).Min(1).Max(0);
 
 			// add gravity
-			twin.VelocityY += Level.AttributeGravity.Value * 0.01 * AirVolume;
+			twin.VelocityY += Level.AttributeGravity.Value * 0.01 * AirVolume ;
 
 
 			const double WaterDensity = 1.0;
@@ -82,12 +80,12 @@ namespace AvalonUgh.Code
 			const double AirFriction = 0.03;
 
 			// friction in water
-			twin.VelocityY *= 1.0 - (WaterFriction * WaterVolume);
-			twin.VelocityX *= 1.0 - (WaterFriction * WaterVolume);
+			twin.VelocityY *= 1.0 - (WaterFriction * WaterVolume );
+			twin.VelocityX *= 1.0 - (WaterFriction * WaterVolume );
 
 			// friction in air water
-			twin.VelocityY *= 1.0 - (AirFriction * AirVolume);
-			twin.VelocityX *= 1.0 - (AirFriction * AirVolume);
+			twin.VelocityY *= 1.0 - (AirFriction * AirVolume );
+			twin.VelocityX *= 1.0 - (AirFriction * AirVolume );
 
 
 			var newX = twin.X + twin.VelocityX;
@@ -144,16 +142,26 @@ namespace AvalonUgh.Code
 				if (!actor.RespectPlatforms)
 					Obstacles = new Obstacle[0].AsEnumerable();
 
-				foreach(Gold g in this.Level.KnownGold.Where(
-						k => k.ToObstacle().Intersects(actor.ToObstacle())
-					).ToArray())
-				{
-					g.OrphanizeContainer();
+				//if (actor.ReadyForGoldPickup)
+				//{
+				//    actor.ReadyForGoldPickup = false;
 
-					this.Level.KnownGold.Remove(g);
-					
-					actor.GoldStash.Add(g);
-				}
+					var ActorAsObstacle = actor.ToObstacle();
+
+					foreach (Gold g in this.Level.KnownGold.ToArray())
+					{
+						if (g.ToObstacle().Intersects(ActorAsObstacle))
+						{
+							g.OrphanizeContainer();
+
+							this.Level.KnownGold.Remove(g);
+
+							actor.GoldStash.Add(g);
+						}
+					}
+
+				//    1000.AtDelay(() => actor.ReadyForGoldPickup = true);
+				//}
 
 			
 			}

@@ -139,8 +139,15 @@ namespace AvalonUgh.Code.Editor
 
 		readonly TreeSelector TreeSelector;
 
+		public readonly Physics Physics;
+
 		public Level(string source, int Zoom)
 		{
+			this.Physics = new Physics
+			{
+				Level = this,
+			};
+
 			this.AttributeGravity.Value = 30;
 			this.AttributeWind.Value = 0;
 
@@ -209,6 +216,7 @@ namespace AvalonUgh.Code.Editor
 
 			var Commands = new AttributeDictonary
 			{
+				Create.Gold,
 				Create.Rock,
 				Create.Sign,
 				//Create.Tree,

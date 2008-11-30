@@ -330,15 +330,12 @@ namespace AvalonUgh.Labs.Shared
 					//twin2.AttachContainerTo(View.Entities);
 					//twin2.MoveTo(Level.ActualWidth / 3, 0);
 
-					var ph = new Physics
-					{
-						Level = Level,
-					};
+				
 
-					ph.CollisionAtVelocity +=
+					Level.Physics.CollisionAtVelocity +=
 						Velocity =>
 						{
-							var Volume = ((Velocity) / (Level.Zoom * 2.0)).Max(0).Min(1);
+							var Volume = (Velocity / (Level.Zoom * 3.0)).Max(0).Min(1);
 
 							Console.WriteLine(new { Volume, Velocity });
 
@@ -408,7 +405,7 @@ namespace AvalonUgh.Labs.Shared
 
 					xveh_man.CurrentVehicle = xveh;
 
-				
+
 
 					k3.Enter +=
 						delegate
@@ -439,7 +436,7 @@ namespace AvalonUgh.Labs.Shared
 										// we need to align us in front of the cave
 										// and show entering animation
 
-										AIDirector.WalkActorToTheCaveAndEnter(xveh_man, NearbyCave);
+										AIDirector.WalkActorToTheCaveAndEnter(xveh_man, NearbyCave, null);
 
 										Console.WriteLine("entering a cave");
 
@@ -525,7 +522,7 @@ namespace AvalonUgh.Labs.Shared
 							k3target.AddAcceleration(k3);
 
 
-							ph.Apply();
+							Level.Physics.Apply();
 
 						}
 					);
