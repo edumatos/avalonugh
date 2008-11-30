@@ -220,7 +220,7 @@ namespace AvalonUgh.Labs.Shared
 
 					#region sprites
 
-					var KnownActors = new List<Actor>();
+					//var KnownActors = new List<Actor>();
 
 					//var ActorPool = new Func<Actor>[]
 					//{
@@ -313,6 +313,8 @@ namespace AvalonUgh.Labs.Shared
 						CurrentLevel = Level
 					};
 
+					Level.KnownVehicles.Add(xveh);
+
 					xveh.AttachContainerTo(View.Entities);
 					xveh.MoveTo(Level.ActualWidth / 2, xveh.HalfHeight);
 
@@ -331,14 +333,6 @@ namespace AvalonUgh.Labs.Shared
 					var ph = new Physics
 					{
 						Level = Level,
-						Vehicles = new[]
-							{
-								xveh,
-								//twin2,
-								//twin
-							}.AsEnumerable(),
-						//Birds = KnownBirds,
-						Actors = KnownActors
 					};
 
 					ph.CollisionAtVelocity +=
@@ -459,11 +453,10 @@ namespace AvalonUgh.Labs.Shared
 										return;
 									}
 
-									KnownActors.Remove(xveh_man);
+									Level.KnownActors.Remove(xveh_man);
 
 									xveh_man.CurrentVehicle = xveh;
 									xveh_man.OrphanizeContainer();
-									KnownActors.Remove(xveh_man);
 								}
 
 								xveh.IsUnmanned = false;
@@ -482,7 +475,7 @@ namespace AvalonUgh.Labs.Shared
 								xveh_man.MoveTo(xveh.X, xveh.Y - xveh_man.ToObstacle().Height / 2);
 
 								xveh_man.AttachContainerTo(View.Entities);
-								KnownActors.Add(xveh_man);
+								Level.KnownActors.Add(xveh_man);
 							}
 						};
 

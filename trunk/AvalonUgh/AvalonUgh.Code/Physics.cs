@@ -15,9 +15,8 @@ namespace AvalonUgh.Code
 	{
 		public Level Level;
 
-		public IEnumerable<Vehicle> Vehicles;
+		//public IEnumerable<Vehicle> Vehicles;
 		//public IEnumerable<Bird> Birds;
-		public IEnumerable<Actor> Actors;
 
 		// mass = density / volume
 		// length * width * height = volume
@@ -48,10 +47,10 @@ namespace AvalonUgh.Code
 
 		public void Apply()
 		{
-			this.Vehicles.ForEach(Apply);
+			this.Level.KnownVehicles.ForEach(Apply);
 			this.Level.KnownRocks.ForEach(Apply);
 			this.Level.KnownGold.ForEach(Apply);
-			this.Actors.ForEach(Apply);
+			this.Level.KnownActors.ForEach(Apply);
 		}
 
 		void Apply(ISupportsPhysics twin)
@@ -104,7 +103,7 @@ namespace AvalonUgh.Code
 			if (veh != null)
 				if (!veh.IsUnmanned)
 				{
-					Obstacles = Obstacles.Concat(this.Vehicles.Where(k => k != twin).Where(k => !k.IsUnmanned).Select(k => k.ToObstacle()));
+					Obstacles = Obstacles.Concat(this.Level.KnownVehicles.Where(k => k != twin).Where(k => !k.IsUnmanned).Select(k => k.ToObstacle()));
 
 					if (veh.CurrentWeapon == null)
 					{
@@ -120,7 +119,7 @@ namespace AvalonUgh.Code
 						);
 					}
 
-					this.Actors.Where(k => k.CanBeHitByVehicle).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+					this.Level.KnownActors.Where(k => k.CanBeHitByVehicle).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 						actor_ =>
 						{
 							actor_.CanBeHitByVehicle = false;

@@ -1,0 +1,28 @@
+﻿# generated map
+# autoscroll: 1
+# water: 21
+######################
+             SS-      
+ SSS-S-S-SS-S|| S-SS- 
+ C-| | | || S-| | ||  
+ | |  S-S-| | | S--|  
+# sign: 88;1
+ P--P-S-| S-| S-|  |  
+ |  | | | | | | SSS-S-
+ R--RS| S-S-S-| ||| | 
+ |  S-S-| C-| S-S-| | 
+S-S-| | | | | | | S-| 
+# tree: 144
+# sign: 200;2
+| | | | P--PP-SS-S-SS-
+ S-S-SS-|  S-S-| | || 
+ | | || SS-S-| | S-S| 
+ | S--| S| | | | | || 
+ | |  | || | S-S-| SS-
+ S-S-SS-S-S--| | S-C- 
+ | | || | |  | |  S|  
+# rock: 224
+# sign: 280;3
+ | | S| | S--P--BBBBP-
+        | |  |      | 
+######################
