@@ -17,6 +17,9 @@ namespace AvalonUgh.SneakPeak.ActionScript
 	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight)]
 	public class OrcasAvalonApplicationFlash : Sprite
 	{
+		public readonly string _mochiads_game_id = Info._mochiads_game_id;
+
+
 		public OrcasAvalonApplicationFlash()
 		{
 			// spawn the wpf control
