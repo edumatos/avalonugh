@@ -339,6 +339,7 @@ namespace AvalonUgh.Code
 		{
 			e.MoveTo(x, y - e.HalfHeight);
 		}
+
 		public static double GetVelocity(this ISupportsVelocity e)
 		{
 			return Math.Sqrt(e.VelocityX * e.VelocityX + e.VelocityY * e.VelocityY);

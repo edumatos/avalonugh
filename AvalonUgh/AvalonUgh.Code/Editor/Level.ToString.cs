@@ -34,7 +34,7 @@ namespace AvalonUgh.Code.Editor
 					AttributeWater
 				);
 
-				s.WriteLine(new String('#', w));
+				s.WriteLine(new string('#', w));
 
 				var Map = Enumerable.Range(0, this.Map.Height).ToArray(i => new string(' ', w));
 
@@ -78,11 +78,33 @@ namespace AvalonUgh.Code.Editor
 				WriteTiles(this.KnownPlatforms.ToArray());
 				WriteTiles(this.KnownBridges.ToArray());
 
+				
+				Map.ForEach(
+					(row, index) =>
+					{
+						WriteAttribute.InvokeAsEnumerable(
+							from tree in  this.KnownTrees
+							where tree.BaseY == index
+							select new Attribute.Int32 { Key = "tree", Value = tree.UnscaledX }
+						);
 
-				foreach (var x in Map)
-					s.WriteLine(x);
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownRocks
+							where i.BaseY == index
+							select new Attribute.Int32 { Key = "rock", Value = i.UnscaledX }
+						);
 
-				s.WriteLine(new String('#', w));
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownSigns
+							where i.BaseY == index
+							select new Attribute.Int32_Int32 { Key = "sign", Value0 = i.UnscaledX, Value1 = i.Value }
+						);
+
+						s.WriteLine(row);
+					}
+				);
+
+				s.WriteLine(new string('#', w));
 
 				return s.ToString();
 			}

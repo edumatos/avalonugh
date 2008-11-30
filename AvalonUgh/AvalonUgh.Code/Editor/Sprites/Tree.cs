@@ -44,6 +44,13 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public double X { get; set; }
 		public double Y { get; set; }
 
+		public int UnscaledX
+		{
+			get
+			{
+				return Convert.ToInt32(X / Zoom);
+			}
+		}
 
 		public void MoveTo(double x, double y)
 		{
@@ -159,6 +166,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 		{
 			this.Container.Orphanize();
 			AnimationTimer.Stop();
+		}
+
+		public int BaseY
+		{
+			get
+			{
+				return Convert.ToInt32((this.Y + HalfHeight) / (PrimitiveTile.Heigth * Zoom));
+			}
 		}
 	}
 }
