@@ -35,6 +35,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 			if (this.CurrentLevel == null)
 				return;
 
+			if (this.IsUnmanned)
+				return;
+
 			// we have landed!
 			// if we are on a platform which has a cave
 			// we would need to notify the passengers of our arrivel

@@ -278,6 +278,10 @@ namespace AvalonUgh.Code
 				twin.Stability = 0;
 			}
 
+			if (twin.VelocityX == 0)
+				if (twin.VelocityY == 0)
+					return;
+
 			newX = twin.X + twin.VelocityX;
 			newY = twin.Y + twin.VelocityY;
 

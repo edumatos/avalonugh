@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ScriptCoreLib;
+using System.Windows;
 using System.Windows.Controls;
-using ScriptCoreLib.Shared.Avalon.Extensions;
-using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Shared;
 using AvalonUgh.Code.Editor;
 using AvalonUgh.Code.Input;
-using AvalonUgh.Assets.Shared;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Editor.Tiles;
 
 namespace AvalonUgh.Code
 {
@@ -20,7 +22,9 @@ namespace AvalonUgh.Code
 		// the default waiting position is between the outer edges between
 		// the sign and the cave on the same platform
 
-		public bool CanBeHitByVehicle ;
+		public Cave CurrentCave;
+
+		public bool CanBeHitByVehicle;
 
 		public Level Level { get; set; }
 
@@ -48,6 +52,12 @@ namespace AvalonUgh.Code
 
 		public Image[] WalkRightFrames = new Image[0];
 		public int WalkRightInterval = 100;
+
+		public Image[] CaveEnterFrames = new Image[0];
+		public int CaveEnterInterval = 100;
+
+		public Image[] CaveExitFrames = new Image[0];
+		public int CaveExitInterval = 100;
 
 		public void StabilityReached()
 		{
@@ -88,7 +98,10 @@ namespace AvalonUgh.Code
 			WalkLeft,
 			WalkRight,
 			CaveEnter,
-			CaveExit
+			CaveExit,
+			// only the woman seems to be able to swim!
+			SwimLeft,
+			SwimRight
 		}
 
 
@@ -132,6 +145,46 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public void PlayAnimation(AnimationEnum value, Action done)
+		{
+			this.Animation = value;
+
+			if (value == AnimationEnum.CaveEnter)
+			{
+				this.CaveEnterFrames.ForEach(
+					(Frame, SignalNext) =>
+					{
+						Frame.Show();
+
+						this.CaveEnterInterval.AtDelay(
+							delegate
+							{
+								Frame.Hide();
+								SignalNext();
+							}
+						);
+					}
+				)(done);
+			}
+
+			if (value == AnimationEnum.CaveExit)
+			{
+				this.CaveExitFrames.ForEach(
+					(Frame, SignalNext) =>
+					{
+						Frame.Show();
+
+						this.CaveEnterInterval.AtDelay(
+							delegate
+							{
+								Frame.Hide();
+								SignalNext();
+							}
+						);
+					}
+				)(done);
+			}
+		}
 
 		public bool PhysicsDisabled
 		{
@@ -272,6 +325,13 @@ namespace AvalonUgh.Code
 		public double X { get; set; }
 		public double Y { get; set; }
 
+		public Point Location
+		{
+			get
+			{
+				return new Point { X = this.X, Y = this.Y };
+			}
+		}
 
 		public event Action LocationChanged;
 
@@ -311,15 +371,31 @@ namespace AvalonUgh.Code
 
 		#region ISupportsPlayerInput Members
 
+		public const double DefaultAcceleraton = 0.06;
+
+		public bool AIInputEnabled;
+
 		public void AddAcceleration(PlayerInput e)
 		{
+			// if the AI is controlling this actor
+			// we cannot slow it down
+			// just looking at the keyboard keys anymore
+
+
+			if (AIInputEnabled)
+				return;
+
+			// we are hidden inside a cave
+			if (this.CurrentCave != null)
+				return;
+
 			if (e.Keyboard.IsPressedLeft)
 			{
 				if (this.Animation != AnimationEnum.WalkLeft)
 					this.Animation = AnimationEnum.WalkLeft;
 
 				// at some point we should not be able to accelerate
-				this.VelocityX -= this.Zoom * 0.06;
+				this.VelocityX -= this.Zoom * DefaultAcceleraton;
 			}
 			else if (e.Keyboard.IsPressedRight)
 			{
@@ -327,14 +403,15 @@ namespace AvalonUgh.Code
 					this.Animation = AnimationEnum.WalkRight;
 
 
-				this.VelocityX += this.Zoom * 0.06;
+				this.VelocityX += this.Zoom * DefaultAcceleraton;
 			}
 			else
 			{
+
 				if (this.VelocityY == 0)
 				{
 
-					this.VelocityX *= 0.7;
+					this.VelocityX *= 0.85;
 				}
 			}
 
