@@ -68,7 +68,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 						new Tree(View.Level.Zoom)
 						{
 							Selector = this
-						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownTrees).MoveTo(
+						}.AddTo(View.Level.KnownTrees).MoveTo(
 							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
 							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
 						);

@@ -135,7 +135,7 @@ namespace AvalonUgh.Code.Editor
 			}
 
 
-			protected string Key;
+			public string Key;
 
 			protected Action<string> Assign;
 

@@ -27,7 +27,8 @@ namespace AvalonUgh.Labs.Shared
 
 		public const int Zoom = 2;
 
-		public const int Padding = 64;
+		//public const int Padding = 64;
+		public const int Padding = 0;
 
 		public const int DefaultWidth = 640 + Padding * 2;
 		public const int DefaultHeight = 400 + Padding * 2;
@@ -250,11 +251,6 @@ namespace AvalonUgh.Labs.Shared
 					//var KnownBirds = new List<Bird>();
 
 
-
-
-					Level.KnownTrees.ToArray().AttachContainerTo(View.Entities);
-					Level.KnownSigns.ToArray().AttachContainerTo(View.Entities);
-					Level.KnownRocks.ToArray().AttachContainerTo(View.Entities);
 
 
 

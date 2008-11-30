@@ -221,6 +221,21 @@ namespace AvalonUgh.Code
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
+
+			this.Level.KnownTrees.ForEachNewOrExistingItem(
+				k => k.AttachContainerTo(this.Entities)
+			);
+
+			this.Level.KnownSigns.ForEachNewOrExistingItem(
+				k => k.AttachContainerTo(this.Entities)
+			);
+
+			this.Level.KnownRocks.ForEachNewOrExistingItem(
+				k => k.AttachContainerTo(this.Entities)
+			);
+
+		
+
 			#endregion
 
 

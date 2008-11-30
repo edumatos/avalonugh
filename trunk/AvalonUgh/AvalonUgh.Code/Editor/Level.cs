@@ -108,9 +108,10 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly int Zoom;
 
-		public readonly List<Tree> KnownTrees = new List<Tree>();
-		public readonly List<Sign> KnownSigns = new List<Sign>();
-		public readonly List<Rock> KnownRocks = new List<Rock>();
+		public readonly BindingList<Tree> KnownTrees = new BindingList<Tree>();
+		public readonly BindingList<Sign> KnownSigns = new BindingList<Sign>();
+		public readonly BindingList<Rock> KnownRocks = new BindingList<Rock>();
+
 		public readonly List<Obstacle> KnownObstacles = new List<Obstacle>();
 
 

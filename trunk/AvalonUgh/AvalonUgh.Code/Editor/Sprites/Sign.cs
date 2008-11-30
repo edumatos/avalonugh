@@ -15,6 +15,22 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class Sign : ISupportsContainer, ISupportsMoveTo, ISupportsObstacle, IDisposable
 	{
+		public int UnscaledX
+		{
+			get
+			{
+				return Convert.ToInt32(X / Zoom);
+			}
+		}
+
+		public int BaseY
+		{
+			get
+			{
+				return Convert.ToInt32((this.Y + HalfHeight) / (PrimitiveTile.Heigth * Zoom));
+			}
+		}
+
 		public View.SelectorInfo Selector { get; set; }
 
 		public Canvas Container { get; set; }

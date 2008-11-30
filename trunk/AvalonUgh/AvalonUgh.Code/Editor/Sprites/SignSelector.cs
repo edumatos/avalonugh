@@ -34,7 +34,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 						{
 							Value = c % 6,
 							Selector = this
-						}.AttachContainerTo(View.Entities).AddTo(View.Level.KnownSigns).MoveTo(
+						}.AddTo(View.Level.KnownSigns).MoveTo(
 							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
 							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
 						);
