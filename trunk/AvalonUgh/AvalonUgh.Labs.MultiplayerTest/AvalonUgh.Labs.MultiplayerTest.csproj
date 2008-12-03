@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B699417E-5E3E-4406-AEE0-8900637D61D0}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{31A96520-E40C-4DFE-982C-23375FCD9C54}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AvalonUgh.NetworkCode</RootNamespace>
-    <AssemblyName>AvalonUgh.NetworkCode</AssemblyName>
+    <RootNamespace>AvalonUgh.Labs.MultiplayerTest</RootNamespace>
+    <AssemblyName>AvalonUgh.Labs.MultiplayerTest</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,10 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Library\Nonoba.GameLibrary.dll" />
+    <Content Include="Library\Development Server.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
