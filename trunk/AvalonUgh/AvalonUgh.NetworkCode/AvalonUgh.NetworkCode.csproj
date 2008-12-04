@@ -60,6 +60,7 @@
     <Compile Include="Shared\Communication.Generated.cs">
       <DependentUpon>Communication.cs</DependentUpon>
     </Compile>
+    <Compile Include="Shared\VirtualGame.cs" />
     <Compile Include="Shared\VirtualPlayer.cs" />
   </ItemGroup>
   <ItemGroup>
