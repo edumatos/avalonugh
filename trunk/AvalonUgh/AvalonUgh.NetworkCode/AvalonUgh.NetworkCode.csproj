@@ -24,7 +24,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <Optimize>false</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\NonobaGame.cs" />
     <Compile Include="Shared\Communication.cs" />
     <Compile Include="Shared\Communication.Generated.cs">
       <DependentUpon>Communication.cs</DependentUpon>
@@ -65,6 +66,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="tools\update.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Client\ActionScript\" />
+    <Folder Include="Client\Shared\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
