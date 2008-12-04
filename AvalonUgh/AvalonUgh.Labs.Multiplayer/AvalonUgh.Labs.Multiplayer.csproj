@@ -71,7 +71,6 @@
   <ItemGroup>
     <Compile Include="OrcasAvalonApplicationFlash.cs" />
     <Compile Include="OrcasAvalonApplicationDocument.cs" />
-    <Compile Include="KnownAssets.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IAssemblyReferenceToken.cs" />
@@ -80,10 +79,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documents\description.txt" />
-    <EmbeddedResource Include="web\assets\OrcasAvalonApplication\about.txt" />
-    <EmbeddedResource Include="web\assets\OrcasAvalonApplication\help_idle.png" />
-    <EmbeddedResource Include="web\assets\OrcasAvalonApplication\help.png" />
-    <EmbeddedResource Include="web\assets\OrcasAvalonApplication\jsc.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tools\build.bat" />

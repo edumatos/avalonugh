@@ -44,6 +44,10 @@ using ScriptCoreLib;
 
 	ScriptTypeFilter(ScriptType.CSharp2, typeof(global::AvalonUgh.NetworkCode.Server.NonobaGame)),
 
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(global::AvalonUgh.NetworkCode.Client.ActionScript.NonobaClient)),
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(global::AvalonUgh.NetworkCode.Client.Shared.NetworkClient)),
+	ScriptTypeFilter(ScriptType.JavaScript, typeof(global::AvalonUgh.NetworkCode.Client.Shared.NetworkClient)),
+
 	//ScriptTypeFilter(ScriptType.ActionScript, "Mahjong.NetworkCode.ClientSide.Shared"),
 	//ScriptTypeFilter(ScriptType.ActionScript, "Mahjong.NetworkCode.ClientSide.ActionScript"),
 	//ScriptTypeFilter(ScriptType.JavaScript, "Mahjong.NetworkCode.ClientSide.Shared"),

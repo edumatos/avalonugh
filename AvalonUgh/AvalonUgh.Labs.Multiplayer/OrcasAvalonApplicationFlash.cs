@@ -8,7 +8,7 @@ using ScriptCoreLib.ActionScript.Extensions;
 
 namespace AvalonUgh.Labs.Multiplayer.ActionScript
 {
-	using TargetCanvas = global::AvalonUgh.Labs.Multiplayer.Shared.OrcasAvalonApplicationCanvas;
+	using TargetCanvas = global::AvalonUgh.NetworkCode.Client.ActionScript.NonobaClient;
 
 	/// <summary>
 	/// Default flash player entrypoint class. See 'tools/build.bat' for adding more entrypoints.
@@ -19,8 +19,10 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 	{
 		public OrcasAvalonApplicationFlash()
 		{
+			var c = new TargetCanvas();
+
 			// spawn the wpf control
-			AvalonExtensions.AttachToContainer(new TargetCanvas(), this);
+			AvalonExtensions.AttachToContainer(c.Container, this);
 		}
 
 		static OrcasAvalonApplicationFlash()
