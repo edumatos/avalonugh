@@ -9,6 +9,7 @@ namespace AvalonUgh.Labs.MultiplayerTest
 	{
 		static void Main(string[] args)
 		{
+			Nonoba.DevelopmentServer.Server.StartWithDebugging(100);
 		}
 	}
 }
