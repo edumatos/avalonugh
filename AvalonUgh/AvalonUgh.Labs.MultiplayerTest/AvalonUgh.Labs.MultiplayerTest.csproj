@@ -31,9 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AvalonUgh.Labs.Multiplayer.NonobaServer, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Public\AvalonUgh.Labs.Multiplayer.NonobaServer.dll</HintPath>
+    </Reference>
     <Reference Include="Development Server, Version=1.5.1.0, Culture=neutral, processorArchitecture=MSIL">
       <ExecutableExtension>.exe</ExecutableExtension>
       <Aliases>global</Aliases>
+    </Reference>
+    <Reference Include="Nonoba.GameLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\AvalonUgh.NetworkCode\Library\Nonoba.GameLibrary.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
