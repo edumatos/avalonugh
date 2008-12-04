@@ -1,17 +1,18 @@
 ﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+
 using ScriptCoreLib;
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("AvalonUgh.NetworkCode")]
+[assembly: AssemblyTitle("AvalonUgh.Labs.Multiplayer")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AvalonUgh.NetworkCode")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyProduct("AvalonUgh.Labs.Multiplayer")]
+[assembly: AssemblyCopyright("Copyright © Microsoft 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -21,7 +22,7 @@ using ScriptCoreLib;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d0846e36-bddf-4f32-8489-9f0945c1d7ab")]
+[assembly: Guid("91a9e2f5-2152-4ebf-8b11-d814dfb83a78")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -38,14 +39,10 @@ using ScriptCoreLib;
 
 [assembly:
 	Script,
-	ScriptTypeFilter(ScriptType.ActionScript, typeof(global::AvalonUgh.NetworkCode.Shared.Communication)),
-	ScriptTypeFilter(ScriptType.JavaScript, typeof(global::AvalonUgh.NetworkCode.Shared.Communication)),
-	ScriptTypeFilter(ScriptType.CSharp2, typeof(global::AvalonUgh.NetworkCode.Shared.Communication)),
-
-	ScriptTypeFilter(ScriptType.CSharp2, typeof(global::AvalonUgh.NetworkCode.Server.NonobaGame)),
-
-	//ScriptTypeFilter(ScriptType.ActionScript, "Mahjong.NetworkCode.ClientSide.Shared"),
-	//ScriptTypeFilter(ScriptType.ActionScript, "Mahjong.NetworkCode.ClientSide.ActionScript"),
-	//ScriptTypeFilter(ScriptType.JavaScript, "Mahjong.NetworkCode.ClientSide.Shared"),
-	//ScriptTypeFilter(ScriptType.CSharp2, "Mahjong.NetworkCode.ServerSide")
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Labs.Multiplayer.Shared.OrcasAvalonApplicationCanvas)),
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Labs.Multiplayer.ActionScript.OrcasAvalonApplicationFlash)),
+	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Labs.Multiplayer.Shared.OrcasAvalonApplicationCanvas)),
+	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Labs.Multiplayer.JavaScript.OrcasAvalonApplicationDocument)),
+	
+	ScriptTypeFilter(ScriptType.CSharp2, typeof(AvalonUgh.Labs.Multiplayer.Server.KeepLookingForMore)),
 ]
