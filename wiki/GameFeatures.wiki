@@ -54,3 +54,8 @@ http://nonoba.com/zproxy/avalon-ugh
 multiplayer level codes:
  # aloneintothealone
  # onlyshadowsofhooks
+
+= Level Editor =
+Users shall be able to create new levels and exchange those, either by:
+ # cut&paste the level code in base64 (maybe apply xor?)
+ # all levels loaded at multiplayer games
