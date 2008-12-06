@@ -5,7 +5,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using AvalonUgh.Labs.Multiplayer.Shared;
 using AvalonUgh.NetworkCode.Client.Shared;
 using AvalonUgh.NetworkCode.Shared;
 using ScriptCoreLib.CSharp.Avalon.Extensions;

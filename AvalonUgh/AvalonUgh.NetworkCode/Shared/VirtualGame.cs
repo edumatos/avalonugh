@@ -11,8 +11,11 @@ namespace AvalonUgh.NetworkCode.Shared
 	public partial class VirtualGame : ServerGameBase<Communication.IEvents, Communication.IMessages, VirtualPlayer>
 	{
 
+		public void WriteLine(string Text)
+		{
+			Console.WriteLine("Server > Avalon Ugh: " + Text);
+		}
 
-		readonly Action<string> WriteLine = Text => Console.WriteLine("Server > Avalon Ugh: " + Text);
 
 		public override void UserJoined(VirtualPlayer player)
 		{

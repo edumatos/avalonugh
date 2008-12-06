@@ -15,9 +15,9 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 	/// </summary>
 	[Script, ScriptApplicationEntryPoint(Width = TargetCanvas.DefaultWidth, Height = TargetCanvas.DefaultHeight)]
 	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight)]
-	public class OrcasAvalonApplicationFlash : Sprite
+	public class NonobaClientFlash : Sprite
 	{
-		public OrcasAvalonApplicationFlash()
+		public NonobaClientFlash()
 		{
 			var c = new TargetCanvas();
 
@@ -25,7 +25,7 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 			AvalonExtensions.AttachToContainer(c.Container, this);
 		}
 
-		static OrcasAvalonApplicationFlash()
+		static NonobaClientFlash()
 		{
 			// add resources to be found by ImageSource
 			KnownEmbeddedAssets.RegisterTo(

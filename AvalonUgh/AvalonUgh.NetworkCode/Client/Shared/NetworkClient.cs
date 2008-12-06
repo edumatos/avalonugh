@@ -65,6 +65,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						}
 					);
 				};
+
+			this.WriteLine("Ready to load");
 		}
 
 		public void Connect()
@@ -80,6 +82,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 		public void InitializeEvents()
 		{
+			this.WriteLine("InitializeEvents");
+
 			this.Events.Server_Hello +=
 				e =>
 				{
