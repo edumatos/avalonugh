@@ -94,6 +94,10 @@
     <None Include="tools\update.bat" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AvalonUgh.Assets\AvalonUgh.Assets.csproj">
+      <Project>{CF35C94E-9437-4918-A478-4213A63D1630}</Project>
+      <Name>AvalonUgh.Assets</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AvalonUgh.Labs\AvalonUgh.Labs.csproj">
       <Project>{57C28841-F6A7-4F07-8ADF-9FCA405C0F6B}</Project>
       <Name>AvalonUgh.Labs</Name>

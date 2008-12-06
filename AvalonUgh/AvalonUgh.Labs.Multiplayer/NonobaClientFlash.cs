@@ -9,6 +9,8 @@ using ScriptCoreLib.ActionScript.Extensions;
 namespace AvalonUgh.Labs.Multiplayer.ActionScript
 {
 	using TargetCanvas = global::AvalonUgh.NetworkCode.Client.ActionScript.NonobaClient;
+using ScriptCoreLib.Shared;
+	using ScriptCoreLib.ActionScript.MochiLibrary;
 
 	/// <summary>
 	/// Default flash player entrypoint class. See 'tools/build.bat' for adding more entrypoints.
@@ -35,6 +37,33 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 		}
 	}
 
+	[Script, ScriptApplicationEntryPoint(Width = TargetCanvas.DefaultWidth, Height = TargetCanvas.DefaultHeight)]
+	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight)]
+	[Frame(typeof(NonobaClientFlash_MonetizedPreloader))]
+	public class NonobaClientFlash_Monetized : NonobaClientFlash
+	{
+		// this class is to be used
+		// on nonoba to get ads and multiplayer support
+
+		// multiplayer shall be enabled internally
+	}
+
+	[Script]
+	public class NonobaClientFlash_MonetizedPreloader : MochiAdPreloader
+	{
+		[TypeOfByNameOverride]
+		public override Type GetTargetType()
+		{
+			return typeof(NonobaClientFlash_Monetized);
+		}
+
+		public NonobaClientFlash_MonetizedPreloader()
+			: base(AvalonUgh.Promotion.Info.MochiAds.Key)
+		{
+
+		}
+	}
+
 	[Script]
 	public class KnownEmbeddedAssets
 	{
@@ -48,6 +77,9 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 		{
 			// assets from current assembly
 			Handlers.Add(e => ByFileName(e));
+
+			AvalonUgh.Labs.ActionScript.KnownEmbeddedAssets.RegisterTo(Handlers);
+			AvalonUgh.Assets.ActionScript.KnownEmbeddedAssets.RegisterTo(Handlers);
 
 			//// assets from referenced assemblies
 			//Handlers.Add(e => global::ScriptCoreLib.ActionScript.Avalon.Cursors.EmbeddedAssets.Default[e]);

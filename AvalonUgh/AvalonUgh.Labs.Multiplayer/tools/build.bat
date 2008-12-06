@@ -18,6 +18,7 @@ call "C:\WINDOWS\Microsoft.NET\Framework\v3.5\csc.exe" /debug /out:"..\bin\%Conf
 
 :: Namespace name, type name
 @call :mxmlc AvalonUgh/Labs/Multiplayer/ActionScript NonobaClientFlash
+@call :mxmlc AvalonUgh/Labs/Multiplayer/ActionScript NonobaClientFlash_Monetized
 
 pushd ..\bin\%ConfigurationName%\web
 
