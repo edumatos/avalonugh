@@ -35,6 +35,9 @@ namespace AvalonUgh.Labs.Shared
 
 		public const int StatusbarZoom = 2;
 
+
+		public readonly Canvas GameContent;
+
 		public LabsCanvas()
 		{
 			Width = DefaultWidth;
@@ -79,7 +82,7 @@ namespace AvalonUgh.Labs.Shared
 					}.MoveTo(0, i * 4).AttachTo(this)
 			).ToArray();
 
-			var GameContent = new Canvas
+			this.GameContent = new Canvas
 			{
 				Width = DefaultWidth,
 				Height = DefaultHeight
@@ -553,6 +556,10 @@ namespace AvalonUgh.Labs.Shared
 					GameContent.KeyUp +=
 						(sender, args) =>
 						{
+							// oem7 will trigger the console
+							if (args.Key == Key.Oem7)
+								View.Container.ToggleVisible();
+
 							if (args.Key == Key.F)
 								View.Flashlight.Visible = !View.Flashlight.Visible;
 

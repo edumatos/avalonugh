@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using AvalonUgh.Labs.Shared;
+using System.Windows.Shapes;
 
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
@@ -29,23 +30,71 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		{
 			this.Container = new Canvas
 			{
-				Background = Brushes.Yellow,
+				Background = Brushes.Black,
 				Width = DefaultWidth,
 				Height = DefaultHeight
 			};
+
+			var Content = new LabsCanvas().AttachTo(this);
+
+
+
+			var MenuBackground = new Rectangle
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Fill = Brushes.Black,
+				Opacity = 0.5
+			}.AttachTo(this);
+
+			var MenuDummy = new Image
+			{
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/004.png").ToSource(),
+				Stretch = Stretch.Fill,
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+			}.AttachTo(this);
+
+		
+			#region Log
+			var LogBackground = new Rectangle
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight / 3,
+				Fill = Brushes.Black,
+				Opacity = 0.2
+			}.AttachTo(this);
 
 			var Log = new TextBox
 			{
 				AcceptsReturn = true,
 				Width = DefaultWidth,
-				Height = DefaultHeight,
+				Height = DefaultHeight / 3,
 				Background = Brushes.Transparent,
+				Foreground = Brushes.Yellow,
 				BorderThickness = new Thickness(0),
 				FontFamily = new FontFamily("Courier New"),
 				IsReadOnly = true
 			}.AttachTo(this);
+			#endregion
 
+			var TouchOverlay = new Rectangle
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Fill = Brushes.Black,
+				Opacity = 0
+			}.AttachTo(this);
+
+			TouchOverlay.MouseLeftButtonUp +=
+				delegate
+				{
+					Content.GameContent.Focus();
+				};
+
+			#region WriteLine
 			var LogQueue = new Queue<string>();
+
 
 			this.WriteLine =
 				Text =>
@@ -65,6 +114,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						}
 					);
 				};
+			#endregion
 
 			this.WriteLine("Ready to load");
 		}
