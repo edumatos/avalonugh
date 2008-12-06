@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\util\jsc\bin\ScriptCoreLib.Avalon.dll</HintPath>
     </Reference>
+    <Reference Include="ScriptCoreLib.Nonoba, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Nonoba.dll</HintPath>
+    </Reference>
     <Reference Include="ScriptCoreLib.Query, Version=1.0.2666.38864, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\util\jsc\bin\ScriptCoreLib.Query.dll</HintPath>
@@ -84,6 +88,10 @@
     <None Include="tools\build.bat" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AvalonUgh.Labs\AvalonUgh.Labs.csproj">
+      <Project>{57C28841-F6A7-4F07-8ADF-9FCA405C0F6B}</Project>
+      <Name>AvalonUgh.Labs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AvalonUgh.NetworkCode\AvalonUgh.NetworkCode.csproj">
       <Project>{B699417E-5E3E-4406-AEE0-8900637D61D0}</Project>
       <Name>AvalonUgh.NetworkCode</Name>

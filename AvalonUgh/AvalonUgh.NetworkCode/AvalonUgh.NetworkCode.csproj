@@ -93,6 +93,12 @@
   <ItemGroup>
     <None Include="tools\update.bat" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AvalonUgh.Labs\AvalonUgh.Labs.csproj">
+      <Project>{57C28841-F6A7-4F07-8ADF-9FCA405C0F6B}</Project>
+      <Name>AvalonUgh.Labs</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

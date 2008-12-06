@@ -8,6 +8,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
+using AvalonUgh.Labs.Shared;
 
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
@@ -16,6 +17,9 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 	{
 		// this code is shared between
 		// javascript, actionscript, c#
+
+		public const int DefaultWidth = LabsCanvas.DefaultWidth;
+		public const int DefaultHeight = LabsCanvas.DefaultHeight;
 
 		public Canvas Container { get; set; }
 
@@ -26,18 +30,19 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Container = new Canvas
 			{
 				Background = Brushes.Yellow,
-				Width = 600,
-				Height = 600
+				Width = DefaultWidth,
+				Height = DefaultHeight
 			};
 
 			var Log = new TextBox
 			{
 				AcceptsReturn = true,
-				Width = 600,
-				Height = 600,
+				Width = DefaultWidth,
+				Height = DefaultHeight,
 				Background = Brushes.Transparent,
 				BorderThickness = new Thickness(0),
-				FontFamily = new FontFamily("Courier New")
+				FontFamily = new FontFamily("Courier New"),
+				IsReadOnly = true
 			}.AttachTo(this);
 
 			var LogQueue = new Queue<string>();
@@ -75,10 +80,22 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 		public void InitializeEvents()
 		{
-			this.Events.ServerPlayerHello +=
-				delegate
+			this.Events.Server_Hello +=
+				e =>
 				{
-					this.WriteLine("ServerPlayerHello");
+					this.WriteLine("Server_Hello " + e);
+				};
+
+			this.Events.Server_UserJoined +=
+				e =>
+				{
+					this.WriteLine("Server_UserJoined " + e);
+				};
+
+			this.Events.Server_UserLeft +=
+				e =>
+				{
+					this.WriteLine("Server_UserLeft " + e);
 				};
 		}
 	}

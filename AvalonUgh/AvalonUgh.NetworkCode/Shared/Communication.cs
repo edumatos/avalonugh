@@ -10,7 +10,9 @@ namespace AvalonUgh.NetworkCode.Shared
 	{
 		public partial interface IMessages
 		{
-			void ServerPlayerHello(int user, string name);
+			void Server_Hello(int user, string name);
+			void Server_UserJoined(int user, string name);
+			void Server_UserLeft(int user, string name);
 		}
 
 

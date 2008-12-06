@@ -19,7 +19,9 @@ namespace AvalonUgh.NetworkCode.Shared
         public enum Messages
         {
             None = 100,
-            ServerPlayerHello,
+            Server_Hello,
+            Server_UserJoined,
+            Server_UserLeft,
         }
         #endregion
 
@@ -35,7 +37,9 @@ namespace AvalonUgh.NetworkCode.Shared
         [CompilerGenerated]
         public partial interface IEvents
         {
-            event Action<RemoteEvents.ServerPlayerHelloArguments> ServerPlayerHello;
+            event Action<RemoteEvents.Server_HelloArguments> Server_Hello;
+            event Action<RemoteEvents.Server_UserJoinedArguments> Server_UserJoined;
+            event Action<RemoteEvents.Server_UserLeftArguments> Server_UserLeft;
         }
         #endregion
 
@@ -55,17 +59,45 @@ namespace AvalonUgh.NetworkCode.Shared
                 public object[] args;
             }
             #endregion
-            public void ServerPlayerHello(int user, string name)
+            public void Server_Hello(int user, string name)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.ServerPlayerHello, args = new object[] { user, name } });
+                    Send(new SendArguments { i = Messages.Server_Hello, args = new object[] { user, name } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.ServerPlayerHello(user, name);
+                        Target__.Server_Hello(user, name);
+                    }
+                }
+            }
+            public void Server_UserJoined(int user, string name)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.Server_UserJoined, args = new object[] { user, name } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.Server_UserJoined(user, name);
+                    }
+                }
+            }
+            public void Server_UserLeft(int user, string name)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.Server_UserLeft, args = new object[] { user, name } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.Server_UserLeft(user, name);
                     }
                 }
             }
@@ -165,10 +197,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 #endregion
             }
             #endregion
-            #region ServerPlayerHelloArguments
+            #region Server_HelloArguments
             [Script]
             [CompilerGenerated]
-            public sealed partial class ServerPlayerHelloArguments
+            public sealed partial class Server_HelloArguments
             {
                 public int user;
                 public string name;
@@ -179,17 +211,51 @@ namespace AvalonUgh.NetworkCode.Shared
                 }
             }
             #endregion
-            public event Action<ServerPlayerHelloArguments> ServerPlayerHello;
+            public event Action<Server_HelloArguments> Server_Hello;
+            #region Server_UserJoinedArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class Server_UserJoinedArguments
+            {
+                public int user;
+                public string name;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", name = ").Append(this.name).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<Server_UserJoinedArguments> Server_UserJoined;
+            #region Server_UserLeftArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class Server_UserLeftArguments
+            {
+                public int user;
+                public string name;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", name = ").Append(this.name).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<Server_UserLeftArguments> Server_UserLeft;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
                         {
-                            { Messages.ServerPlayerHello, e => { ServerPlayerHello(new ServerPlayerHelloArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
+                            { Messages.Server_Hello, e => { Server_Hello(new Server_HelloArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
+                            { Messages.Server_UserJoined, e => { Server_UserJoined(new Server_UserJoinedArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
+                            { Messages.Server_UserLeft, e => { Server_UserLeft(new Server_UserLeftArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
                         {
-                            { Messages.ServerPlayerHello, e => ServerPlayerHello },
+                            { Messages.Server_Hello, e => Server_Hello },
+                            { Messages.Server_UserJoined, e => Server_UserJoined },
+                            { Messages.Server_UserLeft, e => Server_UserLeft },
                         }
                 ;
             }
@@ -253,12 +319,28 @@ namespace AvalonUgh.NetworkCode.Shared
             {
                 e();
             }
-            public event Action<RemoteEvents.ServerPlayerHelloArguments> ServerPlayerHello;
-            void IMessages.ServerPlayerHello(int user, string name)
+            public event Action<RemoteEvents.Server_HelloArguments> Server_Hello;
+            void IMessages.Server_Hello(int user, string name)
             {
-                if(ServerPlayerHello == null) return;
-                var v = new RemoteEvents.ServerPlayerHelloArguments { user = user, name = name };
-                this.VirtualLatency(() => this.ServerPlayerHello(v));
+                if(Server_Hello == null) return;
+                var v = new RemoteEvents.Server_HelloArguments { user = user, name = name };
+                this.VirtualLatency(() => this.Server_Hello(v));
+            }
+
+            public event Action<RemoteEvents.Server_UserJoinedArguments> Server_UserJoined;
+            void IMessages.Server_UserJoined(int user, string name)
+            {
+                if(Server_UserJoined == null) return;
+                var v = new RemoteEvents.Server_UserJoinedArguments { user = user, name = name };
+                this.VirtualLatency(() => this.Server_UserJoined(v));
+            }
+
+            public event Action<RemoteEvents.Server_UserLeftArguments> Server_UserLeft;
+            void IMessages.Server_UserLeft(int user, string name)
+            {
+                if(Server_UserLeft == null) return;
+                var v = new RemoteEvents.Server_UserLeftArguments { user = user, name = name };
+                this.VirtualLatency(() => this.Server_UserLeft(v));
             }
 
         }
@@ -266,4 +348,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 3.12.2008 20:30:31
+// 6.12.2008 9:26:28
