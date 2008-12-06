@@ -12,11 +12,11 @@ namespace AvalonUgh.NetworkCode.Shared
 	{
 
 
-
+		readonly Action<string> WriteLine = Text => Console.WriteLine("Server > Avalon Ugh: " + Text);
 
 		public override void UserJoined(VirtualPlayer player)
 		{
-			Console.WriteLine("- UserJoined " + player.Username);
+			WriteLine("UserJoined " + player.Username);
 
 
 			//var a100 = new AvailibleAchievement(player.AwardAchievement, "a100");
@@ -128,20 +128,22 @@ namespace AvalonUgh.NetworkCode.Shared
 			//if (this.Settings.GetBoolean(SettingsInfo.hints, true))
 			//    hints = 1;
 
-			//// let new player know how it is named, also send magic bytes to verify
-			//player.ToPlayer.ServerPlayerHello(
-			//    player.UserId, player.Username, this.Users.Count - 1,
-			//    navbar,
-			//    vote,
-			//    layoutinput,
-			//    hints,
-			//    new Handshake().Bytes
-			//);
+			// let new player know how it is named, also send magic bytes to verify
+			player.ToPlayer.Server_Hello(
+				player.UserId, player.Username //, 
+				//this.Users.Count - 1,
+				//navbar,
+				//vote,
+				//layoutinput,
+				//hints,
+				//new Handshake().Bytes
+			);
 
-			//// let other players know that there is a new player in the map
-			//player.ToOthers.ServerPlayerJoined(
-			//   player.UserId, player.Username
-			//);
+			// let other players know that there is a new player in the map
+			player.ToOthers.Server_UserJoined(
+			   player.UserId, 
+			   player.Username
+			);
 
 			//var PreventStatic = 0;
 
@@ -168,12 +170,14 @@ namespace AvalonUgh.NetworkCode.Shared
 
 		public override void UserLeft(VirtualPlayer player)
 		{
-			//player.ToOthers.ServerPlayerLeft(player.UserId, player.Username);
+			WriteLine("UserLeft " + player.Username);
+
+			player.ToOthers.Server_UserLeft(player.UserId, player.Username);
 		}
 
 		public override void GameStarted()
 		{
-			Console.WriteLine("Server > Avalon Ugh: game started!!");
+			WriteLine("GameStarted");
 		}
 
 	}

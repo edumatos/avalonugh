@@ -16,8 +16,8 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 	{
 		public const int NonobaChatWidth = 200;
 
-		public const int DefaultWidth = 600 + NonobaChatWidth;
-		public const int DefaultHeight = 600;
+		public new const int DefaultWidth = Shared.NetworkClient.DefaultWidth + NonobaChatWidth;
+		public new const int DefaultHeight = Shared.NetworkClient.DefaultHeight;
 
 		public NonobaClient()
 		{
