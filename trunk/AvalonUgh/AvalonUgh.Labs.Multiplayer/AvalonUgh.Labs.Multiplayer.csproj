@@ -73,12 +73,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="OrcasAvalonApplicationFlash.cs" />
-    <Compile Include="OrcasAvalonApplicationDocument.cs" />
+    <Compile Include="NonobaClientFlash.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IAssemblyReferenceToken.cs" />
-    <Compile Include="OrcasAvalonApplicationCanvas.cs" />
     <Compile Include="Server\KeepLookingForMore.cs" />
   </ItemGroup>
   <ItemGroup>

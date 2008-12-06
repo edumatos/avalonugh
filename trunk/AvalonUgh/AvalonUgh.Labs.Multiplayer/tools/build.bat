@@ -17,11 +17,14 @@ call "C:\WINDOWS\Microsoft.NET\Framework\v3.5\csc.exe" /debug /out:"..\bin\%Conf
 
 
 :: Namespace name, type name
-@call :mxmlc AvalonUgh/Labs/Multiplayer/ActionScript OrcasAvalonApplicationFlash
+@call :mxmlc AvalonUgh/Labs/Multiplayer/ActionScript NonobaClientFlash
 
 pushd ..\bin\%ConfigurationName%\web
+
+:: to upload to nonoba and to reference in tests
 copy "*.dll" "../../../../Public/"
-copy "*.pdb" "../../../../Public/"
+copy "*.swf" "../../../../Public/"
+
 popd
 
 goto :eof
@@ -30,7 +33,7 @@ goto :eof
 pushd ..\bin\%ConfigurationName%
 
 ::call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as -js
-call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as -js -cs2
+call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as -cs2
 
 
 popd

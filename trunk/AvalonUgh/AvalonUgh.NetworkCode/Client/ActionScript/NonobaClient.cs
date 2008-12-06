@@ -22,14 +22,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 		public NonobaClient()
 		{
 			this.Container.InvokeWhenStageIsReady(
-				stage =>
-				{
-					var c = NonobaAPI.MakeMultiplayer(stage
-						//, "192.168.3.102"
-						//, "192.168.1.119"
-					);
-
-				}
+				Initialize
 			);
 		}
 
@@ -122,6 +115,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 				e =>
 				{
 					//InitializeMapOrSkip();
+					this.WriteLine("Message: " + e.message.Type);
 
 
 					var Dispatched = false;
@@ -132,7 +126,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 					}
 					catch (Exception ex)
 					{
-						System.Console.WriteLine("error at dispatch: " + e.message.Type);
+						this.WriteLine("error at dispatch: " + e.message.Type);
 
 						throw ex;
 					}
@@ -140,7 +134,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 					if (Dispatched)
 						return;
 
-					System.Console.WriteLine("not on dispatch: " + e.message.Type);
+					this.WriteLine("not on dispatch: " + e.message.Type);
 
 				};
 			#endregion

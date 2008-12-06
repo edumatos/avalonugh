@@ -39,10 +39,11 @@ using ScriptCoreLib;
 
 [assembly:
 	Script,
-	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Labs.Multiplayer.Shared.OrcasAvalonApplicationCanvas)),
-	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Labs.Multiplayer.ActionScript.OrcasAvalonApplicationFlash)),
-	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Labs.Multiplayer.Shared.OrcasAvalonApplicationCanvas)),
-	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Labs.Multiplayer.JavaScript.OrcasAvalonApplicationDocument)),
-	
+	// this project will build to
+	// nonoba server dll
+	// nonoba client flash
+	// desktop inmemory multiplayer
+
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Labs.Multiplayer.ActionScript.NonobaClientFlash)),
 	ScriptTypeFilter(ScriptType.CSharp2, typeof(AvalonUgh.Labs.Multiplayer.Server.KeepLookingForMore)),
 ]
