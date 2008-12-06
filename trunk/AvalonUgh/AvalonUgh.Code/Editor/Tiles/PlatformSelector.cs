@@ -10,7 +10,7 @@ using AvalonUgh.Assets.Shared;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public static class PlatformSelector 
+	public static class PlatformSelector
 	{
 		public const string Identifier = "P";
 
@@ -37,7 +37,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 			public Size_Generic(int x, int y, int variations)
 				: base(x, y, variations, "platform")
 			{
-			
+
 			}
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
@@ -53,6 +53,56 @@ namespace AvalonUgh.Code.Editor.Tiles
 				};
 
 				Level.KnownPlatforms.Add(u);
+
+				var z = Level.Zoom;
+				var x = Position.ContentX * z;
+				var y = Position.ContentY * z;
+
+
+				var o = new Obstacle
+				{
+					Left = x,
+					Top = y,
+					Right = x + PrimitiveTile.Width * z,
+					Bottom = y + PrimitiveTile.Heigth * z
+				};
+
+				#region scan to right
+				var right = o.WithOffset(PrimitiveTile.Width * z, 0);
+
+				// is there a bridge to my right?
+				var right_p = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(right));
+
+				#endregion
+
+				#region scan to left
+				var left = o.WithOffset(-PrimitiveTile.Width * z, 0);
+
+				// is there a bridge to my right?
+				var left_p = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(left));
+				#endregion
+
+				if (left_p != null)
+				{
+					BridgeSelector.DefaultSize.CreateTo(Level,
+						new View.SelectorPosition
+						{
+							ContentX = Position.ContentX - PrimitiveTile.Width,
+							ContentY = Position.ContentY
+						}
+					);
+				}
+
+				if (right_p != null)
+				{
+					BridgeSelector.DefaultSize.CreateTo(Level,
+						new View.SelectorPosition
+						{
+							ContentX = Position.ContentX + this.Width,
+							ContentY = Position.ContentY
+						}
+					);
+				}
 			}
 		}
 
