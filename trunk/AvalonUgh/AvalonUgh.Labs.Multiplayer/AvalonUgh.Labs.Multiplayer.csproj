@@ -101,7 +101,6 @@
     <PostBuildEvent>pushd ..\..\tools\
 call build.bat $(ProjectName) $(TargetFileName)  $(ConfigurationName)
 popd
-copy "$(TargetDir)web\*.dll" "../../../Public/"
-copy "$(TargetDir)web\*.pdb" "../../../Public/"</PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
