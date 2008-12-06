@@ -24,6 +24,9 @@ namespace AvalonUgh.NetworkCode.Server
 	[Script]
 	public class NonobaGame : NonobaGame<NonobaGameUser<VirtualPlayer>>
 	{
+		// this c# server code is going through jsc to
+		// assemble a single assembly.
+
 		// this must be a direct inheritance to get it working 
 
 		public VirtualGame Virtual;

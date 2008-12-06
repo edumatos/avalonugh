@@ -19,6 +19,11 @@ call "C:\WINDOWS\Microsoft.NET\Framework\v3.5\csc.exe" /debug /out:"..\bin\%Conf
 :: Namespace name, type name
 @call :mxmlc AvalonUgh/Labs/Multiplayer/ActionScript OrcasAvalonApplicationFlash
 
+pushd ..\bin\%ConfigurationName%\web
+copy "*.dll" "../../../../Public/"
+copy "*.pdb" "../../../../Public/"
+popd
+
 goto :eof
 
 :jsc
