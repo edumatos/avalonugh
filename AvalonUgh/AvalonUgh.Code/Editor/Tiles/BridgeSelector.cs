@@ -14,11 +14,13 @@ namespace AvalonUgh.Code.Editor.Tiles
 	{
 		public const string Identifier = "B";
 
+		internal static readonly View.SelectorInfo DefaultSize =
+			new Size_Generic(1, 1, 3);
 
 		internal static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
 			{
-				new Size_Generic(1, 1, 3),
+				DefaultSize
 				//new Size_Generic(1, 2, 1),
 				//new Size_Generic(2, 2, 1),
 				//new Size_Generic(4, 2, 1),
@@ -66,34 +68,39 @@ namespace AvalonUgh.Code.Editor.Tiles
 					Bottom = y + this.Height * z
 				};
 
-				// scan to right 
+				#region scan to right
 				var right = o.WithOffset(this.Width * z, 0);
 
 				// is there a bridge to my right?
 				var right_p = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(right));
-
-				if (right_p != null)
+				if (right_p == null)
 				{
-					this.Name.Index = VariationLeft;
-				}
+					var right_platform = Level.KnownPlatforms.FirstOrDefault(k => k.ToObstacle().Intersects(right));
+					if (right_platform != null)
+					{
+						this.Name.Index = VariationRight;
+					}
 
-				// scan to left 
+				}
+				#endregion
+
+				#region scan to left
 				var left = o.WithOffset(-this.Width * z, 0);
 
 				// is there a bridge to my right?
 				var left_p = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(left));
-
-				if (left_p != null)
+				if (left_p == null)
 				{
-					if (this.Name.Index == VariationLeft)
+					var left_platform = Level.KnownPlatforms.FirstOrDefault(k => k.ToObstacle().Intersects(left));
+					if (left_platform != null)
 					{
-						this.Name.Index = VariationMiddle;
-					}
-					else
-					{
-						this.Name.Index = VariationRight;
+						if (this.Name.Index == VariationRight)
+							this.Name.Index = VariationMiddle;
+						else
+							this.Name.Index = VariationLeft;
 					}
 				}
+				#endregion
 
 
 				var u = new Bridge(Level, this)
