@@ -20,7 +20,11 @@ namespace AvalonUgh.NetworkCode.Server
 		}
 	}
 
-
+	[GameSetup.Boolean(
+		"mojo",
+		"Enable mojo",
+		"Enable mojo in game",
+		false)]
 	[Script]
 	public class NonobaGame : NonobaGame<NonobaGameUser<VirtualPlayer>>
 	{
