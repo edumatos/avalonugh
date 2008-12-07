@@ -29,6 +29,13 @@ namespace AvalonUgh.Assets
 				public const string Backgrounds = "assets/AvalonUgh.Assets.Backgrounds";
 				public const string FilmScratch = "assets/AvalonUgh.Assets.FilmScratch";
 				public const string Levels = "assets/AvalonUgh.Assets.Levels";
+
+				[Script, ScriptResources]
+				public static class Fonts
+				{
+					public const string Brown = "assets/AvalonUgh.Assets.Fonts/Brown";
+					public const string Blue = "assets/AvalonUgh.Assets.Fonts/Blue";
+				}
 			}
 
 
