@@ -1,16 +1,17 @@
-﻿using ScriptCoreLib;
-using ScriptCoreLib.ActionScript.flash.display;
-using ScriptCoreLib.ActionScript.flash.text;
+﻿using System;
 using System.Collections.Generic;
-using System;
+using ScriptCoreLib;
 using ScriptCoreLib.ActionScript;
 using ScriptCoreLib.ActionScript.Extensions;
+using ScriptCoreLib.ActionScript.flash.display;
+using ScriptCoreLib.ActionScript.flash.text;
+using ScriptCoreLib.ActionScript.MochiLibrary;
+using ScriptCoreLib.Shared;
 
 namespace AvalonUgh.Labs.Multiplayer.ActionScript
 {
 	using TargetCanvas = global::AvalonUgh.NetworkCode.Client.ActionScript.NonobaClient;
-using ScriptCoreLib.Shared;
-	using ScriptCoreLib.ActionScript.MochiLibrary;
+
 
 	/// <summary>
 	/// Default flash player entrypoint class. See 'tools/build.bat' for adding more entrypoints.
@@ -19,6 +20,8 @@ using ScriptCoreLib.Shared;
 	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight)]
 	public class NonobaClientFlash : Sprite
 	{
+		public string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
+
 		public NonobaClientFlash()
 		{
 			var c = new TargetCanvas();

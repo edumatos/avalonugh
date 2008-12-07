@@ -42,6 +42,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 		private void Initialize(Stage stage)
 		{
 			var c = NonobaAPI.MakeMultiplayer(stage
+				//"nonoba.com"
 				//, "192.168.3.102"
 				//, "192.168.1.119"
 				);

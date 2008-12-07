@@ -97,12 +97,14 @@ namespace AvalonUgh.Labs.Multiplayer
 
 					Server.Users.Add(u);
 					Server.UserJoined(u);
+					u.UserJoined();
 
 					w.Closed +=
 						delegate
 						{
 							Server.Users.Remove(u);
 							Server.UserLeft(u);
+							u.UserLeft();
 
 							server_to_client.VirtualLatency =
 								delegate
