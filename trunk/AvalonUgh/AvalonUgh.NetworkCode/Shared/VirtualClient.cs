@@ -15,7 +15,6 @@ namespace AvalonUgh.NetworkCode.Shared
 		public Communication.IEvents Events { get; set; }
 		public Communication.IMessages Messages { get; set; }
 
-
-
+	
 	}
 }

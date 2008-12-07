@@ -136,8 +136,13 @@ namespace AvalonUgh.NetworkCode.Server
 				AddHighscore = user.SubmitHighscore,
 
 				AwardAchievement = user.AwardAchievement,
+
+				GetData = user.GetData,
+				SetData = user.SetData
 			};
 
+
+			
 			FromPlayer.BroadcastRouter.Target = user.Virtual.ToOthers;
 
 			FromPlayer.SinglecastRouter.Target =
@@ -159,8 +164,8 @@ namespace AvalonUgh.NetworkCode.Server
 				};
 
 			Virtual.Users.Add(user.Virtual);
-
 			Virtual.UserJoined(user.Virtual);
+			user.Virtual.UserJoined();
 
 		}
 
@@ -168,6 +173,7 @@ namespace AvalonUgh.NetworkCode.Server
 		{
 			this.Virtual.Users.Remove(user.Virtual);
 			this.Virtual.UserLeft(user.Virtual);
+			user.Virtual.UserLeft();
 			user.Virtual = null;
 
 		}
