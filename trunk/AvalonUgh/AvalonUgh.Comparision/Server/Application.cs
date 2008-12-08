@@ -32,6 +32,7 @@ namespace AvalonUgh.Comparision.Server
 		[Script(NoDecoration = true)]
 		public static void Application_Entrypoint()
 		{
+
 			var Query = Native.SuperGlobals.Server[Native.SuperGlobals.ServerVariables.QUERY_STRING];
 
 			if (Query == "multiplayer")

@@ -104,14 +104,14 @@ namespace AvalonUgh.Assets
 	namespace Server
 	{
 		[Script(Implements = typeof(Shared.AssetsImplementationDetails))]
-		internal class __AssetsImplementationDetails
+		public class __AssetsImplementationDetails
 		{
 			public string[] FileNames
 			{
 				[EmbedGetFileNames]
 				get
 				{
-					throw new NotImplementedException();
+					throw new NotImplementedException("FileNames");
 				}
 			}
 
