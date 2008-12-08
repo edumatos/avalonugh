@@ -379,6 +379,85 @@
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Backgrounds\004.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\0.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\1.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\4.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\5.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\6.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\7.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\8.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\9.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\a.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\b.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\c.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\d.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\e.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\f.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\g.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\h.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\i.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\j.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\k.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\l.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\m.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\n.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\o.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\p.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\q.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\r.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\s.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\t.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\u.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\v.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\w.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\x.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\y.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\z.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\_Question.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\0.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\1.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\4.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\5.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\6.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\7.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\8.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\9.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\a.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\b.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\c.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\d.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\e.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\f.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\g.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\h.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\i.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\j.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\k.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\l.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\m.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\n.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\o.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\p.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\q.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\r.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\s.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\t.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\u.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\v.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\w.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\x.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\y.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\z.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Colon.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\ö.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

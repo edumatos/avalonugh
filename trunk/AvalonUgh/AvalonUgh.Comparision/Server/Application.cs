@@ -1,12 +1,11 @@
-using ScriptCoreLib;
-using ScriptCoreLib.Shared;
-
-using ScriptCoreLib.PHP;
 using System;
-using System.Text;
 using System.IO;
+using System.Text;
 using AvalonUgh.Comparision.Shared;
 using AvalonUgh.Labs.Shared;
+using ScriptCoreLib;
+using ScriptCoreLib.PHP;
+using ScriptCoreLib.Shared;
 
 namespace AvalonUgh.Comparision.Server
 {
@@ -33,6 +32,13 @@ namespace AvalonUgh.Comparision.Server
 		[Script(NoDecoration = true)]
 		public static void Application_Entrypoint()
 		{
+			var Query = Native.SuperGlobals.Server[Native.SuperGlobals.ServerVariables.QUERY_STRING];
+
+			if (Query == "multiplayer")
+			{
+				PromotionPage.Render();
+				return;
+			}
 
 			Console.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
 			Console.WriteLine("<html>");
@@ -62,11 +68,15 @@ namespace AvalonUgh.Comparision.Server
 				(title, src) =>
 				{
 					if (!File.Exists(src))
+					{
+						("missing: " + src).ToCommentToConsole();
+
 						return;
+					}
 
 					Console.WriteLine("<h2><a href='?" + title + "'>" + title + "</a></h2>");
 
-					if (Native.SuperGlobals.Server[Native.SuperGlobals.ServerVariables.QUERY_STRING] == title)
+					if (Query == title)
 						CreateIFrame(LabsCanvas.DefaultWidth, LabsCanvas.DefaultHeight, src);
 				};
 
@@ -79,6 +89,7 @@ namespace AvalonUgh.Comparision.Server
 			Console.WriteLine("</center>");
 
 
+			
 
 			Console.WriteLine("</body>");
 			Console.WriteLine("</html>");
