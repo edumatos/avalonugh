@@ -15,6 +15,7 @@ namespace AvalonUgh.Comparision.Server
 		public static void Render()
 		{
 			var ReferenceToAssets = new AvalonUgh.Assets.Server.__AssetsImplementationDetails();
+
 			Console.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
 			Console.WriteLine("<html>");
 			Console.WriteLine("<head>");
@@ -35,7 +36,33 @@ namespace AvalonUgh.Comparision.Server
 
 			Console.WriteLine("<p>");
 
-			(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Brown + "/m.png").ToImageToConsole();
+			#region WriteBitmapFont
+			Action<string, string> WriteBitmapFont =
+				(font, text) =>
+				{
+					foreach (char c in text.ToLower())
+					{
+						var s = Convert.ToString(c);
+
+						if (s == ":")
+							s = "_Colon";
+
+						if (s == " ")
+							s = "_Space";
+
+						(font + "/" + s + ".png").ToImageToConsoleWithStyle("width: 15px; height: 16px;");
+
+					}
+				};
+			#endregion
+
+			WriteBitmapFont(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Brown, "Avalon Ugh: Multiplayer");
+			
+			Console.WriteLine("<br />");
+
+			WriteBitmapFont(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Blue, "Powered By JSC");
+		
+
 
 			Console.WriteLine("</p>");
 
