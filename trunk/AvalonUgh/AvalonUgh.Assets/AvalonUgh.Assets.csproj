@@ -458,6 +458,12 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Colon.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\ö.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Space.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Blue\_Space.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
