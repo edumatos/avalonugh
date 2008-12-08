@@ -5,6 +5,12 @@ using System.Text;
 using ScriptCoreLib.Shared;
 using ScriptCoreLib;
 
+// jsc:php: does not yet support the newest asset inclusing tech
+[assembly: ScriptResources(AvalonUgh.Assets.Shared.KnownAssets.Path.Assets)]
+[assembly: ScriptResources(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Blue)]
+[assembly: ScriptResources(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Brown)]
+
+
 namespace AvalonUgh.Assets
 {
 	namespace Shared
@@ -93,8 +99,24 @@ namespace AvalonUgh.Assets
 			}
 
 		}
-
-		
 	}
+
+	namespace Server
+	{
+		[Script(Implements = typeof(Shared.AssetsImplementationDetails))]
+		internal class __AssetsImplementationDetails
+		{
+			public string[] FileNames
+			{
+				[EmbedGetFileNames]
+				get
+				{
+					throw new NotImplementedException();
+				}
+			}
+
+		}
+	}
+
 	#endregion
 }

@@ -9,6 +9,12 @@ namespace AvalonUgh.Comparision.Server
 	[Script]
 	public static class ServerExtensions
 	{
+		public static void ToCommentToConsole(this string src)
+		{
+			Console.WriteLine("<!-- " + src + " -->");
+
+		}
+
 		public static void ToImageToConsole(this string src)
 		{
 			Console.WriteLine("<img src='" + src + "' />");
