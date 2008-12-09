@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using ScriptCoreLib;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {

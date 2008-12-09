@@ -70,10 +70,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Avalon\NameFormat.cs" />
     <Compile Include="IAssemblyReferenceToken.cs" />
     <Compile Include="KnownAssets.cs" />
     <Compile Include="KnownEmbeddedAssets.cs" />
-    <Compile Include="NameFormat.cs" />
+    <Compile Include="NameFormatBase.cs" />
     <Compile Include="PrimitiveTile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

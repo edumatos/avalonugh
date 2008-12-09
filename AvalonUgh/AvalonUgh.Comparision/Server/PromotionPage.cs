@@ -12,9 +12,11 @@ namespace AvalonUgh.Comparision.Server
 	[Script]
 	public class PromotionPage
 	{
+		// http://localhost/jsc/AvalonUgh.Comparision/?multiplayer
 		public static void Render()
 		{
-			var ReferenceToAssets = new AvalonUgh.Assets.Server.__AssetsImplementationDetails();
+			//var ReferenceToAssets = new AvalonUgh.Assets.Server.__AssetsImplementationDetails();
+			var ReferenceToAssets = AvalonUgh.Assets.Shared.KnownAssets.Default;
 
 			Console.WriteLine("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">");
 			Console.WriteLine("<html>");
