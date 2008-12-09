@@ -38,10 +38,12 @@ using ScriptCoreLib;
 
 [assembly:
 	Script,
+	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Assets.Avalon.NameFormat)),
 	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Assets.Shared.KnownAssets)),
 	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Assets.ActionScript.__AssetsImplementationDetails)),
+	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Assets.Avalon.NameFormat)),
 	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Assets.Shared.KnownAssets)),
 	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Assets.JavaScript.__AssetsImplementationDetails)),
-	//ScriptTypeFilter(ScriptType.PHP, typeof(AvalonUgh.Assets.Shared.KnownAssets)),
+	ScriptTypeFilter(ScriptType.PHP, typeof(AvalonUgh.Assets.Shared.KnownAssets)),
 	ScriptTypeFilter(ScriptType.PHP, typeof(AvalonUgh.Assets.Server.__AssetsImplementationDetails)),
 ]
