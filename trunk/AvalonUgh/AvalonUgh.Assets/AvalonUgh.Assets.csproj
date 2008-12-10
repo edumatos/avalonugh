@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Avalon\NameFormat.cs" />
+    <Compile Include="PrimitiveFont.cs" />
     <Compile Include="IAssemblyReferenceToken.cs" />
     <Compile Include="KnownAssets.cs" />
     <Compile Include="KnownEmbeddedAssets.cs" />
