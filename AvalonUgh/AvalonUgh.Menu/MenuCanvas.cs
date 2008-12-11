@@ -319,7 +319,7 @@ ingognitus     12345
 			#endregion
 
 
-			#region programmed by
+			#region options
 			TextContainer = new Canvas
 			{
 				Width = DefaultWidth,
@@ -350,6 +350,203 @@ player 2:
 Esc: main menu
 ");
 
+
+
+			#endregion
+
+
+			#region levels
+			TextContainer = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this).AddTo(TextContainers);
+			y = 0;
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
+
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+
+			}.AttachTo(TextContainer);
+
+			WriteBrown(@" 
+
+
+
+
+       levels 
+      designed
+         by
+    peter schmitz
+         and
+      björn roy
+");
+			#endregion
+
+
+
+
+			#region intros
+			TextContainer = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this).AddTo(TextContainers);
+			y = 0;
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
+
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+
+			}.AttachTo(TextContainer);
+
+			WriteBrown(@" 
+
+
+
+    dos version
+    intros coded 
+         by
+   mario knezovic
+        with
+   claudia scholz
+");
+
+
+			#endregion
+
+			#region amiga version
+			TextContainer = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this).AddTo(TextContainers);
+			y = 0;
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
+
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+
+			}.AttachTo(TextContainer);
+
+			WriteBrown(@" 
+
+
+
+      original
+    amiga version
+      programmed
+         by
+   thomas klinger
+        and
+     björn roy
+");
+
+
+			#endregion
+
+			#region amiga gfx
+			TextContainer = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this).AddTo(TextContainers);
+			y = 0;
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
+
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+
+			}.AttachTo(TextContainer);
+
+			WriteBrown(@" 
+
+
+
+
+      original
+   amiga graphics
+       drawn
+         by
+   thomas klinger
+");
+
+
+			#endregion
+
+			#region pc gfx
+			TextContainer = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this).AddTo(TextContainers);
+			y = 0;
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
+
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+
+			}.AttachTo(TextContainer);
+
+			WriteBrown(@" 
+
+
+
+
+    pc graphics
+        by
+  michael detert
+       with
+  carsten neubauer
+   mario knezovic
+");
+
+
+			#endregion
+
+
+			#region music and fx
+			TextContainer = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this).AddTo(TextContainers);
+			y = 0;
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
+
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+
+			}.AttachTo(TextContainer);
+
+			WriteBrown(@" 
+
+
+
+
+
+    music and fx
+        by
+  maiko ruttmann
+");
 
 
 			#endregion
