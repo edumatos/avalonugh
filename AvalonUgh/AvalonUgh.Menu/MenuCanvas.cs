@@ -53,6 +53,9 @@ namespace AvalonUgh.Menu.Shared
 						if (s == ":")
 							s = "_Colon";
 
+						if (s == ".")
+							s = "_Dot";
+
 						if (s == " ")
 						{
 							x++;
@@ -93,7 +96,7 @@ namespace AvalonUgh.Menu.Shared
 							Stretch = Stretch.Fill,
 							Width = PrimitiveFont.Width * Zoom,
 							Height = PrimitiveFont.Heigth * Zoom
-						}.AttachTo(TextContainer).MoveTo(x * PrimitiveFont.Width * Zoom, y * PrimitiveFont.Heigth * Zoom);
+						}.AttachTo(TextContainer).MoveTo(x * (PrimitiveFont.Width + 1) * Zoom, y * PrimitiveFont.Heigth * Zoom);
 
 						x++;
 
@@ -138,12 +141,12 @@ enter your name:
 			y = 0;
 			new Image
 			{
+				Stretch = Stretch.Fill,
 				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
 				
 				Width = DefaultWidth,
 				Height = DefaultHeight,
 
-				Stretch = Stretch.Fill
 
 			}.AttachTo(TextContainer);
 
@@ -174,12 +177,12 @@ password:"
 			y = 0;
 			new Image
 			{
+				Stretch = Stretch.Fill,
 				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
 
 				Width = DefaultWidth,
 				Height = DefaultHeight,
 
-				Stretch = Stretch.Fill
 			}.AttachTo(TextContainer);
 
 			WriteBrown(@" 
@@ -234,12 +237,12 @@ ingognitus     12345
 			y = 0;
 			new Image
 			{
+				Stretch = Stretch.Fill,
 				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
 
 				Width = DefaultWidth,
 				Height = DefaultHeight,
 
-				Stretch = Stretch.Fill
 			}.AttachTo(TextContainer);
 
 			WriteBrown(@" 
@@ -267,12 +270,12 @@ ingognitus     12345
 			y = 0;
 			new Image
 			{
+				Stretch = Stretch.Fill,
 				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
 
 				Width = DefaultWidth,
 				Height = DefaultHeight,
 
-				Stretch = Stretch.Fill
 			}.AttachTo(TextContainer);
 
 			WriteBrown(@" 
@@ -309,6 +312,42 @@ ingognitus     12345
 
 
 
+");
+
+
+
+			#endregion
+
+
+			#region programmed by
+			TextContainer = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this).AddTo(TextContainers);
+			y = 0;
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
+
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+
+			}.AttachTo(TextContainer);
+
+			WriteBrown(@" 
+
+
+
+
+player 1:
+ f1: keyboard
+player 2:
+ f2: keyboard
+...
+
+Esc: main menu
 ");
 
 
