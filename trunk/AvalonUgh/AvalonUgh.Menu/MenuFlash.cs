@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System;
 using ScriptCoreLib.ActionScript;
 using ScriptCoreLib.ActionScript.Extensions;
-
 namespace AvalonUgh.Menu.ActionScript
 {
 	using TargetCanvas = global::AvalonUgh.Menu.Shared.MenuCanvas;
+	using ScriptCoreLib.ActionScript.flash.geom;
+	using AvalonUgh.Menu.Shared;
 
 	/// <summary>
 	/// Default flash player entrypoint class. See 'tools/build.bat' for adding more entrypoints.
@@ -19,6 +20,23 @@ namespace AvalonUgh.Menu.ActionScript
 	{
 		public MenuFlash()
 		{
+			this.stage.fullScreenSourceRect = new Rectangle
+			{
+				left = 0,
+				top = 0,
+				width = MenuCanvas.DefaultWidth,
+				height = MenuCanvas.DefaultHeight
+			};
+
+			this.click +=
+				e =>
+				{
+					if (e.shiftKey)
+					{
+						this.stage.SetFullscreen(true);
+					}
+				};
+
 			// spawn the wpf control
 			AvalonExtensions.AttachToContainer(new TargetCanvas(), this);
 		}
