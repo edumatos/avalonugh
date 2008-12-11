@@ -28,3 +28,5 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/022.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/023.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/024.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/025.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/026.png]
