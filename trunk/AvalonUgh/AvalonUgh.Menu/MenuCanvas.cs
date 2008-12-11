@@ -47,7 +47,23 @@ namespace AvalonUgh.Menu.Shared
 							s = "_Colon";
 
 						if (s == " ")
-							s = "_Space";
+						{
+							x++;
+							continue;
+						}
+
+						if (s == "\r")
+						{
+							continue;
+						}
+
+						if (s == "\n")
+						{
+							x = 0;
+							y++;
+
+							continue;
+						}
 
 						new Image
 						{
@@ -69,12 +85,14 @@ namespace AvalonUgh.Menu.Shared
 			var WriteBlue = WriteBitmapFont.FixFirstParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Blue);
 			var WriteBrown = WriteBitmapFont.FixFirstParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Brown);
 
-			WriteBrown("");
-			WriteBrown("   congratulations");
-			WriteBrown(" you are one of the");
-			WriteBrown("  five best cabbies");
-			WriteBrown("");
-			WriteBrown("enter your name:");
+			WriteBrown(@" 
+   congratulations
+ you are one of the
+  five best cabbies
+
+enter your name:
+"
+);
 
 			WriteBlue("zproxy?");
 		
