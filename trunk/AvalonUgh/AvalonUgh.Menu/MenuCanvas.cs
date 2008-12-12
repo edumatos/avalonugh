@@ -113,7 +113,8 @@ namespace AvalonUgh.Menu.Shared
 			TextContainer = new Canvas
 			{
 				Width = DefaultWidth,
-				Height = DefaultHeight
+				Height = DefaultHeight,
+				Background  = Brushes.Black
 			}.AttachTo(this).AddTo(TextContainers);
 
 			WriteBrown(@" 
@@ -206,7 +207,8 @@ ingognitus     12345
 			TextContainer = new Canvas
 			{
 				Width = DefaultWidth,
-				Height = DefaultHeight
+				Height = DefaultHeight,
+				Background = Brushes.Black
 			}.AttachTo(this).AddTo(TextContainers);
 			y = 0;
 	
@@ -298,7 +300,8 @@ ingognitus     12345
 			TextContainer = new Canvas
 			{
 				Width = DefaultWidth,
-				Height = DefaultHeight
+				Height = DefaultHeight,
+				Background = Brushes.Black
 			}.AttachTo(this).AddTo(TextContainers);
 			y = 0;
 
@@ -554,15 +557,42 @@ Esc: main menu
 			TextContainers.ForEach(k => k.Hide());
 
 			TextContainer = TextContainers.Next(k => k == TextContainer);
-			TextContainers.Last().Show();
+			TextContainer.Show();
 
+			//var Status = new TextBox
+			//{
+			//    Text = "status"
+			//}.AttachTo(this);
+
+			var MouseLeftButtonUpDisabled = false;
 			this.MouseLeftButtonUp +=
 				delegate
 				{
-					TextContainers.ForEach(k => k.Hide());
+					if (MouseLeftButtonUpDisabled)
+						return;
+					MouseLeftButtonUpDisabled = true;
+					//Status.Text = "click";
 
-					TextContainer = TextContainers.Next(k => k == TextContainer);
-					TextContainer.Show();
+					TextContainer.Opacity = 1;
+					TextContainer.FadeOut(
+						delegate
+						{
+							//Status.Text = "fadeout complete";
+							TextContainer = TextContainers.Next(k => k == TextContainer);
+							TextContainer.Opacity = 0;
+							TextContainer.Show();
+							TextContainer.FadeIn(
+								delegate
+								{
+									//Status.Text = "fadein complete";
+									MouseLeftButtonUpDisabled = false;
+
+								}
+							);
+						}
+					);
+
+				
 				};
 
 
