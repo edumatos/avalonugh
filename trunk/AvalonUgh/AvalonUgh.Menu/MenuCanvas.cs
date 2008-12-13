@@ -33,6 +33,19 @@ namespace AvalonUgh.Menu.Shared
 
 			Canvas TextContainer = null;
 
+			new Dialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = Zoom,
+				BackgroundVisible = false,
+				VerticalAlignment = VerticalAlignment.Center,
+				Text = @"
+				   bad luck
+				  you failed
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
+
 			new LevelIntroDialog
 			{
 				Width = DefaultWidth,
@@ -124,21 +137,7 @@ esc: main menu
 				"
 			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				BackgroundVisible = false,
-				Text = @"
 
-
-
-
-				   bad luck
-				  you failed
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
 			var Credits = @"
@@ -204,7 +203,8 @@ esc: main menu
 						Width = DefaultWidth,
 						Height = DefaultHeight,
 						Zoom = Zoom,
-						Text = Text
+						Text = Text.Trim(),
+						VerticalAlignment = VerticalAlignment.Center
 					}.AttachContainerTo(this).Container.AddTo(TextContainers)
 			);
 

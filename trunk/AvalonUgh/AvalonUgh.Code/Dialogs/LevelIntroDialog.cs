@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ScriptCoreLib;
+using AvalonUgh.Assets.Shared;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Dialogs
 {
@@ -27,13 +29,42 @@ namespace AvalonUgh.Code.Dialogs
 			s.Append("Level ").Append(this._LevelNumber);
 			s.AppendLine();
 			s.AppendLine();
-			s.AppendLine(this.LevelTitle);
-			s.AppendLine();
-			s.AppendLine();
-			s.AppendLine();
-			s.AppendLine();
-			s.AppendLine();
-			s.AppendLine();
+
+			var y = 7;
+			var MaxLength = this.Width / ((PrimitiveFont.Width + 1) * Zoom);
+
+			#region word warp
+			if (this.LevelTitle != null)
+			{
+				var t = this.LevelTitle.Trim().Split(" ").Aggregate("",
+					(seed, k) =>
+					{
+						if (seed == "")
+							return k;
+
+						var x = seed + " " + k;
+
+						if (x.Length > MaxLength)
+						{
+							y--;
+							s.AppendLine(seed);
+							return k;
+						}
+
+						return x;
+					}
+				);
+
+				y--;
+				s.AppendLine(t);
+			}
+			#endregion
+
+			for (int i = 0; i < y; i++)
+			{
+				s.AppendLine();
+			}
+
 
 			this.Content.Text = s.ToString();
 
