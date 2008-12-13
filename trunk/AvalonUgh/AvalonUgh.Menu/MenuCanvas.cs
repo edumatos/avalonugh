@@ -170,39 +170,6 @@ password:"
 			#endregion
 
 
-			#region top five
-			TextContainer = new Canvas
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
--
-      top five
-ingognitus     11199
-ingognitus     11199
-ingognitus     11199
-ingognitus     67890
-ingognitus     12345
-"
-);
-
-			#endregion
-
 
 			#region level start
 			TextContainer = new Canvas
@@ -231,7 +198,7 @@ ingognitus     12345
 
 			#endregion
 
-			
+
 
 
 
@@ -240,30 +207,32 @@ ingognitus     12345
 				Width = DefaultWidth,
 				Height = DefaultHeight,
 				Zoom = Zoom,
+				TextAlignment = TextAlignment.Left,
 				Text = @"
-
-				 programmed
-					 by
-			   arvo sulakatko
-					with
-				jsc compiler
-				    in c#
+      top five
+ingognitus     11199
+ingognitus     11199
+ingognitus     11199
+ingognitus     67890
+ingognitus     12345
 				"
 			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-			
+
 
 			new Dialog
 			{
 				Width = DefaultWidth,
 				Height = DefaultHeight,
 				Zoom = Zoom,
+				TextAlignment = TextAlignment.Left,
 				Text = @"
-				  dos  version
-					 programmed
-						 by
-				   mario knezovic
-						with
-				  carsten neubauer
+player 1:
+ f1: keyboard
+player 2:
+ f2: keyboard
+
+
+esc: main menu
 				"
 			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
@@ -282,65 +251,36 @@ ingognitus     12345
 				"
 			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-		
 
-
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				TextAlignment = TextAlignment.Left,
-				Text = @"
-player 1:
- f1: keyboard
-player 2:
- f2: keyboard
-
-
-Esc: main menu
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				Text = @"
-					   levels 
-					  designed
-						 by
-					peter schmitz
-						 and
-					  björn roy
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-
-
-			
-
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				Text = @"
-					dos version
-					intros coded 
-						 by
-				   mario knezovic
-						with
-				   claudia scholz
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				Text = @"
+			var Credits = @"
+				 programmed
+					 by
+			   arvo sulakatko
+					with
+				jsc compiler
+				    in c#
+			===
+				dos  version
+				 programmed
+					 by
+			   mario knezovic
+					with
+			  carsten neubauer
+			===
+				   levels 
+				  designed
+					 by
+				peter schmitz
+					 and
+				  björn roy
+			===
+				dos version
+				intros coded 
+					 by
+			   mario knezovic
+					with
+			   claudia scholz
+			===
 			      original
 			    amiga version
 			      programmed
@@ -348,62 +288,38 @@ Esc: main menu
 			   thomas klinger
 			        and
 			     björn roy
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
+			===
+				  original
+			   amiga graphics
+				   drawn
+					 by
+			   thomas klinger
+			===
+			   pc graphics
+					by
+			  michael detert
+				   with
+			  carsten neubauer
+			   mario knezovic
+			===
+
+				music and fx
+					by
+				maiko ruttmann
+			";
+
+			Credits.Split(k => k.Trim() == "===").ForEach(
+				Text =>
+					new Dialog
+					{
+						Width = DefaultWidth,
+						Height = DefaultHeight,
+						Zoom = Zoom,
+						Text = Text
+					}.AttachContainerTo(this).Container.AddTo(TextContainers)
+			);
 
 
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				Text = @"
-					  original
-				   amiga graphics
-					   drawn
-						 by
-				   thomas klinger
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				Text = @"
-				   pc graphics
-						by
-				  michael detert
-					   with
-				  carsten neubauer
-				   mario knezovic
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-
-
-
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				Text = @"
-
-					music and fx
-						by
-					maiko ruttmann
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-
-			//var xx = new Dialog(DefaultWidth, DefaultHeight, Zoom);
-
-			//xx.Alignment = TextAlignment.Center;
-			//xx.Text = "music and fx\nby\nmaiko ruttmann";
-
-			//xx.AttachContainerTo(this);
-
-			//TextContainers.Add(xx.Container);
 
 			TextContainers.ForEach(k => k.Hide());
 			TextContainer = TextContainers.Next(k => k == TextContainer);
@@ -445,8 +361,8 @@ Esc: main menu
 
 				};
 
-			
-			
+
+
 		}
 	}
 }

@@ -60,6 +60,7 @@ namespace AvalonUgh.Code.Dialogs
 		{
 			this.Container = new Canvas
 			{
+				Background = Brushes.Black
 			};
 
 			this.Background = new Image
@@ -90,7 +91,7 @@ namespace AvalonUgh.Code.Dialogs
 			this.Background.Show(this.BackgroundVisible);
 
 			if (this.BackgroundVisible)
-				this.Content.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 3);
+				this.Content.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4);
 			else
 				this.Content.Container.MoveTo(0, 0);
 
