@@ -1,4 +1,5 @@
 #summary One-sentence summary of this page.
+#labels Featured
 
 = Introduction =
 
@@ -13,6 +14,12 @@ Add your content here.
 
 = Original Version =
 http://www.abandonia.com/en/games/26/Ugh.html
+
+= Known Remakes
+
+http://www.onekit.com/store/review/ugh~exmark~_remake_or_an_absolutely_new_ancient_taxi~question~.html
+http://www.alawar.com/games/ancienttaxi/
+
 
 = Details =
 
