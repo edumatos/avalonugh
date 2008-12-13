@@ -63,6 +63,19 @@ namespace AvalonUgh.Code.Dialogs
 			set { InputContent.Text = value; }
 		}
 
+		VerticalAlignment _VerticalAlignment;
+		public VerticalAlignment VerticalAlignment
+		{
+			get
+			{
+				return _VerticalAlignment;
+			}
+			set
+			{
+				_VerticalAlignment = value;
+				Update();
+			}
+		}
 
 		public TextAlignment TextAlignment
 		{
@@ -104,28 +117,34 @@ namespace AvalonUgh.Code.Dialogs
 			this.Content.TextChanged +=
 				delegate
 				{
-					if (this.BackgroundVisible)
-						this.LabelContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height);
-					else
-						this.LabelContent.Container.MoveTo(0, this.Content.Height);
+					UpdatePositions();
 
-					if (this.BackgroundVisible)
-						this.InputContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height + this.LabelContent.Height);
-					else
-						this.InputContent.Container.MoveTo(0, this.Content.Height + this.LabelContent.Height);
 				};
 
 			this.LabelContent.TextChanged +=
 				delegate
 				{
-					if (this.BackgroundVisible)
-						this.InputContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height + this.LabelContent.Height);
-					else
-						this.InputContent.Container.MoveTo(0, this.Content.Height + this.LabelContent.Height);
+					UpdatePositions();
+
 				};
 
 			this.BackgroundVisible = true;
-		
+		}
+
+		int VerticalAlignmentOffset
+		{
+			get
+			{
+				if (this.VerticalAlignment == VerticalAlignment.Top)
+					return 0;
+
+				var h = this.Content.Height + this.LabelContent.Height + this.InputContent.Height;
+
+				if (this.VerticalAlignment == VerticalAlignment.Center)
+					return (Height - PaddingTop - h) / 2;
+
+				return Height - PaddingTop - h;
+			}
 		}
 
 		void Update()
@@ -137,20 +156,7 @@ namespace AvalonUgh.Code.Dialogs
 			this.Background.Height = Height;
 			this.Background.Show(this.BackgroundVisible);
 
-			if (this.BackgroundVisible)
-				this.Content.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4);
-			else
-				this.Content.Container.MoveTo(0, 0);
-
-			if (this.BackgroundVisible)
-				this.LabelContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height);
-			else
-				this.LabelContent.Container.MoveTo(0, this.Content.Height);
-
-			if (this.BackgroundVisible)
-				this.InputContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height + this.LabelContent.Height);
-			else
-				this.InputContent.Container.MoveTo(0, this.Content.Height + this.LabelContent.Height);
+			UpdatePositions();
 
 			this.Content.Width = Width;
 			this.Content.Zoom = Zoom;
@@ -161,6 +167,26 @@ namespace AvalonUgh.Code.Dialogs
 			this.InputContent.Width = Width;
 			this.InputContent.Zoom = Zoom;
 		}
-	
+
+		public int PaddingTop
+		{
+			get
+			{
+				if (BackgroundVisible)
+					return PrimitiveFont.Heigth * Zoom * 4;
+
+				return 0;
+			}
+		}
+
+		private void UpdatePositions()
+		{
+			this.Content.Container.MoveTo(0, VerticalAlignmentOffset + PaddingTop);
+
+			this.LabelContent.Container.MoveTo(0, VerticalAlignmentOffset + PaddingTop + this.Content.Height);
+
+			this.InputContent.Container.MoveTo(0, VerticalAlignmentOffset + PaddingTop + this.Content.Height + this.LabelContent.Height);
+		}
+
 	}
 }
