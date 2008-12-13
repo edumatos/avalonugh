@@ -29,176 +29,67 @@ namespace AvalonUgh.Menu.Shared
 
 			Background = Brushes.Black;
 
-			var y = 0.0;
-
 			var TextContainers = new List<Canvas>();
 
 			Canvas TextContainer = null;
 
-			#region WriteBitmapFont
+			
 
-			Action<string, string> WriteBitmapFont =
-				(font, text) =>
-				{
-					var x = 0;
 
-					var UseShortNewLine = false;
-
-					foreach (char c in text.ToLower())
-					{
-						var s = Convert.ToString(c);
-
-						if (s == "?")
-							s = "_Question";
-
-						if (s == ":")
-							s = "_Colon";
-
-						if (s == ".")
-							s = "_Dot";
-
-						if (s == " ")
-						{
-							x++;
-							continue;
-						}
-
-						if (s == "-")
-						{
-							UseShortNewLine = true;
-							continue;
-						}
-
-						if (s == "\r")
-						{
-							continue;
-						}
-
-						if (s == "\n")
-						{
-							if (UseShortNewLine)
-							{
-								y += 0.5;
-								UseShortNewLine = false;
-							}
-							else
-							{
-								y++;
-							}
-							x = 0;
-
-							continue;
-						}
-
-						new Image
-						{
-							Source =
-								(font + "/" + s + ".png").ToSource(),
-							Stretch = Stretch.Fill,
-							Width = PrimitiveFont.Width * Zoom,
-							Height = PrimitiveFont.Heigth * Zoom
-						}.AttachTo(TextContainer).MoveTo(x * (PrimitiveFont.Width + 1) * Zoom, y * PrimitiveFont.Heigth * Zoom);
-
-						x++;
-
-					}
-
-					y++;
-				};
-			#endregion
-
-			var WriteBlue = WriteBitmapFont.FixFirstParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Blue);
-			var WriteBrown = WriteBitmapFont.FixFirstParam(AvalonUgh.Assets.Shared.KnownAssets.Path.Fonts.Brown);
-
-			#region hiscore
-			TextContainer = new Canvas
+			new Dialog
 			{
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-				Background = Brushes.Black
-			}.AttachTo(this).AddTo(TextContainers);
-
-			WriteBrown(@" 
-
-
+				Zoom = Zoom,
+				BackgroundVisible = false,
+				Text = @"-
 
    congratulations
  you are one of the
   five best cabbies
 
-enter your name:
-"
-);
-			WriteBlue("zproxy?");
+",
+				LabelText = "enter your name:",
+				InputText = "zproxy?"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-			#endregion
-
-
-			#region main menu
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
--
- F1: start  game
+				Zoom = Zoom,
+				TextAlignment = TextAlignment.Left,
+				Text = @"-
+ F1: start game
  F2: enter password
- F3: enter medium
+ F3: medium
  F4: multiplayer
  F5: control options
--
-password:"
-);
-
-			WriteBlue("none?");
-			#endregion
+-",
+				LabelText = "password:",
+				InputText = "none?"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
-
-			#region level start
-			TextContainer = new Canvas
+			new Dialog
 			{
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-				Background = Brushes.Black
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-
-
-			WriteBrown(@" 
-
-
+				Zoom = Zoom,
+				BackgroundVisible = false,
+				Text = @"
 
       Level 68
--
+		
     neptuns fork
 
 
 
-     password:");
-
-			WriteBlue("zerosex?");
 
 
-			#endregion
-
-
+     password:",
+				InputText = "zerosex"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
 
@@ -243,6 +134,7 @@ esc: main menu
 				Zoom = Zoom,
 				BackgroundVisible = false,
 				Text = @"
+
 
 
 
@@ -322,7 +214,7 @@ esc: main menu
 
 
 			TextContainers.ForEach(k => k.Hide());
-			TextContainer = TextContainers.Next(k => k == TextContainer);
+			TextContainer = TextContainers.First();
 			TextContainer.Show();
 
 			//var Status = new TextBox

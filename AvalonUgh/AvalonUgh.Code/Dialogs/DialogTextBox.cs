@@ -24,8 +24,17 @@ namespace AvalonUgh.Code.Dialogs
 		TextAlignment _TextAlignment;
 		public TextAlignment TextAlignment { get { return _TextAlignment; } set { _TextAlignment = value; Update(); } }
 
+		public event Action TextChanged;
 		string _Text;
-		public string Text { get { return _Text; } set { _Text = value; Update(); } }
+		public string Text
+		{
+			get { return _Text; }
+			set
+			{
+				_Text = value;
+				Update(); if (TextChanged != null) TextChanged();
+			}
+		}
 
 		int _Zoom;
 		public int Zoom { get { return _Zoom; } set { _Zoom = value; Update(); } }
@@ -84,7 +93,7 @@ namespace AvalonUgh.Code.Dialogs
 
 
 			var a = new List<string>();
-			this._Height = 0;
+			
 			var w = 0;
 
 			using (var s = new StringReader(this.Text))
@@ -95,7 +104,7 @@ namespace AvalonUgh.Code.Dialogs
 				{
 					w = n.Length.Max(w);
 
-					this._Height += PrimitiveFont.Heigth;
+				
 					if (this.TextAlignment == TextAlignment.Center)
 						a.Add(n.Trim());
 					else
@@ -163,9 +172,10 @@ namespace AvalonUgh.Code.Dialogs
 				}
 			}
 
+			this._Height += Convert.ToInt32( PrimitiveFont.Heigth * Zoom * y);
 			// render em
 		}
 
-		
+
 	}
 }
