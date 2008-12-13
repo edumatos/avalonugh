@@ -30,6 +30,8 @@ namespace AvalonUgh.Code.Dialogs
 		// inputbox
 
 		public DialogTextBox Content { get; set; }
+		public DialogTextBox LabelContent { get; set; }
+		public DialogTextBox InputContent { get; set; }
 
 		int _Zoom;
 		public int Zoom { get { return _Zoom; } set { _Zoom = value; Update(); } }
@@ -47,6 +49,18 @@ namespace AvalonUgh.Code.Dialogs
 		{
 			get { return Content.Text; }
 			set { Content.Text = value; }
+		}
+
+		public string LabelText
+		{
+			get { return LabelContent.Text; }
+			set { LabelContent.Text = value; }
+		}
+
+		public string InputText
+		{
+			get { return InputContent.Text; }
+			set { InputContent.Text = value; }
 		}
 
 
@@ -75,7 +89,40 @@ namespace AvalonUgh.Code.Dialogs
 				Color = Colors.Brown
 			}.AttachContainerTo(this);
 
+			this.LabelContent = new DialogTextBox
+			{
+				TextAlignment = TextAlignment.Left,
+				Color = Colors.Brown
+			}.AttachContainerTo(this);
 
+			this.InputContent = new DialogTextBox
+			{
+				TextAlignment = TextAlignment.Left,
+				Color = Colors.Blue
+			}.AttachContainerTo(this);
+
+			this.Content.TextChanged +=
+				delegate
+				{
+					if (this.BackgroundVisible)
+						this.LabelContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height);
+					else
+						this.LabelContent.Container.MoveTo(0, this.Content.Height);
+
+					if (this.BackgroundVisible)
+						this.InputContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height + this.LabelContent.Height);
+					else
+						this.InputContent.Container.MoveTo(0, this.Content.Height + this.LabelContent.Height);
+				};
+
+			this.LabelContent.TextChanged +=
+				delegate
+				{
+					if (this.BackgroundVisible)
+						this.InputContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height + this.LabelContent.Height);
+					else
+						this.InputContent.Container.MoveTo(0, this.Content.Height + this.LabelContent.Height);
+				};
 
 			this.BackgroundVisible = true;
 		
@@ -95,8 +142,24 @@ namespace AvalonUgh.Code.Dialogs
 			else
 				this.Content.Container.MoveTo(0, 0);
 
+			if (this.BackgroundVisible)
+				this.LabelContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height);
+			else
+				this.LabelContent.Container.MoveTo(0, this.Content.Height);
+
+			if (this.BackgroundVisible)
+				this.InputContent.Container.MoveTo(0, PrimitiveFont.Heigth * Zoom * 4 + this.Content.Height + this.LabelContent.Height);
+			else
+				this.InputContent.Container.MoveTo(0, this.Content.Height + this.LabelContent.Height);
+
 			this.Content.Width = Width;
 			this.Content.Zoom = Zoom;
+
+			this.LabelContent.Width = Width;
+			this.LabelContent.Zoom = Zoom;
+
+			this.InputContent.Width = Width;
+			this.InputContent.Zoom = Zoom;
 		}
 	
 	}
