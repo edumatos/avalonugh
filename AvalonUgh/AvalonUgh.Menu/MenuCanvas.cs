@@ -33,8 +33,41 @@ namespace AvalonUgh.Menu.Shared
 
 			Canvas TextContainer = null;
 
-			
 
+			new TopFiveDialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = Zoom,
+				Scores = new[]
+				{
+					new TopFiveDialog.Entry("ken", 100),
+					new TopFiveDialog.Entry("ken", 200),
+					new TopFiveDialog.Entry("ken", 300),
+					new TopFiveDialog.Entry("ken", 400),
+					new TopFiveDialog.Entry("ken", 500),
+				}
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
+
+			new Dialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = Zoom,
+				BackgroundVisible = false,
+				Text = @"
+
+      Level 68
+		
+    neptuns fork
+
+
+
+
+
+     password:",
+				InputText = "zerosex"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 			new Dialog
 			{
@@ -71,43 +104,10 @@ namespace AvalonUgh.Menu.Shared
 			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				BackgroundVisible = false,
-				Text = @"
-
-      Level 68
-		
-    neptuns fork
+			
 
 
 
-
-
-     password:",
-				InputText = "zerosex"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
-
-
-
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				TextAlignment = TextAlignment.Left,
-				Text = @"
-      top five
-ingognitus     11199
-ingognitus     11199
-ingognitus     11199
-ingognitus     67890
-ingognitus     12345
-				"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
 			new Dialog
@@ -138,8 +138,8 @@ esc: main menu
 
 
 
-       bad luck
-      you failed
+				   bad luck
+				  you failed
 				"
 			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
