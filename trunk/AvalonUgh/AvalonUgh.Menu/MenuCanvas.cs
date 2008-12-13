@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using AvalonUgh.Assets.Shared;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Dialogs;
 
 namespace AvalonUgh.Menu.Shared
 {
@@ -40,7 +41,7 @@ namespace AvalonUgh.Menu.Shared
 				(font, text) =>
 				{
 					var x = 0;
-					
+
 					var UseShortNewLine = false;
 
 					foreach (char c in text.ToLower())
@@ -75,7 +76,7 @@ namespace AvalonUgh.Menu.Shared
 
 						if (s == "\n")
 						{
-							if (UseShortNewLine) 
+							if (UseShortNewLine)
 							{
 								y += 0.5;
 								UseShortNewLine = false;
@@ -114,7 +115,7 @@ namespace AvalonUgh.Menu.Shared
 			{
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-				Background  = Brushes.Black
+				Background = Brushes.Black
 			}.AttachTo(this).AddTo(TextContainers);
 
 			WriteBrown(@" 
@@ -144,7 +145,7 @@ enter your name:
 			{
 				Stretch = Stretch.Fill,
 				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-				
+
 				Width = DefaultWidth,
 				Height = DefaultHeight,
 
@@ -211,7 +212,7 @@ ingognitus     12345
 				Background = Brushes.Black
 			}.AttachTo(this).AddTo(TextContainers);
 			y = 0;
-	
+
 
 			WriteBrown(@" 
 
@@ -224,338 +225,187 @@ ingognitus     12345
 
 
      password:");
-			
+
 			WriteBlue("zerosex?");
 
 
 			#endregion
 
-			#region programmed by
-			TextContainer = new Canvas
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
+			
 
 
 
-
-     programmed
-         by
-   arvo sulakatko
-        with
-    jsc compiler
-");
-
-
-
-			#endregion
-
-			#region programmed by
-			TextContainer = new Canvas
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
-    dos  version
-     programmed
-         by
-   mario knezovic
-        with
-  carsten neubauer
-");
-
-
-
-			#endregion
-
-			#region failed
-			TextContainer = new Canvas
+			new Dialog
 			{
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-				Background = Brushes.Black
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
+				Zoom = Zoom,
+				Text = @"
 
+				 programmed
+					 by
+			   arvo sulakatko
+					with
+				jsc compiler
+				    in c#
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
+			
 
-			WriteBrown(@" 
+			new Dialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = Zoom,
+				Text = @"
+				  dos  version
+					 programmed
+						 by
+				   mario knezovic
+						with
+				  carsten neubauer
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
+
+			new Dialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = Zoom,
+				BackgroundVisible = false,
+				Text = @"
 
 
 
        bad luck
       you failed
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
+
+		
 
 
-
-");
-
-
-
-			#endregion
-
-
-			#region options
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
-
+				Zoom = Zoom,
+				TextAlignment = TextAlignment.Left,
+				Text = @"
 player 1:
  f1: keyboard
 player 2:
  f2: keyboard
-...
+
 
 Esc: main menu
-");
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-
-
-			#endregion
-
-
-			#region levels
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
-
-       levels 
-      designed
-         by
-    peter schmitz
-         and
-      björn roy
-");
-			#endregion
+				Zoom = Zoom,
+				Text = @"
+					   levels 
+					  designed
+						 by
+					peter schmitz
+						 and
+					  björn roy
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
+			
 
-
-			#region intros
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
+				Zoom = Zoom,
+				Text = @"
+					dos version
+					intros coded 
+						 by
+				   mario knezovic
+						with
+				   claudia scholz
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
-    dos version
-    intros coded 
-         by
-   mario knezovic
-        with
-   claudia scholz
-");
-
-
-			#endregion
-
-			#region amiga version
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
-      original
-    amiga version
-      programmed
-         by
-   thomas klinger
-        and
-     björn roy
-");
+				Zoom = Zoom,
+				Text = @"
+			      original
+			    amiga version
+			      programmed
+			         by
+			   thomas klinger
+			        and
+			     björn roy
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
-			#endregion
-
-			#region amiga gfx
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
+				Zoom = Zoom,
+				Text = @"
+					  original
+				   amiga graphics
+					   drawn
+						 by
+				   thomas klinger
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
-
-      original
-   amiga graphics
-       drawn
-         by
-   thomas klinger
-");
-
-
-			#endregion
-
-			#region pc gfx
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
-
-			}.AttachTo(TextContainer);
-
-			WriteBrown(@" 
-
-
-
-
-    pc graphics
-        by
-  michael detert
-       with
-  carsten neubauer
-   mario knezovic
-");
+				Zoom = Zoom,
+				Text = @"
+				   pc graphics
+						by
+				  michael detert
+					   with
+				  carsten neubauer
+				   mario knezovic
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 
-			#endregion
 
-
-			#region music and fx
-			TextContainer = new Canvas
+			new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this).AddTo(TextContainers);
-			y = 0;
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/005.png").ToSource(),
-
 				Width = DefaultWidth,
 				Height = DefaultHeight,
+				Zoom = Zoom,
+				Text = @"
 
-			}.AttachTo(TextContainer);
+					music and fx
+						by
+					maiko ruttmann
+				"
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-			WriteBrown(@" 
+			//var xx = new Dialog(DefaultWidth, DefaultHeight, Zoom);
 
+			//xx.Alignment = TextAlignment.Center;
+			//xx.Text = "music and fx\nby\nmaiko ruttmann";
 
+			//xx.AttachContainerTo(this);
 
-
-
-    music and fx
-        by
-  maiko ruttmann
-");
-
-
-			#endregion
+			//TextContainers.Add(xx.Container);
 
 			TextContainers.ForEach(k => k.Hide());
-
 			TextContainer = TextContainers.Next(k => k == TextContainer);
 			TextContainer.Show();
 
@@ -592,10 +442,11 @@ Esc: main menu
 						}
 					);
 
-				
+
 				};
 
-
+			
+			
 		}
 	}
 }
