@@ -172,7 +172,7 @@ namespace AvalonUgh.Code.Dialogs
 				}
 			}
 
-			this._Height += Convert.ToInt32( PrimitiveFont.Heigth * Zoom * y);
+			this._Height = Convert.ToInt32( PrimitiveFont.Heigth * Zoom * y);
 			// render em
 		}
 

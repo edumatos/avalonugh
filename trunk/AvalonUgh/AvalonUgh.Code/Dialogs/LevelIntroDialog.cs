@@ -11,27 +11,42 @@ namespace AvalonUgh.Code.Dialogs
 	public class LevelIntroDialog : Dialog
 	{
 		int _LevelNumber;
-		public int LevelNumber { get {return _LevelNumber; } set { _LevelNumber = value; Update(); }}
+		public int LevelNumber { get { return _LevelNumber; } set { _LevelNumber = value; LevelIntroDialog_Update(); } }
 		string _LevelTitle;
-		public string LevelTitle { get { return _LevelTitle; } set { _LevelTitle = value; Update(); } }
+		public string LevelTitle { get { return _LevelTitle; } set { _LevelTitle = value; LevelIntroDialog_Update(); } }
 		string _LevelPassword;
-		public string LevelPassword { get { return _LevelPassword; } set { _LevelPassword = value; Update(); } }
+		public string LevelPassword { get { return _LevelPassword; } set { _LevelPassword = value; LevelIntroDialog_Update(); } }
 
-		void Update()
+		void LevelIntroDialog_Update()
 		{
+			this.InputText = this.LevelPassword;
+
 			var s = new StringBuilder();
 
-			s.AppendLine();
 			s.AppendLine();
 			s.Append("Level ").Append(this._LevelNumber);
 			s.AppendLine();
 			s.AppendLine();
+			s.AppendLine(this.LevelTitle);
+			s.AppendLine();
+			s.AppendLine();
+			s.AppendLine();
+			s.AppendLine();
+			s.AppendLine();
+			s.AppendLine();
+
+			this.Content.Text = s.ToString();
+
+
 
 		}
 
 		public LevelIntroDialog()
 		{
 			BackgroundVisible = false;
+
+			this.LabelContent.TextAlignment = System.Windows.TextAlignment.Center;
+			this.LabelContent.Text = "password:";
 		}
 	}
 }
