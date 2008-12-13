@@ -33,6 +33,19 @@ namespace AvalonUgh.Menu.Shared
 
 			Canvas TextContainer = null;
 
+			new LevelIntroDialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = Zoom,
+
+				LevelNumber = 55,
+				LevelTitle = "introducing platforms",
+				LevelPassword = "zerosex"
+
+			}.AttachContainerTo(this).Container.AddTo(TextContainers);
+
+	
 
 			new TopFiveDialog
 			{
@@ -49,25 +62,9 @@ namespace AvalonUgh.Menu.Shared
 				}
 			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
-			new Dialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = Zoom,
-				BackgroundVisible = false,
-				Text = @"
 
-      Level 68
+
 		
-    neptuns fork
-
-
-
-
-
-     password:",
-				InputText = "zerosex"
-			}.AttachContainerTo(this).Container.AddTo(TextContainers);
 
 			new Dialog
 			{

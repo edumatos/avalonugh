@@ -69,11 +69,11 @@ namespace AvalonUgh.Code.Dialogs
 			set
 			{
 				_Scores = value;
-				Update();
+				TopFiveDialog_Update();
 
 			}
 		}
-		void Update()
+		void TopFiveDialog_Update()
 		{
 			var s = new StringBuilder();
 
