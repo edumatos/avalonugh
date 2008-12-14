@@ -90,7 +90,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 			#endregion
 
-			this.WriteLine("Ready to load");
+			this.WriteLine("Ready to load 1.0");
 		}
 
 		public void Connect()
