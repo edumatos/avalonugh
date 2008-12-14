@@ -98,6 +98,10 @@
       <Project>{CF35C94E-9437-4918-A478-4213A63D1630}</Project>
       <Name>AvalonUgh.Assets</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AvalonUgh.Code\AvalonUgh.Code.csproj">
+      <Project>{2A209E86-A4B0-4A3D-BD22-24A62E212893}</Project>
+      <Name>AvalonUgh.Code</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AvalonUgh.Labs\AvalonUgh.Labs.csproj">
       <Project>{57C28841-F6A7-4F07-8ADF-9FCA405C0F6B}</Project>
       <Name>AvalonUgh.Labs</Name>

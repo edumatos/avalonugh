@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows;
 using AvalonUgh.Labs.Shared;
 using System.Windows.Shapes;
+using AvalonUgh.Code.Dialogs;
 
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
@@ -21,6 +22,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 		public const int DefaultWidth = LabsCanvas.DefaultWidth;
 		public const int DefaultHeight = LabsCanvas.DefaultHeight;
+		public const int Zoom = LabsCanvas.Zoom;
 
 		public Canvas Container { get; set; }
 
@@ -37,30 +39,15 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 			var Content = new LabsCanvas().AttachTo(this);
 
+			Content.IsMultiplayer = true;
 
-
-			var MenuBackground = new Rectangle
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Fill = Brushes.Black,
-				Opacity = 0.5
-			}.AttachTo(this);
-
-			var MenuDummy = new Image
-			{
-				Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/004.png").ToSource(),
-				Stretch = Stretch.Fill,
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-			}.AttachTo(this);
-
+		
 		
 			#region Log
 			var LogBackground = new Rectangle
 			{
 				Width = DefaultWidth,
-				Height = DefaultHeight / 3,
+				Height = DefaultHeight / 4,
 				Fill = Brushes.Black,
 				Opacity = 0.2
 			}.AttachTo(this);
@@ -69,7 +56,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			{
 				AcceptsReturn = true,
 				Width = DefaultWidth,
-				Height = DefaultHeight / 3,
+				Height = DefaultHeight / 4,
 				Background = Brushes.Transparent,
 				Foreground = Brushes.Yellow,
 				BorderThickness = new Thickness(0),
@@ -78,20 +65,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			}.AttachTo(this);
 			#endregion
 
-			var TouchOverlay = new Rectangle
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Fill = Brushes.Black,
-				Opacity = 0
-			}.AttachTo(this);
-
-			TouchOverlay.MouseLeftButtonUp +=
-				delegate
-				{
-					Content.GameContent.Focus();
-				};
-
+		
 			#region WriteLine
 			var LogQueue = new Queue<string>();
 
