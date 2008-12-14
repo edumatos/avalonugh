@@ -16,6 +16,7 @@ using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Dialogs;
 
 namespace AvalonUgh.Labs.Shared
 {
@@ -42,6 +43,7 @@ namespace AvalonUgh.Labs.Shared
 		{
 			Width = DefaultWidth;
 			Height = DefaultHeight;
+			Background = Brushes.Black;
 
 			this.ClipToBounds = true;
 
@@ -66,21 +68,21 @@ namespace AvalonUgh.Labs.Shared
 				}
 			);
 
-			new[]
-			{
-				Colors.Black,
-				Colors.Yellow,
-				Colors.Red,
-				Colors.Black
-			}.ToGradient(DefaultHeight / 4).Select(
-				(c, i) =>
-					new Rectangle
-					{
-						Fill = new SolidColorBrush(c),
-						Width = DefaultWidth,
-						Height = 4,
-					}.MoveTo(0, i * 4).AttachTo(this)
-			).ToArray();
+			//new[]
+			//{
+			//    Colors.Black,
+			//    Colors.Yellow,
+			//    Colors.Red,
+			//    Colors.Black
+			//}.ToGradient(DefaultHeight / 4).Select(
+			//    (c, i) =>
+			//        new Rectangle
+			//        {
+			//            Fill = new SolidColorBrush(c),
+			//            Width = DefaultWidth,
+			//            Height = 4,
+			//        }.MoveTo(0, i * 4).AttachTo(this)
+			//).ToArray();
 
 			this.GameContent = new Canvas
 			{
@@ -92,6 +94,71 @@ namespace AvalonUgh.Labs.Shared
 
 			et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
 			et.AttachContainerTo(this);
+
+			this.MenuDialog = new Dialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = Zoom,
+				TextAlignment = TextAlignment.Left,
+				Text = @"-
+ F1: start game
+ F2: enter password
+ F3: medium
+ F4: single player
+ F5: control options
+-",
+				LabelText = "password:",
+				InputText = "none?"
+			}.AttachContainerTo(this);
+
+			var MenuDummyDisabled = false;
+			this.MenuDialog.Container.MouseLeftButtonUp +=
+				delegate
+				{
+					if (MenuDummyDisabled)
+						return;
+					MenuDummyDisabled = true;
+					this.MenuDialog.Container.FadeOut(
+						delegate
+						{
+							this.MenuDialog.OrphanizeContainer();
+							NewMethod(ApplyNextMusicVolume, et);
+						}
+					);
+
+				};
+
+
+
+		}
+
+		Dialog MenuDialog;
+
+		public bool IsMultiplayer
+		{
+			set
+			{
+				if (value)
+					MenuDialog.Text = @"-
+ F1: start game
+ F2: enter password
+ F3: medium
+ F4: multiplayer
+ F5: control options
+-";
+				else
+					MenuDialog.Text = @"-
+ F1: start game
+ F2: enter password
+ F3: medium
+ F4: single player
+ F5: control options
+-";
+			}
+		}
+		private void NewMethod(Action ApplyNextMusicVolume, EditorToolbar et)
+		{
 
 			//var CurrentLevel = KnownAssets.Path.Assets + "/level09.txt";
 			var CurrentLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_02.txt";
@@ -333,7 +400,7 @@ namespace AvalonUgh.Labs.Shared
 					//twin2.AttachContainerTo(View.Entities);
 					//twin2.MoveTo(Level.ActualWidth / 3, 0);
 
-				
+
 
 					Level.Physics.CollisionAtVelocity +=
 						Velocity =>
@@ -591,11 +658,13 @@ namespace AvalonUgh.Labs.Shared
 
 
 
+
+
+
+
 					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 				}
 			);
-
-
 		}
 	}
 
