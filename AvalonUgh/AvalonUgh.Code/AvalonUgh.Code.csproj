@@ -134,6 +134,7 @@
     <Compile Include="AIDirector.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogTextBox.cs" />
+    <Compile Include="Dialogs\GameConsole.cs" />
     <Compile Include="Dialogs\LevelIntroDialog.cs" />
     <Compile Include="Dialogs\TopFiveDialog.cs" />
     <Compile Include="Editor\Level.WaterHeight.cs" />

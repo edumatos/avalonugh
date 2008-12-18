@@ -116,7 +116,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 				e =>
 				{
 					//InitializeMapOrSkip();
-					this.WriteLine("Message: " + e.message.Type);
+					Content.Console.WriteLine("Message: " + e.message.Type);
 
 
 					var Dispatched = false;
@@ -127,7 +127,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 					}
 					catch (Exception ex)
 					{
-						this.WriteLine("error at dispatch: " + e.message.Type);
+						Content.Console.WriteLine("error at dispatch: " + e.message.Type);
 
 						throw ex;
 					}
@@ -135,7 +135,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 					if (Dispatched)
 						return;
 
-					this.WriteLine("not on dispatch: " + e.message.Type);
+					Content.Console.WriteLine("not on dispatch: " + e.message.Type);
 
 				};
 			#endregion
