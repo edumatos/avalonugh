@@ -13,6 +13,7 @@ using AvalonUgh.Code;
 using AvalonUgh.Assets.Shared;
 using AvalonUgh.Code.Dialogs;
 using System.Windows.Input;
+using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Game.Shared
 {
@@ -25,6 +26,8 @@ namespace AvalonUgh.Game.Shared
 		public const int DefaultHeight = 400;
 
 		public GameConsole Console { get; set; }
+		public Canvas TouchContainer { get; set; }
+		public PlayerInput DefaultPlayerInput { get; set; }
 
 		public GameCanvas()
 		{
@@ -34,6 +37,14 @@ namespace AvalonUgh.Game.Shared
 			// prototype the new menu
 
 			var LobbyLevel = KnownAssets.Path.Assets + "/level00.txt";
+
+			#region setting up our console
+			var con = new GameConsole();
+
+			con.SizeTo(DefaultWidth, DefaultHeight / 2);
+			con.WriteLine("Avalon Ugh! Console ready.");
+			con.AnimatedTop = 0;
+			#endregion
 
 			LobbyLevel.ToStringAsset(
 				LevelText =>
@@ -56,7 +67,7 @@ namespace AvalonUgh.Game.Shared
 
 					// move it to bottom center
 					et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
-					
+
 
 					et.EditorSelectorChanged +=
 						() => View.EditorSelector = et.EditorSelector;
@@ -89,20 +100,12 @@ namespace AvalonUgh.Game.Shared
 					}.MoveContainerTo(0, DefaultHeight / 2 - 50).AttachContainerTo(this);
 					#endregion
 
-					// we are going for the keyboard input
-					// we want to enable the tilde console feature
-					this.FocusVisualStyle = null;
-					this.Focusable = true;
-					this.Focus();
+				
 
 
-					var con = new GameConsole();
+		
 
-					con.SizeTo(DefaultWidth, DefaultHeight / 2);
-					con.AttachContainerTo(this);
-					con.WriteLine("Avalon Ugh! Console ready.");
-					con.AnimatedTop = 0;
-					
+			
 					this.Console = con;
 
 					this.KeyUp +=
@@ -129,39 +132,76 @@ namespace AvalonUgh.Game.Shared
 							}
 						};
 
-					var TouchContainer = new Canvas
+					con.AttachContainerTo(this);
+
+					using (this.Console["updating touch layers"])
 					{
-						Background = Brushes.Black,
-						Opacity = 0,
-						Width = DefaultWidth,
-						Height = DefaultHeight
+						TouchContainer = new Canvas
+						{
+							Background = Brushes.Black,
+							Opacity = 0,
+							Width = DefaultWidth,
+							Height = DefaultHeight
+						};
+						TouchContainer.AttachTo(this);
+
+						// we are doing some advanced layering now
+						var TouchContainerForViewContent = new Canvas
+						{
+							// we need to update this if the level changes
+							// in size
+							Width = View.ContentExtendedWidth,
+							Height = View.ContentExtendedHeight
+						}.AttachTo(TouchContainer);
+
+						View.ContentExtendedContainerMoved +=
+							(x, y) => TouchContainerForViewContent.MoveTo(x, y);
+
+						// raise that event so we stay in sync
+						View.MoveContentTo();
+						View.TouchOverlay.Orphanize().AttachTo(TouchContainerForViewContent);
+					}
+
+					// we are going for the keyboard input
+					// we want to enable the tilde console feature
+					this.FocusVisualStyle = null;
+					this.Focusable = true;
+					this.Focus();
+
+					var DefaultPlayerInput = new PlayerInput
+					{
+						Keyboard =  new KeyboardInput(
+							new KeyboardInput.Arguments
+							{
+								Left = Key.Left,
+								Right = Key.Right,
+								Up = Key.Up,
+								Down = Key.Down,
+								Drop = Key.Space,
+								Enter = Key.Enter,
+
+								InputControl = this,
+							}
+						),
+						Touch = View.TouchInput
 					};
-					TouchContainer.AttachTo(this);
 
-					// we are doing some advanced layering now
-					var TouchContainerForViewContent = new Canvas
-					{
-						// we need to update this if the level changes
-						// in size
-						Width = View.ContentExtendedWidth,
-						Height = View.ContentExtendedHeight
-					}.AttachTo(TouchContainer);
+					DefaultPlayerInput.Enter +=
+						delegate
+						{
+							Console.WriteLine("you pressed enter");
+						};
 
-					View.ContentExtendedContainerMoved +=
-						(x, y) => TouchContainerForViewContent.MoveTo(x, y);
-
-					// raise that event so we stay in sync
-					View.MoveContentTo();
-					View.TouchOverlay.Orphanize().AttachTo(TouchContainerForViewContent);
-
-					// toolbar is on top of our touch container
-					et.AttachContainerTo(this);
+					// at this time we should add a local player
 
 					TouchContainer.MouseLeftButtonDown +=
 						(sender, args) =>
 						{
 							this.Focus();
 						};
+
+					// toolbar is on top of our touch container
+					et.AttachContainerTo(this);
 
 				}
 			);
