@@ -372,6 +372,8 @@ namespace AvalonUgh.Code
 			MoveContentTo();
 		}
 
+		public event Action<int, int> ContentExtendedContainerMoved;
+
 		private void InternalMoveContentTo(double x_, double y_)
 		{
 			var x = Convert.ToInt32(x_);
@@ -382,6 +384,9 @@ namespace AvalonUgh.Code
 			var ey = y - MaxShakeSize - (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2;
 
 			this.ContentExtendedContainer.MoveTo(ex, ey);
+
+			if (ContentExtendedContainerMoved != null)
+				ContentExtendedContainerMoved(ex, ey);
 
 			this.Content.MoveTo(
 				x,

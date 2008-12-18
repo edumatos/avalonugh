@@ -28,7 +28,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 		public Canvas Container { get; set; }
 
-		public readonly Action<string> WriteLine;
+		//public readonly Action<string> WriteLine;
+		public TargetCanvas Content;
 
 		public NetworkClient()
 		{
@@ -39,93 +40,95 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				Height = DefaultHeight
 			};
 
-			var Content = new TargetCanvas().AttachTo(this);
+			Content = new TargetCanvas().AttachTo(this);
+
+			Content.Console.WriteLine("starting networking...");
 
 			//Content.IsMultiplayer = true;
 
 		
 		
-			#region Log
-			var LogBackground = new Rectangle
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight / 4,
-				Fill = Brushes.Black,
-				Opacity = 0.2
-			}.AttachTo(this);
+			//#region Log
+			//var LogBackground = new Rectangle
+			//{
+			//    Width = DefaultWidth,
+			//    Height = DefaultHeight / 4,
+			//    Fill = Brushes.Black,
+			//    Opacity = 0.2
+			//}.AttachTo(this);
 
-			var Log = new TextBox
-			{
-				AcceptsReturn = true,
-				Width = DefaultWidth,
-				Height = DefaultHeight / 4,
-				Background = Brushes.Transparent,
-				Foreground = Brushes.Yellow,
-				BorderThickness = new Thickness(0),
-				FontFamily = new FontFamily("Courier New"),
-				IsReadOnly = true
-			}.AttachTo(this);
-			#endregion
+			//var Log = new TextBox
+			//{
+			//    AcceptsReturn = true,
+			//    Width = DefaultWidth,
+			//    Height = DefaultHeight / 4,
+			//    Background = Brushes.Transparent,
+			//    Foreground = Brushes.Yellow,
+			//    BorderThickness = new Thickness(0),
+			//    FontFamily = new FontFamily("Courier New"),
+			//    IsReadOnly = true
+			//}.AttachTo(this);
+			//#endregion
 
 		
-			#region WriteLine
-			var LogQueue = new Queue<string>();
+			//#region WriteLine
+			//var LogQueue = new Queue<string>();
 
 
-			this.WriteLine =
-				Text =>
-				{
-					LogQueue.Enqueue(Text);
+			//this.WriteLine =
+			//    Text =>
+			//    {
+			//        LogQueue.Enqueue(Text);
 
-					if (LogQueue.Count > 10)
-						LogQueue.Dequeue();
+			//        if (LogQueue.Count > 10)
+			//            LogQueue.Dequeue();
 
-					Log.Text = LogQueue.Aggregate("",
-						(Value, QueueText) =>
-						{
-							if (Value == "")
-								return QueueText;
+			//        Log.Text = LogQueue.Aggregate("",
+			//            (Value, QueueText) =>
+			//            {
+			//                if (Value == "")
+			//                    return QueueText;
 
-							return Value + Environment.NewLine + QueueText;
-						}
-					);
-				};
-			#endregion
+			//                return Value + Environment.NewLine + QueueText;
+			//            }
+			//        );
+			//    };
+			//#endregion
 
-			this.WriteLine("Ready to load 1.0");
+			//this.WriteLine("Ready to load 1.0");
 		}
 
 		public void Connect()
 		{
-			this.WriteLine("Connect");
+			Content.Console.WriteLine("Connect");
 		}
 
 		public void Disconnect()
 		{
-			this.WriteLine("Disconnect");
+			Content.Console.WriteLine("Disconnect");
 
 		}
 
 		public void InitializeEvents()
 		{
-			this.WriteLine("InitializeEvents");
+			Content.Console.WriteLine("InitializeEvents");
 
 			this.Events.Server_Hello +=
 				e =>
 				{
-					this.WriteLine("Server_Hello " + e);
+					Content.Console.WriteLine("Server_Hello " + e);
 				};
 
 			this.Events.Server_UserJoined +=
 				e =>
 				{
-					this.WriteLine("Server_UserJoined " + e);
+					Content.Console.WriteLine("Server_UserJoined " + e);
 				};
 
 			this.Events.Server_UserLeft +=
 				e =>
 				{
-					this.WriteLine("Server_UserLeft " + e);
+					Content.Console.WriteLine("Server_UserLeft " + e);
 				};
 		}
 	}
