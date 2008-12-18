@@ -18,7 +18,7 @@ namespace AvalonUgh.Code.Dialogs
 	{
 		public Canvas Container { get; set; }
 
-		Color _Color;
+		Color _Color = Colors.Brown;
 		public Color Color { get { return _Color; } set { _Color = value; Update(); } }
 
 		TextAlignment _TextAlignment;
@@ -36,7 +36,7 @@ namespace AvalonUgh.Code.Dialogs
 			}
 		}
 
-		int _Zoom;
+		int _Zoom = 1;
 		public int Zoom { get { return _Zoom; } set { _Zoom = value; Update(); } }
 
 
