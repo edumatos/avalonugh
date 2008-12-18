@@ -15,6 +15,9 @@ using AvalonUgh.Game.Shared;
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
 	using TargetCanvas = AvalonUgh.Game.Shared.GameCanvas;
+	using AvalonUgh.Code;
+	using AvalonUgh.Code.Input;
+	using System.Windows.Input;
 
 	[Script]
 	public class NetworkClient : VirtualClient, ISupportsContainer
@@ -41,61 +44,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			};
 
 			Content = new TargetCanvas().AttachTo(this);
-
 			Content.Console.WriteLine("starting networking...");
 
-			//Content.IsMultiplayer = true;
-
-		
-		
-			//#region Log
-			//var LogBackground = new Rectangle
-			//{
-			//    Width = DefaultWidth,
-			//    Height = DefaultHeight / 4,
-			//    Fill = Brushes.Black,
-			//    Opacity = 0.2
-			//}.AttachTo(this);
-
-			//var Log = new TextBox
-			//{
-			//    AcceptsReturn = true,
-			//    Width = DefaultWidth,
-			//    Height = DefaultHeight / 4,
-			//    Background = Brushes.Transparent,
-			//    Foreground = Brushes.Yellow,
-			//    BorderThickness = new Thickness(0),
-			//    FontFamily = new FontFamily("Courier New"),
-			//    IsReadOnly = true
-			//}.AttachTo(this);
-			//#endregion
-
-		
-			//#region WriteLine
-			//var LogQueue = new Queue<string>();
-
-
-			//this.WriteLine =
-			//    Text =>
-			//    {
-			//        LogQueue.Enqueue(Text);
-
-			//        if (LogQueue.Count > 10)
-			//            LogQueue.Dequeue();
-
-			//        Log.Text = LogQueue.Aggregate("",
-			//            (Value, QueueText) =>
-			//            {
-			//                if (Value == "")
-			//                    return QueueText;
-
-			//                return Value + Environment.NewLine + QueueText;
-			//            }
-			//        );
-			//    };
-			//#endregion
-
-			//this.WriteLine("Ready to load 1.0");
 		}
 
 		public void Connect()
@@ -109,6 +59,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 		}
 
+
 		public void InitializeEvents()
 		{
 			Content.Console.WriteLine("InitializeEvents");
@@ -116,13 +67,26 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Events.Server_Hello +=
 				e =>
 				{
+					this.Content.DefaultPlayer.Identity = e.user;
+					this.Content.DefaultPlayer.Name = e.name;
+
 					Content.Console.WriteLine("Server_Hello " + e);
+
+					this.Content.DefaultPlayerInput.Keyboard.KeyStateChanged +=
+						(Key, State) =>
+						{
+							this.Messages.KeyStateChanged((int)Key, Convert.ToInt32(State));
+						};
 				};
 
 			this.Events.Server_UserJoined +=
 				e =>
 				{
 					Content.Console.WriteLine("Server_UserJoined " + e);
+
+					this.Messages.UserHello(e.user, this.Content.DefaultPlayer.Name);
+
+					AddRemotePlayer(e.user, e.name);
 				};
 
 			this.Events.Server_UserLeft +=
@@ -130,6 +94,68 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					Content.Console.WriteLine("Server_UserLeft " + e);
 				};
+
+			this.Events.UserHello +=
+				e =>
+				{
+					Content.Console.WriteLine("UserHello " + e);
+
+					AddRemotePlayer(e.user, e.name);
+				};
+
+
+			this.Events.UserKeyStateChanged +=
+				e =>
+				{
+					var c = this[e];
+
+					Content.Console.WriteLine("UserKeyStateChanged " + e + " - " + this[e]);
+
+					c.Input.Keyboard.KeyState[(Key)e.key] =  Convert.ToBoolean(e.state);
+				};
+		}
+
+		public PlayerInfo this[Communication.RemoteEvents.WithUserArguments u]
+		{
+			get
+			{
+				return this.Content.Players.First(k => u.user == k.Identity);
+			}
+		}
+
+		public PlayerInfo AddRemotePlayer(int user, string name)
+		{
+			var n = new PlayerInfo
+			{
+				Identity = user,
+				Name = name,
+
+				// remote users get a dummy remoted input with the same keys
+				Input =
+					new PlayerInput
+					{
+						Keyboard = new KeyboardInput(
+							new KeyboardInput.Arguments
+							{
+								Left = Key.Left,
+								Right = Key.Right,
+								Up = Key.Up,
+								Down = Key.Down,
+								Drop = Key.Space,
+								Enter = Key.Enter,
+
+								// there wont be any device to listen to tho
+								InputControl = null,
+							}
+						),
+						Touch = null
+					}
+
+			};
+
+			this.Content.Players.Add(n);
+
+			return n;
 		}
 	}
 }

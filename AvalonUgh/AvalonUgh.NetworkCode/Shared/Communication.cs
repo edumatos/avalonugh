@@ -11,8 +11,16 @@ namespace AvalonUgh.NetworkCode.Shared
 		public partial interface IMessages
 		{
 			void Server_Hello(int user, string name);
+
 			void Server_UserJoined(int user, string name);
 			void Server_UserLeft(int user, string name);
+
+
+			void Hello(string name);
+			void UserHello(int user, string name);
+
+			void KeyStateChanged(int key, int state);
+			void UserKeyStateChanged(int user, int key, int state);
 		}
 
 

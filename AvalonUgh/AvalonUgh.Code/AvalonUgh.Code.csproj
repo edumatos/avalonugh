@@ -144,6 +144,7 @@
     <Compile Include="Editor\WaterLevelSelector.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ColorStripe.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ISupportsPlayerInput.cs" />
+    <Compile Include="PlayerInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Documents\UIConcept.jnt" />
