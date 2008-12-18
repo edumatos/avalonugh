@@ -68,19 +68,21 @@ namespace AvalonUgh.Code.Dialogs
 		{
 			Counter = (Counter + 1) % 1000;
 
-			LogQueue.Enqueue(Counter.ToString().PadLeft(3, '0') + " " + Text);
+			var Padding = new string(' ', this.Tasks.Count * 2);
+
+			LogQueue.Enqueue(Counter.ToString().PadLeft(3, '0') + " " + Padding + Text);
 
 			while (LogQueue.Count > MaxLogQueueCount)
 				LogQueue.Dequeue();
 
-			var Padding = Enumerable.Range(0, MaxLogQueueCount - LogQueue.Count).Aggregate("",
+			var EmptyPadding = Enumerable.Range(0, MaxLogQueueCount - LogQueue.Count).Aggregate("",
 				(Value, Index) =>
 				{
 					return Value + Environment.NewLine;
 				}
 			);
 
-			TextBox.Text = LogQueue.Aggregate(Padding,
+			TextBox.Text = LogQueue.Aggregate(EmptyPadding,
 				(Value, QueueText) =>
 				{
 					if (Value == "")
@@ -107,6 +109,45 @@ namespace AvalonUgh.Code.Dialogs
 
 				_AnimatedTop = value;
 				_AnimatedPositionApply(0, value);
+			}
+		}
+
+		[Script]
+		public class Task : IDisposable
+		{
+			readonly Action Done;
+
+			public Task(GameConsole e, string Task)
+			{
+
+				e.WriteLine(Task);
+
+				e.Tasks.Push(this);
+
+				Done =
+					delegate
+					{
+						e.Tasks.Pop();
+					};
+			}
+
+			#region IDisposable Members
+
+			public void Dispose()
+			{
+				Done();
+			}
+
+			#endregion
+		}
+
+		public readonly Stack<Task> Tasks = new Stack<Task>();
+
+		public IDisposable this[string Task]
+		{
+			get
+			{
+				return new Task(this, Task);
 			}
 		}
 	}
