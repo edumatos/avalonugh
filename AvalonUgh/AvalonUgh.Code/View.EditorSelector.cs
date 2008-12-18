@@ -23,8 +23,10 @@ namespace AvalonUgh.Code
 			{
 				//Width = 100,
 				//Height = 100,
-				Width = PrimitiveTile.Width * this.Level.Zoom,
-				Height = PrimitiveTile.Heigth * this.Level.Zoom,
+				//Width = PrimitiveTile.Width * this.Level.Zoom,
+				//Height = PrimitiveTile.Heigth * this.Level.Zoom,
+				Width = 0,
+				Height = 0,
 				Fill = Brushes.Yellow,
 				Opacity = 0.2,
 			}.MoveTo(64, 64).AttachTo(this.PlatformsInfoOverlay);
@@ -40,6 +42,7 @@ namespace AvalonUgh.Code
 			Action<MouseEventArgs, Action<int, int>> ToContentPosition =
 				(args, handler) =>
 				{
+					
 					var p = args.GetPosition(this.TouchOverlay);
 
 					//TouchTileSelector.MoveTo(p.X, p.Y);
@@ -79,6 +82,9 @@ namespace AvalonUgh.Code
 			this.TouchOverlay.MouseMove +=
 				(sender, args) =>
 				{
+					if (EditorSelector == null)
+						return;
+
 					if (this.EditorSelectorRectangle.Visibility != System.Windows.Visibility.Visible)
 						return;
 
@@ -96,6 +102,9 @@ namespace AvalonUgh.Code
 			this.TouchOverlay.MouseLeftButtonUp +=
 				(sender, args) =>
 				{
+					if (EditorSelector == null)
+						return;
+
 					if (this.EditorSelectorRectangle.Visibility != System.Windows.Visibility.Visible)
 						return;
 

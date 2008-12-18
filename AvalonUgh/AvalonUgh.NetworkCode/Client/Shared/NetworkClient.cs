@@ -8,21 +8,23 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
-using AvalonUgh.Labs.Shared;
 using System.Windows.Shapes;
 using AvalonUgh.Code.Dialogs;
+using AvalonUgh.Game.Shared;
 
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
+	using TargetCanvas = AvalonUgh.Game.Shared.GameCanvas;
+
 	[Script]
 	public class NetworkClient : VirtualClient, ISupportsContainer
 	{
 		// this code is shared between
 		// javascript, actionscript, c#
 
-		public const int DefaultWidth = LabsCanvas.DefaultWidth;
-		public const int DefaultHeight = LabsCanvas.DefaultHeight;
-		public const int Zoom = LabsCanvas.Zoom;
+		public const int DefaultWidth = TargetCanvas.DefaultWidth;
+		public const int DefaultHeight = TargetCanvas.DefaultHeight;
+		public const int Zoom = TargetCanvas.Zoom;
 
 		public Canvas Container { get; set; }
 
@@ -37,9 +39,9 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				Height = DefaultHeight
 			};
 
-			var Content = new LabsCanvas().AttachTo(this);
+			var Content = new TargetCanvas().AttachTo(this);
 
-			Content.IsMultiplayer = true;
+			//Content.IsMultiplayer = true;
 
 		
 		

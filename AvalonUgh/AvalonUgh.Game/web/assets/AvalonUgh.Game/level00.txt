@@ -1,0 +1,28 @@
+# autoscroll: 1
+# background: 002
+# background-width: 320
+# background-height: 200
+# water: 32
+####################
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+# tree: 96
+# sign: 120;0
+P-P--P-P-BBBBBBP-P--
+| |  S-S---S-S-| |  
+| SS-| |   S-| SS-S-
+####################
+

@@ -4,11 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{BD89F12E-7C5D-417B-BBC3-4FE09BFF870E}</ProjectGuid>
+    <ProjectGuid>{14BD631C-56EA-4B34-AFB0-6B833DCD7D20}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AvalonUgh.Labs.Multiplayer</RootNamespace>
-    <AssemblyName>AvalonUgh.Labs.Multiplayer</AssemblyName>
+    <RootNamespace>AvalonUgh.Game</RootNamespace>
+    <AssemblyName>AvalonUgh.Game</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>
@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nonoba.GameLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AvalonUgh.NetworkCode\Library\Nonoba.GameLibrary.dll</HintPath>
-    </Reference>
     <Reference Include="PresentationCore">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -49,14 +45,6 @@
     <Reference Include="ScriptCoreLib.Avalon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\util\jsc\bin\ScriptCoreLib.Avalon.dll</HintPath>
-    </Reference>
-    <Reference Include="ScriptCoreLib.Mochi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Mochi.dll</HintPath>
-    </Reference>
-    <Reference Include="ScriptCoreLib.Nonoba, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Nonoba.dll</HintPath>
     </Reference>
     <Reference Include="ScriptCoreLib.Query, Version=1.0.2666.38864, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,14 +65,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NonobaClientFlash.cs" />
+    <Compile Include="GameFlash.cs" />
+    <Compile Include="GameDocument.cs" />
+    <Compile Include="KnownAssets.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IAssemblyReferenceToken.cs" />
-    <Compile Include="Server\KeepLookingForMore.cs" />
+    <Compile Include="GameCanvas.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documents\description.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Game\level00.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="tools\build.bat" />
@@ -94,17 +85,9 @@
       <Project>{CF35C94E-9437-4918-A478-4213A63D1630}</Project>
       <Name>AvalonUgh.Assets</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AvalonUgh.Game\AvalonUgh.Game.csproj">
-      <Project>{14BD631C-56EA-4B34-AFB0-6B833DCD7D20}</Project>
-      <Name>AvalonUgh.Game</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AvalonUgh.NetworkCode\AvalonUgh.NetworkCode.csproj">
-      <Project>{B699417E-5E3E-4406-AEE0-8900637D61D0}</Project>
-      <Name>AvalonUgh.NetworkCode</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AvalonUgh.Promotion\AvalonUgh.Promotion.csproj">
-      <Project>{3B971BB0-A45D-47BB-A1B5-383F08426F09}</Project>
-      <Name>AvalonUgh.Promotion</Name>
+    <ProjectReference Include="..\AvalonUgh.Code\AvalonUgh.Code.csproj">
+      <Project>{2A209E86-A4B0-4A3D-BD22-24A62E212893}</Project>
+      <Name>AvalonUgh.Code</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
@@ -118,7 +101,6 @@
   <PropertyGroup>
     <PostBuildEvent>pushd ..\..\tools\
 call build.bat $(ProjectName) $(TargetFileName)  $(ConfigurationName)
-popd
-</PostBuildEvent>
+popd</PostBuildEvent>
   </PropertyGroup>
 </Project>
