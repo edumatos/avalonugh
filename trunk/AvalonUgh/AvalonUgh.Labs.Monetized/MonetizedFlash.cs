@@ -32,10 +32,10 @@ namespace AvalonUgh.Labs.Monetized.ActionScript
 
 		public MonetizedFlashLean()
 		{
-			new TextField
-			{
-				text = "multiplayer disabled"
-			}.AttachTo(this);
+			//new TextField
+			//{
+			//    text = "multiplayer disabled"
+			//}.AttachTo(this);
 		}
 	}
 
