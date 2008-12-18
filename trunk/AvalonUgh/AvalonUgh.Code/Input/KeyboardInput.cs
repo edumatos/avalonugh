@@ -31,6 +31,8 @@ namespace AvalonUgh.Code.Input
 
 		public readonly Dictionary<Key, bool> KeyState;
 
+		public event Action<Key, bool> KeyStateChanged;
+
 		public event Action Enter;
 		public event Action Drop;
 
@@ -48,46 +50,58 @@ namespace AvalonUgh.Code.Input
 							{e.Left, false},
 						};
 
-			e.InputControl.KeyDown +=
-				(sender, args) =>
-				{
-					if (KeyState.ContainsKey(args.Key))
+			if (e.InputControl != null)
+			{
+				e.InputControl.KeyDown +=
+					(sender, args) =>
 					{
-						KeyState[args.Key] = true;
-						args.Handled = true;
-					}
-				};
+						if (KeyState.ContainsKey(args.Key))
+						{
+							args.Handled = true;
 
+							if (KeyState[args.Key] == false)
+							{
+								KeyState[args.Key] = true;
 
-			e.InputControl.KeyUp +=
-				(sender, args) =>
-				{
-					if (KeyState.ContainsKey(args.Key))
+								if (KeyStateChanged != null)
+									KeyStateChanged(args.Key, true);
+							}
+						}
+					};
+
+				e.InputControl.KeyUp +=
+					(sender, args) =>
 					{
-						KeyState[args.Key] = false;
-						args.Handled = true;
-					}
-				};
+						if (KeyState.ContainsKey(args.Key))
+						{
+							args.Handled = true;
 
-			e.InputControl.KeyUp +=
-				(sender, args) =>
-				{
-					if (args.Key == e.Drop)
-					{
-						if (Drop != null)
-							Drop();
+							if (KeyState[args.Key] == true)
+							{
+								KeyState[args.Key] = false;
 
-						args.Handled = true;
-					}
+								if (KeyStateChanged != null)
+									KeyStateChanged(args.Key, false);
+							}
+						}
 
-					if (args.Key == e.Enter)
-					{
-						if (Enter != null)
-							Enter();
+						if (args.Key == e.Drop)
+						{
+							if (Drop != null)
+								Drop();
 
-						args.Handled = true;
-					}
-				};
+							args.Handled = true;
+						}
+
+						if (args.Key == e.Enter)
+						{
+							if (Enter != null)
+								Enter();
+
+							args.Handled = true;
+						}
+					};
+			}
 
 
 

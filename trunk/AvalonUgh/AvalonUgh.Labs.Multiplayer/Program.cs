@@ -56,7 +56,7 @@ namespace AvalonUgh.Labs.Multiplayer
 						UserId = UserId++,
 						FromPlayer = client_to_server,
 						ToPlayer = server_to_client,
-						Username = "guest"
+						Username = "guest" + UserId
 					};
 
 					u.ToOthers =

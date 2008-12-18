@@ -22,6 +22,10 @@ namespace AvalonUgh.NetworkCode.Shared
             Server_Hello,
             Server_UserJoined,
             Server_UserLeft,
+            Hello,
+            UserHello,
+            KeyStateChanged,
+            UserKeyStateChanged,
         }
         #endregion
 
@@ -40,6 +44,10 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.Server_HelloArguments> Server_Hello;
             event Action<RemoteEvents.Server_UserJoinedArguments> Server_UserJoined;
             event Action<RemoteEvents.Server_UserLeftArguments> Server_UserLeft;
+            event Action<RemoteEvents.HelloArguments> Hello;
+            event Action<RemoteEvents.UserHelloArguments> UserHello;
+            event Action<RemoteEvents.KeyStateChangedArguments> KeyStateChanged;
+            event Action<RemoteEvents.UserKeyStateChangedArguments> UserKeyStateChanged;
         }
         #endregion
 
@@ -101,6 +109,62 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void Hello(string name)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.Hello, args = new object[] { name } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.Hello(name);
+                    }
+                }
+            }
+            public void UserHello(int user, string name)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserHello, args = new object[] { user, name } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserHello(user, name);
+                    }
+                }
+            }
+            public void KeyStateChanged(int key, int state)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.KeyStateChanged, args = new object[] { key, state } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.KeyStateChanged(key, state);
+                    }
+                }
+            }
+            public void UserKeyStateChanged(int user, int key, int state)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserKeyStateChanged, args = new object[] { user, key, state } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserKeyStateChanged(user, key, state);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -155,14 +219,26 @@ namespace AvalonUgh.NetworkCode.Shared
                 #region Automatic Event Routing
                 public void CombineDelegates(IEvents value)
                 {
+                    value.Hello += this.UserHello;
+                    value.KeyStateChanged += this.UserKeyStateChanged;
                 }
 
                 public void RemoveDelegates(IEvents value)
                 {
+                    value.Hello -= this.UserHello;
+                    value.KeyStateChanged -= this.UserKeyStateChanged;
                 }
                 #endregion
 
                 #region Routing
+                public void UserHello(HelloArguments e)
+                {
+                    Target.UserHello(this.user, e.name);
+                }
+                public void UserKeyStateChanged(KeyStateChangedArguments e)
+                {
+                    Target.UserKeyStateChanged(this.user, e.key, e.state);
+                }
                 #endregion
             }
             #endregion
@@ -173,6 +249,22 @@ namespace AvalonUgh.NetworkCode.Shared
             {
                 public IMessages Target;
                 #region Routing
+                public void UserHello(string name)
+                {
+                    this.Target.UserHello(this.user, name);
+                }
+                public void UserHello(UserHelloArguments e)
+                {
+                    this.Target.UserHello(this.user, e.name);
+                }
+                public void UserKeyStateChanged(int key, int state)
+                {
+                    this.Target.UserKeyStateChanged(this.user, key, state);
+                }
+                public void UserKeyStateChanged(UserKeyStateChangedArguments e)
+                {
+                    this.Target.UserKeyStateChanged(this.user, e.key, e.state);
+                }
                 #endregion
             }
             #endregion
@@ -186,14 +278,30 @@ namespace AvalonUgh.NetworkCode.Shared
                 #region Automatic Event Routing
                 public void CombineDelegates(IEvents value)
                 {
+                    value.UserHello += this.UserHello;
+                    value.UserKeyStateChanged += this.UserKeyStateChanged;
                 }
 
                 public void RemoveDelegates(IEvents value)
                 {
+                    value.UserHello -= this.UserHello;
+                    value.UserKeyStateChanged -= this.UserKeyStateChanged;
                 }
                 #endregion
 
                 #region Routing
+                public void UserHello(UserHelloArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserHello(this.user, e.name);
+                }
+                public void UserKeyStateChanged(UserKeyStateChangedArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserKeyStateChanged(this.user, e.key, e.state);
+                }
                 #endregion
             }
             #endregion
@@ -242,6 +350,64 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<Server_UserLeftArguments> Server_UserLeft;
+            #region HelloArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class HelloArguments
+            {
+                public string name;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ name = ").Append(this.name).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<HelloArguments> Hello;
+            #region UserHelloArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserHelloArguments : WithUserArguments
+            {
+                public string name;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", name = ").Append(this.name).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserHelloArguments> UserHello;
+            #region KeyStateChangedArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class KeyStateChangedArguments
+            {
+                public int key;
+                public int state;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ key = ").Append(this.key).Append(", state = ").Append(this.state).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<KeyStateChangedArguments> KeyStateChanged;
+            #region UserKeyStateChangedArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserKeyStateChangedArguments : WithUserArguments
+            {
+                public int key;
+                public int state;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", key = ").Append(this.key).Append(", state = ").Append(this.state).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserKeyStateChangedArguments> UserKeyStateChanged;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -249,6 +415,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.Server_Hello, e => { Server_Hello(new Server_HelloArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                             { Messages.Server_UserJoined, e => { Server_UserJoined(new Server_UserJoinedArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                             { Messages.Server_UserLeft, e => { Server_UserLeft(new Server_UserLeftArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
+                            { Messages.Hello, e => { Hello(new HelloArguments { name = e.GetString(0) }); } },
+                            { Messages.UserHello, e => { UserHello(new UserHelloArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
+                            { Messages.KeyStateChanged, e => { KeyStateChanged(new KeyStateChangedArguments { key = e.GetInt32(0), state = e.GetInt32(1) }); } },
+                            { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), key = e.GetInt32(1), state = e.GetInt32(2) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -256,6 +426,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.Server_Hello, e => Server_Hello },
                             { Messages.Server_UserJoined, e => Server_UserJoined },
                             { Messages.Server_UserLeft, e => Server_UserLeft },
+                            { Messages.Hello, e => Hello },
+                            { Messages.UserHello, e => UserHello },
+                            { Messages.KeyStateChanged, e => KeyStateChanged },
+                            { Messages.UserKeyStateChanged, e => UserKeyStateChanged },
                         }
                 ;
             }
@@ -343,9 +517,41 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.Server_UserLeft(v));
             }
 
+            public event Action<RemoteEvents.HelloArguments> Hello;
+            void IMessages.Hello(string name)
+            {
+                if(Hello == null) return;
+                var v = new RemoteEvents.HelloArguments { name = name };
+                this.VirtualLatency(() => this.Hello(v));
+            }
+
+            public event Action<RemoteEvents.UserHelloArguments> UserHello;
+            void IMessages.UserHello(int user, string name)
+            {
+                if(UserHello == null) return;
+                var v = new RemoteEvents.UserHelloArguments { user = user, name = name };
+                this.VirtualLatency(() => this.UserHello(v));
+            }
+
+            public event Action<RemoteEvents.KeyStateChangedArguments> KeyStateChanged;
+            void IMessages.KeyStateChanged(int key, int state)
+            {
+                if(KeyStateChanged == null) return;
+                var v = new RemoteEvents.KeyStateChangedArguments { key = key, state = state };
+                this.VirtualLatency(() => this.KeyStateChanged(v));
+            }
+
+            public event Action<RemoteEvents.UserKeyStateChangedArguments> UserKeyStateChanged;
+            void IMessages.UserKeyStateChanged(int user, int key, int state)
+            {
+                if(UserKeyStateChanged == null) return;
+                var v = new RemoteEvents.UserKeyStateChangedArguments { user = user, key = key, state = state };
+                this.VirtualLatency(() => this.UserKeyStateChanged(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 6.12.2008 9:26:28
+// 18.12.2008 14:41:36

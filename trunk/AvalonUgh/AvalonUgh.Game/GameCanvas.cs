@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using System.Windows.Controls;
-using ScriptCoreLib;
-using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using AvalonUgh.Code.Editor;
-using AvalonUgh.Code;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Code;
 using AvalonUgh.Code.Dialogs;
-using System.Windows.Input;
+using AvalonUgh.Code.Editor;
 using AvalonUgh.Code.Input;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Game.Shared
 {
@@ -28,7 +30,10 @@ namespace AvalonUgh.Game.Shared
 		public GameConsole Console { get; set; }
 		public Canvas TouchContainer { get; set; }
 		public PlayerInput DefaultPlayerInput { get; set; }
+		public PlayerInfo DefaultPlayer { get; set; }
 
+		public readonly BindingList<PlayerInfo> Players = new BindingList<PlayerInfo>();
+ 
 		public GameCanvas()
 		{
 			Width = DefaultWidth;
@@ -168,9 +173,9 @@ namespace AvalonUgh.Game.Shared
 					this.Focusable = true;
 					this.Focus();
 
-					var DefaultPlayerInput = new PlayerInput
+					this.DefaultPlayerInput = new PlayerInput
 					{
-						Keyboard =  new KeyboardInput(
+						Keyboard = new KeyboardInput(
 							new KeyboardInput.Arguments
 							{
 								Left = Key.Left,
@@ -186,12 +191,50 @@ namespace AvalonUgh.Game.Shared
 						Touch = View.TouchInput
 					};
 
+					Players.ForEachNewItem(
+						NewPlayer =>
+						{
+							// here we will need to create an actor
+							// or the vehicle where he is in?
+							Console.WriteLine("new player added: " + NewPlayer);
+
+							// lets create a dummy actor
+							NewPlayer.Actor = new Actor.man0(Zoom)
+							{
+								Animation = Actor.AnimationEnum.Panic,
+								RespectPlatforms = true,
+								Level = Level,
+								CanBeHitByVehicle = false
+							};
+
+							// we are not inside a vehicle
+							// nor are we inside a cave
+							NewPlayer.InputRegistrant = NewPlayer.Actor;
+							
+							NewPlayer.Actor.MoveTo(DefaultWidth / 2, DefaultHeight / 2);
+
+							NewPlayer.Actor.AttachContainerTo(View.Entities);
+							Level.KnownActors.Add(NewPlayer.Actor);
+						}
+					);
+
+					DefaultPlayer = new PlayerInfo
+					{
+						Name = "Local Joe",
+						Input = this.DefaultPlayerInput
+					};
+
+				
+					// we are adding local player to the system
+					Players.Add(DefaultPlayer);
+
 					DefaultPlayerInput.Enter +=
 						delegate
 						{
 							Console.WriteLine("you pressed enter");
 						};
 
+					
 					// at this time we should add a local player
 
 					TouchContainer.MouseLeftButtonDown +=
@@ -203,8 +246,28 @@ namespace AvalonUgh.Game.Shared
 					// toolbar is on top of our touch container
 					et.AttachContainerTo(this);
 
+					// activate the game loop
+					(1000 / 40).AtInterval(
+						delegate
+						{
+							// we could pause the game here
+							foreach (var p in Players)
+							{
+								p.AddAcceleration();
+							}
+
+							Level.Physics.Apply();
+
+						}
+					);
+
+
+
 				}
 			);
 		}
+
+
+
 	}
 }
