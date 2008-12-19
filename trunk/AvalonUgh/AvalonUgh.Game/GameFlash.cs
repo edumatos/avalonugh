@@ -17,6 +17,8 @@ namespace AvalonUgh.Game.ActionScript
 	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight)]
 	public class GameFlash : Sprite
 	{
+		public static string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
+
 		public GameFlash()
 		{
 			// spawn the wpf control

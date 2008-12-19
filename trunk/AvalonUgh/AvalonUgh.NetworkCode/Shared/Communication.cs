@@ -22,8 +22,15 @@ namespace AvalonUgh.NetworkCode.Shared
 			void KeyStateChanged(int key, int state);
 			void UserKeyStateChanged(int user, int key, int state);
 
-			void TeleportTo(double x, double y, double vx, double vy);
-			void UserTeleportTo(int user, double x, double y, double vx, double vy);
+			void TeleportTo(int local, double x, double y, double vx, double vy);
+			void UserTeleportTo(int user, int local, double x, double y, double vx, double vy);
+
+			void LocalPlayers_Increase();
+			void UserLocalPlayers_Increase(int user);
+
+			void LocalPlayers_Decrease();
+			void UserLocalPlayers_Decrease(int user);
+
 		}
 
 

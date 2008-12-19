@@ -28,6 +28,10 @@ namespace AvalonUgh.NetworkCode.Shared
             UserKeyStateChanged,
             TeleportTo,
             UserTeleportTo,
+            LocalPlayers_Increase,
+            UserLocalPlayers_Increase,
+            LocalPlayers_Decrease,
+            UserLocalPlayers_Decrease,
         }
         #endregion
 
@@ -52,6 +56,10 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserKeyStateChangedArguments> UserKeyStateChanged;
             event Action<RemoteEvents.TeleportToArguments> TeleportTo;
             event Action<RemoteEvents.UserTeleportToArguments> UserTeleportTo;
+            event Action<RemoteEvents.LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
+            event Action<RemoteEvents.UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
+            event Action<RemoteEvents.LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
+            event Action<RemoteEvents.UserLocalPlayers_DecreaseArguments> UserLocalPlayers_Decrease;
         }
         #endregion
 
@@ -169,31 +177,87 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void TeleportTo(double x, double y, double vx, double vy)
+            public void TeleportTo(int local, double x, double y, double vx, double vy)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.TeleportTo, args = new object[] { x, y, vx, vy } });
+                    Send(new SendArguments { i = Messages.TeleportTo, args = new object[] { local, x, y, vx, vy } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.TeleportTo(x, y, vx, vy);
+                        Target__.TeleportTo(local, x, y, vx, vy);
                     }
                 }
             }
-            public void UserTeleportTo(int user, double x, double y, double vx, double vy)
+            public void UserTeleportTo(int user, int local, double x, double y, double vx, double vy)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserTeleportTo, args = new object[] { user, x, y, vx, vy } });
+                    Send(new SendArguments { i = Messages.UserTeleportTo, args = new object[] { user, local, x, y, vx, vy } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserTeleportTo(user, x, y, vx, vy);
+                        Target__.UserTeleportTo(user, local, x, y, vx, vy);
+                    }
+                }
+            }
+            public void LocalPlayers_Increase()
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.LocalPlayers_Increase, args = new object[] {  } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.LocalPlayers_Increase();
+                    }
+                }
+            }
+            public void UserLocalPlayers_Increase(int user)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserLocalPlayers_Increase, args = new object[] { user } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserLocalPlayers_Increase(user);
+                    }
+                }
+            }
+            public void LocalPlayers_Decrease()
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.LocalPlayers_Decrease, args = new object[] {  } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.LocalPlayers_Decrease();
+                    }
+                }
+            }
+            public void UserLocalPlayers_Decrease(int user)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserLocalPlayers_Decrease, args = new object[] { user } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserLocalPlayers_Decrease(user);
                     }
                 }
             }
@@ -254,6 +318,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.Hello += this.UserHello;
                     value.KeyStateChanged += this.UserKeyStateChanged;
                     value.TeleportTo += this.UserTeleportTo;
+                    value.LocalPlayers_Increase += this.UserLocalPlayers_Increase;
+                    value.LocalPlayers_Decrease += this.UserLocalPlayers_Decrease;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -261,6 +327,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.Hello -= this.UserHello;
                     value.KeyStateChanged -= this.UserKeyStateChanged;
                     value.TeleportTo -= this.UserTeleportTo;
+                    value.LocalPlayers_Increase -= this.UserLocalPlayers_Increase;
+                    value.LocalPlayers_Decrease -= this.UserLocalPlayers_Decrease;
                 }
                 #endregion
 
@@ -275,7 +343,15 @@ namespace AvalonUgh.NetworkCode.Shared
                 }
                 public void UserTeleportTo(TeleportToArguments e)
                 {
-                    Target.UserTeleportTo(this.user, e.x, e.y, e.vx, e.vy);
+                    Target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                }
+                public void UserLocalPlayers_Increase(LocalPlayers_IncreaseArguments e)
+                {
+                    Target.UserLocalPlayers_Increase(this.user);
+                }
+                public void UserLocalPlayers_Decrease(LocalPlayers_DecreaseArguments e)
+                {
+                    Target.UserLocalPlayers_Decrease(this.user);
                 }
                 #endregion
             }
@@ -303,13 +379,29 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserKeyStateChanged(this.user, e.key, e.state);
                 }
-                public void UserTeleportTo(double x, double y, double vx, double vy)
+                public void UserTeleportTo(int local, double x, double y, double vx, double vy)
                 {
-                    this.Target.UserTeleportTo(this.user, x, y, vx, vy);
+                    this.Target.UserTeleportTo(this.user, local, x, y, vx, vy);
                 }
                 public void UserTeleportTo(UserTeleportToArguments e)
                 {
-                    this.Target.UserTeleportTo(this.user, e.x, e.y, e.vx, e.vy);
+                    this.Target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                }
+                public void UserLocalPlayers_Increase()
+                {
+                    this.Target.UserLocalPlayers_Increase(this.user);
+                }
+                public void UserLocalPlayers_Increase(UserLocalPlayers_IncreaseArguments e)
+                {
+                    this.Target.UserLocalPlayers_Increase(this.user);
+                }
+                public void UserLocalPlayers_Decrease()
+                {
+                    this.Target.UserLocalPlayers_Decrease(this.user);
+                }
+                public void UserLocalPlayers_Decrease(UserLocalPlayers_DecreaseArguments e)
+                {
+                    this.Target.UserLocalPlayers_Decrease(this.user);
                 }
                 #endregion
             }
@@ -327,6 +419,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserHello += this.UserHello;
                     value.UserKeyStateChanged += this.UserKeyStateChanged;
                     value.UserTeleportTo += this.UserTeleportTo;
+                    value.UserLocalPlayers_Increase += this.UserLocalPlayers_Increase;
+                    value.UserLocalPlayers_Decrease += this.UserLocalPlayers_Decrease;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -334,6 +428,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserHello -= this.UserHello;
                     value.UserKeyStateChanged -= this.UserKeyStateChanged;
                     value.UserTeleportTo -= this.UserTeleportTo;
+                    value.UserLocalPlayers_Increase -= this.UserLocalPlayers_Increase;
+                    value.UserLocalPlayers_Decrease -= this.UserLocalPlayers_Decrease;
                 }
                 #endregion
 
@@ -354,7 +450,19 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserTeleportTo(this.user, e.x, e.y, e.vx, e.vy);
+                    _target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                }
+                public void UserLocalPlayers_Increase(UserLocalPlayers_IncreaseArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserLocalPlayers_Increase(this.user);
+                }
+                public void UserLocalPlayers_Decrease(UserLocalPlayers_DecreaseArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserLocalPlayers_Decrease(this.user);
                 }
                 #endregion
             }
@@ -467,6 +575,7 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class TeleportToArguments
             {
+                public int local;
                 public double x;
                 public double y;
                 public double vx;
@@ -474,7 +583,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                    return new StringBuilder().Append("{ local = ").Append(this.local).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
                 }
             }
             #endregion
@@ -484,6 +593,7 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class UserTeleportToArguments : WithUserArguments
             {
+                public int local;
                 public double x;
                 public double y;
                 public double vx;
@@ -491,11 +601,63 @@ namespace AvalonUgh.NetworkCode.Shared
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", local = ").Append(this.local).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
                 }
             }
             #endregion
             public event Action<UserTeleportToArguments> UserTeleportTo;
+            #region LocalPlayers_IncreaseArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class LocalPlayers_IncreaseArguments
+            {
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().ToString();
+                }
+            }
+            #endregion
+            public event Action<LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
+            #region UserLocalPlayers_IncreaseArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserLocalPlayers_IncreaseArguments : WithUserArguments
+            {
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
+            #region LocalPlayers_DecreaseArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class LocalPlayers_DecreaseArguments
+            {
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().ToString();
+                }
+            }
+            #endregion
+            public event Action<LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
+            #region UserLocalPlayers_DecreaseArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserLocalPlayers_DecreaseArguments : WithUserArguments
+            {
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserLocalPlayers_DecreaseArguments> UserLocalPlayers_Decrease;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -507,8 +669,12 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserHello, e => { UserHello(new UserHelloArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                             { Messages.KeyStateChanged, e => { KeyStateChanged(new KeyStateChangedArguments { key = e.GetInt32(0), state = e.GetInt32(1) }); } },
                             { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), key = e.GetInt32(1), state = e.GetInt32(2) }); } },
-                            { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { x = e.GetDouble(0), y = e.GetDouble(1), vx = e.GetDouble(2), vy = e.GetDouble(3) }); } },
-                            { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
+                            { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { local = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
+                            { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), local = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
+                            { Messages.LocalPlayers_Increase, e => { LocalPlayers_Increase(new LocalPlayers_IncreaseArguments {  }); } },
+                            { Messages.UserLocalPlayers_Increase, e => { UserLocalPlayers_Increase(new UserLocalPlayers_IncreaseArguments { user = e.GetInt32(0) }); } },
+                            { Messages.LocalPlayers_Decrease, e => { LocalPlayers_Decrease(new LocalPlayers_DecreaseArguments {  }); } },
+                            { Messages.UserLocalPlayers_Decrease, e => { UserLocalPlayers_Decrease(new UserLocalPlayers_DecreaseArguments { user = e.GetInt32(0) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -522,6 +688,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserKeyStateChanged, e => UserKeyStateChanged },
                             { Messages.TeleportTo, e => TeleportTo },
                             { Messages.UserTeleportTo, e => UserTeleportTo },
+                            { Messages.LocalPlayers_Increase, e => LocalPlayers_Increase },
+                            { Messages.UserLocalPlayers_Increase, e => UserLocalPlayers_Increase },
+                            { Messages.LocalPlayers_Decrease, e => LocalPlayers_Decrease },
+                            { Messages.UserLocalPlayers_Decrease, e => UserLocalPlayers_Decrease },
                         }
                 ;
             }
@@ -642,19 +812,51 @@ namespace AvalonUgh.NetworkCode.Shared
             }
 
             public event Action<RemoteEvents.TeleportToArguments> TeleportTo;
-            void IMessages.TeleportTo(double x, double y, double vx, double vy)
+            void IMessages.TeleportTo(int local, double x, double y, double vx, double vy)
             {
                 if(TeleportTo == null) return;
-                var v = new RemoteEvents.TeleportToArguments { x = x, y = y, vx = vx, vy = vy };
+                var v = new RemoteEvents.TeleportToArguments { local = local, x = x, y = y, vx = vx, vy = vy };
                 this.VirtualLatency(() => this.TeleportTo(v));
             }
 
             public event Action<RemoteEvents.UserTeleportToArguments> UserTeleportTo;
-            void IMessages.UserTeleportTo(int user, double x, double y, double vx, double vy)
+            void IMessages.UserTeleportTo(int user, int local, double x, double y, double vx, double vy)
             {
                 if(UserTeleportTo == null) return;
-                var v = new RemoteEvents.UserTeleportToArguments { user = user, x = x, y = y, vx = vx, vy = vy };
+                var v = new RemoteEvents.UserTeleportToArguments { user = user, local = local, x = x, y = y, vx = vx, vy = vy };
                 this.VirtualLatency(() => this.UserTeleportTo(v));
+            }
+
+            public event Action<RemoteEvents.LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
+            void IMessages.LocalPlayers_Increase()
+            {
+                if(LocalPlayers_Increase == null) return;
+                var v = new RemoteEvents.LocalPlayers_IncreaseArguments {  };
+                this.VirtualLatency(() => this.LocalPlayers_Increase(v));
+            }
+
+            public event Action<RemoteEvents.UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
+            void IMessages.UserLocalPlayers_Increase(int user)
+            {
+                if(UserLocalPlayers_Increase == null) return;
+                var v = new RemoteEvents.UserLocalPlayers_IncreaseArguments { user = user };
+                this.VirtualLatency(() => this.UserLocalPlayers_Increase(v));
+            }
+
+            public event Action<RemoteEvents.LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
+            void IMessages.LocalPlayers_Decrease()
+            {
+                if(LocalPlayers_Decrease == null) return;
+                var v = new RemoteEvents.LocalPlayers_DecreaseArguments {  };
+                this.VirtualLatency(() => this.LocalPlayers_Decrease(v));
+            }
+
+            public event Action<RemoteEvents.UserLocalPlayers_DecreaseArguments> UserLocalPlayers_Decrease;
+            void IMessages.UserLocalPlayers_Decrease(int user)
+            {
+                if(UserLocalPlayers_Decrease == null) return;
+                var v = new RemoteEvents.UserLocalPlayers_DecreaseArguments { user = user };
+                this.VirtualLatency(() => this.UserLocalPlayers_Decrease(v));
             }
 
         }
@@ -662,4 +864,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 19.12.2008 8:16:24
+// 19.12.2008 21:02:09
