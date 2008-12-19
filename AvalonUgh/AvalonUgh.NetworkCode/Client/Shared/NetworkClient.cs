@@ -85,6 +85,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Content.Console.WriteLine("Server_UserJoined " + e);
 
 					this.Messages.UserHello(e.user, this.Content.DefaultPlayer.Name);
+					this.Messages.UserTeleportTo(e.user,
+						this.Content.DefaultPlayer.Actor.X,
+						this.Content.DefaultPlayer.Actor.Y,
+						this.Content.DefaultPlayer.Actor.VelocityX,
+						this.Content.DefaultPlayer.Actor.VelocityY
+					);
 
 					AddRemotePlayer(e.user, e.name);
 				};
@@ -92,13 +98,24 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Events.Server_UserLeft +=
 				e =>
 				{
-					Content.Console.WriteLine("Server_UserLeft " + e);
+					var c = this[e.user];
+
+					Content.Console.WriteLine("Server_UserLeft " + e + " - " + c);
+
+					this.Content.Players.Remove(c);
 				};
 
 			this.Events.UserHello +=
 				e =>
 				{
 					Content.Console.WriteLine("UserHello " + e);
+
+					this.Messages.UserTeleportTo(e.user,
+						this.Content.DefaultPlayer.Actor.X,
+						this.Content.DefaultPlayer.Actor.Y,
+						this.Content.DefaultPlayer.Actor.VelocityX,
+						this.Content.DefaultPlayer.Actor.VelocityY
+					);
 
 					AddRemotePlayer(e.user, e.name);
 				};
@@ -109,19 +126,40 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					var c = this[e];
 
-					Content.Console.WriteLine("UserKeyStateChanged " + e + " - " + this[e]);
+					Content.Console.WriteLine("UserKeyStateChanged " + e + " - " + c);
 
 					c.Input.Keyboard.KeyState[(Key)e.key] =  Convert.ToBoolean(e.state);
 				};
+
+			this.Events.UserTeleportTo +=
+				e =>
+				{
+					var c = this[e];
+
+					Content.Console.WriteLine("UserTeleportTo " + e + " - " + c);
+
+					c.Actor.MoveTo(e.x, e.y);
+					c.Actor.VelocityX = e.vx;
+					c.Actor.VelocityY = e.vy;
+				};
+		}
+
+		public PlayerInfo this[int user]
+		{
+			get
+			{
+				return this.Content.Players.First(k => user == k.Identity);
+			}
 		}
 
 		public PlayerInfo this[Communication.RemoteEvents.WithUserArguments u]
 		{
 			get
 			{
-				return this.Content.Players.First(k => u.user == k.Identity);
+				return this[u.user];
 			}
 		}
+
 
 		public PlayerInfo AddRemotePlayer(int user, string name)
 		{

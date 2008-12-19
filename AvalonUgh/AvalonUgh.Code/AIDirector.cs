@@ -12,6 +12,7 @@ namespace AvalonUgh.Code
 	[Script]
 	public class AIDirector
 	{
+		
 		public static void WalkActorToTheCaveAndEnter(Actor a, Cave c, Action done)
 		{
 			a.AIInputEnabled = true;

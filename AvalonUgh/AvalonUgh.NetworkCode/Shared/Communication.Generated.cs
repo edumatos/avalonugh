@@ -26,6 +26,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserHello,
             KeyStateChanged,
             UserKeyStateChanged,
+            TeleportTo,
+            UserTeleportTo,
         }
         #endregion
 
@@ -48,6 +50,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserHelloArguments> UserHello;
             event Action<RemoteEvents.KeyStateChangedArguments> KeyStateChanged;
             event Action<RemoteEvents.UserKeyStateChangedArguments> UserKeyStateChanged;
+            event Action<RemoteEvents.TeleportToArguments> TeleportTo;
+            event Action<RemoteEvents.UserTeleportToArguments> UserTeleportTo;
         }
         #endregion
 
@@ -165,6 +169,34 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void TeleportTo(double x, double y, double vx, double vy)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.TeleportTo, args = new object[] { x, y, vx, vy } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.TeleportTo(x, y, vx, vy);
+                    }
+                }
+            }
+            public void UserTeleportTo(int user, double x, double y, double vx, double vy)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserTeleportTo, args = new object[] { user, x, y, vx, vy } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserTeleportTo(user, x, y, vx, vy);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -221,12 +253,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     value.Hello += this.UserHello;
                     value.KeyStateChanged += this.UserKeyStateChanged;
+                    value.TeleportTo += this.UserTeleportTo;
                 }
 
                 public void RemoveDelegates(IEvents value)
                 {
                     value.Hello -= this.UserHello;
                     value.KeyStateChanged -= this.UserKeyStateChanged;
+                    value.TeleportTo -= this.UserTeleportTo;
                 }
                 #endregion
 
@@ -238,6 +272,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserKeyStateChanged(KeyStateChangedArguments e)
                 {
                     Target.UserKeyStateChanged(this.user, e.key, e.state);
+                }
+                public void UserTeleportTo(TeleportToArguments e)
+                {
+                    Target.UserTeleportTo(this.user, e.x, e.y, e.vx, e.vy);
                 }
                 #endregion
             }
@@ -265,6 +303,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserKeyStateChanged(this.user, e.key, e.state);
                 }
+                public void UserTeleportTo(double x, double y, double vx, double vy)
+                {
+                    this.Target.UserTeleportTo(this.user, x, y, vx, vy);
+                }
+                public void UserTeleportTo(UserTeleportToArguments e)
+                {
+                    this.Target.UserTeleportTo(this.user, e.x, e.y, e.vx, e.vy);
+                }
                 #endregion
             }
             #endregion
@@ -280,12 +326,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     value.UserHello += this.UserHello;
                     value.UserKeyStateChanged += this.UserKeyStateChanged;
+                    value.UserTeleportTo += this.UserTeleportTo;
                 }
 
                 public void RemoveDelegates(IEvents value)
                 {
                     value.UserHello -= this.UserHello;
                     value.UserKeyStateChanged -= this.UserKeyStateChanged;
+                    value.UserTeleportTo -= this.UserTeleportTo;
                 }
                 #endregion
 
@@ -301,6 +349,12 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserKeyStateChanged(this.user, e.key, e.state);
+                }
+                public void UserTeleportTo(UserTeleportToArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserTeleportTo(this.user, e.x, e.y, e.vx, e.vy);
                 }
                 #endregion
             }
@@ -408,6 +462,40 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserKeyStateChangedArguments> UserKeyStateChanged;
+            #region TeleportToArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class TeleportToArguments
+            {
+                public double x;
+                public double y;
+                public double vx;
+                public double vy;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<TeleportToArguments> TeleportTo;
+            #region UserTeleportToArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserTeleportToArguments : WithUserArguments
+            {
+                public double x;
+                public double y;
+                public double vx;
+                public double vy;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserTeleportToArguments> UserTeleportTo;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -419,6 +507,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserHello, e => { UserHello(new UserHelloArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                             { Messages.KeyStateChanged, e => { KeyStateChanged(new KeyStateChangedArguments { key = e.GetInt32(0), state = e.GetInt32(1) }); } },
                             { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), key = e.GetInt32(1), state = e.GetInt32(2) }); } },
+                            { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { x = e.GetDouble(0), y = e.GetDouble(1), vx = e.GetDouble(2), vy = e.GetDouble(3) }); } },
+                            { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -430,6 +520,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserHello, e => UserHello },
                             { Messages.KeyStateChanged, e => KeyStateChanged },
                             { Messages.UserKeyStateChanged, e => UserKeyStateChanged },
+                            { Messages.TeleportTo, e => TeleportTo },
+                            { Messages.UserTeleportTo, e => UserTeleportTo },
                         }
                 ;
             }
@@ -549,9 +641,25 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserKeyStateChanged(v));
             }
 
+            public event Action<RemoteEvents.TeleportToArguments> TeleportTo;
+            void IMessages.TeleportTo(double x, double y, double vx, double vy)
+            {
+                if(TeleportTo == null) return;
+                var v = new RemoteEvents.TeleportToArguments { x = x, y = y, vx = vx, vy = vy };
+                this.VirtualLatency(() => this.TeleportTo(v));
+            }
+
+            public event Action<RemoteEvents.UserTeleportToArguments> UserTeleportTo;
+            void IMessages.UserTeleportTo(int user, double x, double y, double vx, double vy)
+            {
+                if(UserTeleportTo == null) return;
+                var v = new RemoteEvents.UserTeleportToArguments { user = user, x = x, y = y, vx = vx, vy = vy };
+                this.VirtualLatency(() => this.UserTeleportTo(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 18.12.2008 14:41:36
+// 19.12.2008 8:16:24

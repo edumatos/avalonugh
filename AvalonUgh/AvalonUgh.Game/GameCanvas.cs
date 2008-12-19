@@ -211,10 +211,35 @@ namespace AvalonUgh.Game.Shared
 							// nor are we inside a cave
 							NewPlayer.InputRegistrant = NewPlayer.Actor;
 							
-							NewPlayer.Actor.MoveTo(DefaultWidth / 2, DefaultHeight / 2);
+							// where are the spawnpoints in this level?
+							NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 2);
 
 							NewPlayer.Actor.AttachContainerTo(View.Entities);
 							Level.KnownActors.Add(NewPlayer.Actor);
+						}
+					);
+
+					Players.ForEachItemDeleted(
+						DeletedPlayer =>
+						{
+							Console.WriteLine("player deleted: " + DeletedPlayer);
+
+							if (DeletedPlayer.Actor.VelocityY == 0)
+							{
+								// we can perform the walk out to the horizon
+								DeletedPlayer.Actor.PlayAnimation(Actor.AnimationEnum.CaveEnter,
+									delegate
+									{
+										DeletedPlayer.Actor.Dispose();
+										Level.KnownActors.Remove(DeletedPlayer.Actor);
+									}
+								);
+
+								return;
+							}
+
+							DeletedPlayer.Actor.Dispose();
+							Level.KnownActors.Remove(DeletedPlayer.Actor);
 						}
 					);
 

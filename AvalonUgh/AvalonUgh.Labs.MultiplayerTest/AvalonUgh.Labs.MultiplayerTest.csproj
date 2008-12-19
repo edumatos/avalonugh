@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interop\wininet.cs" />
     <Compile Include="Launcher.cs">
       <SubType>Form</SubType>
     </Compile>
