@@ -29,13 +29,96 @@ namespace AvalonUgh.Game.Shared
 
 		public GameConsole Console { get; set; }
 		public Canvas TouchContainer { get; set; }
-		public PlayerInput DefaultPlayerInput { get; set; }
-		public PlayerInfo DefaultPlayer { get; set; }
+
+
 
 		public readonly BindingList<PlayerInfo> Players = new BindingList<PlayerInfo>();
- 
+
+		/// <summary>
+		/// This will reflect the clients name and number,
+		/// We could be in control of none or multiple actors or vehicles
+		/// </summary>
+		public readonly PlayerIdentity LocalIdentity = new PlayerIdentity { Name = "LocalPlayer" };
+
+
+
+		public readonly Stack<PlayerInput> AvailableInputs;
+
 		public GameCanvas()
 		{
+			#region AvailableInputs
+			this.AvailableInputs = new Stack<PlayerInput>();
+
+			this.AvailableInputs.Push(
+				new PlayerInput
+				{
+					Keyboard =
+						new KeyboardInput(
+							new KeyboardInput.Arguments
+							{
+								Left = Key.J,
+								Right = Key.L,
+								Up = Key.I,
+								Down = Key.K,
+								Drop = Key.U,
+								Enter = Key.O,
+
+								InputControl = this,
+							}
+						)
+				}
+			);
+
+			this.AvailableInputs.Push(
+				new PlayerInput
+				{
+					Keyboard = new KeyboardInput(
+						new KeyboardInput.Arguments
+						{
+							Left = Key.A,
+							Right = Key.D,
+							Up = Key.W,
+							Down = Key.S,
+							Drop = Key.Q,
+							Enter = Key.E,
+
+							InputControl = this,
+						}
+					),
+					// no touch - we do not have multitouch yet
+					//Touch = View.TouchInput
+				}
+			);
+
+			this.AvailableInputs.Push(
+				new PlayerInput
+				{
+					Keyboard =
+						new KeyboardInput(
+							new KeyboardInput.Arguments
+							{
+								Left = Key.Left,
+								Right = Key.Right,
+								Up = Key.Up,
+								Down = Key.Down,
+								Drop = Key.Space,
+								Enter = Key.Enter,
+
+								InputControl = this,
+							}
+						)
+				}
+			);
+			#endregion
+
+			#region Locals
+
+			this.LocalIdentity.Locals.ForEachNewItem(i => Players.Add(i));
+			this.LocalIdentity.Locals.ForEachItemDeleted(i => Players.Remove(i));
+
+			#endregion
+
+
 			Width = DefaultWidth;
 			Height = DefaultHeight;
 
@@ -105,12 +188,12 @@ namespace AvalonUgh.Game.Shared
 					}.MoveContainerTo(0, DefaultHeight / 2 - 50).AttachContainerTo(this);
 					#endregion
 
-				
 
 
-		
 
-			
+
+
+
 					this.Console = con;
 
 					this.KeyUp +=
@@ -173,23 +256,6 @@ namespace AvalonUgh.Game.Shared
 					this.Focusable = true;
 					this.Focus();
 
-					this.DefaultPlayerInput = new PlayerInput
-					{
-						Keyboard = new KeyboardInput(
-							new KeyboardInput.Arguments
-							{
-								Left = Key.Left,
-								Right = Key.Right,
-								Up = Key.Up,
-								Down = Key.Down,
-								Drop = Key.Space,
-								Enter = Key.Enter,
-
-								InputControl = this,
-							}
-						),
-						Touch = View.TouchInput
-					};
 
 					Players.ForEachNewItem(
 						NewPlayer =>
@@ -210,7 +276,7 @@ namespace AvalonUgh.Game.Shared
 							// we are not inside a vehicle
 							// nor are we inside a cave
 							NewPlayer.InputRegistrant = NewPlayer.Actor;
-							
+
 							// where are the spawnpoints in this level?
 							NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 2);
 
@@ -243,25 +309,71 @@ namespace AvalonUgh.Game.Shared
 						}
 					);
 
-					DefaultPlayer = new PlayerInfo
-					{
-						Name = "Local Joe",
-						Input = this.DefaultPlayerInput
-					};
-
 				
-					// we are adding local player to the system
-					Players.Add(DefaultPlayer);
 
-					DefaultPlayerInput.Enter +=
+					Action Locals_Increase =
 						delegate
 						{
-							Console.WriteLine("you pressed enter");
+							// do we have any predefined key sets to allow 
+							// another player?
+							if (this.AvailableInputs.Count == 0)
+								return;
+
+							var i = this.AvailableInputs.Pop();
+
+							// the first player can be controlled by
+							// touch input and if we had multitouch so would others
+							if (this.LocalIdentity.Locals.Count == 0)
+								i.Touch = View.TouchInput;
+
+							var p = new PlayerInfo
+							{
+								Identity = this.LocalIdentity,
+								Input = i,
+							};
+
+							// add this new player to the list
+							// thus making it also visible
+							this.LocalIdentity.Locals.Add(p);
 						};
 
-					
-					// at this time we should add a local player
+					Action Locals_Decrase =
+						delegate
+						{
+							// we are going to remove a local player
 
+							// are we playerless already?
+							if (this.LocalIdentity.Locals.Count == 0)
+								return;
+
+							var p = this.LocalIdentity.Locals.Last();
+							var i = p.Input;
+
+							i.Touch = null;
+
+							this.AvailableInputs.Push(i);
+							this.LocalIdentity.Locals.Remove(p);
+						};
+
+					this.KeyUp +=
+						(sender, args) =>
+						{
+							// are we observing or do we do 
+							// single player, two player or 3 player?
+
+							if (args.Key == Key.Insert)
+							{
+								Locals_Increase();
+							}
+
+							if (args.Key == Key.Delete)
+							{
+								Locals_Decrase();
+							}
+						};
+
+
+					// at this time we should add a local player
 					TouchContainer.MouseLeftButtonDown +=
 						(sender, args) =>
 						{

@@ -155,11 +155,14 @@ namespace AvalonUgh.Labs.Multiplayer
 
 
 			var b = new Button { Content = "Spawn client", Margin = new Thickness(16), Padding = new Thickness(4) }.AttachTo(this);
+			var b2 = new Button { Content = "Spawn 2 clients", Margin = new Thickness(16), Padding = new Thickness(4) }.AttachTo(this);
 			var b3 = new Button { Content = "Spawn 3 clients", Margin = new Thickness(16), Padding = new Thickness(4) }.AttachTo(this);
 
+			Canvas.SetTop(b2, 50);
 			Canvas.SetTop(b3, 100);
 
 			b.Click += delegate { SpawnClient(); };
+			b2.Click += delegate { SpawnClient(); SpawnClient(); };
 			b3.Click += delegate { SpawnClient(); SpawnClient(); SpawnClient(); };
 		}
 	}
