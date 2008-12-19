@@ -29,10 +29,11 @@
 		private void InitializeComponent()
 		{
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.ShowServerWindow = new System.Windows.Forms.CheckBox();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.button1 = new System.Windows.Forms.Button();
 			this.checkedListBox1 = new System.Windows.Forms.CheckedListBox();
-			this.ShowServerWindow = new System.Windows.Forms.CheckBox();
+			this.OfflineMode = new System.Windows.Forms.CheckBox();
 			this.panel1.SuspendLayout();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
@@ -41,12 +42,23 @@
 			// 
 			// panel1
 			// 
+			this.panel1.Controls.Add(this.OfflineMode);
 			this.panel1.Controls.Add(this.ShowServerWindow);
 			this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.panel1.Location = new System.Drawing.Point(4, 176);
+			this.panel1.Location = new System.Drawing.Point(4, 184);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(324, 27);
+			this.panel1.Size = new System.Drawing.Size(324, 65);
 			this.panel1.TabIndex = 1;
+			// 
+			// ShowServerWindow
+			// 
+			this.ShowServerWindow.AutoSize = true;
+			this.ShowServerWindow.Location = new System.Drawing.Point(32, 4);
+			this.ShowServerWindow.Name = "ShowServerWindow";
+			this.ShowServerWindow.Size = new System.Drawing.Size(129, 17);
+			this.ShowServerWindow.TabIndex = 0;
+			this.ShowServerWindow.Text = "Show Server Window";
+			this.ShowServerWindow.UseVisualStyleBackColor = true;
 			// 
 			// splitContainer1
 			// 
@@ -61,7 +73,7 @@
 			// splitContainer1.Panel2
 			// 
 			this.splitContainer1.Panel2.Controls.Add(this.checkedListBox1);
-			this.splitContainer1.Size = new System.Drawing.Size(324, 172);
+			this.splitContainer1.Size = new System.Drawing.Size(324, 180);
 			this.splitContainer1.SplitterDistance = 107;
 			this.splitContainer1.TabIndex = 2;
 			// 
@@ -70,7 +82,7 @@
 			this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.button1.Location = new System.Drawing.Point(0, 0);
 			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(107, 172);
+			this.button1.Size = new System.Drawing.Size(107, 180);
 			this.button1.TabIndex = 1;
 			this.button1.Text = "Go!";
 			this.button1.UseVisualStyleBackColor = true;
@@ -84,21 +96,21 @@
 			this.checkedListBox1.Size = new System.Drawing.Size(213, 169);
 			this.checkedListBox1.TabIndex = 0;
 			// 
-			// ShowServerWindow
+			// OfflineMode
 			// 
-			this.ShowServerWindow.AutoSize = true;
-			this.ShowServerWindow.Location = new System.Drawing.Point(32, 4);
-			this.ShowServerWindow.Name = "ShowServerWindow";
-			this.ShowServerWindow.Size = new System.Drawing.Size(129, 17);
-			this.ShowServerWindow.TabIndex = 0;
-			this.ShowServerWindow.Text = "Show Server Window";
-			this.ShowServerWindow.UseVisualStyleBackColor = true;
+			this.OfflineMode.AutoSize = true;
+			this.OfflineMode.Location = new System.Drawing.Point(32, 27);
+			this.OfflineMode.Name = "OfflineMode";
+			this.OfflineMode.Size = new System.Drawing.Size(99, 17);
+			this.OfflineMode.TabIndex = 1;
+			this.OfflineMode.Text = "IE Offline Mode";
+			this.OfflineMode.UseVisualStyleBackColor = true;
 			// 
 			// Launcher
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(332, 207);
+			this.ClientSize = new System.Drawing.Size(332, 253);
 			this.Controls.Add(this.splitContainer1);
 			this.Controls.Add(this.panel1);
 			this.Name = "Launcher";
@@ -122,6 +134,7 @@
 		private System.Windows.Forms.SplitContainer splitContainer1;
 		public System.Windows.Forms.Button button1;
 		public System.Windows.Forms.CheckedListBox checkedListBox1;
+		public System.Windows.Forms.CheckBox OfflineMode;
 
 	}
 }

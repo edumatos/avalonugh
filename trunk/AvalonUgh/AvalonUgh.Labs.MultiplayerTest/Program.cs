@@ -7,6 +7,7 @@ using System.Threading;
 using FlashTreasureHunt.ConsoleTest;
 using System.Windows.Forms;
 using System.Diagnostics;
+using AvalonUgh.Labs.MultiplayerTest.Interop;
 
 namespace AvalonUgh.Labs.MultiplayerTest
 {
@@ -150,6 +151,12 @@ namespace AvalonUgh.Labs.MultiplayerTest
 								);
 							}
 
+						};
+
+					x.OfflineMode.CheckedChanged +=
+						delegate
+						{
+							wininet.SetIEConnectionMode(x.OfflineMode.Checked);
 						};
 
 					//x.ShowServerWindow.Checked = true;
