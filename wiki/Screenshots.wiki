@@ -32,3 +32,5 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/026.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/027.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/028.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/029.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/030.png]
