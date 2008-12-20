@@ -21,8 +21,7 @@
                     
 # tree: 96
 # sign: 120;0
-P-P--P-P-BBBBBBP-P--
-| |  S-S---S-S-| |  
-| SS-| |   S-| SS-S-
+P-P--P-P-BBBBBBP-P--P--P-P--
+| |  S-S---S-S-| |  |  S-|
+| SS-| |   S-| SS-S-S-S| S-S
 ####################
-

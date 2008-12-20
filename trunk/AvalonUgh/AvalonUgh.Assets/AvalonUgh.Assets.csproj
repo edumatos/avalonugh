@@ -307,7 +307,6 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bonus0_1x2.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_4x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge1.png" />
   </ItemGroup>
   <ItemGroup>
@@ -477,6 +476,28 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\jump.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\place_tile.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform0_3x1.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform0_4x1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_2x3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform1_3x2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_2x1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge1_3x2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone3_2x3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
