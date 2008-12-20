@@ -308,6 +308,18 @@ namespace AvalonUgh.Game.Shared
 									(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
 								};
 
+							// every actor could act differently on gold collected
+							NewPlayer.Actor.GoldStash.ForEachNewItem(
+								gold =>
+								{
+									(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
+
+									View.ColorOverlay.Background = Brushes.Yellow;
+									View.ColorOverlay.Opacity = 0.7;
+									View.ColorOverlay.Show();
+									View.ColorOverlay.FadeOut();
+								}
+							);
 
 							NewPlayer.Actor.AttachContainerTo(View.Entities);
 							Level.KnownActors.Add(NewPlayer.Actor);

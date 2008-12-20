@@ -6,12 +6,36 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
 	public class GoldSelector
 	{
+		public static NameFormat ToolbarImage
+		{
+			get
+			{
+				return
+					new NameFormat
+					{
+						Path = Assets.Shared.KnownAssets.Path.Sprites,
+						Name = "gold",
+						Index = 0,
+						Extension = "png"
+					};
+			}
+		}
+
+		// clicking on the toolbar will shuffle between those sizes
+		// also while loading tiles the map will tell us which size to use
+		public static readonly View.SelectorInfo[] Sizes =
+			new[]
+			{
+				new Size_1x1()
+			};
+
 		[Script]
 		public class Size_1x1 : SpriteSelector
 		{
