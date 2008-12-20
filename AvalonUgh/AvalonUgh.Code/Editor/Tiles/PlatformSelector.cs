@@ -24,7 +24,10 @@ namespace AvalonUgh.Code.Editor.Tiles
 				new Size_Generic(4, 2, 1),
 				//new Size_Generic(2, 4, 1),
 				
-				new Size_Generic(3, 2, 1),
+				new Size_Generic(3, 1, 1),
+				new Size_Generic(4, 1, 1),
+
+				new Size_Generic(3, 2, 2),
 				new Size_Generic(2, 3, 1),
 
 				new Size_Generic(2, 1, 1),

@@ -243,6 +243,18 @@ namespace AvalonUgh.Game.Shared
 								// and under the transparent touch overlay
 								// when the view is in editor mode
 							}
+
+							if (args.Key == Key.F)
+								View.Flashlight.Visible = !View.Flashlight.Visible;
+
+							if (args.Key == Key.G)
+								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
+
+							if (args.Key == Key.T)
+							{
+								et.Container.ToggleVisible();
+								View.EditorSelectorRectangle.ToggleVisible();
+							}
 						};
 
 					Console.AttachContainerTo(this);
@@ -298,6 +310,9 @@ namespace AvalonUgh.Game.Shared
 								CanBeHitByVehicle = false
 							};
 
+							if (View.LocationTracker.Target == null)
+								View.LocationTracker.Target = NewPlayer.Actor;
+
 							// we are not inside a vehicle
 							// nor are we inside a cave
 							NewPlayer.InputRegistrant = NewPlayer.Actor;
@@ -333,6 +348,9 @@ namespace AvalonUgh.Game.Shared
 					Players.ForEachItemDeleted(
 						DeletedPlayer =>
 						{
+							if (View.LocationTracker.Target == DeletedPlayer.Actor)
+								View.LocationTracker.Target = null;
+
 							Console.WriteLine("ingame player deleted: " + DeletedPlayer);
 
 							if (DeletedPlayer.Actor.VelocityY == 0)
@@ -366,16 +384,20 @@ namespace AvalonUgh.Game.Shared
 
 							var i = this.AvailableInputs.Pop();
 
-							// the first player can be controlled by
-							// touch input and if we had multitouch so would others
-							if (this.LocalIdentity.Locals.Count == 0)
-								i.Touch = View.TouchInput;
-
 							var p = new PlayerInfo
 							{
 								Identity = this.LocalIdentity,
 								Input = i,
 							};
+
+							// the first player can be controlled by
+							// touch input and if we had multitouch so would others
+							if (this.LocalIdentity.Locals.Count == 0)
+							{
+								i.Touch = View.TouchInput;
+							}
+
+
 
 							// add this new player to the list
 							// thus making it also visible
@@ -400,6 +422,9 @@ namespace AvalonUgh.Game.Shared
 
 							this.AvailableInputs.Push(i);
 							this.LocalIdentity.Locals.Remove(p);
+
+							if (this.LocalIdentity.Locals.Count == 0)
+								this.View.LocationTracker.Target = null;
 
 							(Assets.Shared.KnownAssets.Path.Audio + "/gameover.mp3").PlaySound();
 						};
@@ -435,10 +460,9 @@ namespace AvalonUgh.Game.Shared
 					this.View.EditorSelectorApplied +=
 						(Selector, Position) =>
 						{
-							var Index = KnownSelectors.Index.Of(Selector);
+							Console.WriteLine("EditorSelectorApplied");
 
-							Console.WriteLine("EditorSelectorApplied " + Index);
-
+							(Assets.Shared.KnownAssets.Path.Audio + "/place_tile.mp3").PlaySound();
 						};
 
 					// activate the game loop
