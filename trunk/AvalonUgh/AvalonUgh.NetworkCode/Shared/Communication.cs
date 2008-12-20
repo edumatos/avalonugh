@@ -31,6 +31,9 @@ namespace AvalonUgh.NetworkCode.Shared
 			void LocalPlayers_Decrease();
 			void UserLocalPlayers_Decrease(int user);
 
+			void EditorSelector(int type, int size, int x, int y);
+			void UserEditorSelector(int user, int type, int size, int x, int y);
+
 		}
 
 

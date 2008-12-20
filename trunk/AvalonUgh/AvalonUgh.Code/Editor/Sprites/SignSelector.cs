@@ -19,26 +19,27 @@ namespace AvalonUgh.Code.Editor.Sprites
 			{
 				PrimitiveTileCountX = 1;
 				PrimitiveTileCountY = 1;
+			}
 
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
+				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
+
+
+				RemoveEntities(this, Level, Position);
+
+				// we should increment the old sign actually
 				var c = 0;
 
-				Invoke =
-					(View,  Position) =>
-					{
+				var v = new Sign(Level.Zoom)
+				{
+					Value = c % 6,
+					Selector = this
+				};
 
-						RemoveEntities(this, View.Level, Position);
-
-						c++;
-
-						new Sign(View.Level.Zoom)
-						{
-							Value = c % 6,
-							Selector = this
-						}.AddTo(View.Level.KnownSigns).MoveTo(
-							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
-							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
-						);
-					};
+				v.AddTo(Level.KnownSigns);
+				v.MoveTo(x, y);
 			}
 		}
 

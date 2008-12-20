@@ -21,6 +21,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 {
 
 	using TargetCanvas = AvalonUgh.Game.Shared.GameCanvas;
+	using AvalonUgh.Code.Editor;
 
 	[Script]
 	public class NetworkClient : VirtualClient, ISupportsContainer
@@ -135,7 +136,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					foreach (var p in this.Content.LocalIdentity.Locals)
 					{
 						this.Messages.UserLocalPlayers_Increase(e.user);
-						this.Messages.UserTeleportTo(e.user, 
+						this.Messages.UserTeleportTo(e.user,
 							p.IdentityLocal,
 							p.Actor.X,
 							p.Actor.Y,
@@ -309,6 +310,33 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			);
 			#endregion
 
+			#region EditorSelectorApplied
+
+			this.Content.View.EditorSelectorApplied +=
+				(Selector, Position) =>
+				{
+					var Index = KnownSelectors.Index.Of(Selector);
+
+					Content.Console.WriteLine("EditorSelectorApplied " + Index);
+
+					// unknown selector
+					if (Index.Type == -1)
+						return;
+
+					this.Messages.EditorSelector(Index.Type, Index.Size, Position.ContentX, Position.ContentY);
+				};
+
+			this.Events.UserEditorSelector +=
+				e =>
+				{
+					Content.Console.WriteLine("UserEditorSelector " + e);
+
+					var Selector = KnownSelectors.KnownTypes[e.type][e.size];
+					var Position = new View.SelectorPosition { ContentX = e.x, ContentY = e.y };
+
+					Selector.CreateTo(this.Content.View.Level, Position);
+				};
+			#endregion
 		}
 
 		public PlayerIdentity this[int user]

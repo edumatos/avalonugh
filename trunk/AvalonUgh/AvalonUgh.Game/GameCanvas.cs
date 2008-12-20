@@ -44,6 +44,10 @@ namespace AvalonUgh.Game.Shared
 
 		public readonly Stack<PlayerInput> AvailableInputs;
 
+		// what if we would allow multiple levels to be loaded at the same time?
+		// like some could enter a cave and such
+		public View View { get; set; }
+
 		public GameCanvas()
 		{
 			(AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3").Apply(
@@ -163,7 +167,7 @@ namespace AvalonUgh.Game.Shared
 
 					// in menu mode the view does not include status bar
 					// yet later in game we should adjust that
-					var View = new View(DefaultWidth, DefaultHeight, Level);
+					View = new View(DefaultWidth, DefaultHeight, Level);
 
 					View.AttachContainerTo(this);
 					View.EditorSelector = null;

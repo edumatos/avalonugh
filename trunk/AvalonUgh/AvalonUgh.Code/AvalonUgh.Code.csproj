@@ -137,6 +137,7 @@
     <Compile Include="Dialogs\GameConsole.cs" />
     <Compile Include="Dialogs\LevelIntroDialog.cs" />
     <Compile Include="Dialogs\TopFiveDialog.cs" />
+    <Compile Include="Editor\KnownSelectors.cs" />
     <Compile Include="Editor\Level.WaterHeight.cs" />
     <Compile Include="Editor\PlatformScan.cs" />
     <Compile Include="Editor\Sprites\Gold.cs" />
