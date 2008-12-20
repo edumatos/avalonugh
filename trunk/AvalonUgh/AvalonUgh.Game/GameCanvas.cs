@@ -262,7 +262,7 @@ namespace AvalonUgh.Game.Shared
 						{
 							// here we will need to create an actor
 							// or the vehicle where he is in?
-							Console.WriteLine("new player added: " + NewPlayer);
+							Console.WriteLine("new ingame player added: " + NewPlayer);
 
 							// lets create a dummy actor
 							NewPlayer.Actor = new Actor.man0(Zoom)
@@ -288,7 +288,7 @@ namespace AvalonUgh.Game.Shared
 					Players.ForEachItemDeleted(
 						DeletedPlayer =>
 						{
-							Console.WriteLine("player deleted: " + DeletedPlayer);
+							Console.WriteLine("ingame player deleted: " + DeletedPlayer);
 
 							if (DeletedPlayer.Actor.VelocityY == 0)
 							{

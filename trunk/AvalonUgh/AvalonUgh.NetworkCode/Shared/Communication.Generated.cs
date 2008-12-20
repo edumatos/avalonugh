@@ -149,31 +149,31 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void KeyStateChanged(int key, int state)
+            public void KeyStateChanged(int local, int key, int state)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.KeyStateChanged, args = new object[] { key, state } });
+                    Send(new SendArguments { i = Messages.KeyStateChanged, args = new object[] { local, key, state } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.KeyStateChanged(key, state);
+                        Target__.KeyStateChanged(local, key, state);
                     }
                 }
             }
-            public void UserKeyStateChanged(int user, int key, int state)
+            public void UserKeyStateChanged(int user, int local, int key, int state)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserKeyStateChanged, args = new object[] { user, key, state } });
+                    Send(new SendArguments { i = Messages.UserKeyStateChanged, args = new object[] { user, local, key, state } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserKeyStateChanged(user, key, state);
+                        Target__.UserKeyStateChanged(user, local, key, state);
                     }
                 }
             }
@@ -339,7 +339,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 }
                 public void UserKeyStateChanged(KeyStateChangedArguments e)
                 {
-                    Target.UserKeyStateChanged(this.user, e.key, e.state);
+                    Target.UserKeyStateChanged(this.user, e.local, e.key, e.state);
                 }
                 public void UserTeleportTo(TeleportToArguments e)
                 {
@@ -371,13 +371,13 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserHello(this.user, e.name);
                 }
-                public void UserKeyStateChanged(int key, int state)
+                public void UserKeyStateChanged(int local, int key, int state)
                 {
-                    this.Target.UserKeyStateChanged(this.user, key, state);
+                    this.Target.UserKeyStateChanged(this.user, local, key, state);
                 }
                 public void UserKeyStateChanged(UserKeyStateChangedArguments e)
                 {
-                    this.Target.UserKeyStateChanged(this.user, e.key, e.state);
+                    this.Target.UserKeyStateChanged(this.user, e.local, e.key, e.state);
                 }
                 public void UserTeleportTo(int local, double x, double y, double vx, double vy)
                 {
@@ -444,7 +444,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserKeyStateChanged(this.user, e.key, e.state);
+                    _target.UserKeyStateChanged(this.user, e.local, e.key, e.state);
                 }
                 public void UserTeleportTo(UserTeleportToArguments e)
                 {
@@ -545,12 +545,13 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class KeyStateChangedArguments
             {
+                public int local;
                 public int key;
                 public int state;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ key = ").Append(this.key).Append(", state = ").Append(this.state).Append(" }").ToString();
+                    return new StringBuilder().Append("{ local = ").Append(this.local).Append(", key = ").Append(this.key).Append(", state = ").Append(this.state).Append(" }").ToString();
                 }
             }
             #endregion
@@ -560,12 +561,13 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class UserKeyStateChangedArguments : WithUserArguments
             {
+                public int local;
                 public int key;
                 public int state;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", key = ").Append(this.key).Append(", state = ").Append(this.state).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", local = ").Append(this.local).Append(", key = ").Append(this.key).Append(", state = ").Append(this.state).Append(" }").ToString();
                 }
             }
             #endregion
@@ -667,8 +669,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.Server_UserLeft, e => { Server_UserLeft(new Server_UserLeftArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                             { Messages.Hello, e => { Hello(new HelloArguments { name = e.GetString(0) }); } },
                             { Messages.UserHello, e => { UserHello(new UserHelloArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
-                            { Messages.KeyStateChanged, e => { KeyStateChanged(new KeyStateChangedArguments { key = e.GetInt32(0), state = e.GetInt32(1) }); } },
-                            { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), key = e.GetInt32(1), state = e.GetInt32(2) }); } },
+                            { Messages.KeyStateChanged, e => { KeyStateChanged(new KeyStateChangedArguments { local = e.GetInt32(0), key = e.GetInt32(1), state = e.GetInt32(2) }); } },
+                            { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), local = e.GetInt32(1), key = e.GetInt32(2), state = e.GetInt32(3) }); } },
                             { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { local = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
                             { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), local = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
                             { Messages.LocalPlayers_Increase, e => { LocalPlayers_Increase(new LocalPlayers_IncreaseArguments {  }); } },
@@ -796,18 +798,18 @@ namespace AvalonUgh.NetworkCode.Shared
             }
 
             public event Action<RemoteEvents.KeyStateChangedArguments> KeyStateChanged;
-            void IMessages.KeyStateChanged(int key, int state)
+            void IMessages.KeyStateChanged(int local, int key, int state)
             {
                 if(KeyStateChanged == null) return;
-                var v = new RemoteEvents.KeyStateChangedArguments { key = key, state = state };
+                var v = new RemoteEvents.KeyStateChangedArguments { local = local, key = key, state = state };
                 this.VirtualLatency(() => this.KeyStateChanged(v));
             }
 
             public event Action<RemoteEvents.UserKeyStateChangedArguments> UserKeyStateChanged;
-            void IMessages.UserKeyStateChanged(int user, int key, int state)
+            void IMessages.UserKeyStateChanged(int user, int local, int key, int state)
             {
                 if(UserKeyStateChanged == null) return;
-                var v = new RemoteEvents.UserKeyStateChangedArguments { user = user, key = key, state = state };
+                var v = new RemoteEvents.UserKeyStateChangedArguments { user = user, local = local, key = key, state = state };
                 this.VirtualLatency(() => this.UserKeyStateChanged(v));
             }
 
@@ -864,4 +866,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 19.12.2008 21:02:09
+// 20.12.2008 9:37:41

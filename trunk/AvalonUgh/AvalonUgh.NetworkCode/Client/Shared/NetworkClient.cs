@@ -66,20 +66,46 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		{
 			#region CoPlayers
 
+			// coplayers are remoted locals
 			this.CoPlayers = new BindingList<PlayerIdentity>();
 			this.CoPlayers.ForEachNewItem(
-				i =>
+				c =>
 				{
-					i.Locals.ForEachNewItem(p => this.Content.Players.Add(p));
-					i.Locals.ForEachItemDeleted(p => this.Content.Players.Remove(p));
+					c.Locals.ForEachNewItem(
+						p =>
+						{
+							this.Content.Players.Add(p);
+
+							// at this point we should add listeners to events specific to
+							// this remote local
+
+							//this.Content.Console.WriteLine("attaching to remote local events " + p);
+
+
+
+						}
+					);
+
+					c.Locals.ForEachItemDeleted(p => this.Content.Players.Remove(p));
+
+
+				}
+			);
+
+			this.CoPlayers.ForEachItemDeleted(
+				c =>
+				{
+					this.Content.Console.WriteLine("removing all locals for " + c);
+
+
+					while (c.Locals.Count > 0)
+						c.Locals.RemoveAt(0);
 				}
 			);
 
 			#endregion
 
 			Content = new TargetCanvas().AttachTo(this);
-			Content.Console.WriteLine("starting networking...");
-
 			Content.Console.WriteLine("InitializeEvents");
 
 			this.Events.Server_Hello +=
@@ -90,12 +116,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					this.Content.LocalIdentity.Name = e.name;
 
 					Content.Console.WriteLine("Server_Hello " + e);
-
-					//this.Content.DefaultPlayerInput.Keyboard.KeyStateChanged +=
-					//    (Key, State) =>
-					//    {
-					//        this.Messages.KeyStateChanged((int)Key, Convert.ToInt32(State));
-					//    };
 				};
 
 			this.Events.Server_UserJoined +=
@@ -108,15 +128,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					this.CoPlayers.Add(
 						new PlayerIdentity { Name = e.name, Number = e.user }
 					);
-
-					//this.Messages.UserTeleportTo(e.user,
-					//    this.Content.DefaultPlayer.Actor.X,
-					//    this.Content.DefaultPlayer.Actor.Y,
-					//    this.Content.DefaultPlayer.Actor.VelocityX,
-					//    this.Content.DefaultPlayer.Actor.VelocityY
-					//);
-
-					//AddRemotePlayer(e.user, e.name);
 				};
 
 
@@ -124,11 +135,11 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Events.Server_UserLeft +=
 				e =>
 				{
-					//var c = this[e.user];
+					var c = this[e.user];
 
-					//Content.Console.WriteLine("Server_UserLeft " + e + " - " + c);
+					Content.Console.WriteLine("Server_UserLeft " + e + " - " + c);
 
-					//this.Content.Players.Remove(c);
+					this.CoPlayers.Remove(c);
 				};
 
 			this.Events.UserHello +=
@@ -140,32 +151,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						new PlayerIdentity { Name = e.name, Number = e.user }
 					);
 
-					//this.Messages.UserTeleportTo(e.user,
-					//    this.Content.DefaultPlayer.Actor.X,
-					//    this.Content.DefaultPlayer.Actor.Y,
-					//    this.Content.DefaultPlayer.Actor.VelocityX,
-					//    this.Content.DefaultPlayer.Actor.VelocityY
-					//);
-
-					//AddRemotePlayer(e.user, e.name);
 				};
-
-
-			this.Events.UserKeyStateChanged +=
-				e =>
-				{
-					//var c = this[e];
-
-					//Content.Console.WriteLine("UserKeyStateChanged " + e + " - " + c);
-
-					//c.Input.Keyboard.KeyState[(Key)e.key] =  Convert.ToBoolean(e.state);
-				};
-
-
 
 			10000.AtInterval(
 				delegate
 				{
+					// we need syncing 
 					this.Content.Console.WriteLine("sending our position");
 
 					foreach (var p in this.Content.LocalIdentity.Locals)
@@ -181,10 +172,20 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				}
 			);
 
+			this.Events.UserKeyStateChanged +=
+				e =>
+				{
+					var p = this[e][e.local];
+
+					this.Content.Console.WriteLine("UserKeyStateChanged " + e + " - " + p);
+
+					p.Input.Keyboard.KeyState[p.Input.Keyboard.FromDefaultTranslation((Key)e.key)] = Convert.ToBoolean(e.state);
+				};
+
 			this.Events.UserTeleportTo +=
 				e =>
 				{
-					var p = this[e][e.local]; 
+					var p = this[e][e.local];
 
 					Content.Console.WriteLine("UserTeleportTo " + e + " - " + p);
 
@@ -240,10 +241,52 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					};
 
 					c.Locals.Add(p);
+
+
 				};
 
+
+
 			this.Content.LocalIdentity.Locals.ForEachNewOrExistingItem(
-				Local => this.Messages.LocalPlayers_Increase()
+				Local =>
+				{
+					this.Messages.LocalPlayers_Increase();
+					this.Messages.TeleportTo(Local.IdentityLocal,
+						Local.Actor.X,
+						Local.Actor.Y,
+						Local.Actor.VelocityX,
+						Local.Actor.VelocityY
+					);
+
+					// ... while member apply this rule
+
+					// sending local ingame player keystates
+					Action<Key, bool> Local_KeyStateChanged =
+						(key, state) =>
+						{
+							this.Messages.KeyStateChanged(Local.IdentityLocal, (int)Local.Input.Keyboard.ToDefaultTranslation(key), Convert.ToInt32(state));
+						};
+
+					this.Content.Console.WriteLine("event add KeyStateChanged " + Local);
+					Local.Input.Keyboard.KeyStateChanged += Local_KeyStateChanged;
+
+					// when do we want to stop broadcasting our key changes?
+					// maybe when we remove that local player
+
+					this.Content.LocalIdentity.Locals.ForEachItemDeleted(
+						(DeletedLocal, Dispose) =>
+						{
+							if (DeletedLocal != Local)
+								return;
+
+							this.Content.Console.WriteLine("event remove KeyStateChanged " + Local);
+							Local.Input.Keyboard.KeyStateChanged -= Local_KeyStateChanged;
+
+							// we should not listen to that event anymore
+							Dispose();
+						}
+					);
+				}
 			);
 
 			this.Content.LocalIdentity.Locals.ForEachItemDeleted(
