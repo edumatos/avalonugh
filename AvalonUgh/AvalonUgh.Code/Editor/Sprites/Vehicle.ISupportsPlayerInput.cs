@@ -14,7 +14,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public void AddAcceleration(PlayerInput e)
 		{
 
-			if (this.IsUnmanned)
+			if (this.CurrentDriver == null)
 			{
 				// why are we even called?
 				// we should be controlling the caveman at this time already
@@ -48,19 +48,20 @@ namespace AvalonUgh.Code.Editor.Sprites
 			if (e.Keyboard.IsPressedRight)
 				x += 1;
 
-			if (e.Touch.IsPressed)
-			{
-				var DeltaX = e.Touch.X - this.X;
-				var DeltaY = e.Touch.Y - this.Y;
+			if (e.Touch != null)
+				if (e.Touch.IsPressed)
+				{
+					var DeltaX = e.Touch.X - this.X;
+					var DeltaY = e.Touch.Y - this.Y;
 
-				var ay = (DeltaY / 64).Min(1).Max(-1);
+					var ay = (DeltaY / 64).Min(1).Max(-1);
 
-				if (ay < 0)
-					ay *= 2;
+					if (ay < 0)
+						ay *= 2;
 
-				x += (DeltaX / 64);
-				y += ay;
-			}
+					x += (DeltaX / 64);
+					y += ay;
+				}
 
 			if (y > 0)
 			{
@@ -84,6 +85,12 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			if (this.VelocityY == 0)
 				this.VelocityX *= 0.7;
+
+			if (!ExitIsBlocked)
+				if (e.Keyboard.IsPressedEnter)
+				{
+					this.CurrentDriver.CurrentVehicle = null;
+				}
 		}
 
 		#endregion

@@ -94,6 +94,7 @@ namespace AvalonUgh.Code.Input
 
 			this.KeyState = new Dictionary<Key, bool>
 						{
+							{e.Enter, false},
 							{e.Up, false},
 							{e.Down, false},
 							{e.Right, false},
@@ -159,6 +160,7 @@ namespace AvalonUgh.Code.Input
 
 		}
 
+		public bool IsPressedEnter { get { return KeyState[a.Enter]; } }
 		public bool IsPressedDown { get { return KeyState[a.Down]; } }
 		public bool IsPressedUp { get { return KeyState[a.Up]; } }
 		public bool IsPressedLeft { get { return KeyState[a.Left]; } }

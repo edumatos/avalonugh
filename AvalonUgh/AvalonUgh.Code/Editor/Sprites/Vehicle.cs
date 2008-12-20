@@ -45,8 +45,22 @@ namespace AvalonUgh.Code.Editor.Sprites
 				_CurrentDriver = value;
 
 				IsUnmanned = value == null;
+
+				if (_CurrentDriver != null)
+				{
+					ExitIsBlocked = true;
+
+					if (_CurrentDriver.CurrentVehicle != this)
+						_CurrentDriver.CurrentVehicle = this;
+
+					500.AtDelay(
+						() => ExitIsBlocked = false
+					);
+				}
 			}
 		}
+
+		public bool ExitIsBlocked;
 
 		public int UnscaledX
 		{
@@ -178,7 +192,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
-	
+
 		readonly Image[] frames;
 		public Vehicle(int Zoom)
 		{
@@ -210,8 +224,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			this.UnmannedImage = new Image
 			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/" + 
-				new NameFormat { Name = "vehicle", Index = 1, AnimationFrame = 4, Width = 2, Height = 2 } 
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/" +
+				new NameFormat { Name = "vehicle", Index = 1, AnimationFrame = 4, Width = 2, Height = 2 }
 				 + ".png").ToSource(),
 				Stretch = Stretch.Fill,
 				Width = this.Width,
@@ -251,7 +265,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			);
 		}
 
-	
+
 		Action frames_SignalNext;
 
 		public Obstacle ToObstacle(double x, double y)
@@ -267,7 +281,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			};
 		}
 
-		
+
 	}
 
 }

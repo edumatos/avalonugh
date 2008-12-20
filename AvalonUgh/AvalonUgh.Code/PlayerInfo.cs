@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 using AvalonUgh.Code.Input;
+using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class PlayerInfo
+	public class PlayerInfo : ISupportsLocationChanged
 	{
 		// player can have
 		// a cave (where he is in)
@@ -28,7 +29,7 @@ namespace AvalonUgh.Code
 		/// </summary>
 		public int IdentityLocal;
 
-		
+
 
 
 		public override string ToString()
@@ -37,21 +38,91 @@ namespace AvalonUgh.Code
 		}
 
 
-		public Actor Actor;
+		Actor InternalActor;
+		public Actor Actor
+		{
+			get
+			{
+				return InternalActor;
+			}
+			set
+			{
+				if (InternalActor != null)
+				{
+					InternalActor.LocationChanged -= InternalActor_LocationChanged;
+					InternalActor.CurrentVehicleChanged -= InternalActor_CurrentVehicleChanged;
+				}
+
+				InternalActor = value;
+
+				if (InternalActor != null)
+				{
+					InternalActor.LocationChanged += InternalActor_LocationChanged;
+					InternalActor.CurrentVehicleChanged += InternalActor_CurrentVehicleChanged;
+				}
+			}
+		}
+
+		Vehicle InternalActor_CurrentVehicle;
+		void InternalActor_CurrentVehicleChanged()
+		{
+			if (InternalActor_CurrentVehicle != null)
+			{
+				InternalActor_CurrentVehicle.LocationChanged -= InternalActor_LocationChanged;
+			}
+			InternalActor_CurrentVehicle = InternalActor.CurrentVehicle;
+			if (InternalActor_CurrentVehicle != null)
+			{
+				InternalActor_CurrentVehicle.LocationChanged += InternalActor_LocationChanged;
+			}
+		}
+
+		void InternalActor_LocationChanged()
+		{
+			if (this.LocationChanged != null)
+				this.LocationChanged();
+		}
 
 
-		public ISupportsPlayerInput InputRegistrant;
 		public PlayerInput Input;
 
 		public void AddAcceleration()
 		{
-			if (InputRegistrant == null)
-				return;
-
 			if (Input == null)
 				return;
 
-			InputRegistrant.AddAcceleration(Input);
+			if (Actor.CurrentVehicle != null)
+				Actor.CurrentVehicle.AddAcceleration(Input);
+			else
+				Actor.AddAcceleration(Input);
 		}
+
+		#region ISupportsLocationChanged Members
+
+		public double X
+		{
+			get
+			{
+				if (Actor.CurrentVehicle != null)
+					return Actor.CurrentVehicle.X;
+				else
+					return Actor.X;
+			}
+		}
+
+		public double Y
+		{
+			get
+			{
+				if (Actor.CurrentVehicle != null)
+					return Actor.CurrentVehicle.Y;
+				else
+					return Actor.Y;
+			}
+		}
+
+		public event Action LocationChanged;
+
+		#endregion
 	}
 }

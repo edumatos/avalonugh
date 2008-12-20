@@ -251,9 +251,9 @@ namespace AvalonUgh.Game.Shared
 
 								if (LocalIdentity.Locals.Count > 0)
 								{
-									var NextFocusedLocal = this.LocalIdentity.Locals.Next(k => k.Actor == this.View.LocationTracker.Target);
+									var NextFocusedLocal = this.LocalIdentity.Locals.Next(k => k == this.View.LocationTracker.Target);
 
-									this.View.LocationTracker.Target = NextFocusedLocal.Actor;
+									this.View.LocationTracker.Target = NextFocusedLocal;
 									this.Focus();
 								}
 							}
@@ -325,11 +325,10 @@ namespace AvalonUgh.Game.Shared
 							};
 
 							if (View.LocationTracker.Target == null)
-								View.LocationTracker.Target = NewPlayer.Actor;
+								View.LocationTracker.Target = NewPlayer;
 
 							// we are not inside a vehicle
 							// nor are we inside a cave
-							NewPlayer.InputRegistrant = NewPlayer.Actor;
 
 							// where are the spawnpoints in this level?
 							NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 2);
@@ -340,6 +339,7 @@ namespace AvalonUgh.Game.Shared
 								{
 									(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
 								};
+
 							NewPlayer.Actor.EnterCave +=
 								delegate
 								{
@@ -381,6 +381,30 @@ namespace AvalonUgh.Game.Shared
 
 										return;
 									}
+								};
+
+							NewPlayer.Actor.EnterVehicle +=
+								delegate
+								{
+									// exiting a vehicle is easy
+									// entering is a bit harder
+									// as we need to find it and reserve its use for us
+
+									var ManAsObstacle = NewPlayer.Actor.ToObstacle();
+
+									var NearbyVehicle = Level.KnownVehicles.Where(k => k.CurrentDriver == null).FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+
+									if (NearbyVehicle != null)
+									{
+										NearbyVehicle.CurrentDriver = NewPlayer.Actor;
+									}
+								};
+
+
+							NewPlayer.Actor.CurrentVehicleChanged +=
+								delegate
+								{
+									(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
 								};
 
 							// every actor could act differently on gold collected

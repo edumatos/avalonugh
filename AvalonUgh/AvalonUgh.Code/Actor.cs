@@ -31,7 +31,49 @@ namespace AvalonUgh.Code
 		// the default waiting position is between the outer edges between
 		// the sign and the cave on the same platform
 
-		public Vehicle CurrentVehicle;
+		public event Action CurrentVehicleChanged;
+		Vehicle InternalCurrentVehicle;
+		public Vehicle CurrentVehicle
+		{
+			get
+			{
+				return InternalCurrentVehicle;
+			}
+			set
+			{
+				EnterVehicleBlocked = true;
+				500.AtDelay(() => EnterVehicleBlocked = false);
+
+				var v = InternalCurrentVehicle;
+
+				InternalCurrentVehicle = value;
+
+				if (InternalCurrentVehicle == null)
+				{
+					this.AIInputEnabled = false;
+					this.Animation = Actor.AnimationEnum.Idle;
+
+					this.MoveTo(v.X, v.Y - this.ToObstacle().Height / 2);
+					if (v.CurrentDriver != null)
+						v.CurrentDriver = null;
+				}
+				else
+				{
+
+					this.AIInputEnabled = true;
+					this.Animation = Actor.AnimationEnum.Hidden;
+
+					if (InternalCurrentVehicle.CurrentDriver != this)
+						InternalCurrentVehicle.CurrentDriver = this;
+				}
+
+				if (CurrentVehicleChanged != null)
+					CurrentVehicleChanged();
+			}
+		}
+
+		public bool EnterVehicleBlocked;
+
 		public Cave CurrentCave;
 
 		public bool CanBeHitByVehicle;
@@ -461,10 +503,22 @@ namespace AvalonUgh.Code
 						EnterCave();
 				}
 			}
+
+			if (!EnterVehicleBlocked)
+				if (e.Keyboard.IsPressedEnter)
+				{
+					if (this.VelocityY == 0)
+					{
+						if (EnterVehicle != null)
+							EnterVehicle();
+					}
+				}
 		}
+
 
 		public event Action Jumping;
 		public event Action EnterCave;
+		public event Action EnterVehicle;
 
 		#endregion
 
