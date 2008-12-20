@@ -20,6 +20,9 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public double LastCollisionVelocity { get; set; }
+
+
 		public bool ReadyForGoldPickup = true;
 
 		public readonly BindingList<Gold> GoldStash = new BindingList<Gold>();
@@ -444,9 +447,14 @@ namespace AvalonUgh.Code
 					this.VelocityY -= this.Zoom * 2.5;
 
 					this.VelocityX *= 1.2;
+
+					if (Jumping != null)
+						Jumping();
 				}
 			}
 		}
+
+		public event Action Jumping;
 
 		#endregion
 

@@ -128,6 +128,21 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					this.CoPlayers.Add(
 						new PlayerIdentity { Name = e.name, Number = e.user }
 					);
+
+					// there is some catching up to do
+					// like we need to tell it about our locals
+
+					foreach (var p in this.Content.LocalIdentity.Locals)
+					{
+						this.Messages.UserLocalPlayers_Increase(e.user);
+						this.Messages.UserTeleportTo(e.user, 
+							p.IdentityLocal,
+							p.Actor.X,
+							p.Actor.Y,
+							p.Actor.VelocityX,
+							p.Actor.VelocityY
+						);
+					}
 				};
 
 

@@ -46,6 +46,16 @@ namespace AvalonUgh.Game.Shared
 
 		public GameCanvas()
 		{
+			(AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3").Apply(
+				(Source, Retry) =>
+				{
+					var Music = Source.PlaySound();
+
+					Music.PlaybackComplete += Retry;
+					Music.SetVolume(0.10);
+				}
+			);
+
 			#region AvailableInputs
 			this.AvailableInputs = new Stack<PlayerInput>();
 
@@ -127,17 +137,29 @@ namespace AvalonUgh.Game.Shared
 			var LobbyLevel = KnownAssets.Path.Assets + "/level00.txt";
 
 			#region setting up our console
-			var con = new GameConsole();
+			this.Console = new GameConsole();
 
-			con.SizeTo(DefaultWidth, DefaultHeight / 2);
-			con.WriteLine("Avalon Ugh! Console ready.");
-			con.AnimatedTop = 0;
+			this.Console.SizeTo(DefaultWidth, DefaultHeight / 2);
+			this.Console.WriteLine("Avalon Ugh! Console ready.");
+			this.Console.AnimatedTop = -this.Console.Height;
 			#endregion
 
 			LobbyLevel.ToStringAsset(
 				LevelText =>
 				{
 					var Level = new Level(LevelText, Zoom);
+
+					Level.Physics.CollisionAtVelocity +=
+						Velocity =>
+						{
+							var Volume = (Velocity / (Level.Zoom * 3.0)).Max(0).Min(1);
+
+
+							if (Volume > 0)
+								(Assets.Shared.KnownAssets.Path.Audio + "/bounce.mp3").PlaySound().SetVolume(Volume);
+
+							Console.WriteLine("CollisionAtVelocity " + new { Velocity, Volume });
+						};
 
 					// in menu mode the view does not include status bar
 					// yet later in game we should adjust that
@@ -194,7 +216,6 @@ namespace AvalonUgh.Game.Shared
 
 
 
-					this.Console = con;
 
 					this.KeyUp +=
 						(sender, args) =>
@@ -202,15 +223,15 @@ namespace AvalonUgh.Game.Shared
 							// oem7 will trigger the console
 							if (args.Key == Key.Oem7)
 							{
-								if (con.AnimatedTop == 0)
+								if (Console.AnimatedTop == 0)
 								{
-									con.WriteLine("hide console");
-									con.AnimatedTop = -con.Height;
+									Console.WriteLine("hide console");
+									Console.AnimatedTop = -Console.Height;
 								}
 								else
 								{
-									con.WriteLine("show console");
-									con.AnimatedTop = 0;
+									Console.WriteLine("show console");
+									Console.AnimatedTop = 0;
 								}
 
 								// the console is on top
@@ -220,7 +241,7 @@ namespace AvalonUgh.Game.Shared
 							}
 						};
 
-					con.AttachContainerTo(this);
+					Console.AttachContainerTo(this);
 
 					using (this.Console["updating touch layers"])
 					{
@@ -280,6 +301,14 @@ namespace AvalonUgh.Game.Shared
 							// where are the spawnpoints in this level?
 							NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 2);
 
+							// we need to play jumping sound
+							NewPlayer.Actor.Jumping +=
+								delegate
+								{
+									(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
+								};
+
+
 							NewPlayer.Actor.AttachContainerTo(View.Entities);
 							Level.KnownActors.Add(NewPlayer.Actor);
 						}
@@ -309,7 +338,7 @@ namespace AvalonUgh.Game.Shared
 						}
 					);
 
-				
+
 
 					Action Locals_Increase =
 						delegate
@@ -335,6 +364,8 @@ namespace AvalonUgh.Game.Shared
 							// add this new player to the list
 							// thus making it also visible
 							this.LocalIdentity.Locals.Add(p);
+
+							(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 						};
 
 					Action Locals_Decrase =
@@ -353,6 +384,8 @@ namespace AvalonUgh.Game.Shared
 
 							this.AvailableInputs.Push(i);
 							this.LocalIdentity.Locals.Remove(p);
+
+							(Assets.Shared.KnownAssets.Path.Audio + "/gameover.mp3").PlaySound();
 						};
 
 					this.KeyUp +=
@@ -398,8 +431,10 @@ namespace AvalonUgh.Game.Shared
 						}
 					);
 
+					Console.WriteLine("load complete!");
 
-
+					// add the first local
+					Locals_Increase();
 				}
 			);
 		}
