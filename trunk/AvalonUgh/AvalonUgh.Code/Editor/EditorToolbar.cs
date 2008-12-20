@@ -301,13 +301,7 @@ namespace AvalonUgh.Code.Editor
 				    new Editor.Sprites.SignSelector.Size_1x1()
 				}
 			);
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/rock0.png",
-				new[]
-				{
-					new Editor.Sprites.RockSelector.Size_1x1()
-				}
-			);
-
+		
 
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/gold0.png",
 				new[]
@@ -316,8 +310,13 @@ namespace AvalonUgh.Code.Editor
 						}
 			);
 
+			AddButton_1x1(
+				Editor.Sprites.RockSelector.ToolbarImage.ToString(),
+				Editor.Sprites.RockSelector.Sizes
+			);
+
 			AddButton_2x2(
-				Editor.Sprites.VehicleSelector.ToolbarImage,
+				Editor.Sprites.VehicleSelector.ToolbarImage.ToString(),
 				Editor.Sprites.VehicleSelector.Sizes
 			);
 
