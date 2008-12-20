@@ -16,27 +16,77 @@ namespace AvalonUgh.Code.Input
 		{
 			public UIElement InputControl;
 
-			//public Vehicle Vehicle;
+			public Key Left = Key.Left;
+			public Key Right = Key.Right;
+			public Key Up = Key.Up;
+			public Key Down = Key.Down;
 
-			public Key Left;
-			public Key Right;
-			public Key Up;
-			public Key Down;
-
-			public Key Drop;
-			public Key Enter;
-
-			//public View View;
+			public Key Drop = Key.Space;
+			public Key Enter = Key.Enter;
 		}
 
 		public readonly Dictionary<Key, bool> KeyState;
 
 		public event Action<Key, bool> KeyStateChanged;
 
+
 		public event Action Enter;
 		public event Action Drop;
 
 		readonly Arguments a;
+
+		static Arguments DefaultArguments = new Arguments();
+
+		public Key ToDefaultTranslation(Key key)
+		{
+			var y = DefaultArguments;
+
+			if (key == a.Up)
+				return y.Up;
+
+			if (key == a.Down)
+				return y.Down;
+
+			if (key == a.Left)
+				return y.Left;
+
+			if (key == a.Right)
+				return y.Right;
+
+			if (key == a.Enter)
+				return y.Enter;
+
+			if (key == a.Drop)
+				return y.Drop;
+
+			return key;
+		}
+
+		public Key FromDefaultTranslation(Key key)
+		{
+			var a = DefaultArguments;
+			var y = this.a;
+
+			if (key == a.Up)
+				return y.Up;
+
+			if (key == a.Down)
+				return y.Down;
+
+			if (key == a.Left)
+				return y.Left;
+
+			if (key == a.Right)
+				return y.Right;
+
+			if (key == a.Enter)
+				return y.Enter;
+
+			if (key == a.Drop)
+				return y.Drop;
+
+			return key;
+		}
 
 		public KeyboardInput(Arguments e)
 		{
