@@ -24,7 +24,11 @@ namespace AvalonUgh.Code
 				_Target = value;
 
 				if (_Target != null)
+				{
 					_Target.LocationChanged += _Target_LocationChanged;
+
+					_Target_LocationChanged();
+				}
 			}
 		}
 

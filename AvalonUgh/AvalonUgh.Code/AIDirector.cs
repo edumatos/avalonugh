@@ -12,7 +12,7 @@ namespace AvalonUgh.Code
 	[Script]
 	public class AIDirector
 	{
-		
+
 		public static void WalkActorToTheCaveAndEnter(Actor a, Cave c, Action done)
 		{
 			a.AIInputEnabled = true;
@@ -93,15 +93,21 @@ namespace AvalonUgh.Code
 		{
 			a.AIInputEnabled = true;
 			a.MoveTo(c.X, c.Y);
-			a.CurrentCave = null;
+
 
 			a.PlayAnimation(Actor.AnimationEnum.CaveExit,
 				delegate
 				{
-					a.AIInputEnabled = false;
-					a.Animation = Actor.AnimationEnum.Idle;
+					ActorExitCaveFast(a);
 				}
 			);
+		}
+
+		public static void ActorExitCaveFast(Actor a)
+		{
+			a.CurrentCave = null;
+			a.AIInputEnabled = false;
+			a.Animation = Actor.AnimationEnum.Idle;
 		}
 	}
 }
