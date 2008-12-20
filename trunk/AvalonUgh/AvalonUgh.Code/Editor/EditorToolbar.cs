@@ -289,17 +289,11 @@ namespace AvalonUgh.Code.Editor
 
 
 			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png",
-				new[]
-				{
-					new Editor.Sprites.TreeSelector.Size_2x2()
-				}
+				Editor.Sprites.TreeSelector.Sizes
 			);
 
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png",
-				new[]
-				{
-				    new Editor.Sprites.SignSelector.Size_1x1()
-				}
+				Editor.Sprites.SignSelector.Sizes
 			);
 		
 
