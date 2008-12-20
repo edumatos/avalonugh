@@ -238,7 +238,10 @@ namespace AvalonUgh.Code
 				k => k.AttachContainerTo(this.Entities)
 			);
 
-		
+
+			this.Level.KnownVehicles.ForEachNewOrExistingItem(
+				k => k.AttachContainerTo(this.Entities)
+			);
 
 			#endregion
 

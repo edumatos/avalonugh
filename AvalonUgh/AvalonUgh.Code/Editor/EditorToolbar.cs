@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using AvalonUgh.Assets.Avalon;
+using AvalonUgh.Assets.Shared;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.TiledImageButton;
-using ScriptCoreLib.Shared.Lambda;
-using System.Windows.Input;
 using ScriptCoreLib.Shared.Avalon.Tween;
-using AvalonUgh.Assets.Shared;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -315,7 +316,10 @@ namespace AvalonUgh.Code.Editor
 						}
 			);
 
-
+			AddButton_2x2(
+				Editor.Sprites.VehicleSelector.ToolbarImage,
+				Editor.Sprites.VehicleSelector.Sizes
+			);
 
 
 			var Demolish =
