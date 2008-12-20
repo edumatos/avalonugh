@@ -432,6 +432,15 @@ namespace AvalonUgh.Game.Shared
 					// toolbar is on top of our touch container
 					et.AttachContainerTo(this);
 
+					this.View.EditorSelectorApplied +=
+						(Selector, Position) =>
+						{
+							var Index = KnownSelectors.Index.Of(Selector);
+
+							Console.WriteLine("EditorSelectorApplied " + Index);
+
+						};
+
 					// activate the game loop
 					(1000 / 40).AtInterval(
 						delegate
