@@ -31,6 +31,20 @@ namespace AvalonUgh.Code.Editor.Sprites
 		// and throw it at trees and animals
 		public Rock CurrentWeapon { get; set; }
 
+		Actor _CurrentDriver;
+		public Actor CurrentDriver
+		{
+			get
+			{
+				return _CurrentDriver;
+			}
+			set
+			{
+				_CurrentDriver = value;
+
+				IsUnmanned = value == null;
+			}
+		}
 
 		public int Stability { get; set; }
 
@@ -114,6 +128,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 
 		readonly Image UnmannedImage;
+
+
 
 		bool _Unmanned;
 		public bool IsUnmanned

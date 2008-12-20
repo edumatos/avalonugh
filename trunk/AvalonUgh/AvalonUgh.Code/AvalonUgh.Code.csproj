@@ -141,6 +141,7 @@
     <Compile Include="Editor\PlatformScan.cs" />
     <Compile Include="Editor\Sprites\Gold.cs" />
     <Compile Include="Editor\Sprites\GoldSelector.cs" />
+    <Compile Include="Editor\Sprites\VehicleSelector.cs" />
     <Compile Include="Editor\WaterLevelSelector.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ColorStripe.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ISupportsPlayerInput.cs" />
