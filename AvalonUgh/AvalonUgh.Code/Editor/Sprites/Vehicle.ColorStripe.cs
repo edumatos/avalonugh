@@ -15,10 +15,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 {
 	partial class Vehicle
 	{
-		//readonly Image ColorStripeRed;
-		//readonly Image ColorStripeBlue;
-		//readonly Image ColorStripeYellow;
-		//readonly Image ColorStripeGray;
+
 
 		public Color ColorStripe
 		{

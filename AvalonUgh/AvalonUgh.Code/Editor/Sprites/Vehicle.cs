@@ -22,6 +22,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 		ISupportsContainer, ISupportsVelocity, ISupportsPhysics,
 		ISupportsLocationChanged
 	{
+		public double LastCollisionVelocity { get; set; }
+
+
 		public Level CurrentLevel { get; set; }
 
 		// a vehicle can carry a rock
