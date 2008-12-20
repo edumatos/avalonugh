@@ -243,6 +243,10 @@ namespace AvalonUgh.Code
 				k => k.AttachContainerTo(this.Entities)
 			);
 
+			this.Level.KnownStartPositions.ForEachNewOrExistingItem(
+				k => k.AttachContainerTo(this.Entities)
+			);
+
 			#endregion
 
 

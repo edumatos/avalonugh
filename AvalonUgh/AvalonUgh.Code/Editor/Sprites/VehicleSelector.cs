@@ -13,10 +13,23 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class VehicleSelector
 	{
-		public static readonly string ToolbarImage =
-			(Assets.Shared.KnownAssets.Path.Sprites + "/" +
-				new NameFormat { Name = "vehicle", Index = 1, AnimationFrame = 4, Width = 2, Height = 2 }
-				 + ".png");
+		public static NameFormat ToolbarImage
+		{
+			get
+			{
+				return
+					new NameFormat
+					{
+						Path = Assets.Shared.KnownAssets.Path.Sprites,
+						Name = "vehicle",
+						Index = 1,
+						AnimationFrame = 4,
+						Width = 2,
+						Height = 2,
+						Extension = "png"
+					};
+			}
+		}
 
 		// clicking on the toolbar will shuffle between those sizes
 		// also while loading tiles the map will tell us which size to use
@@ -39,19 +52,31 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
+				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
+				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
+
 				RemoveEntities(this, Level, Position);
+
+				var g = new Vehicle(Level.Zoom);
+
+				g.CurrentDriver = null;
+				g.MoveTo(x, y);
+				g.Container.Opacity = 0.5;
+
+				Level.KnownStartPositions.Add(g);
 
 				var v = new Vehicle(Level.Zoom);
 
 				v.CurrentDriver = null;
+				v.MoveTo(x, y);
+				v.StartPosition = g;
 
-				v.MoveTo(
-					(Position.ContentX + this.HalfWidth) * Level.Zoom,
-					(Position.ContentY + this.HalfHeight) * Level.Zoom	
-				);
-				
 				Level.KnownVehicles.Add(v);
-				
+
+
+
+	
+
 				// we should add a ghost for the vehicle starting point
 			}
 		}

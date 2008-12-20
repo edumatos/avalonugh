@@ -6,12 +6,36 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
 	public class RockSelector
 	{
+		public static NameFormat ToolbarImage
+		{
+			get
+			{
+				return
+					new NameFormat
+					{
+						Path = Assets.Shared.KnownAssets.Path.Sprites,
+						Name = "rock",
+						Index = 0,
+						Extension = "png"
+					};
+			}
+		}
+
+		// clicking on the toolbar will shuffle between those sizes
+		// also while loading tiles the map will tell us which size to use
+		public static readonly View.SelectorInfo[] Sizes =
+			new[]
+			{
+				new Size_1x1()
+			};
+
 		[Script]
 		public class Size_1x1 : SpriteSelector
 		{
@@ -19,23 +43,28 @@ namespace AvalonUgh.Code.Editor.Sprites
 			{
 				PrimitiveTileCountX = 1;
 				PrimitiveTileCountY = 1;
+			}
+
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
+				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
 
 
+				// add a new fence tile
+				RemoveEntities(this, Level, Position);
 
-				Invoke =
-					(View, Position) =>
-					{
-						// add a new fence tile
-						RemoveEntities(this, View.Level, Position);
+				var g = new Rock(Level.Zoom);
 
-						new Rock(View.Level.Zoom)
-						{
-							Selector = this
-						}.AddTo(View.Level.KnownRocks).MoveTo(
-							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
-							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
-						);
-					};
+				g.Container.Opacity = 0.5;
+				g.AddTo(Level.KnownStartPositions);
+				g.MoveTo(x, y);
+
+				var v = new Rock(Level.Zoom);
+
+				v.StartPosition = g;
+				v.AddTo(Level.KnownRocks);
+				v.MoveTo(x, y);
 			}
 		}
 

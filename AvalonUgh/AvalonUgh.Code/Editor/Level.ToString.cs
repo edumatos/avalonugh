@@ -88,11 +88,7 @@ namespace AvalonUgh.Code.Editor
 							select new Attribute.Int32 { Key = "tree", Value = tree.UnscaledX }
 						);
 
-						WriteAttribute.InvokeAsEnumerable(
-							from i in this.KnownRocks
-							where i.BaseY == index
-							select new Attribute.Int32 { Key = "rock", Value = i.UnscaledX }
-						);
+				
 
 						WriteAttribute.InvokeAsEnumerable(
 							from i in this.KnownGold
@@ -104,6 +100,22 @@ namespace AvalonUgh.Code.Editor
 							from i in this.KnownSigns
 							where i.BaseY == index
 							select new Attribute.Int32_Int32 { Key = "sign", Value0 = i.UnscaledX, Value1 = i.Value }
+						);
+
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownRocks
+							let rock = i.StartPosition
+							where rock != null
+							where rock.BaseY == index
+							select new Attribute.Int32 { Key = "rock", Value = rock.UnscaledX }
+						);
+
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownVehicles
+							let StartPosition = i.StartPosition
+							where StartPosition != null
+							where StartPosition.BaseY == index
+							select new Attribute.Int32 { Key = "vehicle", Value = StartPosition.UnscaledX }
 						);
 
 						s.WriteLine(row);

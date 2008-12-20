@@ -65,6 +65,8 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Actor> KnownActors = new BindingList<Actor>();
 		public readonly BindingList<Vehicle> KnownVehicles = new BindingList<Vehicle>();
 
+		public readonly BindingList<ISupportsContainer> KnownStartPositions = new BindingList<ISupportsContainer>();
+
 		public  IEnumerable<Tile> KnownLandingTiles
 		{
 			get

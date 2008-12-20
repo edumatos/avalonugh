@@ -16,6 +16,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class Rock : ISupportsContainer, ISupportsPhysics , IDisposable
 	{
+		public Rock StartPosition;
+
 		public double LastCollisionVelocity { get; set; }
  
 		public int UnscaledX

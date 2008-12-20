@@ -25,7 +25,9 @@ namespace AvalonUgh.Assets.Avalon
 				AnimationFramePadding = AnimationFramePadding,
 				AnimationFrameName = AnimationFrameName,
 				Zoom = Zoom,
-				ToSource = ToSource
+				ToSource = ToSource,
+				Path = Path,
+				Extension = Extension
 			};
 		}
 
