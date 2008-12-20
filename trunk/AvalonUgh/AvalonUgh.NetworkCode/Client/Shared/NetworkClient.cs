@@ -317,8 +317,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					var Index = KnownSelectors.Index.Of(Selector);
 
-					Content.Console.WriteLine("EditorSelectorApplied " + Index);
-
 					// unknown selector
 					if (Index.Type == -1)
 						return;
