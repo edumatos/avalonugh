@@ -12,6 +12,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class SignSelector
 	{
+		// clicking on the toolbar will shuffle between those sizes
+		// also while loading tiles the map will tell us which size to use
+		public static readonly View.SelectorInfo[] Sizes =
+			new[]
+			{
+				new Size_1x1()
+			};
+
 		[Script]
 		public class Size_1x1 : SpriteSelector
 		{

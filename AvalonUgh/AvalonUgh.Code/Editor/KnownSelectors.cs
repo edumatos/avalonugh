@@ -19,6 +19,8 @@ namespace AvalonUgh.Code.Editor
 					Sprites.GoldSelector.Sizes,
 					Sprites.RockSelector.Sizes,
 					Sprites.VehicleSelector.Sizes,
+					Sprites.SignSelector.Sizes,
+					Sprites.TreeSelector.Sizes,
 
 
 					Tiles.CaveSelector.Sizes,
@@ -27,6 +29,9 @@ namespace AvalonUgh.Code.Editor
 					Tiles.RidgeSelector.Sizes,
 					Tiles.FenceSelector.Sizes,
 					Tiles.BridgeSelector.Sizes,
+
+					DemolishSelector.Sizes,
+					WaterLevelSelector.Sizes
 				};
 			}
 		}

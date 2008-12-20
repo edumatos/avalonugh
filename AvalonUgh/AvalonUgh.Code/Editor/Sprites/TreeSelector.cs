@@ -44,7 +44,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		// clicking on the toolbar will shuffle between those sizes
 		// also while loading tiles the map will tell us which size to use
-		public View.SelectorInfo[] Sizes =
+		public static View.SelectorInfo[] Sizes =
 			new[]
 			{
 				new Size_2x2()
@@ -59,22 +59,20 @@ namespace AvalonUgh.Code.Editor.Sprites
 				Height = PrimitiveTile.Heigth * 2;
 				PercisionX = PrimitiveTile.Width / 2;
 				PercisionY = PrimitiveTile.Heigth;
-
-				Invoke =
-					(View,  Position) =>
-					{
-						RemoveEntities(this, View.Level, Position);
-
-						new Tree(View.Level.Zoom)
-						{
-							Selector = this
-						}.AddTo(View.Level.KnownTrees).MoveTo(
-							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
-							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
-						);
-					};
 			}
 
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				RemoveEntities(this, Level, Position);
+
+				new Tree(Level.Zoom)
+				{
+					Selector = this
+				}.AddTo(Level.KnownTrees).MoveTo(
+					(Position.ContentX + this.HalfWidth) * Level.Zoom,
+					(Position.ContentY + this.HalfHeight) * Level.Zoom
+				);
+			}
 
 		}
 
