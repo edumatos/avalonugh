@@ -452,9 +452,19 @@ namespace AvalonUgh.Code
 						Jumping();
 				}
 			}
+
+			if (e.Keyboard.IsPressedDown)
+			{
+				if (this.VelocityY == 0)
+				{
+					if (EnterCave != null)
+						EnterCave();
+				}
+			}
 		}
 
 		public event Action Jumping;
+		public event Action EnterCave;
 
 		#endregion
 

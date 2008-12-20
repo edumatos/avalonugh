@@ -4,6 +4,20 @@
 # background-height: 200
 # water: 32
 ####################
+                            R-R-S-
+                            R-C-|
+                            | | |
+                            P---BB
+
+
+
+
+
+
+
+
+
+
                     
                     
                     
@@ -11,17 +25,17 @@
                     
                     
                     
+                           
+                         
+                    
+                              
                     
                     
                     
-                    
-                    
-                    
-                    
-                    
+                            R-
 # tree: 96
 # sign: 120;0
-P-P--P-P-BBBBBBP-P--P--P-P--
-| |  S-S---S-S-| |  |  S-|
-| SS-| |   S-| SS-S-S-S| S-S
+P-P--P-P-BBBBBBP-P--P--P-P--|
+| |  S-S---S-S-| |  |  S-|  | 
+| SS-| |   S-| SS-S-S-S| S-SR-P---  
 ####################

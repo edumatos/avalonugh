@@ -227,6 +227,7 @@ namespace AvalonUgh.Game.Shared
 							// oem7 will trigger the console
 							if (args.Key == Key.Oem7)
 							{
+								args.Handled = true;
 								if (Console.AnimatedTop == 0)
 								{
 									Console.WriteLine("hide console");
@@ -242,6 +243,19 @@ namespace AvalonUgh.Game.Shared
 								// of the game view
 								// and under the transparent touch overlay
 								// when the view is in editor mode
+							}
+
+							if (args.Key == Key.Tab)
+							{
+								args.Handled = true;
+
+								if (LocalIdentity.Locals.Count > 0)
+								{
+									var NextFocusedLocal = this.LocalIdentity.Locals.Next(k => k.Actor == this.View.LocationTracker.Target);
+
+									this.View.LocationTracker.Target = NextFocusedLocal.Actor;
+									this.Focus();
+								}
 							}
 
 							if (args.Key == Key.F)
@@ -325,6 +339,48 @@ namespace AvalonUgh.Game.Shared
 								delegate
 								{
 									(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
+								};
+							NewPlayer.Actor.EnterCave +=
+								delegate
+								{
+									var ManAsObstacle = NewPlayer.Actor.ToObstacle();
+
+									// are we trying to enter a cave?
+									var NearbyCave = Level.KnownCaves.FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+
+									if (NearbyCave != null)
+									{
+										// we need to align us in front of the cave
+										// and show entering animation
+
+										Console.WriteLine("entering a cave");
+
+										AIDirector.WalkActorToTheCaveAndEnter(NewPlayer.Actor, NearbyCave,
+											delegate
+											{
+												Console.WriteLine("inside a cave");
+
+												// should we load another level and enter that?
+												// for the first version lets keep it simple
+												// lets just exit another cave
+
+												if (Level.KnownCaves.Count == 0)
+												{
+													// whatif the cave is destroyed?
+													AIDirector.ActorExitCaveFast(NewPlayer.Actor);
+													return;
+												}
+
+												var NextCave = Level.KnownCaves.Next(k => k == NearbyCave);
+												
+
+												AIDirector.ActorExitAnyCave(NewPlayer.Actor, NextCave);
+											}
+										);
+
+
+										return;
+									}
 								};
 
 							// every actor could act differently on gold collected
@@ -460,6 +516,9 @@ namespace AvalonUgh.Game.Shared
 					this.View.EditorSelectorApplied +=
 						(Selector, Position) =>
 						{
+							if (Selector.Width == 0)
+								return;
+
 							Console.WriteLine("EditorSelectorApplied");
 
 							(Assets.Shared.KnownAssets.Path.Audio + "/place_tile.mp3").PlaySound();
