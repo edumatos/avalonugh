@@ -74,6 +74,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 						);
 					};
 			}
+
+
 		}
 
 	}

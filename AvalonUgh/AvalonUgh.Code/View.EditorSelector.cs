@@ -125,6 +125,9 @@ namespace AvalonUgh.Code
 							}
 
 							this.EditorSelector.CreateTo(this.Level, p);
+
+							if (EditorSelectorApplied != null)
+								EditorSelectorApplied(this.EditorSelector, p);
 						}
 					);
 				};
@@ -137,6 +140,9 @@ namespace AvalonUgh.Code
 				PercisionY = PrimitiveTile.Heigth,
 			};
 		}
+
+		// to be used for syncing
+		public event Action<SelectorInfo, SelectorPosition> EditorSelectorApplied;
 
 		[Script]
 		public class SelectorInfo
@@ -207,10 +213,7 @@ namespace AvalonUgh.Code
 			public int ContentY;
 
 			public int TileX { get { return ContentX / PrimitiveTile.Width; } }
-
 			public int TileY { get { return ContentY / PrimitiveTile.Heigth; } }
-
-
 		}
 
 		public Rectangle EditorSelectorRectangle;

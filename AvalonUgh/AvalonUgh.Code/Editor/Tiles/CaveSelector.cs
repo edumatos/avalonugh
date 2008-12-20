@@ -15,7 +15,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	{
 		public const string Identifier = "C";
 
-		internal static readonly View.SelectorInfo[] Sizes =
+		public static readonly View.SelectorInfo[] Sizes =
 			new View.SelectorInfo[]
 			{
 				new Size_Generic(2, 2, 2),

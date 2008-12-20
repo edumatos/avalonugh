@@ -10,6 +10,7 @@ using AvalonUgh.NetworkCode.Shared;
 using ScriptCoreLib.CSharp.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Shapes;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Labs.Multiplayer
 {
@@ -161,9 +162,21 @@ namespace AvalonUgh.Labs.Multiplayer
 			Canvas.SetTop(b2, 50);
 			Canvas.SetTop(b3, 100);
 
-			b.Click += delegate { SpawnClient(); };
-			b2.Click += delegate { SpawnClient(); SpawnClient(); };
-			b3.Click += delegate { SpawnClient(); SpawnClient(); SpawnClient(); };
+			Action<int> SpawnClients =
+				Count =>
+				{
+					Enumerable.Range(0, Count).ForEach(
+						(Index, SignalNext) =>
+						{
+							SpawnClient();
+							50.AtDelay(SignalNext);
+						}
+					);
+				};
+
+			b.Click += delegate { SpawnClients(1); };
+			b2.Click += delegate { SpawnClients(2); };
+			b3.Click += delegate { SpawnClients(3); };
 		}
 	}
 }

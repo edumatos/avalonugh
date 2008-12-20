@@ -43,23 +43,18 @@ namespace AvalonUgh.Code.Editor.Sprites
 			{
 				PrimitiveTileCountX = 1;
 				PrimitiveTileCountY = 1;
+			}
+
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
+				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
 
 
+				var v = new Gold(Level.Zoom);
 
-				Invoke =
-					(View, Position) =>
-					{
-						// add a new fence tile
-						//RemoveEntities(this, View.Level, Position);
-
-						new Gold(View.Level.Zoom)
-						{
-							Selector = this
-						}.AddTo(View.Level.KnownGold).MoveTo(
-							(Position.ContentX + this.HalfWidth) * View.Level.Zoom,
-							(Position.ContentY + this.HalfHeight) * View.Level.Zoom
-						);
-					};
+				v.AddTo(Level.KnownGold);
+				v.MoveTo(x, y);
 			}
 		}
 
