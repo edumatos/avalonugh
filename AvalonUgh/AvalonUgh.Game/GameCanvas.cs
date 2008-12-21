@@ -262,7 +262,9 @@ namespace AvalonUgh.Game.Shared
 								View.Flashlight.Visible = !View.Flashlight.Visible;
 
 							if (args.Key == Key.G)
+							{
 								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
+							}
 
 							if (args.Key == Key.T)
 							{
@@ -372,7 +374,7 @@ namespace AvalonUgh.Game.Shared
 												}
 
 												var NextCave = Level.KnownCaves.Next(k => k == NearbyCave);
-												
+
 
 												AIDirector.ActorExitAnyCave(NewPlayer.Actor, NextCave);
 											}
@@ -474,7 +476,8 @@ namespace AvalonUgh.Game.Shared
 							// touch input and if we had multitouch so would others
 							if (this.LocalIdentity.Locals.Count == 0)
 							{
-								i.Touch = View.TouchInput;
+								// not yet
+								//i.Touch = View.TouchInput;
 							}
 
 
@@ -548,6 +551,9 @@ namespace AvalonUgh.Game.Shared
 							(Assets.Shared.KnownAssets.Path.Audio + "/place_tile.mp3").PlaySound();
 						};
 
+					this.View.EditorSelectorNextSize += () => et.EditorSelectorNextSize();
+					this.View.EditorSelectorPreviousSize += () => et.EditorSelectorPreviousSize();
+
 					// activate the game loop
 					(1000 / 40).AtInterval(
 						delegate
@@ -564,6 +570,15 @@ namespace AvalonUgh.Game.Shared
 					);
 
 					Console.WriteLine("load complete!");
+
+
+					5000.AtDelay(
+						() => (Assets.Shared.KnownAssets.Path.Audio + "/bird_cry.mp3").PlaySound()
+					);
+
+					25000.AtDelay(
+						() => (Assets.Shared.KnownAssets.Path.Audio + "/bird_cry.mp3").PlaySound()
+					);
 
 					// add the first local
 					Locals_Increase();
