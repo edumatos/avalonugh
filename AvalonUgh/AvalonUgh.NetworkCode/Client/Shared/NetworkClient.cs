@@ -169,22 +169,52 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 				};
 
-			10000.AtInterval(
+			5000.AtInterval(
 				delegate
 				{
+					// at every so often
 					// we need syncing 
+					// be it outside or inside a vehicle
 					this.Content.Console.WriteLine("sending our position");
 
 					foreach (var p in this.Content.LocalIdentity.Locals)
 					{
-						this.Messages.TeleportTo(
-							p.IdentityLocal,
-							p.Actor.X,
-							p.Actor.Y,
-							p.Actor.VelocityX,
-							p.Actor.VelocityY
-						);
+						if (p.Actor.CurrentVehicle == null)
+						{
+							this.Messages.TeleportTo(
+								p.IdentityLocal,
+								p.Actor.X,
+								p.Actor.Y,
+								p.Actor.VelocityX,
+								p.Actor.VelocityY
+							);
+						}
+						else
+						{
+							this.Messages.TeleportTo(
+								p.IdentityLocal,
+								p.Actor.CurrentVehicle.X,
+								p.Actor.CurrentVehicle.Y,
+								p.Actor.CurrentVehicle.VelocityX,
+								p.Actor.CurrentVehicle.VelocityY
+							);
+						}
 					}
+
+					this.Content.View.Level.KnownVehicles.Where(k => k.CurrentDriver == null).ForEach(
+						(Vehicle, Index) =>
+						{
+							this.Messages.Vehicle_TeleportTo(
+								Index,
+								Vehicle.X,
+								Vehicle.Y,
+								Vehicle.VelocityX,
+								Vehicle.VelocityY
+							);
+						}
+					);
+
+
 				}
 			);
 
@@ -205,11 +235,31 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 					Content.Console.WriteLine("UserTeleportTo " + e + " - " + p);
 
-					p.Actor.MoveTo(e.x, e.y);
-					p.Actor.VelocityX = e.vx;
-					p.Actor.VelocityY = e.vy;
+					if (p.Actor.CurrentVehicle == null)
+					{
+						p.Actor.MoveTo(e.x, e.y);
+						p.Actor.VelocityX = e.vx;
+						p.Actor.VelocityY = e.vy;
+					}
+					else
+					{
+						p.Actor.CurrentVehicle.MoveTo(e.x, e.y);
+						p.Actor.CurrentVehicle.VelocityX = e.vx;
+						p.Actor.CurrentVehicle.VelocityY = e.vy;
+					}
 				};
 
+			this.Events.UserVehicle_TeleportTo +=
+				e =>
+				{
+					Content.Console.WriteLine("UserVehicle_TeleportTo " + e);
+					
+					var v = this.Content.View.Level.KnownVehicles.Where(k => k.CurrentDriver == null).AtModulus(e.index);
+
+					v.MoveTo(e.x, e.y);
+					v.VelocityX = e.vx;
+					v.VelocityY = e.vy;
+				};
 
 
 			#region sync Locals

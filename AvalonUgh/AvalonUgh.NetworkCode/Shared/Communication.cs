@@ -25,6 +25,10 @@ namespace AvalonUgh.NetworkCode.Shared
 			void TeleportTo(int local, double x, double y, double vx, double vy);
 			void UserTeleportTo(int user, int local, double x, double y, double vx, double vy);
 
+			void Vehicle_TeleportTo(int index, double x, double y, double vx, double vy);
+			void UserVehicle_TeleportTo(int user, int index, double x, double y, double vx, double vy);
+
+
 			void LocalPlayers_Increase();
 			void UserLocalPlayers_Increase(int user);
 

@@ -83,6 +83,10 @@ namespace AvalonUgh.Code.Editor.Sprites
 			this.VelocityX += x.Min(1).Max(-1) * this.Acceleration;
 			this.VelocityY += y.Min(1).Max(-2) * this.Acceleration;
 
+			// limit the top speed a bit
+			this.VelocityX = this.VelocityX.Max(-2 * Zoom).Min(2 * Zoom);
+			this.VelocityY = this.VelocityY.Max(-2 * Zoom).Min(2 * Zoom);
+
 			if (this.VelocityY == 0)
 				this.VelocityX *= 0.7;
 
