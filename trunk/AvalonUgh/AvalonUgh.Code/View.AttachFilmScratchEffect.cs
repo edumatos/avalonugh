@@ -82,6 +82,8 @@ namespace AvalonUgh.Code
 			}
 			set
 			{
+				this.ColorOverlay.Background = Brushes.Brown;
+
 				_IsFilmScratchEffectEnabled = value;
 				if (IsFilmScratchEffectEnabledChanged != null)
 					IsFilmScratchEffectEnabledChanged();

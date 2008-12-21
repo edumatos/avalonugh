@@ -42,7 +42,9 @@ namespace AvalonUgh.Code
 			Action<MouseEventArgs, Action<int, int>> ToContentPosition =
 				(args, handler) =>
 				{
-					
+					if (args == null)
+						return;
+
 					var p = args.GetPosition(this.TouchOverlay);
 
 					//TouchTileSelector.MoveTo(p.X, p.Y);
@@ -79,9 +81,13 @@ namespace AvalonUgh.Code
 					handler(Convert.ToInt32(x), Convert.ToInt32(y));
 				};
 
-			this.TouchOverlay.MouseMove +=
-				(sender, args) =>
+			MouseEventArgs TouchOverlay_MouseMove_args = null;
+			Action TouchOverlay_MouseMove =
+				delegate
 				{
+					if (TouchOverlay_MouseMove_args == null)
+						return;
+
 					if (EditorSelector == null)
 						return;
 
@@ -93,11 +99,35 @@ namespace AvalonUgh.Code
 						EditorSelector.Height * this.Level.Zoom
 					);
 
-					ToContentPosition(args,
+					ToContentPosition(TouchOverlay_MouseMove_args,
 						(x, y) =>
 							this.EditorSelectorRectangle.MoveTo(x * this.Level.Zoom, y * this.Level.Zoom)
 					);
 				};
+
+			this.TouchOverlay.MouseMove +=
+				(sender, args) =>
+				{
+					TouchOverlay_MouseMove_args = args;
+					TouchOverlay_MouseMove();
+				};
+
+			this.TouchOverlay.MouseWheel +=
+				(sender, args) =>
+				{
+					if (args.Delta > 0)
+					{
+						if (EditorSelectorNextSize != null)
+							EditorSelectorNextSize();
+					}
+					else
+					{
+						if (EditorSelectorPreviousSize != null)
+							EditorSelectorPreviousSize();
+					}
+				};
+
+		
 
 			this.TouchOverlay.MouseLeftButtonUp +=
 				(sender, args) =>
@@ -112,12 +142,12 @@ namespace AvalonUgh.Code
 						(x, y) =>
 						{
 							var p = new SelectorPosition
-									{
-										ContentX = x,
-										ContentY = y,
+							{
+								ContentX = x,
+								ContentY = y,
 
 
-									};
+							};
 
 							if (this.EditorSelector.Invoke != null)
 							{
@@ -132,17 +162,25 @@ namespace AvalonUgh.Code
 					);
 				};
 
-			this.EditorSelector = new SelectorInfo
-			{
-				Width = PrimitiveTile.Width,
-				Height = PrimitiveTile.Heigth,
-				PercisionX = PrimitiveTile.Width,
-				PercisionY = PrimitiveTile.Heigth,
-			};
+			this.EditorSelectorChanged +=
+				delegate
+				{
+					TouchOverlay_MouseMove();
+				};
+
+			//this.EditorSelector = new SelectorInfo
+			//{
+			//    Width = PrimitiveTile.Width,
+			//    Height = PrimitiveTile.Heigth,
+			//    PercisionX = PrimitiveTile.Width,
+			//    PercisionY = PrimitiveTile.Heigth,
+			//};
 		}
 
 		// to be used for syncing
 		public event Action<SelectorInfo, SelectorPosition> EditorSelectorApplied;
+		public event Action EditorSelectorNextSize;
+		public event Action EditorSelectorPreviousSize;
 
 		[Script]
 		public class SelectorInfo
@@ -218,7 +256,23 @@ namespace AvalonUgh.Code
 
 		public Rectangle EditorSelectorRectangle;
 
-		public SelectorInfo EditorSelector { get; set; }
 
+		SelectorInfo InternalEditorSelector;
+		public SelectorInfo EditorSelector
+		{
+			get
+			{
+				return InternalEditorSelector;
+			}
+			set
+			{
+				InternalEditorSelector = value;
+
+				if (EditorSelectorChanged != null)
+					EditorSelectorChanged();
+			}
+		}
+
+		public event Action EditorSelectorChanged;
 	}
 }

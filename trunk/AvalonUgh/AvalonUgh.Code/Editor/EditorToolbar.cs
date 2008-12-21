@@ -21,7 +21,25 @@ namespace AvalonUgh.Code.Editor
 	[Script]
 	public class EditorToolbar : Window
 	{
-		public View.SelectorInfo EditorSelector;
+		public Action EditorSelectorNextSize;
+		public Action EditorSelectorPreviousSize;
+
+		View.SelectorInfo InternalEditorSelector;
+		public View.SelectorInfo EditorSelector
+		{
+			get
+			{
+				return InternalEditorSelector;
+			}
+			set
+			{
+				InternalEditorSelector = value;
+
+				if (EditorSelectorChanged != null)
+					EditorSelectorChanged();
+			}
+		}
+
 		public event Action EditorSelectorChanged;
 
 		[Script]
@@ -134,7 +152,9 @@ namespace AvalonUgh.Code.Editor
 			Action<Image, View.SelectorInfo[]> AddButton =
 				(Image, EditorSelector) =>
 				{
-					var EditorSelectorCycle = EditorSelector.AsCyclicEnumerable().GetEnumerator();
+					var EditorSelectorDefault = EditorSelector.FirstOrDefault();
+
+					//var EditorSelectorCycle = EditorSelector.AsCyclicEnumerable().GetEnumerator();
 
 					var x = ButtonsWidth();
 					var y = Padding;
@@ -162,31 +182,43 @@ namespace AvalonUgh.Code.Editor
 							Image.Opacity = 1;
 						};
 
+					
 					Action Select =
 						delegate
 						{
 							SelectionMarkerMove(x - 2, y - 2);
 
-
-							if (EditorSelectorCycle.MoveNext())
-							{
-								SelectionMarker.Fill = Brushes.LightGreen;
-
-								this.EditorSelector = EditorSelectorCycle.Current;
-								if (EditorSelectorChanged != null)
-									EditorSelectorChanged();
-							}
-							else
+							if (EditorSelector.Length == 0)
 							{
 								SelectionMarker.Fill = Brushes.Red;
+								this.EditorSelectorNextSize = null;
+								this.EditorSelectorPreviousSize = null;
+								this.EditorSelector = null;
+								return;
 							}
+
+							SelectionMarker.Fill = Brushes.LightGreen;
+							this.EditorSelectorNextSize =
+								delegate
+								{
+									EditorSelectorDefault = EditorSelector.Next(k => k == EditorSelectorDefault);
+									this.EditorSelector = EditorSelectorDefault;
+								};
+
+							this.EditorSelectorPreviousSize =
+								delegate
+								{
+									EditorSelectorDefault = EditorSelector.Previous(k => k == EditorSelectorDefault);
+									this.EditorSelector = EditorSelectorDefault;
+								};
+
+							this.EditorSelector = EditorSelectorDefault;
 						};
 
 					TouchOverlay.MouseLeftButtonUp +=
 						delegate
 						{
 							Select();
-
 						};
 
 
@@ -295,7 +327,7 @@ namespace AvalonUgh.Code.Editor
 			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png",
 				Editor.Sprites.SignSelector.Sizes
 			);
-		
+
 
 			AddButton_1x1(
 				Editor.Sprites.GoldSelector.ToolbarImage.ToString(),
