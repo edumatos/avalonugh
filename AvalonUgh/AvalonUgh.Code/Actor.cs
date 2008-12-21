@@ -41,6 +41,9 @@ namespace AvalonUgh.Code
 			}
 			set
 			{
+				if (value == InternalCurrentVehicle)
+					return;
+
 				EnterVehicleBlocked = true;
 				500.AtDelay(() => EnterVehicleBlocked = false);
 
@@ -54,6 +57,9 @@ namespace AvalonUgh.Code
 					this.Animation = Actor.AnimationEnum.Idle;
 
 					this.MoveTo(v.X, v.Y - this.ToObstacle().Height / 2);
+
+					this.BringContainerToFront();
+
 					if (v.CurrentDriver != null)
 						v.CurrentDriver = null;
 				}
