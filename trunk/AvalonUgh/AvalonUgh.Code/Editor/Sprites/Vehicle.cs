@@ -48,7 +48,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				if (_CurrentDriver != null)
 				{
-					ExitIsBlocked = true;
+					this.ExitIsBlocked = true;
+					this.ColorStripe = Colors.Red;
 
 					if (_CurrentDriver.CurrentVehicle != this)
 						_CurrentDriver.CurrentVehicle = this;
@@ -56,6 +57,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 					500.AtDelay(
 						() => ExitIsBlocked = false
 					);
+
+
 				}
 			}
 		}
