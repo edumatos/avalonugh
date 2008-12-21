@@ -121,7 +121,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public bool PhysicsDisabled { get; set; }
 
-		public double Acceleration = 0.4;
+		public double Acceleration = 0.2;
 		public double Density { get; set; }
 
 		public Canvas Container { get; set; }

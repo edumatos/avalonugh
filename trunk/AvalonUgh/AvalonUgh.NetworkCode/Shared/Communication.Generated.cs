@@ -28,6 +28,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserKeyStateChanged,
             TeleportTo,
             UserTeleportTo,
+            Vehicle_TeleportTo,
+            UserVehicle_TeleportTo,
             LocalPlayers_Increase,
             UserLocalPlayers_Increase,
             LocalPlayers_Decrease,
@@ -58,6 +60,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserKeyStateChangedArguments> UserKeyStateChanged;
             event Action<RemoteEvents.TeleportToArguments> TeleportTo;
             event Action<RemoteEvents.UserTeleportToArguments> UserTeleportTo;
+            event Action<RemoteEvents.Vehicle_TeleportToArguments> Vehicle_TeleportTo;
+            event Action<RemoteEvents.UserVehicle_TeleportToArguments> UserVehicle_TeleportTo;
             event Action<RemoteEvents.LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
             event Action<RemoteEvents.UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
             event Action<RemoteEvents.LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
@@ -209,6 +213,34 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void Vehicle_TeleportTo(int index, double x, double y, double vx, double vy)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.Vehicle_TeleportTo, args = new object[] { index, x, y, vx, vy } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.Vehicle_TeleportTo(index, x, y, vx, vy);
+                    }
+                }
+            }
+            public void UserVehicle_TeleportTo(int user, int index, double x, double y, double vx, double vy)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserVehicle_TeleportTo, args = new object[] { user, index, x, y, vx, vy } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserVehicle_TeleportTo(user, index, x, y, vx, vy);
+                    }
+                }
+            }
             public void LocalPlayers_Increase()
             {
                 if (this.Send != null)
@@ -350,6 +382,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.Hello += this.UserHello;
                     value.KeyStateChanged += this.UserKeyStateChanged;
                     value.TeleportTo += this.UserTeleportTo;
+                    value.Vehicle_TeleportTo += this.UserVehicle_TeleportTo;
                     value.LocalPlayers_Increase += this.UserLocalPlayers_Increase;
                     value.LocalPlayers_Decrease += this.UserLocalPlayers_Decrease;
                     value.EditorSelector += this.UserEditorSelector;
@@ -360,6 +393,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.Hello -= this.UserHello;
                     value.KeyStateChanged -= this.UserKeyStateChanged;
                     value.TeleportTo -= this.UserTeleportTo;
+                    value.Vehicle_TeleportTo -= this.UserVehicle_TeleportTo;
                     value.LocalPlayers_Increase -= this.UserLocalPlayers_Increase;
                     value.LocalPlayers_Decrease -= this.UserLocalPlayers_Decrease;
                     value.EditorSelector -= this.UserEditorSelector;
@@ -378,6 +412,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserTeleportTo(TeleportToArguments e)
                 {
                     Target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                }
+                public void UserVehicle_TeleportTo(Vehicle_TeleportToArguments e)
+                {
+                    Target.UserVehicle_TeleportTo(this.user, e.index, e.x, e.y, e.vx, e.vy);
                 }
                 public void UserLocalPlayers_Increase(LocalPlayers_IncreaseArguments e)
                 {
@@ -425,6 +463,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
                 }
+                public void UserVehicle_TeleportTo(int index, double x, double y, double vx, double vy)
+                {
+                    this.Target.UserVehicle_TeleportTo(this.user, index, x, y, vx, vy);
+                }
+                public void UserVehicle_TeleportTo(UserVehicle_TeleportToArguments e)
+                {
+                    this.Target.UserVehicle_TeleportTo(this.user, e.index, e.x, e.y, e.vx, e.vy);
+                }
                 public void UserLocalPlayers_Increase()
                 {
                     this.Target.UserLocalPlayers_Increase(this.user);
@@ -465,6 +511,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserHello += this.UserHello;
                     value.UserKeyStateChanged += this.UserKeyStateChanged;
                     value.UserTeleportTo += this.UserTeleportTo;
+                    value.UserVehicle_TeleportTo += this.UserVehicle_TeleportTo;
                     value.UserLocalPlayers_Increase += this.UserLocalPlayers_Increase;
                     value.UserLocalPlayers_Decrease += this.UserLocalPlayers_Decrease;
                     value.UserEditorSelector += this.UserEditorSelector;
@@ -475,6 +522,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserHello -= this.UserHello;
                     value.UserKeyStateChanged -= this.UserKeyStateChanged;
                     value.UserTeleportTo -= this.UserTeleportTo;
+                    value.UserVehicle_TeleportTo -= this.UserVehicle_TeleportTo;
                     value.UserLocalPlayers_Increase -= this.UserLocalPlayers_Increase;
                     value.UserLocalPlayers_Decrease -= this.UserLocalPlayers_Decrease;
                     value.UserEditorSelector -= this.UserEditorSelector;
@@ -499,6 +547,12 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                }
+                public void UserVehicle_TeleportTo(UserVehicle_TeleportToArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserVehicle_TeleportTo(this.user, e.index, e.x, e.y, e.vx, e.vy);
                 }
                 public void UserLocalPlayers_Increase(UserLocalPlayers_IncreaseArguments e)
                 {
@@ -662,6 +716,42 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserTeleportToArguments> UserTeleportTo;
+            #region Vehicle_TeleportToArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class Vehicle_TeleportToArguments
+            {
+                public int index;
+                public double x;
+                public double y;
+                public double vx;
+                public double vy;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ index = ").Append(this.index).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<Vehicle_TeleportToArguments> Vehicle_TeleportTo;
+            #region UserVehicle_TeleportToArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserVehicle_TeleportToArguments : WithUserArguments
+            {
+                public int index;
+                public double x;
+                public double y;
+                public double vx;
+                public double vy;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", index = ").Append(this.index).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserVehicle_TeleportToArguments> UserVehicle_TeleportTo;
             #region LocalPlayers_IncreaseArguments
             [Script]
             [CompilerGenerated]
@@ -761,6 +851,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), local = e.GetInt32(1), key = e.GetInt32(2), state = e.GetInt32(3) }); } },
                             { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { local = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
                             { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), local = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
+                            { Messages.Vehicle_TeleportTo, e => { Vehicle_TeleportTo(new Vehicle_TeleportToArguments { index = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
+                            { Messages.UserVehicle_TeleportTo, e => { UserVehicle_TeleportTo(new UserVehicle_TeleportToArguments { user = e.GetInt32(0), index = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
                             { Messages.LocalPlayers_Increase, e => { LocalPlayers_Increase(new LocalPlayers_IncreaseArguments {  }); } },
                             { Messages.UserLocalPlayers_Increase, e => { UserLocalPlayers_Increase(new UserLocalPlayers_IncreaseArguments { user = e.GetInt32(0) }); } },
                             { Messages.LocalPlayers_Decrease, e => { LocalPlayers_Decrease(new LocalPlayers_DecreaseArguments {  }); } },
@@ -780,6 +872,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserKeyStateChanged, e => UserKeyStateChanged },
                             { Messages.TeleportTo, e => TeleportTo },
                             { Messages.UserTeleportTo, e => UserTeleportTo },
+                            { Messages.Vehicle_TeleportTo, e => Vehicle_TeleportTo },
+                            { Messages.UserVehicle_TeleportTo, e => UserVehicle_TeleportTo },
                             { Messages.LocalPlayers_Increase, e => LocalPlayers_Increase },
                             { Messages.UserLocalPlayers_Increase, e => UserLocalPlayers_Increase },
                             { Messages.LocalPlayers_Decrease, e => LocalPlayers_Decrease },
@@ -921,6 +1015,22 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserTeleportTo(v));
             }
 
+            public event Action<RemoteEvents.Vehicle_TeleportToArguments> Vehicle_TeleportTo;
+            void IMessages.Vehicle_TeleportTo(int index, double x, double y, double vx, double vy)
+            {
+                if(Vehicle_TeleportTo == null) return;
+                var v = new RemoteEvents.Vehicle_TeleportToArguments { index = index, x = x, y = y, vx = vx, vy = vy };
+                this.VirtualLatency(() => this.Vehicle_TeleportTo(v));
+            }
+
+            public event Action<RemoteEvents.UserVehicle_TeleportToArguments> UserVehicle_TeleportTo;
+            void IMessages.UserVehicle_TeleportTo(int user, int index, double x, double y, double vx, double vy)
+            {
+                if(UserVehicle_TeleportTo == null) return;
+                var v = new RemoteEvents.UserVehicle_TeleportToArguments { user = user, index = index, x = x, y = y, vx = vx, vy = vy };
+                this.VirtualLatency(() => this.UserVehicle_TeleportTo(v));
+            }
+
             public event Action<RemoteEvents.LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
             void IMessages.LocalPlayers_Increase()
             {
@@ -974,4 +1084,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 20.12.2008 16:22:24
+// 21.12.2008 22:41:08
