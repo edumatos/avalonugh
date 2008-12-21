@@ -316,7 +316,7 @@ namespace AvalonUgh.Game.Shared
 							Console.WriteLine("new ingame player added: " + NewPlayer);
 
 							// lets create a dummy actor
-							NewPlayer.Actor = new Actor.man0(Zoom)
+							NewPlayer.Actor = new Actor.woman0(Zoom)
 							{
 								Animation = Actor.AnimationEnum.Panic,
 								RespectPlatforms = true,

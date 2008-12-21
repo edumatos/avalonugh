@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
@@ -35,6 +36,7 @@ namespace AvalonUgh.Code
 						ToFrame(0),
 						ToFrame(1),
 						ToFrame(2),
+						ToFrame(1),
 					};
 
 				this.PanicFrames =
@@ -46,6 +48,10 @@ namespace AvalonUgh.Code
 					};
 
 
+				this.WalkLeftFrames = Enumerable.Range(30, 9).ToArray(ToFrame);
+				this.WalkRightFrames = Enumerable.Range(40, 9).ToArray(ToFrame);
+				this.CaveEnterFrames = Enumerable.Range(60, 8).ToArray(ToFrame);
+				this.CaveExitFrames = Enumerable.Range(50, 9).ToArray(ToFrame);
 
 				Initialize();
 			}
