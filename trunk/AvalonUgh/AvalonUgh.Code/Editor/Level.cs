@@ -143,8 +143,11 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly Physics Physics;
 
+
 		public Level(string source, int Zoom)
 		{
+			
+
 			this.Physics = new Physics
 			{
 				Level = this,
@@ -597,6 +600,20 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownSigns.Remove(Entity);
+										Entity.Dispose();
+									}
+							}
+					)
+				).Concat(
+					this.KnownVehicles.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownVehicles.Remove(Entity);
 										Entity.Dispose();
 									}
 							}

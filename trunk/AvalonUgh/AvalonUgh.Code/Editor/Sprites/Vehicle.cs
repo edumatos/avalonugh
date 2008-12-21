@@ -20,7 +20,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public partial class Vehicle :
 		ISupportsContainer, ISupportsVelocity, ISupportsPhysics,
-		ISupportsLocationChanged
+		ISupportsLocationChanged, IDisposable
 	{
 		public Vehicle StartPosition;
 
@@ -42,6 +42,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 			set
 			{
+				var v = _CurrentDriver;
+
 				_CurrentDriver = value;
 
 				IsUnmanned = value == null;
@@ -59,6 +61,13 @@ namespace AvalonUgh.Code.Editor.Sprites
 					);
 
 
+				}
+				else
+				{
+					if (v != null)
+					{
+						v.CurrentVehicle = null;
+					}
 				}
 			}
 		}
@@ -252,6 +261,12 @@ namespace AvalonUgh.Code.Editor.Sprites
 					(1000 / 30).AtIntervalWithTimer(
 						t =>
 						{
+							if (IsDisposed)
+							{
+								t.Stop();
+								return;
+							}
+
 							if (IsUnmanned)
 								return;
 
@@ -285,6 +300,32 @@ namespace AvalonUgh.Code.Editor.Sprites
 		}
 
 
+
+		#region IDisposable Members
+
+		bool IsDisposed;
+
+		public void Dispose()
+		{
+			if (this.StartPosition != null)
+			{
+				this.StartPosition.Dispose();
+				this.StartPosition = null;
+			}
+
+			if (this.CurrentDriver != null)
+			{
+				this.CurrentDriver = null;
+			}
+
+
+			IsDisposed = true;
+
+			this.IsAnimated = false;
+			this.Container.Orphanize();
+		}
+
+		#endregion
 	}
 
 }
