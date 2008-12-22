@@ -11,9 +11,52 @@ namespace AvalonUgh.Code.Input
 	[Script]
 	public class KeyboardInput
 	{
+
 		[Script]
 		public class Arguments
 		{
+			[Script]
+			public class IJKL : Arguments
+			{
+				public IJKL()
+				{
+					Left = Key.J;
+					Right = Key.L;
+					Up = Key.I;
+					Down = Key.K;
+					Drop = Key.U;
+					Enter = Key.O;
+				}
+			}
+
+			[Script]
+			public class WASD : Arguments
+			{
+				public WASD()
+				{
+					Left = Key.A;
+					Right = Key.D;
+					Up = Key.W;
+					Down = Key.S;
+					Drop = Key.Q;
+					Enter = Key.E;
+				}
+			}
+
+			[Script]
+			public class Arrows : Arguments
+			{
+				public Arrows()
+				{
+					Left = Key.Left;
+					Right = Key.Right;
+					Up = Key.Up;
+					Down = Key.Down;
+					Drop = Key.Space;
+					Enter = Key.Enter;
+				}
+			}
+
 			public UIElement InputControl;
 
 			public Key Left = Key.Left;
@@ -26,6 +69,7 @@ namespace AvalonUgh.Code.Input
 		}
 
 		public readonly Dictionary<Key, bool> KeyState;
+		public readonly Dictionary<Key, int> SyncFrameDelta;
 
 		public event Action<Key, bool> KeyStateChanged;
 
@@ -99,6 +143,16 @@ namespace AvalonUgh.Code.Input
 							{e.Down, false},
 							{e.Right, false},
 							{e.Left, false},
+						};
+
+
+			this.SyncFrameDelta = new Dictionary<Key, int>
+						{
+							{e.Enter, 0},
+							{e.Up, 0},
+							{e.Down, 0},
+							{e.Right, 0},
+							{e.Left, 0},
 						};
 
 			if (e.InputControl != null)

@@ -133,8 +133,9 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			// let new player know how it is named, also send magic bytes to verify
 			player.ToPlayer.Server_Hello(
-				player.UserId, player.Username //, 
-				//this.Users.Count - 1,
+				player.UserId, 
+				player.Username, 
+				this.Users.Count - 1
 				//navbar,
 				//vote,
 				//layoutinput,

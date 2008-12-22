@@ -68,15 +68,8 @@ namespace AvalonUgh.Game.Shared
 				{
 					Keyboard =
 						new KeyboardInput(
-							new KeyboardInput.Arguments
+							new KeyboardInput.Arguments.IJKL
 							{
-								Left = Key.J,
-								Right = Key.L,
-								Up = Key.I,
-								Down = Key.K,
-								Drop = Key.U,
-								Enter = Key.O,
-
 								InputControl = this,
 							}
 						)
@@ -87,15 +80,8 @@ namespace AvalonUgh.Game.Shared
 				new PlayerInput
 				{
 					Keyboard = new KeyboardInput(
-						new KeyboardInput.Arguments
+						new KeyboardInput.Arguments.WASD
 						{
-							Left = Key.A,
-							Right = Key.D,
-							Up = Key.W,
-							Down = Key.S,
-							Drop = Key.Q,
-							Enter = Key.E,
-
 							InputControl = this,
 						}
 					),
@@ -109,15 +95,8 @@ namespace AvalonUgh.Game.Shared
 				{
 					Keyboard =
 						new KeyboardInput(
-							new KeyboardInput.Arguments
+							new KeyboardInput.Arguments.Arrows
 							{
-								Left = Key.Left,
-								Right = Key.Right,
-								Up = Key.Up,
-								Down = Key.Down,
-								Drop = Key.Space,
-								Enter = Key.Enter,
-
 								InputControl = this,
 							}
 						)
@@ -138,7 +117,7 @@ namespace AvalonUgh.Game.Shared
 
 			// prototype the new menu
 
-			var LobbyLevel = KnownAssets.Path.Assets + "/level00.txt";
+			var LobbyLevel = KnownAssets.Path.Assets + "/level01.txt";
 
 			#region setting up our console
 			this.Console = new GameConsole();
@@ -162,7 +141,8 @@ namespace AvalonUgh.Game.Shared
 							if (Volume > 0)
 								(Assets.Shared.KnownAssets.Path.Audio + "/bounce.mp3").PlaySound().SetVolume(Volume);
 
-							Console.WriteLine("CollisionAtVelocity " + new { Velocity, Volume });
+							// we dont want to log collision info anymore... maybe later
+							//Console.WriteLine("CollisionAtVelocity " + new { Velocity, Volume });
 						};
 
 					// in menu mode the view does not include status bar
@@ -555,9 +535,39 @@ namespace AvalonUgh.Game.Shared
 					this.View.EditorSelectorPreviousSize += () => et.EditorSelectorPreviousSize();
 
 					// activate the game loop
-					(1000 / 40).AtInterval(
+
+					this.LocalIdentity.SyncFrameRate = 1000 / (50);
+					//this.LocalIdentity.SyncFrameRate = 1000 / (40.Random() + 20);
+
+					this.KeyUp +=
+						(sender, args) =>
+						{
+							// allow single frame step
+
+							if (args.Key == Key.PageUp)
+							{
+								this.LocalIdentity.SyncFramePausedSkip = true;
+							}
+						};
+
+
+					Action FrameTick =
 						delegate
 						{
+							if (this.LocalIdentity.SyncFramePaused)
+							{
+								if (this.LocalIdentity.SyncFramePausedSkip)
+								{
+									this.LocalIdentity.SyncFramePausedSkip = false;
+								}
+								else
+								{
+									return;
+								}
+							}
+
+							
+
 							// we could pause the game here
 							foreach (var p in Players)
 							{
@@ -566,8 +576,12 @@ namespace AvalonUgh.Game.Shared
 
 							Level.Physics.Apply();
 
-						}
-					);
+							this.LocalIdentity.SyncFrame++;
+						};
+
+					FrameTick.AtInterval(() => this.LocalIdentity.SyncFrameRate);
+
+				
 
 					Console.WriteLine("load complete!");
 

@@ -17,6 +17,26 @@ namespace AvalonUgh.Code
 
 		public readonly BindingList<PlayerInfo> Locals = new BindingList<PlayerInfo>();
 
+		public int SyncFrameLatency;
+		public int SyncFrameRate;
+		public bool SyncFramePaused;
+		public bool SyncFramePausedSkip;
+		public event Action SyncFrameChanged;
+		int InternalSyncFrame;
+		public int SyncFrame
+		{
+			get
+			{
+				return InternalSyncFrame;
+			}
+			set
+			{
+				InternalSyncFrame = value;
+				if (SyncFrameChanged != null)
+					SyncFrameChanged();
+			}
+		}
+
 		public PlayerIdentity()
 		{
 			this.Locals.ForEachNewItem(
