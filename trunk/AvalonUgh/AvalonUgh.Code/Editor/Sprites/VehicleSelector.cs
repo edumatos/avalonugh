@@ -11,33 +11,33 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class VehicleSelector
+	public class VehicleSelector : SelectorInfo
 	{
-		public static NameFormat ToolbarImage
+		public VehicleSelector()
 		{
-			get
-			{
-				return
-					new NameFormat
-					{
-						Path = Assets.Shared.KnownAssets.Path.Sprites,
-						Name = "vehicle",
-						Index = 1,
-						AnimationFrame = 4,
-						Width = 2,
-						Height = 2,
-						Extension = "png"
-					};
-			}
-		}
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Sprites,
+					Name = "vehicle",
+					Index = 1,
+					AnimationFrame = 4,
+					Width = 2,
+					Height = 2,
+					Extension = "png"
+				};
 
-		// clicking on the toolbar will shuffle between those sizes
-		// also while loading tiles the map will tell us which size to use
-		public static readonly View.SelectorInfo[] Sizes =
-			new[]
+			// clicking on the toolbar will shuffle between those sizes
+			// also while loading tiles the map will tell us which size to use
+	
+			this.Sizes = new[]
 			{
 				new Size_2x2()
 			};
+		}
+
+
+	
 
 		[Script]
 		public class Size_2x2 : SpriteSelector

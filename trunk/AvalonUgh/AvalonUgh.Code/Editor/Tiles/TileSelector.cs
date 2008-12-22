@@ -62,7 +62,21 @@ namespace AvalonUgh.Code.Editor.Tiles
 		}
 
 
+		[Script]
+		public sealed class Composite : TileSelector
+		{
+			readonly Action<Level, View.SelectorPosition> CreateToHandler;
 
+			public Composite(int x, int y, Action<Level, View.SelectorPosition> CreateToHandler) : base(x, y)
+			{
+				this.CreateToHandler = CreateToHandler;
+			}
+
+			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			{
+				this.CreateToHandler(Level, Position);
+			}
+		}
 
 		public static void RemovePlatforms(View.SelectorInfo Selector, Level Level, View.SelectorPosition Position)
 		{

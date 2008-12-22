@@ -7,48 +7,35 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class TreeSelector
+	public class TreeSelector : SelectorInfo
 	{
-		public readonly Level.Attribute.Int32 Attribute = "tree";
-		public readonly Level Level;
 
-		public TreeSelector(Level Level)
+		public TreeSelector()
 		{
-			// we need to know the context in which our attribute
-			// is called
-			this.Level = Level;
-
-			// if the level is loading
-			// this attribute will be assigned
-			// each time the tree command is found
-			Attribute.Assigned +=
-				x_ =>
+			this.ToolbarImage =
+				new NameFormat
 				{
-					var x = x_ * Level.Zoom;
-					var y = Level.TileRowsProcessed * PrimitiveTile.Heigth * Level.Zoom;
-
-					// at this time we do have the level reference
-					// but we do not have the view reference
-					// this should enable us to change levels
-					// in the same view
-					new Tree(Level.Zoom)
-					{
-
-					}.AddTo(Level.KnownTrees).MoveBaseTo(x, y);
+					Path = Assets.Shared.KnownAssets.Path.Sprites,
+					Name = "tree",
+					Index = 0,
+					Width = 2,
+					Height = 2,
+					Extension = "png"
 				};
+
+
+			this.Sizes =
+				new[]
+				{
+					new Size_2x2()
+				}; 
 		}
 
-		// clicking on the toolbar will shuffle between those sizes
-		// also while loading tiles the map will tell us which size to use
-		public static View.SelectorInfo[] Sizes =
-			new[]
-			{
-				new Size_2x2()
-			};
 
 		[Script]
 		public class Size_2x2 : SpriteSelector

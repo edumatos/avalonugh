@@ -6,20 +6,74 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public static class FenceSelector 
+	public class FenceSelector : SelectorInfo
 	{
 		public const string Identifier = "F";
 
-		public static readonly View.SelectorInfo[] Sizes =
-			new View.SelectorInfo[]
-			{
-				new Size_Generic(1, 1, 1),
-	
-			};
+		public readonly View.SelectorInfo
+			Size_1x1 = new Size_Generic(1, 1, 1),
+			Size_2x1,
+			Size_1x2,
+			Size_2x2;
+
+		public FenceSelector()
+		{
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Tiles,
+					Name = "fence",
+					Index = 0,
+					Extension = "png"
+				};
+
+			this.Size_1x1 = new Size_Generic(1, 1, 1);
+
+			this.Size_2x1 =
+				new TileSelector.Composite(2, 1,
+					(Level, Position) =>
+					{
+						this.Size_1x1.CreateTo(Level, Position[0, 0]);
+						this.Size_1x1.CreateTo(Level, Position[1, 0]);
+					}
+				);
+			
+			this.Size_1x2 =
+				new TileSelector.Composite(1, 2,
+					(Level, Position) =>
+					{
+						this.Size_1x1.CreateTo(Level, Position[0, 0]);
+						this.Size_1x1.CreateTo(Level, Position[0, 1]);
+					}
+				);
+
+
+			this.Size_2x2 =
+				new TileSelector.Composite(2, 2,
+					(Level, Position) =>
+					{
+						this.Size_1x1.CreateTo(Level, Position[0, 0]);
+						this.Size_1x1.CreateTo(Level, Position[1, 0]);
+						this.Size_1x1.CreateTo(Level, Position[0, 1]);
+						this.Size_1x1.CreateTo(Level, Position[1, 1]);
+					}
+				);
+
+			this.Sizes =
+				new View.SelectorInfo[]
+				{
+					Size_1x1,
+					Size_1x2,
+					Size_2x1,
+					Size_2x2
+				};
+		}
+
 
 		[Script]
 		private class Size_Generic : TileSelector.Named
@@ -49,7 +103,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{
-			var Selector = Sizes.SingleOrDefault(
+			var Selector = new FenceSelector().Sizes.SingleOrDefault(
 				k => k.Equals(Tile)
 			);
 

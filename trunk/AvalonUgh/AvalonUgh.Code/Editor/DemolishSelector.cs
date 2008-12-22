@@ -6,20 +6,37 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public class DemolishSelector
+	public class DemolishSelector : SelectorInfo
 	{
-		public static readonly View.SelectorInfo[] Sizes =
-			new View.SelectorInfo[]
-			{
-				new Size_Generic(1, 1),
-				new Size_Generic(2, 2),
-				new Size_Generic(4, 4),
-				new Size_Generic(8, 8),
-			
-			};
+		public DemolishSelector()
+		{
+			this.ImageWidth = 20;
+			this.ImageHeight = 20;
+
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Assets,
+					Name = "btn_demolish",
+					Index = -1,
+					Extension = "png"
+				};
+
+			this.Sizes =
+				new View.SelectorInfo[]
+				{
+					new Size_Generic(1, 1),
+					new Size_Generic(2, 2),
+					new Size_Generic(4, 4),
+					new Size_Generic(8, 8),
+				
+				};
+		}
+
 
 
 

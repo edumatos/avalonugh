@@ -6,20 +6,32 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class SignSelector
+	public class SignSelector : SelectorInfo
 	{
-		// clicking on the toolbar will shuffle between those sizes
-		// also while loading tiles the map will tell us which size to use
-		public static readonly View.SelectorInfo[] Sizes =
-			new[]
-			{
-				new Size_1x1()
-			};
+		public SignSelector()
+		{
+			this.Sizes =
+				new[]
+				{
+					new Size_1x1()
+				};
 
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Sprites,
+					Name = "sign",
+					Index = 0,
+					Extension = "png"
+				};
+
+		}
+		
 		[Script]
 		public class Size_1x1 : SpriteSelector
 		{

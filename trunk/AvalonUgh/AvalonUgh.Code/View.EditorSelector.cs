@@ -149,10 +149,6 @@ namespace AvalonUgh.Code
 
 							};
 
-							if (this.EditorSelector.Invoke != null)
-							{
-								this.EditorSelector.Invoke(this, p);
-							}
 
 							this.EditorSelector.CreateTo(this.Level, p);
 
@@ -230,7 +226,7 @@ namespace AvalonUgh.Code
 			public int PercisionX;
 			public int PercisionY;
 
-			public Action<View, SelectorPosition> Invoke;
+			//public Action<View, SelectorPosition> Invoke;
 
 			public virtual void CreateTo(Level Level, SelectorPosition Position)
 			{
@@ -252,6 +248,19 @@ namespace AvalonUgh.Code
 
 			public int TileX { get { return ContentX / PrimitiveTile.Width; } }
 			public int TileY { get { return ContentY / PrimitiveTile.Heigth; } }
+
+			public SelectorPosition this[int x, int y]
+			{
+				get
+				{
+					return 	
+						new View.SelectorPosition
+						{
+							ContentX = this.ContentX + x * PrimitiveTile.Width,
+							ContentY = this.ContentY + y * PrimitiveTile.Heigth
+						};
+				}
+			}
 		}
 
 		public Rectangle EditorSelectorRectangle;

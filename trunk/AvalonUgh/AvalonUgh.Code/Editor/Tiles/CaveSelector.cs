@@ -7,19 +7,35 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class CaveSelector
+	public class CaveSelector : SelectorInfo
 	{
 		public const string Identifier = "C";
 
-		public static readonly View.SelectorInfo[] Sizes =
-			new View.SelectorInfo[]
-			{
-				new Size_Generic(2, 2, 2),
-			};
+		public CaveSelector()
+		{
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Tiles,
+					Name = "cave",
+					Index = 0,
+					Width = 2,
+					Height = 2,
+					Extension = "png"
+				};
+
+			this.Sizes =
+				new View.SelectorInfo[]
+				{
+					new Size_Generic(2, 2, 2),
+				};
+		}
+	
 
 		[Script]
 		private class Size_Generic : TileSelector.Named
@@ -49,7 +65,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{
-			TileSelector.AttachToLevel(Sizes, Position, Tile, Level);
+			TileSelector.AttachToLevel(new CaveSelector().Sizes, Position, Tile, Level);
 		}
 	}
 }

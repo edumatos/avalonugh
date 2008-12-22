@@ -139,7 +139,7 @@ namespace AvalonUgh.Code.Editor
 			}
 		}
 
-		readonly TreeSelector TreeSelector;
+		//readonly TreeSelector TreeSelector;
 
 		public readonly Physics Physics;
 
@@ -156,7 +156,7 @@ namespace AvalonUgh.Code.Editor
 			this.AttributeGravity.Value = 30;
 			this.AttributeWind.Value = 0;
 
-			this.TreeSelector = new TreeSelector(this);
+			//this.TreeSelector = new TreeSelector(this);
 
 			this.AttributeFlashlightOpacity.Value = 180;
 
@@ -164,23 +164,23 @@ namespace AvalonUgh.Code.Editor
 
 			var Create = new
 			{
-				//Tree = (Attribute.Int32)"tree",
+				Tree = (Attribute.Int32)"tree",
 				Rock = (Attribute.Int32)"rock",
 				Gold = (Attribute.Int32)"gold",
 				Sign = (Attribute.Int32_Int32)"sign",
 			};
 
-			//Create.Tree.Assigned +=
-			//    x_ =>
-			//    {
-			//        var x = x_ * Zoom;
-			//        var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+			Create.Tree.Assigned +=
+				x_ =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
 
-			//        new Tree(Zoom)
-			//        {
+					new Tree(Zoom)
+					{
 
-			//        }.AddTo(KnownTrees).MoveBaseTo(x, y);
-			//    };
+					}.AddTo(KnownTrees).MoveBaseTo(x, y);
+				};
 
 			Create.Gold.Assigned +=
 				x_ =>
@@ -224,9 +224,8 @@ namespace AvalonUgh.Code.Editor
 				Create.Gold,
 				Create.Rock,
 				Create.Sign,
-				//Create.Tree,
+				Create.Tree,
 
-				this.TreeSelector.Attribute,
 
 				AttributeWind,
 				AttributeGravity,

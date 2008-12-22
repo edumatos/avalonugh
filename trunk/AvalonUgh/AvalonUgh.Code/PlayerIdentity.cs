@@ -17,7 +17,6 @@ namespace AvalonUgh.Code
 
 		public readonly BindingList<PlayerInfo> Locals = new BindingList<PlayerInfo>();
 
-		public int SyncFrameRateCorrection;
 		public int SyncFrameLatency;
 		public int SyncFrameRate;
 		public bool SyncFramePaused;
@@ -25,6 +24,7 @@ namespace AvalonUgh.Code
 		public event Action SyncFrameChanged;
 		int InternalSyncFrame;
 		public int SyncFrameLimit;
+		public int SyncFrameWindow = 5;
 		public int SyncFrame
 		{
 			get

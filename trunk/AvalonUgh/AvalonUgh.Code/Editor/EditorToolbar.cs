@@ -49,9 +49,11 @@ namespace AvalonUgh.Code.Editor
 			public Rectangle TouchOverlay;
 		}
 
-		public EditorToolbar(Canvas DragContainer)
-		{
+		public readonly KnownSelectors Selectors;
 
+		public EditorToolbar(Canvas DragContainer, KnownSelectors Selectors)
+		{
+			this.Selectors = Selectors;
 			this.Padding = 8;
 
 			var DraggableArea = new Rectangle
@@ -182,7 +184,7 @@ namespace AvalonUgh.Code.Editor
 							Image.Opacity = 1;
 						};
 
-					
+
 					Action Select =
 						delegate
 						{
@@ -282,91 +284,35 @@ namespace AvalonUgh.Code.Editor
 
 		private void AddButtons(Func<int> ButtonsWidth, Action<Image, View.SelectorInfo[]> AddButton, Action<string, View.SelectorInfo[]> AddButton_2x2, Action<string, View.SelectorInfo[]> AddButton_1x1)
 		{
-			var Arrow =
-				new Image
-				{
-					Source = (Assets.Shared.KnownAssets.Path.Assets + "/Aero_Arrow.png").ToSource(),
-					Width = 32,
-					Height = 32
-				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 16, Padding + PrimitiveTile.Heigth - 16);
 
-			AddButton(Arrow,
-					new[] { new View.SelectorInfo() }
-				);
+		
+			foreach (var Selector in this.Selectors.Types)
+			{
+				var w = Selector.ImageWidth;
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/stone1_2x2.png",
-				Editor.Tiles.StoneSelector.Sizes
-			);
+				if (w == 0)
+					w = Selector.ToolbarImage.Width * PrimitiveTile.Width;
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/cave0_2x2.png",
-				Editor.Tiles.CaveSelector.Sizes
-			);
+				var h = Selector.ImageHeight;
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/platform0_2x2.png",
-				Editor.Tiles.PlatformSelector.Sizes
-			);
+				if (h == 0)
+					h = Selector.ToolbarImage.Height * PrimitiveTile.Heigth;
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Tiles + "/ridge0_2x2.png",
-				Editor.Tiles.RidgeSelector.Sizes
-			);
+				var Selector_Image =
+					new Image
+					{
+						Source = Selector.ToolbarImage.ToString().ToSource(),
+						Width = w,
+						Height = h
+					}.MoveTo(
+						ButtonsWidth() + PrimitiveTile.Width - w / 2,
+						Padding + PrimitiveTile.Heigth - h / 2
+					);
 
-
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/bridge0.png",
-				Editor.Tiles.BridgeSelector.Sizes
-			);
-
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Tiles + "/fence0.png",
-				Editor.Tiles.FenceSelector.Sizes
-			);
+				AddButton(Selector_Image, Selector.Sizes);
 
 
-			AddButton_2x2(Assets.Shared.KnownAssets.Path.Sprites + "/tree0_2x2.png",
-				Editor.Sprites.TreeSelector.Sizes
-			);
-
-			AddButton_1x1(Assets.Shared.KnownAssets.Path.Sprites + "/sign0.png",
-				Editor.Sprites.SignSelector.Sizes
-			);
-
-
-			AddButton_1x1(
-				Editor.Sprites.GoldSelector.ToolbarImage.ToString(),
-				Editor.Sprites.GoldSelector.Sizes
-			);
-
-			AddButton_1x1(
-				Editor.Sprites.RockSelector.ToolbarImage.ToString(),
-				Editor.Sprites.RockSelector.Sizes
-			);
-
-			AddButton_2x2(
-				Editor.Sprites.VehicleSelector.ToolbarImage.ToString(),
-				Editor.Sprites.VehicleSelector.Sizes
-			);
-
-
-			var Demolish =
-				new Image
-				{
-					Source = (Assets.Shared.KnownAssets.Path.Assets + "/btn_demolish.png").ToSource(),
-					Width = 20,
-					Height = 20
-				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 10, Padding + PrimitiveTile.Heigth - 10);
-
-			AddButton(Demolish, Editor.DemolishSelector.Sizes);
-
-
-			var WaterLevel =
-				new Image
-				{
-					Source = (Assets.Shared.KnownAssets.Path.Assets + "/btn_river.png").ToSource(),
-					Width = 20,
-					Height = 20
-				}.MoveTo(ButtonsWidth() + PrimitiveTile.Width - 10, Padding + PrimitiveTile.Heigth - 10);
-
-			AddButton(WaterLevel, Editor.WaterLevelSelector.Sizes);
-
-
+			}
 		}
 
 
