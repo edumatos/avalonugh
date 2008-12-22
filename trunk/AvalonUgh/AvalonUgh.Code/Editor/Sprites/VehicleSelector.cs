@@ -11,7 +11,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class VehicleSelector : SelectorInfo
+	public class VehicleSelector : SelectorBase
 	{
 		public VehicleSelector()
 		{

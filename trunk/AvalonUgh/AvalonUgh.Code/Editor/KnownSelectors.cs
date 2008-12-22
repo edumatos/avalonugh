@@ -10,12 +10,12 @@ namespace AvalonUgh.Code.Editor
 	[Script]
 	public class KnownSelectors
 	{
-		public readonly SelectorInfo[] Types;
+		public readonly SelectorBase[] Types;
 
 		public KnownSelectors()
 		{
 			this.Types =
-				new SelectorInfo[]
+				new SelectorBase[]
 				{
 					new ArrowSelector(),
 
@@ -33,7 +33,8 @@ namespace AvalonUgh.Code.Editor
 					new Tiles.BridgeSelector(),
 
 					new DemolishSelector(),
-					new WaterLevelSelector()
+					new WaterLevelSelector(),
+					new BackgroundSelector()
 				};
 		}
 

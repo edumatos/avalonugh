@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class FenceSelector : SelectorInfo
+	public class FenceSelector : SelectorBase
 	{
 		public const string Identifier = "F";
 

@@ -45,6 +45,18 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public double Width
+		{
+			get
+			{
+				return Right - Left;
+			}
+		}
+
+	
+ 
+
+
 		public bool Intersects(Obstacle e)
 		{
 			if (e.Right > this.Left)

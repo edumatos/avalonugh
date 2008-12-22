@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class RockSelector : SelectorInfo
+	public class RockSelector : SelectorBase
 	{
 		public RockSelector()
 		{

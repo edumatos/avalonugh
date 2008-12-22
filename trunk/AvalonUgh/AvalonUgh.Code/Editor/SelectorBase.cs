@@ -8,7 +8,7 @@ using ScriptCoreLib;
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public class SelectorInfo
+	public class SelectorBase
 	{
 		public int ImageWidth;
 		public int ImageHeight;

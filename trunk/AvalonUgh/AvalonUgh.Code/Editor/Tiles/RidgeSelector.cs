@@ -12,7 +12,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class RidgeSelector : SelectorInfo
+	public class RidgeSelector : SelectorBase
 	{
 		public const string Identifier = "R";
 

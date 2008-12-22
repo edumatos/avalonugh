@@ -10,7 +10,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public class DemolishSelector : SelectorInfo
+	public class DemolishSelector : SelectorBase
 	{
 		public DemolishSelector()
 		{

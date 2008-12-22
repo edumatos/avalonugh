@@ -67,7 +67,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 				Left = x - Selector.HalfWidth * Level.Zoom,
 				Top = y - Selector.HalfHeight * Level.Zoom,
 				Right = x + Selector.HalfWidth * Level.Zoom,
-				Bottom = y + Selector.HalfHeight - ObstaclePaddingBottom * Level.Zoom,
+				Bottom = y + Selector.HalfHeight * Level.Zoom  - ObstaclePaddingBottom * Level.Zoom,
 			};
 
 			return ObstacleCache_Value;
