@@ -190,7 +190,14 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					// and we are not in sync 
 					// we can just proceed as we do not need to sync
 					if (this.CoPlayers.Count == 0)
+					{
 						this.Content.LocalIdentity.SyncFramePaused = false;
+						this.Content.LocalIdentity.SyncFrameLimit = 0;
+					}
+					else
+					{
+						this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+					}
 				};
 
 			this.Events.UserHello +=
@@ -269,7 +276,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					c.SyncFrame = e.frame;
 					c.SyncFrameRate = e.framerate;
 
-					this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + 10;
+					this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 
 					// lets send the same data back to calculate lag
 					this.Messages.UserSyncFrameEcho(e.user, e.frame, e.framerate);
@@ -414,7 +421,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Action<Key, bool> Local_KeyStateChanged =
 						(key, state) =>
 						{
-							var FutureFrame = this.Content.LocalIdentity.SyncFrame + 10;
+							var FutureFrame = this.Content.LocalIdentity.SyncFrame + this.Content.LocalIdentity.SyncFrameWindow;
 
 							this.Content.LocalIdentity.HandleFrame(FutureFrame,
 								delegate
@@ -475,7 +482,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Content.View.EditorSelectorApplied +=
 				(Selector, Position) =>
 				{
-					var Index = KnownSelectors.Index.Of(Selector);
+					var Index = KnownSelectors.Index.Of(Selector, this.Content.Selectors);
 
 					// unknown selector
 					if (Index.Type == -1)
@@ -489,7 +496,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					Content.Console.WriteLine("UserEditorSelector " + e);
 
-					var Selector = KnownSelectors.KnownTypes[e.type][e.size];
+					var Selector = this.Content.Selectors.Types[e.type].Sizes[e.size];
 					var Position = new View.SelectorPosition { ContentX = e.x, ContentY = e.y };
 
 					Selector.CreateTo(this.Content.View.Level, Position);

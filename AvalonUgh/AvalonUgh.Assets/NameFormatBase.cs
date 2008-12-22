@@ -41,8 +41,12 @@ namespace AvalonUgh.Assets.Shared
 				n += Path + "/";
 			}
 
-			n += Name + Index;
+			n += Name;
 
+			if (Index >= 0)
+			{
+				n += Index;
+			}
 
 			if (AnimationFrame >= 0)
 			{

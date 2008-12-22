@@ -48,6 +48,8 @@ namespace AvalonUgh.Game.Shared
 		// like some could enter a cave and such
 		public View View { get; set; }
 
+		public readonly KnownSelectors Selectors = new KnownSelectors();
+
 		public GameCanvas()
 		{
 			(AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3").Apply(
@@ -157,7 +159,7 @@ namespace AvalonUgh.Game.Shared
 
 					#region editor
 
-					var et = new EditorToolbar(this);
+					var et = new EditorToolbar(this, Selectors);
 
 					// move it to bottom center
 					et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
@@ -208,14 +210,13 @@ namespace AvalonUgh.Game.Shared
 							if (args.Key == Key.Oem7)
 							{
 								args.Handled = true;
+
 								if (Console.AnimatedTop == 0)
 								{
-									Console.WriteLine("hide console");
 									Console.AnimatedTop = -Console.Height;
 								}
 								else
 								{
-									Console.WriteLine("show console");
 									Console.AnimatedTop = 0;
 								}
 
@@ -415,20 +416,7 @@ namespace AvalonUgh.Game.Shared
 
 							Console.WriteLine("ingame player deleted: " + DeletedPlayer);
 
-							if (DeletedPlayer.Actor.VelocityY == 0)
-							{
-								// we can perform the walk out to the horizon
-								DeletedPlayer.Actor.PlayAnimation(Actor.AnimationEnum.CaveEnter,
-									delegate
-									{
-										DeletedPlayer.Actor.Dispose();
-										Level.KnownActors.Remove(DeletedPlayer.Actor);
-									}
-								);
-
-								return;
-							}
-
+						
 							DeletedPlayer.Actor.Dispose();
 							Level.KnownActors.Remove(DeletedPlayer.Actor);
 						}
@@ -536,7 +524,7 @@ namespace AvalonUgh.Game.Shared
 
 					// activate the game loop
 
-					this.LocalIdentity.SyncFrameRate = 1000 / 40;
+					this.LocalIdentity.SyncFrameRate = 1000 / 50;
 					//this.LocalIdentity.SyncFrameRate = 1000 / (40.Random() + 20);
 
 					this.KeyUp +=
@@ -595,12 +583,7 @@ namespace AvalonUgh.Game.Shared
 						{
 							var r = this.LocalIdentity.SyncFrameRate;
 
-							if (this.LocalIdentity.SyncFrameRateCorrection > 0)
-							{
-								this.LocalIdentity.SyncFrameRateCorrection--;
-
-								r -= r / 10;
-							}
+						
 
 
 							return r;

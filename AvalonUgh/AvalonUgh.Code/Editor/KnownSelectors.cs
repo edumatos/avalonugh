@@ -8,33 +8,36 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public static class KnownSelectors
+	public class KnownSelectors
 	{
-		public static View.SelectorInfo[][] KnownTypes
+		public readonly SelectorInfo[] Types;
+
+		public KnownSelectors()
 		{
-			get
-			{
-				return new[]
+			this.Types =
+				new SelectorInfo[]
 				{
-					Sprites.GoldSelector.Sizes,
-					Sprites.RockSelector.Sizes,
-					Sprites.VehicleSelector.Sizes,
-					Sprites.SignSelector.Sizes,
-					Sprites.TreeSelector.Sizes,
+					new ArrowSelector(),
 
+					new Sprites.TreeSelector(),
+					new Sprites.GoldSelector(),
+					new Sprites.RockSelector(),
+					new Sprites.VehicleSelector(),
+					new Sprites.SignSelector(),
 
-					Tiles.CaveSelector.Sizes,
-					Tiles.PlatformSelector.Sizes,
-					Tiles.StoneSelector.Sizes,
-					Tiles.RidgeSelector.Sizes,
-					Tiles.FenceSelector.Sizes,
-					Tiles.BridgeSelector.Sizes,
+					new Tiles.StoneSelector(),
+					new Tiles.RidgeSelector(),
+					new Tiles.PlatformSelector(),
+					new Tiles.CaveSelector(),
+					new Tiles.FenceSelector(),
+					new Tiles.BridgeSelector(),
 
-					DemolishSelector.Sizes,
-					WaterLevelSelector.Sizes
+					new DemolishSelector(),
+					new WaterLevelSelector()
 				};
-			}
 		}
+
+
 
 		[Script]
 		public class Index
@@ -42,14 +45,14 @@ namespace AvalonUgh.Code.Editor
 			public int Type;
 			public int Size;
 
-			public static Index Of(View.SelectorInfo e)
+			public static Index Of(View.SelectorInfo e, KnownSelectors Selectors)
 			{
 				var n = new Index { Type = -1, Size = -1 };
 
-				foreach (var i in KnownTypes)
+				foreach (var i in Selectors.Types)
 				{
 					n.Type++;
-					n.Size = Array.IndexOf(i, e);
+					n.Size = Array.IndexOf(i.Sizes, e);
 
 					if (n.Size != -1)
 						break;
@@ -68,6 +71,6 @@ namespace AvalonUgh.Code.Editor
 		}
 
 
-		
+
 	}
 }

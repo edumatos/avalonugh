@@ -6,32 +6,75 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public static class PlatformSelector
+	public class PlatformSelector : SelectorInfo
 	{
 		public const string Identifier = "P";
 
+		public readonly View.SelectorInfo
+			Size_1x1 = new Size_Generic(1, 1, 1),
+			Size_2x1 = new Size_Generic(2, 1, 1),
+			Size_2x2 = new Size_Generic(2, 2, 1),
+			Size_3x1 = new Size_Generic(3, 1, 1),
+			Size_4x1 = new Size_Generic(4, 1, 1),
+			Size_4x2 = new Size_Generic(4, 2, 1),
+			Size_3x2 = new Size_Generic(3, 2, 2),
+			Size_2x3 = new Size_Generic(2, 3, 1),
+			Size_5x1,
+			Size_5x2;
 
-		public static readonly View.SelectorInfo[] Sizes =
-			new View.SelectorInfo[]
+		public PlatformSelector()
+		{
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Tiles,
+					Name = "platform",
+					Index = 0,
+					Width = 2,
+					Height = 2,
+					Extension = "png"
+				};
+
+			this.Size_5x1 =
+				new TileSelector.Composite(5, 1,
+					(Level, Position) =>
+					{
+						this.Size_2x1.CreateTo(Level, Position[0, 0]);
+						this.Size_3x1.CreateTo(Level, Position[2, 0]);
+					}
+				);
+
+			this.Size_5x2 =
+				new TileSelector.Composite(5, 2,
+					(Level, Position) =>
+					{
+						this.Size_2x2.CreateTo(Level, Position[0, 0]);
+						this.Size_3x2.CreateTo(Level, Position[2, 0]);
+					}
+				);
+
+			this.Sizes = new View.SelectorInfo[]
 			{
-				new Size_Generic(1, 1, 1),
-				//new Size_Generic(1, 2, 1),
-				new Size_Generic(2, 2, 1),
-				new Size_Generic(4, 2, 1),
-				//new Size_Generic(2, 4, 1),
-				
-				new Size_Generic(3, 1, 1),
-				new Size_Generic(4, 1, 1),
+				Size_1x1,
+				Size_2x1,
+				Size_2x2,
+				Size_3x1,
+				Size_4x1,
+				Size_4x2,
+				Size_3x2,
+				Size_2x3,
+				Size_5x1,
+				Size_5x2,
 
-				new Size_Generic(3, 2, 2),
-				new Size_Generic(2, 3, 1),
-
-				new Size_Generic(2, 1, 1),
 			};
+		}
+
+
 
 		[Script]
 		private class Size_Generic : TileSelector.Named
@@ -87,7 +130,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				if (left_p != null)
 				{
-					BridgeSelector.DefaultSize.CreateTo(Level,
+					new BridgeSelector().Size_1x1.CreateTo(Level,
 						new View.SelectorPosition
 						{
 							ContentX = Position.ContentX - PrimitiveTile.Width,
@@ -98,7 +141,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				if (right_p != null)
 				{
-					BridgeSelector.DefaultSize.CreateTo(Level,
+					new BridgeSelector().Size_1x1.CreateTo(Level,
 						new View.SelectorPosition
 						{
 							ContentX = Position.ContentX + this.Width,
@@ -114,7 +157,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{
-			TileSelector.AttachToLevel(Sizes, Position, Tile, Level);
+			TileSelector.AttachToLevel(new PlatformSelector().Sizes, Position, Tile, Level);
 		}
 	}
 }

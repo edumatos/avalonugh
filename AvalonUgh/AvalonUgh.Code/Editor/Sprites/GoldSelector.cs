@@ -11,30 +11,29 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class GoldSelector
+	public class GoldSelector : SelectorInfo
 	{
-		public static NameFormat ToolbarImage
+		public GoldSelector()
 		{
-			get
-			{
-				return
-					new NameFormat
-					{
-						Path = Assets.Shared.KnownAssets.Path.Sprites,
-						Name = "gold",
-						Index = 0,
-						Extension = "png"
-					};
-			}
-		}
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Sprites,
+					Name = "gold",
+					Index = 0,
+					Extension = "png"
+				};
 
-		// clicking on the toolbar will shuffle between those sizes
-		// also while loading tiles the map will tell us which size to use
-		public static readonly View.SelectorInfo[] Sizes =
-			new[]
-			{
-				new Size_1x1()
-			};
+			// clicking on the toolbar will shuffle between those sizes
+			// also while loading tiles the map will tell us which size to use
+
+			this.Sizes =
+				new[]
+				{
+					new Size_1x1()
+				};
+		}
+	
 
 		[Script]
 		public class Size_1x1 : SpriteSelector

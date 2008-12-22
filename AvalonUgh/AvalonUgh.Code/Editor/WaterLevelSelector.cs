@@ -7,16 +7,33 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public class WaterLevelSelector
+	public class WaterLevelSelector : SelectorInfo
 	{
-		public static readonly View.SelectorInfo[] Sizes =
-			new View.SelectorInfo[]
-			{
-				new Size_Vertical()
-			};
+		public WaterLevelSelector()
+		{
+			this.ImageWidth = 20;
+			this.ImageHeight = 20;
+
+			this.ToolbarImage =
+				new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Assets,
+					Name = "btn_river",
+					Index = -1,
+					Extension = "png"
+				};
+
+
+			this.Sizes =
+				new View.SelectorInfo[]
+				{
+					new Size_Vertical()
+				};
+		}
 
 
 
