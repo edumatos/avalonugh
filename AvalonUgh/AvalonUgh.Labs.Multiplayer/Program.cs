@@ -21,7 +21,8 @@ namespace AvalonUgh.Labs.Multiplayer
 		// nonoba client flash
 		// desktop inmemory multiplayer
 
-		public const int Lag = 50;
+		public const int Lag = 10;
+		//public const int Lag = 50;
 
 		[STAThread]
 		static public void Main(string[] args)
@@ -77,7 +78,7 @@ namespace AvalonUgh.Labs.Multiplayer
 					{
 						user = u.UserId,
 						Target =
-							user => Server.Users.Where(k => k.UserId == user).Select(k => k.ToPlayer).Single()
+							user => Server.Users.Where(k => k.UserId == user).Select(k => k.ToPlayer).SingleOrDefault()
 
 					}.CombineDelegates(client_to_server);
 

@@ -17,6 +17,7 @@ namespace AvalonUgh.Code
 
 		public readonly BindingList<PlayerInfo> Locals = new BindingList<PlayerInfo>();
 
+		public int SyncFrameRateCorrection;
 		public int SyncFrameLatency;
 		public int SyncFrameRate;
 		public bool SyncFramePaused;
@@ -58,6 +59,46 @@ namespace AvalonUgh.Code
 			{
 				return this.Locals.Single(k => k.IdentityLocal == IdentityLocal);
 			}
+		}
+
+		public void HandleFrame(int frame, Action handler, Action desync)
+		{
+			if (this.SyncFrame == frame)
+			{
+				handler();
+				return;
+			}
+
+			Action SyncFrameChanged = null;
+
+			SyncFrameChanged = delegate
+			{
+				if (this.SyncFrame < frame)
+				{
+					// we need to wait. the event mus occur in the future
+					return;
+				}
+
+
+				if (this.SyncFrame > frame)
+				{
+					// did we miss the correct frame?
+
+					// we would miss the correct frame
+					// if we would send input from the past
+
+					// this event will cause desync!
+
+					desync();
+				}
+
+				handler();
+
+				this.SyncFrameChanged -= SyncFrameChanged;
+			};
+
+
+			this.SyncFrameChanged += SyncFrameChanged;
 		}
 	}
 }

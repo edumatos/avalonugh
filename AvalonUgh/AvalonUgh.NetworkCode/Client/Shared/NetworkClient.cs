@@ -53,12 +53,17 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		public void Connect()
 		{
 			Content.Console.WriteLine("Connect");
+
+			IsConnected = true;
 		}
+
+		public bool IsConnected;
 
 		public void Disconnect()
 		{
 			Content.Console.WriteLine("Disconnect");
 
+			IsConnected = false;
 		}
 
 		public BindingList<PlayerIdentity> CoPlayers;
@@ -199,9 +204,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					this.Content.LocalIdentity.SyncFrame = this.Content.LocalIdentity.SyncFrame.Max(e.frame);
 				};
 
-			var SyncBuffer = new Queue<double>();
 
-			500.AtInterval(
+			(1000).AtInterval(
 				delegate
 				{
 					// we are on our own
@@ -212,23 +216,32 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					var AvgSyncFrameLatency = this.CoPlayers.Average(k => k.SyncFrameLatency);
 					var AvgSyncFrameDelta = AvgSyncFrame - this.Content.LocalIdentity.SyncFrame;
 
-					//SyncBuffer.Enqueue(this.Content.LocalIdentity.SyncFrame - AvgSyncFrame - AvgSyncFrameLatency);
-					//if (SyncBuffer.Count > 5)
-					//{
-					//    SyncBuffer.Dequeue();
-					//}
-					//var AvgSyncFrameShift = SyncBuffer.Average();
+					this.Content.Console.WriteLine(
+							new
+							{
+								avgframe = AvgSyncFrame,
+								frame = this.Content.LocalIdentity.SyncFrame,
+								framerate = this.Content.LocalIdentity.SyncFrameRate,
+								avglag = AvgSyncFrameLatency,
+								delta = AvgSyncFrameDelta
+							}
+						);
+				}
+			);
 
-					//if (AvgSyncFrameShift > 0)
-					//{
-					//    this.Content.Console.WriteLine("slowing down");
-					//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate + 3).Min(200);
-					//}
-					//else
-					//{
-					//    this.Content.Console.WriteLine("speeding up");
-					//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate - 2).Max(20);
-					//}
+			(1000 / 60).AtInterval(
+				delegate
+				{
+					if (!this.IsConnected)
+						return;
+
+					// we are on our own
+					if (this.CoPlayers.Count == 0)
+						return;
+
+					var AvgSyncFrame = this.CoPlayers.Average(k => k.SyncFrame);
+					var AvgSyncFrameLatency = this.CoPlayers.Average(k => k.SyncFrameLatency);
+					var AvgSyncFrameDelta = AvgSyncFrame - this.Content.LocalIdentity.SyncFrame;
 
 					if (Math.Abs(AvgSyncFrameDelta) <= AvgSyncFrameLatency * 2)
 					{
@@ -237,31 +250,19 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					else
 					{
 						// need to change speed
-						this.Content.Console.WriteLine("need to change speed");
 
-						//if (AvgSyncFrame < this.Content.LocalIdentity.SyncFrame)
-						//{
-						//    this.Content.Console.WriteLine("slowing down");
-						//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate + 2).Min(200);
-						//}
-
-						//if (AvgSyncFrame > this.Content.LocalIdentity.SyncFrame)
-						//{
-						//    this.Content.Console.WriteLine("speeding up");
-						//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate - 2).Max(2);
-						//}
-					}
-
-					this.Content.Console.WriteLine(
-						new
+						if (AvgSyncFrame < this.Content.LocalIdentity.SyncFrame)
 						{
-							avgframe = AvgSyncFrame,
-							frame = this.Content.LocalIdentity.SyncFrame,
-							framerate = this.Content.LocalIdentity.SyncFrameRate,
-							avglag = AvgSyncFrameLatency,
-							delta = AvgSyncFrameDelta
+							this.Content.Console.WriteLine("need to slow down");
+							//this.Content.LocalIdentity.SyncFrameRateCorrection--;
 						}
-					);
+
+						if (AvgSyncFrame > this.Content.LocalIdentity.SyncFrame)
+						{
+							this.Content.Console.WriteLine("need to speed up");
+							//this.Content.LocalIdentity.SyncFrameRateCorrection++;
+						}
+					}
 
 					this.Messages.SyncFrame(
 						this.Content.LocalIdentity.SyncFrame,
@@ -274,6 +275,9 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				e =>
 				{
 					var c = this[e];
+
+					if (c == null)
+						return;
 
 					c.SyncFrameLatency = this.Content.LocalIdentity.SyncFrame - e.frame;
 				};
@@ -312,37 +316,18 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					var key = p.Input.Keyboard.FromDefaultTranslation((Key)e.key);
 					var state = Convert.ToBoolean(e.state);
 
-					Action SyncFrameChanged = null;
-
-					SyncFrameChanged = delegate
-					{
-						if (this.Content.LocalIdentity.SyncFrame < e.frame)
+					this.Content.LocalIdentity.HandleFrame(e.frame,
+						delegate
 						{
-							// we need to wait. the event mus occur in the future
-							return;
-						}
-
-
-						if (this.Content.LocalIdentity.SyncFrame > e.frame)
+							p.Input.Keyboard.KeyState[key] = state;
+						},
+						delegate
 						{
-							// did we miss the correct frame?
-
-							// we would miss the correct frame
-							// if we would send input from the past
-
-							// this event will cause desync!
-
-							this.Content.Console.WriteLine("desync!");
+							this.Content.Console.WriteLine("UserKeyStateChanged desync " + e);
 						}
+					);
 
-
-
-						p.Input.Keyboard.KeyState[key] = state;
-
-						this.Content.LocalIdentity.SyncFrameChanged -= SyncFrameChanged;
-					};
-
-					this.Content.LocalIdentity.SyncFrameChanged += SyncFrameChanged;
+					
 
 				};
 
@@ -406,17 +391,9 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							new PlayerInput
 							{
 								Keyboard = new KeyboardInput(
-									new KeyboardInput.Arguments
+									new KeyboardInput.Arguments.Arrows
 									{
-										Left = Key.Left,
-										Right = Key.Right,
-										Up = Key.Up,
-										Down = Key.Down,
-										Drop = Key.Space,
-										Enter = Key.Enter,
-
 										// there wont be any device to listen to tho
-										InputControl = null,
 									}
 								),
 								Touch = null
@@ -444,20 +421,43 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 					// ... while member apply this rule
 
+					var ConnectedKeyboard = Local.Input.Keyboard;
+					var LatencyKeyboard = new KeyboardInput(new KeyboardInput.Arguments.Arrows());
+
+					Local.Input.Keyboard = LatencyKeyboard;
+
 					// sending local ingame player keystates
 					Action<Key, bool> Local_KeyStateChanged =
 						(key, state) =>
 						{
+							var FutureFrame = this.Content.LocalIdentity.SyncFrame + 10;
+
+							this.Content.LocalIdentity.HandleFrame(FutureFrame,
+								delegate
+								{
+									LatencyKeyboard.KeyState[
+										LatencyKeyboard.FromDefaultTranslation(
+											ConnectedKeyboard.ToDefaultTranslation(key)
+										)
+									] = state;
+								},
+								delegate
+								{
+									// can we be desynced?
+								}
+							);
+
 							this.Messages.KeyStateChanged(
 								Local.IdentityLocal,
-								this.Content.LocalIdentity.SyncFrame,
-								(int)Local.Input.Keyboard.ToDefaultTranslation(key),
+								FutureFrame,
+								(int)ConnectedKeyboard.ToDefaultTranslation(key),
 								Convert.ToInt32(state)
 							);
 						};
 
+
 					this.Content.Console.WriteLine("event add KeyStateChanged " + Local);
-					Local.Input.Keyboard.KeyStateChanged += Local_KeyStateChanged;
+					ConnectedKeyboard.KeyStateChanged += Local_KeyStateChanged;
 
 					// when do we want to stop broadcasting our key changes?
 					// maybe when we remove that local player
@@ -469,7 +469,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 								return;
 
 							this.Content.Console.WriteLine("event remove KeyStateChanged " + Local);
-							Local.Input.Keyboard.KeyStateChanged -= Local_KeyStateChanged;
+							ConnectedKeyboard.KeyStateChanged -= Local_KeyStateChanged;
 
 							// we should not listen to that event anymore
 							Dispose();
