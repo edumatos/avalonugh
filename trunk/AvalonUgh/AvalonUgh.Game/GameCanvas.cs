@@ -536,7 +536,7 @@ namespace AvalonUgh.Game.Shared
 
 					// activate the game loop
 
-					this.LocalIdentity.SyncFrameRate = 1000 / 60;
+					this.LocalIdentity.SyncFrameRate = 1000 / 40;
 					//this.LocalIdentity.SyncFrameRate = 1000 / (40.Random() + 20);
 
 					this.KeyUp +=
@@ -547,6 +547,11 @@ namespace AvalonUgh.Game.Shared
 							if (args.Key == Key.PageUp)
 							{
 								this.LocalIdentity.SyncFramePausedSkip = true;
+							}
+
+							if (args.Key == Key.PageDown)
+							{
+								this.LocalIdentity.SyncFramePaused = !this.LocalIdentity.SyncFramePaused;
 							}
 						};
 
@@ -566,7 +571,13 @@ namespace AvalonUgh.Game.Shared
 								}
 							}
 
-
+							if (this.LocalIdentity.SyncFrameLimit > 0)
+							{
+								if (this.LocalIdentity.SyncFrameLimit <= this.LocalIdentity.SyncFrame)
+								{
+									return;
+								}
+							}
 
 							// we could pause the game here
 							foreach (var p in Players)
@@ -590,12 +601,7 @@ namespace AvalonUgh.Game.Shared
 
 								r -= r / 10;
 							}
-							else if (this.LocalIdentity.SyncFrameRateCorrection < 0)
-							{
-								this.LocalIdentity.SyncFrameRateCorrection++;
 
-								r += r / 10;
-							}
 
 							return r;
 						}

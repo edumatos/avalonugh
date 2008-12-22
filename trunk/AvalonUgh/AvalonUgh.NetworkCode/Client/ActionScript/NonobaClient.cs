@@ -42,7 +42,6 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 		private void Initialize(Stage stage)
 		{
 			var c = NonobaAPI.MakeMultiplayer(stage
-				//"nonoba.com"
 				//, "192.168.3.102"
 				//, "192.168.1.119"
 				);
@@ -116,7 +115,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 				e =>
 				{
 					//InitializeMapOrSkip();
-					Content.Console.WriteLine("Message: " + e.message.Type);
+					//Content.Console.WriteLine("Message: " + e.message.Type);
 
 
 					var Dispatched = false;
@@ -127,7 +126,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 					}
 					catch (Exception ex)
 					{
-						Content.Console.WriteLine("error at dispatch: " + e.message.Type);
+						Content.Console.WriteLine("error at dispatch: " + e.message.Type + " - " + ex.Message);
 
 						throw ex;
 					}
