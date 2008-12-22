@@ -12,7 +12,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class TreeSelector : SelectorInfo
+	public class TreeSelector : SelectorBase
 	{
 
 		public TreeSelector()

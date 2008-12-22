@@ -550,8 +550,7 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\bird_cry.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Backgrounds\006.png">
-    </EmbeddedResource>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\btn_background.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

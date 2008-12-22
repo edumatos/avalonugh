@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class SignSelector : SelectorInfo
+	public class SignSelector : SelectorBase
 	{
 		public SignSelector()
 		{

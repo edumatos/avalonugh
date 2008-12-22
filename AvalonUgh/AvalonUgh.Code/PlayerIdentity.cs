@@ -62,6 +62,11 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public void HandleFrame(int frame, Action handler)
+		{
+			HandleFrame(frame, handler, null);
+		}
+
 		public void HandleFrame(int frame, Action handler, Action desync)
 		{
 			if (this.SyncFrame == frame)
@@ -90,7 +95,8 @@ namespace AvalonUgh.Code
 
 					// this event will cause desync!
 
-					desync();
+					if (desync != null)
+						desync();
 				}
 
 				handler();

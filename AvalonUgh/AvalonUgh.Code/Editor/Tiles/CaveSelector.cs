@@ -12,7 +12,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class CaveSelector : SelectorInfo
+	public class CaveSelector : SelectorBase
 	{
 		public const string Identifier = "C";
 

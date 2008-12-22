@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class PlatformSelector : SelectorInfo
+	public class PlatformSelector : SelectorBase
 	{
 		public const string Identifier = "P";
 

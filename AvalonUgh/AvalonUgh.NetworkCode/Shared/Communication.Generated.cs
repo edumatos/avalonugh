@@ -305,31 +305,31 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void EditorSelector(int type, int size, int x, int y)
+            public void EditorSelector(int frame, int type, int size, int x, int y)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.EditorSelector, args = new object[] { type, size, x, y } });
+                    Send(new SendArguments { i = Messages.EditorSelector, args = new object[] { frame, type, size, x, y } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.EditorSelector(type, size, x, y);
+                        Target__.EditorSelector(frame, type, size, x, y);
                     }
                 }
             }
-            public void UserEditorSelector(int user, int type, int size, int x, int y)
+            public void UserEditorSelector(int user, int frame, int type, int size, int x, int y)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserEditorSelector, args = new object[] { user, type, size, x, y } });
+                    Send(new SendArguments { i = Messages.UserEditorSelector, args = new object[] { user, frame, type, size, x, y } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserEditorSelector(user, type, size, x, y);
+                        Target__.UserEditorSelector(user, frame, type, size, x, y);
                     }
                 }
             }
@@ -495,7 +495,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 }
                 public void UserEditorSelector(EditorSelectorArguments e)
                 {
-                    Target.UserEditorSelector(this.user, e.type, e.size, e.x, e.y);
+                    Target.UserEditorSelector(this.user, e.frame, e.type, e.size, e.x, e.y);
                 }
                 public void UserSyncFrame(SyncFrameArguments e)
                 {
@@ -563,13 +563,13 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserLocalPlayers_Decrease(this.user);
                 }
-                public void UserEditorSelector(int type, int size, int x, int y)
+                public void UserEditorSelector(int frame, int type, int size, int x, int y)
                 {
-                    this.Target.UserEditorSelector(this.user, type, size, x, y);
+                    this.Target.UserEditorSelector(this.user, frame, type, size, x, y);
                 }
                 public void UserEditorSelector(UserEditorSelectorArguments e)
                 {
-                    this.Target.UserEditorSelector(this.user, e.type, e.size, e.x, e.y);
+                    this.Target.UserEditorSelector(this.user, e.frame, e.type, e.size, e.x, e.y);
                 }
                 public void UserSyncFrame(int frame, int framerate)
                 {
@@ -666,7 +666,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserEditorSelector(this.user, e.type, e.size, e.x, e.y);
+                    _target.UserEditorSelector(this.user, e.frame, e.type, e.size, e.x, e.y);
                 }
                 public void UserSyncFrame(UserSyncFrameArguments e)
                 {
@@ -924,6 +924,7 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class EditorSelectorArguments
             {
+                public int frame;
                 public int type;
                 public int size;
                 public int x;
@@ -931,7 +932,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ type = ").Append(this.type).Append(", size = ").Append(this.size).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(" }").ToString();
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", type = ").Append(this.type).Append(", size = ").Append(this.size).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(" }").ToString();
                 }
             }
             #endregion
@@ -941,6 +942,7 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class UserEditorSelectorArguments : WithUserArguments
             {
+                public int frame;
                 public int type;
                 public int size;
                 public int x;
@@ -948,7 +950,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", type = ").Append(this.type).Append(", size = ").Append(this.size).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", type = ").Append(this.type).Append(", size = ").Append(this.size).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1032,8 +1034,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserLocalPlayers_Increase, e => { UserLocalPlayers_Increase(new UserLocalPlayers_IncreaseArguments { user = e.GetInt32(0) }); } },
                             { Messages.LocalPlayers_Decrease, e => { LocalPlayers_Decrease(new LocalPlayers_DecreaseArguments {  }); } },
                             { Messages.UserLocalPlayers_Decrease, e => { UserLocalPlayers_Decrease(new UserLocalPlayers_DecreaseArguments { user = e.GetInt32(0) }); } },
-                            { Messages.EditorSelector, e => { EditorSelector(new EditorSelectorArguments { type = e.GetInt32(0), size = e.GetInt32(1), x = e.GetInt32(2), y = e.GetInt32(3) }); } },
-                            { Messages.UserEditorSelector, e => { UserEditorSelector(new UserEditorSelectorArguments { user = e.GetInt32(0), type = e.GetInt32(1), size = e.GetInt32(2), x = e.GetInt32(3), y = e.GetInt32(4) }); } },
+                            { Messages.EditorSelector, e => { EditorSelector(new EditorSelectorArguments { frame = e.GetInt32(0), type = e.GetInt32(1), size = e.GetInt32(2), x = e.GetInt32(3), y = e.GetInt32(4) }); } },
+                            { Messages.UserEditorSelector, e => { UserEditorSelector(new UserEditorSelectorArguments { user = e.GetInt32(0), frame = e.GetInt32(1), type = e.GetInt32(2), size = e.GetInt32(3), x = e.GetInt32(4), y = e.GetInt32(5) }); } },
                             { Messages.SyncFrame, e => { SyncFrame(new SyncFrameArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1) }); } },
                             { Messages.UserSyncFrame, e => { UserSyncFrame(new UserSyncFrameArguments { user = e.GetInt32(0), frame = e.GetInt32(1), framerate = e.GetInt32(2) }); } },
                             { Messages.SyncFrameEcho, e => { SyncFrameEcho(new SyncFrameEchoArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1) }); } },
@@ -1247,18 +1249,18 @@ namespace AvalonUgh.NetworkCode.Shared
             }
 
             public event Action<RemoteEvents.EditorSelectorArguments> EditorSelector;
-            void IMessages.EditorSelector(int type, int size, int x, int y)
+            void IMessages.EditorSelector(int frame, int type, int size, int x, int y)
             {
                 if(EditorSelector == null) return;
-                var v = new RemoteEvents.EditorSelectorArguments { type = type, size = size, x = x, y = y };
+                var v = new RemoteEvents.EditorSelectorArguments { frame = frame, type = type, size = size, x = x, y = y };
                 this.VirtualLatency(() => this.EditorSelector(v));
             }
 
             public event Action<RemoteEvents.UserEditorSelectorArguments> UserEditorSelector;
-            void IMessages.UserEditorSelector(int user, int type, int size, int x, int y)
+            void IMessages.UserEditorSelector(int user, int frame, int type, int size, int x, int y)
             {
                 if(UserEditorSelector == null) return;
-                var v = new RemoteEvents.UserEditorSelectorArguments { user = user, type = type, size = size, x = x, y = y };
+                var v = new RemoteEvents.UserEditorSelectorArguments { user = user, frame = frame, type = type, size = size, x = x, y = y };
                 this.VirtualLatency(() => this.UserEditorSelector(v));
             }
 
@@ -1299,4 +1301,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 22.12.2008 15:38:15
+// 22.12.2008 21:58:56

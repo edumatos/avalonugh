@@ -479,16 +479,27 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 			#region EditorSelectorApplied
 
+			this.Content.View.EditorSelectorDisabled = true;
+
 			this.Content.View.EditorSelectorApplied +=
 				(Selector, Position) =>
 				{
+					var FutureFrame = this.Content.LocalIdentity.SyncFrame + this.Content.LocalIdentity.SyncFrameWindow;
+
+					this.Content.LocalIdentity.HandleFrame(FutureFrame,
+						delegate
+						{
+							Selector.CreateTo(this.Content.View.Level, Position);
+						}
+					);
+
 					var Index = KnownSelectors.Index.Of(Selector, this.Content.Selectors);
 
 					// unknown selector
 					if (Index.Type == -1)
 						return;
 
-					this.Messages.EditorSelector(Index.Type, Index.Size, Position.ContentX, Position.ContentY);
+					this.Messages.EditorSelector(FutureFrame, Index.Type, Index.Size, Position.ContentX, Position.ContentY);
 				};
 
 			this.Events.UserEditorSelector +=
@@ -496,10 +507,20 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					Content.Console.WriteLine("UserEditorSelector " + e);
 
-					var Selector = this.Content.Selectors.Types[e.type].Sizes[e.size];
-					var Position = new View.SelectorPosition { ContentX = e.x, ContentY = e.y };
+					this.Content.LocalIdentity.HandleFrame(
+						e.frame,
+						delegate
+						{
+							var Selector = this.Content.Selectors.Types[e.type].Sizes[e.size];
+							var Position = new View.SelectorPosition { ContentX = e.x, ContentY = e.y };
 
-					Selector.CreateTo(this.Content.View.Level, Position);
+							Selector.CreateTo(this.Content.View.Level, Position);
+						},
+						delegate
+						{
+							this.Content.Console.WriteLine("error: desync!");
+						}
+					);
 				};
 			#endregion
 		}

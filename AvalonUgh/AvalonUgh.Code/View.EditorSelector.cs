@@ -127,12 +127,14 @@ namespace AvalonUgh.Code
 					}
 				};
 
-		
+
 
 			this.TouchOverlay.MouseLeftButtonUp +=
 				(sender, args) =>
 				{
-					if (EditorSelector == null)
+					var Selector = this.EditorSelector;
+
+					if (Selector == null)
 						return;
 
 					if (this.EditorSelectorRectangle.Visibility != System.Windows.Visibility.Visible)
@@ -145,15 +147,14 @@ namespace AvalonUgh.Code
 							{
 								ContentX = x,
 								ContentY = y,
-
-
 							};
 
 
-							this.EditorSelector.CreateTo(this.Level, p);
+							if (!EditorSelectorDisabled)
+								Selector.CreateTo(this.Level, p);
 
 							if (EditorSelectorApplied != null)
-								EditorSelectorApplied(this.EditorSelector, p);
+								EditorSelectorApplied(Selector, p);
 						}
 					);
 				};
@@ -164,14 +165,9 @@ namespace AvalonUgh.Code
 					TouchOverlay_MouseMove();
 				};
 
-			//this.EditorSelector = new SelectorInfo
-			//{
-			//    Width = PrimitiveTile.Width,
-			//    Height = PrimitiveTile.Heigth,
-			//    PercisionX = PrimitiveTile.Width,
-			//    PercisionY = PrimitiveTile.Heigth,
-			//};
 		}
+
+		public bool EditorSelectorDisabled;
 
 		// to be used for syncing
 		public event Action<SelectorInfo, SelectorPosition> EditorSelectorApplied;
@@ -253,7 +249,7 @@ namespace AvalonUgh.Code
 			{
 				get
 				{
-					return 	
+					return
 						new View.SelectorPosition
 						{
 							ContentX = this.ContentX + x * PrimitiveTile.Width,

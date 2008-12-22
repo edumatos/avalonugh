@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class StoneSelector : SelectorInfo
+	public class StoneSelector : SelectorBase
 	{
 		public const string ImageName = "stone";
 		public const string Identifier = "S";
@@ -152,6 +152,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 					Position = Position,
 					Image = ToImage(Level, Position)
 				};
+
+				var o = u.ToObstacle();
 
 				Level.KnownStones.Add(u);
 			}

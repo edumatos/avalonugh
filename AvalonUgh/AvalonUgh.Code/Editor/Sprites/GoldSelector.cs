@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class GoldSelector : SelectorInfo
+	public class GoldSelector : SelectorBase
 	{
 		public GoldSelector()
 		{

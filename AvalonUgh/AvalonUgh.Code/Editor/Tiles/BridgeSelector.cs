@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public  class BridgeSelector : SelectorInfo
+	public  class BridgeSelector : SelectorBase
 	{
 		public const string Identifier = "B";
 
