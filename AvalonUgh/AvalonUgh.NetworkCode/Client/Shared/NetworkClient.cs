@@ -117,6 +117,15 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					this.Content.LocalIdentity.Name = e.name;
 
 					Content.Console.WriteLine("Server_Hello " + e);
+
+					// we have joined the server
+					// now we need to sync up the frames
+					// if we are alone in the server we do not sync yet
+					if (e.others > 0)
+					{
+						// lets pause first
+						//this.Content.LocalIdentity.SyncFramePaused = true;
+					}
 				};
 
 			this.Events.Server_UserJoined +=
@@ -124,7 +133,11 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					Content.Console.WriteLine("Server_UserJoined " + e);
 
-					this.Messages.UserHello(e.user, this.Content.LocalIdentity.Name);
+					this.Messages.UserHello(
+						e.user,
+						this.Content.LocalIdentity.Name,
+						this.Content.LocalIdentity.SyncFrame
+					);
 
 					this.CoPlayers.Add(
 						new PlayerIdentity { Name = e.name, Number = e.user }
@@ -144,6 +157,11 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							p.Actor.VelocityY
 						);
 					}
+
+					// the new player needs to be synced
+					// lets pause for now to figure out how to do that
+
+					//this.Content.LocalIdentity.SyncFramePaused = true;
 				};
 
 
@@ -156,6 +174,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Content.Console.WriteLine("Server_UserLeft " + e + " - " + c);
 
 					this.CoPlayers.Remove(c);
+
+					// if we are again alone on the server
+					// and we are not in sync 
+					// we can just proceed as we do not need to sync
+					if (this.CoPlayers.Count == 0)
+						this.Content.LocalIdentity.SyncFramePaused = false;
 				};
 
 			this.Events.UserHello +=
@@ -164,68 +188,162 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Content.Console.WriteLine("UserHello " + e);
 
 					this.CoPlayers.Add(
-						new PlayerIdentity { Name = e.name, Number = e.user }
+						new PlayerIdentity
+						{
+							Name = e.name,
+							Number = e.user,
+							SyncFrame = e.frame
+						}
 					);
 
+					this.Content.LocalIdentity.SyncFrame = this.Content.LocalIdentity.SyncFrame.Max(e.frame);
 				};
 
-			5000.AtInterval(
+			var SyncBuffer = new Queue<double>();
+
+			500.AtInterval(
 				delegate
 				{
-					// at every so often
-					// we need syncing 
-					// be it outside or inside a vehicle
-					this.Content.Console.WriteLine("sending our position");
+					// we are on our own
+					if (this.CoPlayers.Count == 0)
+						return;
 
-					foreach (var p in this.Content.LocalIdentity.Locals)
+					var AvgSyncFrame = this.CoPlayers.Average(k => k.SyncFrame);
+					var AvgSyncFrameLatency = this.CoPlayers.Average(k => k.SyncFrameLatency);
+					var AvgSyncFrameDelta = AvgSyncFrame - this.Content.LocalIdentity.SyncFrame;
+
+					//SyncBuffer.Enqueue(this.Content.LocalIdentity.SyncFrame - AvgSyncFrame - AvgSyncFrameLatency);
+					//if (SyncBuffer.Count > 5)
+					//{
+					//    SyncBuffer.Dequeue();
+					//}
+					//var AvgSyncFrameShift = SyncBuffer.Average();
+
+					//if (AvgSyncFrameShift > 0)
+					//{
+					//    this.Content.Console.WriteLine("slowing down");
+					//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate + 3).Min(200);
+					//}
+					//else
+					//{
+					//    this.Content.Console.WriteLine("speeding up");
+					//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate - 2).Max(20);
+					//}
+
+					if (Math.Abs(AvgSyncFrameDelta) <= AvgSyncFrameLatency * 2)
 					{
-						if (p.Actor.CurrentVehicle == null)
-						{
-							this.Messages.TeleportTo(
-								p.IdentityLocal,
-								p.Actor.X,
-								p.Actor.Y,
-								p.Actor.VelocityX,
-								p.Actor.VelocityY
-							);
-						}
-						else
-						{
-							this.Messages.TeleportTo(
-								p.IdentityLocal,
-								p.Actor.CurrentVehicle.X,
-								p.Actor.CurrentVehicle.Y,
-								p.Actor.CurrentVehicle.VelocityX,
-								p.Actor.CurrentVehicle.VelocityY
-							);
-						}
+						// all good
+					}
+					else
+					{
+						// need to change speed
+						this.Content.Console.WriteLine("need to change speed");
+
+						//if (AvgSyncFrame < this.Content.LocalIdentity.SyncFrame)
+						//{
+						//    this.Content.Console.WriteLine("slowing down");
+						//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate + 2).Min(200);
+						//}
+
+						//if (AvgSyncFrame > this.Content.LocalIdentity.SyncFrame)
+						//{
+						//    this.Content.Console.WriteLine("speeding up");
+						//    this.Content.LocalIdentity.SyncFrameRate = (this.Content.LocalIdentity.SyncFrameRate - 2).Max(2);
+						//}
 					}
 
-					this.Content.View.Level.KnownVehicles.Where(k => k.CurrentDriver == null).ForEach(
-						(Vehicle, Index) =>
+					this.Content.Console.WriteLine(
+						new
 						{
-							this.Messages.Vehicle_TeleportTo(
-								Index,
-								Vehicle.X,
-								Vehicle.Y,
-								Vehicle.VelocityX,
-								Vehicle.VelocityY
-							);
+							avgframe = AvgSyncFrame,
+							frame = this.Content.LocalIdentity.SyncFrame,
+							framerate = this.Content.LocalIdentity.SyncFrameRate,
+							avglag = AvgSyncFrameLatency,
+							delta = AvgSyncFrameDelta
 						}
 					);
 
-
+					this.Messages.SyncFrame(
+						this.Content.LocalIdentity.SyncFrame,
+						this.Content.LocalIdentity.SyncFrameRate
+					);
 				}
 			);
+
+			this.Events.UserSyncFrameEcho +=
+				e =>
+				{
+					var c = this[e];
+
+					c.SyncFrameLatency = this.Content.LocalIdentity.SyncFrame - e.frame;
+				};
+
+			this.Events.UserSyncFrame +=
+				e =>
+				{
+					var c = this[e];
+
+					if (c == null)
+					{
+						// we do not know yet about this user
+						return;
+					}
+
+					c.SyncFrame = e.frame;
+					c.SyncFrameRate = e.framerate;
+
+					// lets send the same data back to calculate lag
+					this.Messages.UserSyncFrameEcho(e.user, e.frame, e.framerate);
+				};
+
+
 
 			this.Events.UserKeyStateChanged +=
 				e =>
 				{
 					var p = this[e][e.local];
 
-					this.Content.Console.WriteLine("UserKeyStateChanged " + e + " - " + p);
+					this.Content.Console.WriteLine("UserKeyStateChanged " + e);
 
-					p.Input.Keyboard.KeyState[p.Input.Keyboard.FromDefaultTranslation((Key)e.key)] = Convert.ToBoolean(e.state);
+
+					// if the remote frame is less than here
+					// then we are in the future
+					// otherwise they are in the future
+					var key = p.Input.Keyboard.FromDefaultTranslation((Key)e.key);
+					var state = Convert.ToBoolean(e.state);
+
+					Action SyncFrameChanged = null;
+
+					SyncFrameChanged = delegate
+					{
+						if (this.Content.LocalIdentity.SyncFrame < e.frame)
+						{
+							// we need to wait. the event mus occur in the future
+							return;
+						}
+
+
+						if (this.Content.LocalIdentity.SyncFrame > e.frame)
+						{
+							// did we miss the correct frame?
+
+							// we would miss the correct frame
+							// if we would send input from the past
+
+							// this event will cause desync!
+
+							this.Content.Console.WriteLine("desync!");
+						}
+
+
+
+						p.Input.Keyboard.KeyState[key] = state;
+
+						this.Content.LocalIdentity.SyncFrameChanged -= SyncFrameChanged;
+					};
+
+					this.Content.LocalIdentity.SyncFrameChanged += SyncFrameChanged;
+
 				};
 
 			this.Events.UserTeleportTo +=
@@ -253,7 +371,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				e =>
 				{
 					Content.Console.WriteLine("UserVehicle_TeleportTo " + e);
-					
+
 					var v = this.Content.View.Level.KnownVehicles.Where(k => k.CurrentDriver == null).AtModulus(e.index);
 
 					v.MoveTo(e.x, e.y);
@@ -330,7 +448,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Action<Key, bool> Local_KeyStateChanged =
 						(key, state) =>
 						{
-							this.Messages.KeyStateChanged(Local.IdentityLocal, (int)Local.Input.Keyboard.ToDefaultTranslation(key), Convert.ToInt32(state));
+							this.Messages.KeyStateChanged(
+								Local.IdentityLocal,
+								this.Content.LocalIdentity.SyncFrame,
+								(int)Local.Input.Keyboard.ToDefaultTranslation(key),
+								Convert.ToInt32(state)
+							);
 						};
 
 					this.Content.Console.WriteLine("event add KeyStateChanged " + Local);
@@ -391,7 +514,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		{
 			get
 			{
-				return this.CoPlayers.First(k => user == k.Number);
+				return this.CoPlayers.FirstOrDefault(k => user == k.Number);
 			}
 		}
 

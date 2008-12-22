@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Documents\description.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Game\level01.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Game\level00.txt" />
   </ItemGroup>
   <ItemGroup>

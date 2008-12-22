@@ -150,5 +150,13 @@ namespace AvalonUgh.Code.Dialogs
 				return new Task(this, Task);
 			}
 		}
+
+		public void WriteLine(object p)
+		{
+			if (p == null)
+				return;
+
+			this.WriteLine(p.ToString());
+		}
 	}
 }
