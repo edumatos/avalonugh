@@ -29,6 +29,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		// this code is shared between
 		// javascript, actionscript, c#
 
+		// read about network programming:
+		// http://trac.bookofhook.com/bookofhook/trac.cgi/wiki/GameDesign
+		// http://www.jakeworld.org/JakeWorld/main.php?main=Articles/Networking%20for%20Games%20101.php
+		// http://trac.bookofhook.com/bookofhook/trac.cgi/wiki/Quake3Networking
+		// http://trac.bookofhook.com/bookofhook/trac.cgi/wiki/IntroductionToMultiplayerGameProgramming
+
 		public const int DefaultWidth = TargetCanvas.DefaultWidth;
 		public const int DefaultHeight = TargetCanvas.DefaultHeight;
 		public const int Zoom = TargetCanvas.Zoom;
@@ -229,47 +235,14 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				}
 			);
 
-			(1000 / 60).AtInterval(
+			this.Content.LocalIdentity.SyncFrameChanged +=
 				delegate
 				{
-					if (!this.IsConnected)
-						return;
-
-					// we are on our own
-					if (this.CoPlayers.Count == 0)
-						return;
-
-					var AvgSyncFrame = this.CoPlayers.Average(k => k.SyncFrame);
-					var AvgSyncFrameLatency = this.CoPlayers.Average(k => k.SyncFrameLatency);
-					var AvgSyncFrameDelta = AvgSyncFrame - this.Content.LocalIdentity.SyncFrame;
-
-					if (Math.Abs(AvgSyncFrameDelta) <= AvgSyncFrameLatency * 2)
-					{
-						// all good
-					}
-					else
-					{
-						// need to change speed
-
-						if (AvgSyncFrame < this.Content.LocalIdentity.SyncFrame)
-						{
-							this.Content.Console.WriteLine("need to slow down");
-							//this.Content.LocalIdentity.SyncFrameRateCorrection--;
-						}
-
-						if (AvgSyncFrame > this.Content.LocalIdentity.SyncFrame)
-						{
-							this.Content.Console.WriteLine("need to speed up");
-							//this.Content.LocalIdentity.SyncFrameRateCorrection++;
-						}
-					}
-
 					this.Messages.SyncFrame(
 						this.Content.LocalIdentity.SyncFrame,
 						this.Content.LocalIdentity.SyncFrameRate
 					);
-				}
-			);
+				};
 
 			this.Events.UserSyncFrameEcho +=
 				e =>
@@ -296,6 +269,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					c.SyncFrame = e.frame;
 					c.SyncFrameRate = e.framerate;
 
+					this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + 10;
+
 					// lets send the same data back to calculate lag
 					this.Messages.UserSyncFrameEcho(e.user, e.frame, e.framerate);
 				};
@@ -316,6 +291,15 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					var key = p.Input.Keyboard.FromDefaultTranslation((Key)e.key);
 					var state = Convert.ToBoolean(e.state);
 
+					if (p.KeyState_Sequence > 0)
+					{
+						if (p.KeyState_Sequence + 1 != e.sequence)
+							this.Content.Console.WriteLine("error: KeyState_Sequence " + new { p.KeyState_Sequence, e.sequence });
+					}
+
+					p.KeyState_Sequence = e.sequence;
+
+
 					this.Content.LocalIdentity.HandleFrame(e.frame,
 						delegate
 						{
@@ -327,7 +311,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						}
 					);
 
-					
+
 
 				};
 
@@ -447,9 +431,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 								}
 							);
 
+							Local.KeyState_Sequence++;
+
 							this.Messages.KeyStateChanged(
 								Local.IdentityLocal,
 								FutureFrame,
+								Local.KeyState_Sequence,
 								(int)ConnectedKeyboard.ToDefaultTranslation(key),
 								Convert.ToInt32(state)
 							);

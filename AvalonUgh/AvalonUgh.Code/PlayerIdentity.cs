@@ -24,6 +24,7 @@ namespace AvalonUgh.Code
 		public bool SyncFramePausedSkip;
 		public event Action SyncFrameChanged;
 		int InternalSyncFrame;
+		public int SyncFrameLimit;
 		public int SyncFrame
 		{
 			get
