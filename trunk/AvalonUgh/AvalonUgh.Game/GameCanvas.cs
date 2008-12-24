@@ -43,6 +43,7 @@ namespace AvalonUgh.Game.Shared
 
 
 		public readonly Stack<PlayerInput> AvailableInputs;
+		public readonly Stack<PlayerInput> ReservedInputs = new Stack<PlayerInput>();
 
 		// what if we would allow multiple levels to be loaded at the same time?
 		// like some could enter a cave and such
@@ -52,19 +53,22 @@ namespace AvalonUgh.Game.Shared
 
 		public GameCanvas()
 		{
-			var Music = new AudioLoop();
+			var Music = new AudioLoop
+			{
+				Volume = 0.1,
+				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
+				Enabled = true,
+			};
 
-			Music.Volume = 0.1;
-			Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3");
+			var WaterRaise = new AudioLoop
+			{
 
+				Volume = 0.4,
+				Start = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise_start.mp3"),
+				Stop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise_stop.mp3"),
+				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise2.mp3")
+			};
 
-			var WaterRaise = new AudioLoop();
-
-			WaterRaise.Volume = 0.4;
-			WaterRaise.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise2.mp3");
-
-
-			
 
 			#region AvailableInputs
 			this.AvailableInputs = new Stack<PlayerInput>();
@@ -134,6 +138,18 @@ namespace AvalonUgh.Game.Shared
 			this.Console.AnimatedTop = -this.Console.Height;
 			#endregion
 
+			WaterRaise.LoopStarted +=
+				delegate
+				{
+					Console.WriteLine("WaterRaise.LoopStarted");
+				};
+
+			WaterRaise.LoopStopped +=
+				delegate
+				{
+					Console.WriteLine("WaterRaise.LoopStopped");
+				};
+
 			LobbyLevel.ToStringAsset(
 				LevelText =>
 				{
@@ -152,12 +168,19 @@ namespace AvalonUgh.Game.Shared
 							//Console.WriteLine("CollisionAtVelocity " + new { Velocity, Volume });
 						};
 
+
 					// in menu mode the view does not include status bar
 					// yet later in game we should adjust that
 					View = new View(DefaultWidth, DefaultHeight - 18, Level);
 
 					View.AttachContainerTo(this);
 					View.EditorSelector = null;
+
+					View.IsShakerEnabledChanged +=
+						delegate
+						{
+							WaterRaise.Enabled = View.IsShakerEnabled;
+						};
 
 					// to modify the first level we are enabling the 
 					// editor
@@ -168,7 +191,7 @@ namespace AvalonUgh.Game.Shared
 
 					// move it to bottom center
 					et.MoveContainerTo(
-						(DefaultWidth - et.Width) / 2, 
+						(DefaultWidth - et.Width) / 2,
 						DefaultHeight - et.Padding * 3 - PrimitiveTile.Heigth * 4
 					);
 
@@ -255,16 +278,18 @@ namespace AvalonUgh.Game.Shared
 								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
 							}
 
-							if (args.Key == Key.H)
-							{
-								View.IsShakerEnabled = !View.IsShakerEnabled;
-							}
-
+						
 							if (args.Key == Key.T)
 							{
 								et.Container.ToggleVisible();
 								View.EditorSelectorRectangle.ToggleVisible();
 							}
+
+							if (args.Key == Key.H)
+							{
+								View.IsShakerEnabled = !View.IsShakerEnabled;
+							}
+
 						};
 
 					Console.AttachContainerTo(this);
@@ -429,7 +454,7 @@ namespace AvalonUgh.Game.Shared
 
 							Console.WriteLine("ingame player deleted: " + DeletedPlayer);
 
-						
+
 							DeletedPlayer.Actor.Dispose();
 							Level.KnownActors.Remove(DeletedPlayer.Actor);
 						}
@@ -446,6 +471,8 @@ namespace AvalonUgh.Game.Shared
 								return;
 
 							var i = this.AvailableInputs.Pop();
+
+							this.ReservedInputs.Push(i);
 
 							var p = new PlayerInfo
 							{
@@ -480,7 +507,7 @@ namespace AvalonUgh.Game.Shared
 								return;
 
 							var p = this.LocalIdentity.Locals.Last();
-							var i = p.Input;
+							var i = this.ReservedInputs.Pop();
 
 							i.Touch = null;
 
@@ -580,6 +607,10 @@ namespace AvalonUgh.Game.Shared
 								}
 							}
 
+							if (this.LocalIdentity.SyncFrame % 30 == 0)
+								if (View.IsShakerEnabled)
+									View.Level.AttributeWater.Value++;
+
 							// we could pause the game here
 							foreach (var p in Players)
 							{
@@ -592,15 +623,7 @@ namespace AvalonUgh.Game.Shared
 						};
 
 					FrameTick.AtInterval(
-						() =>
-						{
-							var r = this.LocalIdentity.SyncFrameRate;
-
-						
-
-
-							return r;
-						}
+						() => this.LocalIdentity.SyncFrameRate
 					);
 
 
