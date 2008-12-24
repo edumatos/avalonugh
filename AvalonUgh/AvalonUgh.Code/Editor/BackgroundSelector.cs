@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 using AvalonUgh.Assets.Avalon;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -36,18 +37,26 @@ namespace AvalonUgh.Code.Editor
 		[Script]
 		internal class Size_Vertical : View.SelectorInfo
 		{
+			string[] SupportedBackgrounds;
+
 			public Size_Vertical()
 			{
-				// we are setting a width that should be greater than the view width
-				// we might add a support for -1 to expand to to view later
 				this.Width = 0;
-
 				this.Height = 0;
+
+				this.SupportedBackgrounds =
+					Enumerable.Range(1, 5).Select(k => k.ToString().PadLeft(3, '0')).ConcatSingle("").ToArray();
+
 			}
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				
+				if (Level.AttributeBackground.Value == null)
+					Level.AttributeBackground.Value = "";
+
+				Level.AttributeBackground.Value =
+					this.SupportedBackgrounds.Next(k => k == Level.AttributeBackground.Value);
+
 			}
 
 		}

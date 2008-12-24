@@ -49,24 +49,26 @@ namespace AvalonUgh.Code
 			(1000 / 20).AtInterval(
 				delegate
 				{
-					if (!this.IsFilmScratchEffectEnabled)
-						return;
-
-					foreach (var s in Scratches)
+					if (this.IsFilmScratchEffectEnabled)
 					{
-						s.MoveTo(
-							Shaker.NextDouble() * this.ContentExtendedWidth - 16,
-							Shaker.NextDouble() * this.ContentExtendedHeight - 16
-							);
+
+						foreach (var s in Scratches)
+						{
+							s.MoveTo(
+								Shaker.NextDouble() * this.ContentExtendedWidth - 16,
+								Shaker.NextDouble() * this.ContentExtendedHeight - 16
+								);
+						}
+						this.FlashlightContainer.Opacity = (Shaker.NextDouble() * 0.3 + 0.8).Min(1);
 					}
 
-					var Shake = 2.0;
-
-
-					this.FlashlightContainer.Opacity = (Shaker.NextDouble() * 0.3 + 0.8).Min(1);
-					this.ContentShakeX = (Shaker.NextDouble() * Shake) - Shake / 2;
-					this.ContentShakeY = (Shaker.NextDouble() * Shake) - Shake / 2;
-					this.MoveContentTo();
+					if (this.IsShakerEnabled)
+					{
+						var Shake = 2.0;
+						this.ContentShakeX = (Shaker.NextDouble() * Shake) - Shake / 2;
+						this.ContentShakeY = (Shaker.NextDouble() * Shake) - Shake / 2;
+						this.MoveContentTo();
+					}
 				}
 			);
 		}
@@ -82,11 +84,28 @@ namespace AvalonUgh.Code
 			}
 			set
 			{
-				this.ColorOverlay.Background = Brushes.Brown;
-
 				_IsFilmScratchEffectEnabled = value;
 				if (IsFilmScratchEffectEnabledChanged != null)
 					IsFilmScratchEffectEnabledChanged();
+			}
+		}
+
+
+		public event Action IsShakerEnabledChanged;
+		bool _IsShakerEnabled;
+		public bool IsShakerEnabled
+		{
+			get
+			{
+				return _IsShakerEnabled;
+			}
+			set
+			{
+				this.ColorOverlay.Background = Brushes.Brown;
+
+				_IsShakerEnabled = value;
+				if (IsShakerEnabledChanged != null)
+					IsShakerEnabledChanged();
 			}
 		}
 

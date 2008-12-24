@@ -50,7 +50,7 @@ namespace AvalonUgh.Code.Editor
 
 	
 
-		public readonly Image BackgroundImage;
+		public Image BackgroundImage;
 
 		/// <summary>
 		/// The caves are important because actors need to exit and enter them

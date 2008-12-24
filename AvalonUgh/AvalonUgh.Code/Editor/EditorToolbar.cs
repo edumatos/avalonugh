@@ -83,6 +83,7 @@ namespace AvalonUgh.Code.Editor
 			this.LevelText = new TextBox
 			{
 				FontFamily = new FontFamily("Courier New"),
+				FontSize = 12,
 				AcceptsReturn = true,
 				Background = Brushes.Transparent,
 				BorderThickness = new Thickness(0)
@@ -90,11 +91,11 @@ namespace AvalonUgh.Code.Editor
 
 			var Buttons = new List<Button>();
 
-			Func<int> ButtonsWidth = () => Padding + Buttons.Count * (PrimitiveTile.Width * 2 + Padding);
+			Func<int> ButtonsWidth = () => Padding + (Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
 
 			CreateButtons(Buttons, ButtonsWidth);
 
-			this.Width = ButtonsWidth();
+			this.Width = ButtonsWidth() + (PrimitiveTile.Width * 2 + Padding);
 			this.Height = this.Width * 2 / 3;
 
 			DraggableArea.Width = this.Width;
@@ -103,20 +104,37 @@ namespace AvalonUgh.Code.Editor
 			this.Update();
 
 			#region LevelText
+
+
 			var LevelTextBackground = new Rectangle
 			{
 				Fill = Brushes.LightGreen,
-				Opacity = 0.2,
-				Width = Width - Padding - Padding,
-				Height = Height - PrimitiveTile.Heigth * 2 - Padding * 3,
-			}.AttachTo(this).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding + Padding);
-
-
-
-			this.LevelText.AttachTo(this).SizeTo(
+				Opacity = 0.2
+			}.AttachTo(this)
+			.SizeTo(
 				Width - Padding * 2,
-				Height - PrimitiveTile.Heigth * 2 - Padding * 3
-			).MoveTo(Padding, PrimitiveTile.Heigth * 2 + Padding * 2);
+				Height - PrimitiveTile.Heigth * 4 - Padding * 4
+			).MoveTo(Padding, PrimitiveTile.Heigth * 4 + Padding * 3);
+
+			var WaterMark = new TextBox
+			{
+				FontFamily = new FontFamily("Courier New"),
+				FontSize = 12,
+				Background = Brushes.Transparent,
+				BorderThickness = new Thickness(0),
+				Text = "Avalon Ugh",
+				Foreground = Brushes.DarkGreen,
+				TextAlignment = TextAlignment.Right
+			}.AttachTo(this).SizeTo(
+				Width - Padding * 2,
+				15
+			).MoveTo(Padding, Height - 15 - Padding);
+
+			this.LevelText.AttachTo(this)
+			.SizeTo(
+				Width - Padding * 2,
+				Height - PrimitiveTile.Heigth * 4 - Padding * 4
+			).MoveTo(Padding, PrimitiveTile.Heigth * 4 + Padding * 3);
 
 
 
@@ -151,15 +169,41 @@ namespace AvalonUgh.Code.Editor
 
 
 			#region AddButton
-			Action<Image, View.SelectorInfo[]> AddButton =
-				(Image, EditorSelector) =>
+			Action<SelectorBase> AddButton =
+				(Selector) =>
 				{
-					var EditorSelectorDefault = EditorSelector.FirstOrDefault();
+					var w = Selector.ImageWidth;
 
-					//var EditorSelectorCycle = EditorSelector.AsCyclicEnumerable().GetEnumerator();
+					if (w == 0)
+						w = Selector.ToolbarImage.Width * PrimitiveTile.Width;
+
+					var h = Selector.ImageHeight;
+
+					if (h == 0)
+						h = Selector.ToolbarImage.Height * PrimitiveTile.Heigth;
 
 					var x = ButtonsWidth();
 					var y = Padding;
+
+					if (Buttons.Count % 2 == 1)
+						y += PrimitiveTile.Heigth * 2 + Padding;
+
+					var Image =
+						new Image
+						{
+							Source = Selector.ToolbarImage.ToString().ToSource(),
+							Width = w,
+							Height = h
+						}.MoveTo(
+							x + PrimitiveTile.Width - w / 2,
+							y + PrimitiveTile.Heigth - h / 2
+						);
+
+
+					var Sizes = Selector.Sizes;
+
+					var EditorSelectorDefault = Sizes.FirstOrDefault();
+
 
 					Image.AttachTo(this);
 
@@ -190,7 +234,7 @@ namespace AvalonUgh.Code.Editor
 						{
 							SelectionMarkerMove(x - 2, y - 2);
 
-							if (EditorSelector.Length == 0)
+							if (Sizes.Length == 0)
 							{
 								SelectionMarker.Fill = Brushes.Red;
 								this.EditorSelectorNextSize = null;
@@ -203,14 +247,14 @@ namespace AvalonUgh.Code.Editor
 							this.EditorSelectorNextSize =
 								delegate
 								{
-									EditorSelectorDefault = EditorSelector.Next(k => k == EditorSelectorDefault);
+									EditorSelectorDefault = Sizes.Next(k => k == EditorSelectorDefault);
 									this.EditorSelector = EditorSelectorDefault;
 								};
 
 							this.EditorSelectorPreviousSize =
 								delegate
 								{
-									EditorSelectorDefault = EditorSelector.Previous(k => k == EditorSelectorDefault);
+									EditorSelectorDefault = Sizes.Previous(k => k == EditorSelectorDefault);
 									this.EditorSelector = EditorSelectorDefault;
 								};
 
@@ -244,76 +288,20 @@ namespace AvalonUgh.Code.Editor
 						TouchOverlay = TouchOverlay
 					}.AddTo(Buttons);
 				};
-			Action<string, View.SelectorInfo[]> AddButton_2x2 =
-				(Image, EditorSelector) =>
-				{
-					AddButton(
-						new Image
-						{
-							Source = Image.ToSource(),
-							Width = PrimitiveTile.Width * 2,
-							Height = PrimitiveTile.Heigth * 2
-						}.MoveTo(ButtonsWidth(), Padding)
-					, EditorSelector);
 
-
-				};
-
-			Action<string, View.SelectorInfo[]> AddButton_1x1 =
-				(Image, EditorSelector) =>
-				{
-					AddButton(
-						new Image
-						{
-							Source = Image.ToSource(),
-							Width = PrimitiveTile.Width,
-							Height = PrimitiveTile.Heigth
-						}.MoveTo(
-							ButtonsWidth() + PrimitiveTile.Width / 2,
-							Padding + PrimitiveTile.Width / 2
-						)
-					, EditorSelector);
-
-
-				};
 			#endregion
 
 
-			AddButtons(ButtonsWidth, AddButton, AddButton_2x2, AddButton_1x1);
-		}
-
-		private void AddButtons(Func<int> ButtonsWidth, Action<Image, View.SelectorInfo[]> AddButton, Action<string, View.SelectorInfo[]> AddButton_2x2, Action<string, View.SelectorInfo[]> AddButton_1x1)
-		{
-
-		
 			foreach (var Selector in this.Selectors.Types)
 			{
-				var w = Selector.ImageWidth;
 
-				if (w == 0)
-					w = Selector.ToolbarImage.Width * PrimitiveTile.Width;
-
-				var h = Selector.ImageHeight;
-
-				if (h == 0)
-					h = Selector.ToolbarImage.Height * PrimitiveTile.Heigth;
-
-				var Selector_Image =
-					new Image
-					{
-						Source = Selector.ToolbarImage.ToString().ToSource(),
-						Width = w,
-						Height = h
-					}.MoveTo(
-						ButtonsWidth() + PrimitiveTile.Width - w / 2,
-						Padding + PrimitiveTile.Heigth - h / 2
-					);
-
-				AddButton(Selector_Image, Selector.Sizes);
+				AddButton(Selector);
 
 
 			}
 		}
+
+
 
 
 	}
