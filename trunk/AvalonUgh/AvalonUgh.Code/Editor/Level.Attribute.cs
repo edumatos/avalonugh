@@ -32,7 +32,23 @@ namespace AvalonUgh.Code.Editor
 			[Script]
 			public sealed class String : Attribute
 			{
-				public string Value;
+				string InternalValue;
+				public string Value
+				{
+					get
+					{
+						return InternalValue;
+					}
+					set
+					{
+						InternalValue = value;
+
+						if (this.Assigned != null)
+							this.Assigned(value);
+					}
+				}
+
+				public event Action<string> Assigned;
 
 				public static implicit operator Attribute.String(string Key)
 				{

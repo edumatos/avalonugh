@@ -52,15 +52,19 @@ namespace AvalonUgh.Game.Shared
 
 		public GameCanvas()
 		{
-			(AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3").Apply(
-				(Source, Retry) =>
-				{
-					var Music = Source.PlaySound();
+			var Music = new AudioLoop();
 
-					Music.PlaybackComplete += Retry;
-					Music.SetVolume(0.10);
-				}
-			);
+			Music.Volume = 0.1;
+			Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3");
+
+
+			var WaterRaise = new AudioLoop();
+
+			WaterRaise.Volume = 0.4;
+			WaterRaise.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise2.mp3");
+
+
+			
 
 			#region AvailableInputs
 			this.AvailableInputs = new Stack<PlayerInput>();
@@ -119,7 +123,8 @@ namespace AvalonUgh.Game.Shared
 
 			// prototype the new menu
 
-			var LobbyLevel = KnownAssets.Path.Assets + "/level01.txt";
+			//var LobbyLevel = KnownAssets.Path.Assets + "/level01.txt";
+			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_02.txt";
 
 			#region setting up our console
 			this.Console = new GameConsole();
@@ -149,7 +154,7 @@ namespace AvalonUgh.Game.Shared
 
 					// in menu mode the view does not include status bar
 					// yet later in game we should adjust that
-					View = new View(DefaultWidth, DefaultHeight, Level);
+					View = new View(DefaultWidth, DefaultHeight - 18, Level);
 
 					View.AttachContainerTo(this);
 					View.EditorSelector = null;
@@ -162,7 +167,10 @@ namespace AvalonUgh.Game.Shared
 					var et = new EditorToolbar(this, Selectors);
 
 					// move it to bottom center
-					et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
+					et.MoveContainerTo(
+						(DefaultWidth - et.Width) / 2, 
+						DefaultHeight - et.Padding * 3 - PrimitiveTile.Heigth * 4
+					);
 
 
 					et.EditorSelectorChanged +=
@@ -182,18 +190,18 @@ namespace AvalonUgh.Game.Shared
 
 
 					#region some menu mockup
-					new Image
-					{
-						Source = (Assets.Shared.KnownAssets.Path.Levels + "/level0_02.png").ToSource(),
-						Stretch = Stretch.Fill
-					}.SizeTo(80, 50).MoveTo(DefaultWidth - 160, DefaultHeight / 2 - 50).AttachTo(this);
+					//new Image
+					//{
+					//    Source = (Assets.Shared.KnownAssets.Path.Levels + "/level0_02.png").ToSource(),
+					//    Stretch = Stretch.Fill
+					//}.SizeTo(80, 50).MoveTo(DefaultWidth - 160, DefaultHeight / 2 - 50).AttachTo(this);
 
-					new DialogTextBox
-					{
-						Text = " start game",
-						Zoom = Zoom,
-						Width = DefaultWidth
-					}.MoveContainerTo(0, DefaultHeight / 2 - 50).AttachContainerTo(this);
+					//new DialogTextBox
+					//{
+					//    Text = " start game",
+					//    Zoom = Zoom,
+					//    Width = DefaultWidth
+					//}.MoveContainerTo(0, DefaultHeight / 2 - 50).AttachContainerTo(this);
 					#endregion
 
 
@@ -245,6 +253,11 @@ namespace AvalonUgh.Game.Shared
 							if (args.Key == Key.G)
 							{
 								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
+							}
+
+							if (args.Key == Key.H)
+							{
+								View.IsShakerEnabled = !View.IsShakerEnabled;
 							}
 
 							if (args.Key == Key.T)
@@ -314,7 +327,7 @@ namespace AvalonUgh.Game.Shared
 							// nor are we inside a cave
 
 							// where are the spawnpoints in this level?
-							NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 2);
+							NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 4);
 
 							// we need to play jumping sound
 							NewPlayer.Actor.Jumping +=

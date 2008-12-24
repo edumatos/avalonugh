@@ -118,6 +118,29 @@ namespace AvalonUgh.Code
 			if (Level.BackgroundImage != null)
 				Level.BackgroundImage.AttachTo(this.Background);
 
+			this.Level.AttributeBackground.Assigned +=
+				value =>
+				{
+					if (Level.BackgroundImage != null)
+						Level.BackgroundImage.Orphanize();
+
+					if (string.IsNullOrEmpty(value))
+					{
+						Level.BackgroundImage = null;
+					}
+					else
+					{
+						Level.BackgroundImage = new Image
+						{
+							Stretch = Stretch.Fill,
+							Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/" + value + ".png").ToSource(),
+							Width = width,
+							Height = height
+						};
+
+						Level.BackgroundImage.AttachTo(this.Background);
+					}
+				};
 
 			this.Content = new Canvas
 			{
