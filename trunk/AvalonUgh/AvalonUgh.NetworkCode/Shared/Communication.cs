@@ -44,6 +44,10 @@ namespace AvalonUgh.NetworkCode.Shared
 			void SyncFrameEcho(int frame, int framerate);
 			void UserSyncFrameEcho(int user, int frame, int framerate);
 
+
+			void SetShakerEnabled(int frame, int value);
+			void UserSetShakerEnabled(int user, int frame, int value);
+
 		}
 
 

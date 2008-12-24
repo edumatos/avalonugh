@@ -40,6 +40,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserSyncFrame,
             SyncFrameEcho,
             UserSyncFrameEcho,
+            SetShakerEnabled,
+            UserSetShakerEnabled,
         }
         #endregion
 
@@ -76,6 +78,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserSyncFrameArguments> UserSyncFrame;
             event Action<RemoteEvents.SyncFrameEchoArguments> SyncFrameEcho;
             event Action<RemoteEvents.UserSyncFrameEchoArguments> UserSyncFrameEcho;
+            event Action<RemoteEvents.SetShakerEnabledArguments> SetShakerEnabled;
+            event Action<RemoteEvents.UserSetShakerEnabledArguments> UserSetShakerEnabled;
         }
         #endregion
 
@@ -389,6 +393,34 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void SetShakerEnabled(int frame, int value)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.SetShakerEnabled, args = new object[] { frame, value } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.SetShakerEnabled(frame, value);
+                    }
+                }
+            }
+            public void UserSetShakerEnabled(int user, int frame, int value)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserSetShakerEnabled, args = new object[] { user, frame, value } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserSetShakerEnabled(user, frame, value);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -452,6 +484,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.EditorSelector += this.UserEditorSelector;
                     value.SyncFrame += this.UserSyncFrame;
                     value.SyncFrameEcho += this.UserSyncFrameEcho;
+                    value.SetShakerEnabled += this.UserSetShakerEnabled;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -465,6 +498,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.EditorSelector -= this.UserEditorSelector;
                     value.SyncFrame -= this.UserSyncFrame;
                     value.SyncFrameEcho -= this.UserSyncFrameEcho;
+                    value.SetShakerEnabled -= this.UserSetShakerEnabled;
                 }
                 #endregion
 
@@ -504,6 +538,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserSyncFrameEcho(SyncFrameEchoArguments e)
                 {
                     Target.UserSyncFrameEcho(this.user, e.frame, e.framerate);
+                }
+                public void UserSetShakerEnabled(SetShakerEnabledArguments e)
+                {
+                    Target.UserSetShakerEnabled(this.user, e.frame, e.value);
                 }
                 #endregion
             }
@@ -587,6 +625,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserSyncFrameEcho(this.user, e.frame, e.framerate);
                 }
+                public void UserSetShakerEnabled(int frame, int value)
+                {
+                    this.Target.UserSetShakerEnabled(this.user, frame, value);
+                }
+                public void UserSetShakerEnabled(UserSetShakerEnabledArguments e)
+                {
+                    this.Target.UserSetShakerEnabled(this.user, e.frame, e.value);
+                }
                 #endregion
             }
             #endregion
@@ -609,6 +655,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserEditorSelector += this.UserEditorSelector;
                     value.UserSyncFrame += this.UserSyncFrame;
                     value.UserSyncFrameEcho += this.UserSyncFrameEcho;
+                    value.UserSetShakerEnabled += this.UserSetShakerEnabled;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -622,6 +669,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserEditorSelector -= this.UserEditorSelector;
                     value.UserSyncFrame -= this.UserSyncFrame;
                     value.UserSyncFrameEcho -= this.UserSyncFrameEcho;
+                    value.UserSetShakerEnabled -= this.UserSetShakerEnabled;
                 }
                 #endregion
 
@@ -679,6 +727,12 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserSyncFrameEcho(this.user, e.frame, e.framerate);
+                }
+                public void UserSetShakerEnabled(UserSetShakerEnabledArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserSetShakerEnabled(this.user, e.frame, e.value);
                 }
                 #endregion
             }
@@ -1015,6 +1069,36 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserSyncFrameEchoArguments> UserSyncFrameEcho;
+            #region SetShakerEnabledArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class SetShakerEnabledArguments
+            {
+                public int frame;
+                public int value;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", value = ").Append(this.value).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<SetShakerEnabledArguments> SetShakerEnabled;
+            #region UserSetShakerEnabledArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserSetShakerEnabledArguments : WithUserArguments
+            {
+                public int frame;
+                public int value;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", value = ").Append(this.value).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserSetShakerEnabledArguments> UserSetShakerEnabled;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -1040,6 +1124,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserSyncFrame, e => { UserSyncFrame(new UserSyncFrameArguments { user = e.GetInt32(0), frame = e.GetInt32(1), framerate = e.GetInt32(2) }); } },
                             { Messages.SyncFrameEcho, e => { SyncFrameEcho(new SyncFrameEchoArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1) }); } },
                             { Messages.UserSyncFrameEcho, e => { UserSyncFrameEcho(new UserSyncFrameEchoArguments { user = e.GetInt32(0), frame = e.GetInt32(1), framerate = e.GetInt32(2) }); } },
+                            { Messages.SetShakerEnabled, e => { SetShakerEnabled(new SetShakerEnabledArguments { frame = e.GetInt32(0), value = e.GetInt32(1) }); } },
+                            { Messages.UserSetShakerEnabled, e => { UserSetShakerEnabled(new UserSetShakerEnabledArguments { user = e.GetInt32(0), frame = e.GetInt32(1), value = e.GetInt32(2) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -1065,6 +1151,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserSyncFrame, e => UserSyncFrame },
                             { Messages.SyncFrameEcho, e => SyncFrameEcho },
                             { Messages.UserSyncFrameEcho, e => UserSyncFrameEcho },
+                            { Messages.SetShakerEnabled, e => SetShakerEnabled },
+                            { Messages.UserSetShakerEnabled, e => UserSetShakerEnabled },
                         }
                 ;
             }
@@ -1296,9 +1384,25 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserSyncFrameEcho(v));
             }
 
+            public event Action<RemoteEvents.SetShakerEnabledArguments> SetShakerEnabled;
+            void IMessages.SetShakerEnabled(int frame, int value)
+            {
+                if(SetShakerEnabled == null) return;
+                var v = new RemoteEvents.SetShakerEnabledArguments { frame = frame, value = value };
+                this.VirtualLatency(() => this.SetShakerEnabled(v));
+            }
+
+            public event Action<RemoteEvents.UserSetShakerEnabledArguments> UserSetShakerEnabled;
+            void IMessages.UserSetShakerEnabled(int user, int frame, int value)
+            {
+                if(UserSetShakerEnabled == null) return;
+                var v = new RemoteEvents.UserSetShakerEnabledArguments { user = user, frame = frame, value = value };
+                this.VirtualLatency(() => this.UserSetShakerEnabled(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 22.12.2008 21:58:56
+// 24.12.2008 11:27:13

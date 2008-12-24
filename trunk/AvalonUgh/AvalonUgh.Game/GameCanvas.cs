@@ -51,6 +51,8 @@ namespace AvalonUgh.Game.Shared
 
 		public readonly KnownSelectors Selectors = new KnownSelectors();
 
+		public Action<bool> SetShakerEnabled;
+
 		public GameCanvas()
 		{
 			var Music = new AudioLoop
@@ -182,6 +184,11 @@ namespace AvalonUgh.Game.Shared
 							WaterRaise.Enabled = View.IsShakerEnabled;
 						};
 
+					// this is local player implementation
+					// for networking this event needs to be handled by the future frame
+					this.SetShakerEnabled =
+						value => View.IsShakerEnabled = value;
+
 					// to modify the first level we are enabling the 
 					// editor
 
@@ -287,7 +294,7 @@ namespace AvalonUgh.Game.Shared
 
 							if (args.Key == Key.H)
 							{
-								View.IsShakerEnabled = !View.IsShakerEnabled;
+								SetShakerEnabled(!View.IsShakerEnabled);
 							}
 
 						};
