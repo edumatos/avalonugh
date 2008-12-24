@@ -55,6 +55,8 @@ namespace AvalonUgh.Game.Shared
 
 		public GameCanvas()
 		{
+			this.Background = Brushes.Black;
+
 			var Music = new AudioLoop
 			{
 				Volume = 0.1,
