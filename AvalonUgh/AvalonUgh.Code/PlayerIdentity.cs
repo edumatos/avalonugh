@@ -62,6 +62,15 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public int HandleFutureFrame(Action handler)
+		{
+			int FutureFrame = this.SyncFrame + this.SyncFrameWindow;
+
+			HandleFrame(FutureFrame, handler);
+
+			return FutureFrame;
+		}
+
 		public void HandleFrame(int frame, Action handler)
 		{
 			HandleFrame(frame, handler, null);

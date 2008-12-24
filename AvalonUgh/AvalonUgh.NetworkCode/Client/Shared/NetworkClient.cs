@@ -523,6 +523,32 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					);
 				};
 			#endregion
+
+			// we are overriding default behaviour
+			// as we need to act upon events in the future
+			this.Content.SetShakerEnabled =
+				value =>
+				{
+					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+						delegate
+						{
+							this.Content.View.IsShakerEnabled = value;
+						}
+					);
+
+					this.Messages.SetShakerEnabled(FutureFrame, Convert.ToInt32(value));
+				};
+
+			this.Events.UserSetShakerEnabled +=
+				e =>
+				{
+					this.Content.LocalIdentity.HandleFrame(e.frame,
+						delegate
+						{
+							this.Content.View.IsShakerEnabled = Convert.ToBoolean(e.value);
+						}
+					);
+				};
 		}
 
 		public PlayerIdentity this[int user]
