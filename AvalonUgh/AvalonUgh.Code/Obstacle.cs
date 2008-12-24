@@ -3,12 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ScriptCoreLib;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code
 {
 	[Script]
 	public class Obstacle
 	{
+		public static Obstacle Of(AvalonUgh.Code.View.SelectorPosition p, int Zoom, int PrimitiveTileCountX, int PrimitiveTileCountY)
+		{
+			return new Obstacle
+			{
+				Left = p.ContentX * Zoom,
+				Top = p.ContentY * Zoom,
+				Width = PrimitiveTile.Width * Zoom * PrimitiveTileCountX,
+				Height = PrimitiveTile.Heigth * Zoom * PrimitiveTileCountY
+			};
+		}
+
 		public ASCIIImage.Entry Position;
 		public ASCIITileSizeInfo Tile;
 
@@ -43,6 +55,10 @@ namespace AvalonUgh.Code
 			{
 				return Bottom - Top;
 			}
+			set
+			{
+				Bottom = Top + value;
+			}
 		}
 
 		public double Width
@@ -51,11 +67,24 @@ namespace AvalonUgh.Code
 			{
 				return Right - Left;
 			}
+			set
+			{
+				Right = Left + value;
+			}
 		}
 
-	
- 
 
+
+		public bool Equals(Obstacle e)
+		{
+			if (e.Right == this.Right)
+				if (e.Left == this.Left)
+					if (e.Bottom == this.Bottom)
+						if (e.Top == this.Top)
+							return true;
+
+			return false;
+		}
 
 		public bool Intersects(Obstacle e)
 		{

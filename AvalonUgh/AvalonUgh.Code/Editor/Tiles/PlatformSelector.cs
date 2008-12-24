@@ -88,7 +88,34 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				Name.Index = (Name.Index + 1) % Name.IndexCount;
+				if (Name.IndexCount > 0)
+					Name.Index = (Name.Index + 1) % Name.IndexCount;
+
+				var Name_Index = Name.Index;
+
+
+				if (PrimitiveTileCountX == 1)
+					if (PrimitiveTileCountY == 1)
+					{
+						// yay, is there a 1x2 tile to the west?
+						var TriggerPosition = Position[-3, 0];
+
+						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 3, 2);
+
+						var trigger = Level.KnownPlatforms.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+						if (trigger != null)
+						{
+							// our tile will look special
+							Name.Index = 100;
+
+							Level.KnownPlatforms.Remove(trigger);
+
+							var Size_4x2 = new Size_Generic(3, 2, 0);
+							Size_4x2.Name.Index = 100;
+							Size_4x2.CreateTo(Level, TriggerPosition);
+						}
+					}
 
 				RemovePlatforms(this, Level, Position);
 
@@ -149,6 +176,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 						}
 					);
 				}
+
+
+				Name.Index = Name_Index;
 			}
 		}
 

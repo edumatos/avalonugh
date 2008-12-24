@@ -21,14 +21,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public readonly View.SelectorInfo Size_1x2 = new Size_Generic(1, 2, 1);
 		public readonly View.SelectorInfo Size_2x1 = new Size_Generic(2, 1, 1);
 		public readonly View.SelectorInfo Size_2x2 = new Size_Generic(2, 2, 2);
-		public readonly View.SelectorInfo Size_2x3 = new Size_Generic(2, 3, 4);
+		public readonly View.SelectorInfo Size_2x3 = new Size_Generic(2, 3, 3);
 		public readonly View.SelectorInfo Size_3x2 = new Size_Generic(3, 2, 1);
 		public readonly View.SelectorInfo Size_4x2 = new Size_Generic(4, 2, 1);
 		public readonly View.SelectorInfo Size_2x4 = new Size_Generic(2, 4, 1);
 
 		public readonly View.SelectorInfo
-			Size_6x6, 
-			Size_8x4, 
+			Size_6x6,
+			Size_8x4,
 			Size_5x5,
 			Size_5x4,
 			Size_6x3;
@@ -107,7 +107,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 						this.Size_2x1.CreateTo(Level, Position[4, 0]);
 					}
 				);
-					
+
 			this.Sizes =
 				new View.SelectorInfo[]
 				{
@@ -143,9 +143,79 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				Name.Index = (Name.Index + 1) % Name.IndexCount;
+
+
+				if (Name.IndexCount > 0)
+					Name.Index = (Name.Index + 1) % Name.IndexCount;
+
+				var Name_Index = Name.Index;
 
 				RemovePlatforms(this, Level, Position);
+
+				// are we going for a special L shape?
+				if (PrimitiveTileCountX == 2)
+					if (PrimitiveTileCountY == 3)
+					{
+						// yay, is there a 1x2 tile to the west?
+						var TriggerPosition = Position[-1, 0];
+
+						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 2);
+
+						var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+						if (trigger != null)
+						{
+							// our tile will look special
+							Name.Index = 100;
+
+							Level.KnownStones.Remove(trigger);
+
+							var Size_1x2 = new Size_Generic(1, 2, 0);
+							Size_1x2.Name.Index = 100;
+							Size_1x2.CreateTo(Level, TriggerPosition);
+						}
+					}
+
+				if (PrimitiveTileCountX == 2)
+					if (PrimitiveTileCountY == 4)
+					{
+						// yay, is there a 1x2 tile to the west?
+						var TriggerPosition = Position[-1, 0];
+
+						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 2);
+
+						var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+						if (trigger != null)
+						{
+							// our tile will look special
+							Name.Index = 100;
+
+							Level.KnownStones.Remove(trigger);
+
+							var Size_1x2 = new Size_Generic(1, 2, 0);
+							Size_1x2.Name.Index = 100;
+							Size_1x2.CreateTo(Level, TriggerPosition);
+						}
+					}
+
+				if (PrimitiveTileCountX == 2)
+					if (PrimitiveTileCountY == 3)
+					{
+						// the stone next to a cave has a window
+						var TriggerPosition = Position[-2, 1];
+
+						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 2, 2);
+
+						var trigger = Level.KnownCaves.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+						if (trigger != null)
+						{
+							// our tile will look special
+							Name.Index = 200;
+
+						}
+					}
 
 				var u = new Stone(Level, this)
 				{
@@ -153,9 +223,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 					Image = ToImage(Level, Position)
 				};
 
-				var o = u.ToObstacle();
-
 				Level.KnownStones.Add(u);
+
+				Name.Index = Name_Index;
 			}
 		}
 
