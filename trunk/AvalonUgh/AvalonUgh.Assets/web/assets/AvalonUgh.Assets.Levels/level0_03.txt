@@ -1,0 +1,31 @@
+# generated map
+# text: Introducing funny water
+# code: FIGURATIVETHEATRE
+# autoscroll: 0
+# water: 21
+######################
+S-                    
+| S-S-S-S-SS-SS-SR-R--
+| | | | C-|| || || |  
+| | | | |  S-S| S-R-R-
+# sign: 168;4
+S--S--| P--| || | | | 
+|  |  S-|  | S-S| SR- 
+ S-SS-SR-RR-C-S-| ||  
+# rock: 256
+ | || || R--| |  S--R-
+# sign: 264;3
+ | S| R--|  BBBBB|  | 
+# tree: 80
+ S--P-|  RR-SS-S-S-R- 
+ |  SS--C-| || | | |  
+ S- ||  | FR-| | | R- 
+# sign: 56;2
+P-BBBP-P--PR-S-| SS-R-
+| SS-| |  R| SS-SS-S| 
+R-|| R-R--R-S-| || C-R
+| S| | |  | | |  | | R
+# sign: 264;1
+ R-| SR-RSR--BBBPBBBBP
+ |   ||  ||           
+######################

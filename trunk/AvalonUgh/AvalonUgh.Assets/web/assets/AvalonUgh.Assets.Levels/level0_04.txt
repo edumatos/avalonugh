@@ -1,0 +1,30 @@
+# generated map
+# text: Introducing dino
+# code: BURNTOFFERINGS
+# autoscroll: 0
+# water: 26
+######################
+ S-S  S-         S    
+ | |S-| S-SS-S-S-|RR--
+S-S-S-| | || | | R-|  
+# vehicle: 200
+| | | S--C-| | R-| R- 
+S-| | |  | |  R-R--|  
+# tree: 112
+# sign: 216;1
+S-S--PP-PP-P--| |  R--
+| |  S-C-| |  SS--S|  
+ S-S | | R-R-C-|  S-R-
+# sign: 72;2
+ | P-P-P-| RF|  S-| | 
+# sign: 248;3
+ | S-S-R-R--P--P| | S-
+ | S-| | |  |  S| S-| 
+ S-| SS-R-R-RR-S-S-S--
+ S-| |S-R-| R--| | |  
+ | SS-| | S-|  | SP-- 
+ | || SS--| S-S| ||   
+S-S-SS-|  | | S-S--R- 
+| | S| S-S| | | |  |  
+  | || |              
+######################
