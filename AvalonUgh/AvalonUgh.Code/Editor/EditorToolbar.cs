@@ -91,7 +91,7 @@ namespace AvalonUgh.Code.Editor
 
 			var Buttons = new List<Button>();
 
-			Func<int> ButtonsWidth = () => Padding + (Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
+			Func<int> ButtonsWidth = () => Padding + Convert.ToInt32(Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
 
 			CreateButtons(Buttons, ButtonsWidth);
 
