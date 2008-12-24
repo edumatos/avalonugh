@@ -126,6 +126,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 						this.Name.Index = VariationRight;
 					}
 
+					var right_ridge = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Intersects(right));
+					if (right_ridge != null)
+					{
+						this.Name.Index = VariationRight;
+					}
+
 				}
 				#endregion
 
@@ -144,6 +150,16 @@ namespace AvalonUgh.Code.Editor.Tiles
 						else
 							this.Name.Index = VariationLeft;
 					}
+
+					var left_ridge = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Intersects(left));
+					if (left_ridge != null)
+					{
+						if (this.Name.Index == VariationRight)
+							this.Name.Index = VariationMiddle;
+						else
+							this.Name.Index = VariationLeft;
+					}
+
 				}
 				#endregion
 

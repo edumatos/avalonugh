@@ -568,6 +568,40 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform100.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform100_3x2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_03.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone101.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone101_2x3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_04.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_00_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_01_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_02_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_03_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_04_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_05_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_06_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_07_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_08_3x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_09_3x2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_04.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_01.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_01.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,0 +1,29 @@
+# generated map
+# text: Introducing bird!
+# code: CAVITY
+# autoscroll: 0
+# water: 32
+######################
+S-S--S-           S-- 
+| |  | S-S-SS-S-S-|   
+SS-SSS-| | || | | C-S-
+|| ||| | SS-| S | | | 
+# sign: 248;1
+ | S-| S--| | PP-P-P-P
+ | | S-|  | S-S-SS-|  
+S-C-S| S-S| | S--SS-S-
+| |  | | |S-| |  || | 
+# tree: 96
+# sign: 72;2
+PP-P-PP-S-| SSS-S-| S-
+ | SS-SS| SS-|| | S-| 
+ S-S-S-|| || S| S-| | 
+S-S| | S-S-| || | S-S-
+| SS-| S-| S--C-| | | 
+| || | | S |  | | | S-
+# sign: 168;3
+ S-| P-P-BBBP-PP-SS-| 
+ | SR-R| S-S| RR-R| S-
+ | || R-RSS-RR-| R-S--
+      |  ||  |   | |  
+######################
