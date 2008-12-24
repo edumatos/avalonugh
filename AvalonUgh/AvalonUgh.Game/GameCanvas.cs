@@ -16,6 +16,7 @@ using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using ScriptCoreLib.Shared.Avalon.Tween;
 
 namespace AvalonUgh.Game.Shared
 {
@@ -52,6 +53,10 @@ namespace AvalonUgh.Game.Shared
 		public readonly KnownSelectors Selectors = new KnownSelectors();
 
 		public Action<bool> SetShakerEnabled;
+
+		public Dialog PauseDialog;
+		public Action<double> PauseDialog_SetOpacity;
+		public Action<bool, string> SetPause;
 
 		public GameCanvas()
 		{
@@ -162,7 +167,7 @@ namespace AvalonUgh.Game.Shared
 					Level.Physics.CollisionAtVelocity +=
 						Velocity =>
 						{
-							var Volume = (Velocity / (Level.Zoom * 3.0)).Max(0).Min(1);
+							var Volume = (Velocity / (Level.Zoom * 3.0) + 0.5).Max(0).Min(1);
 
 
 							if (Volume > 0)
@@ -237,9 +242,70 @@ namespace AvalonUgh.Game.Shared
 					#endregion
 
 
+					#region PauseDialog
+					this.PauseDialog = new Dialog
+					{
+						Width = DefaultWidth,
+						Height = DefaultHeight,
+						Zoom = Zoom,
+						BackgroundVisible = false,
+						VerticalAlignment = VerticalAlignment.Center,
+						Text = @"
+						   game was paused
+						     by
+							you
+						",
+					}.AttachContainerTo(this);
+
+					Action<int, int> PauseDialog_SetOpacity = NumericEmitter.Of(
+						(x, y) =>
+						{
+							var Opacity = x * 0.01;
+
+							if (Opacity == 0)
+							{
+								this.PauseDialog.Container.Hide();
+							}
+							else
+							{
+								this.PauseDialog.Container.Show();
+							}
+
+							this.PauseDialog.Content.Container.Opacity = (Opacity * 2).Min(1);
+							this.PauseDialog.BackgroundContainer.Opacity = Opacity;
+						}
+					);
+
+					this.PauseDialog_SetOpacity =
+						value =>
+						{
+							PauseDialog_SetOpacity(Convert.ToInt32(value * 100), 0);
+						};
+
+					this.SetPause =
+						(IsPaused, ByWhom) =>
+						{
+							this.LocalIdentity.SyncFramePaused = IsPaused;
+
+							if (IsPaused)
+							{
+								this.PauseDialog.Text = @"
+								   game was paused
+									 by
+									" + ByWhom;
+
+								this.PauseDialog_SetOpacity(0.5);
+							}
+							else
+							{
+								this.PauseDialog_SetOpacity(0);
+							}
+						};
+
+					this.PauseDialog_SetOpacity(0);
 
 
-
+					#endregion
 
 
 
@@ -287,7 +353,7 @@ namespace AvalonUgh.Game.Shared
 								View.IsFilmScratchEffectEnabled = !View.IsFilmScratchEffectEnabled;
 							}
 
-						
+
 							if (args.Key == Key.T)
 							{
 								et.Container.ToggleVisible();
@@ -299,6 +365,10 @@ namespace AvalonUgh.Game.Shared
 								SetShakerEnabled(!View.IsShakerEnabled);
 							}
 
+							if (args.Key == Key.P)
+							{
+								SetPause(!this.LocalIdentity.SyncFramePaused, "you");
+							}
 						};
 
 					Console.AttachContainerTo(this);
@@ -346,7 +416,8 @@ namespace AvalonUgh.Game.Shared
 							Console.WriteLine("new ingame player added: " + NewPlayer);
 
 							// lets create a dummy actor
-							NewPlayer.Actor = new Actor.woman0(Zoom)
+							//NewPlayer.Actor = new Actor.woman0(Zoom)
+							NewPlayer.Actor = new Actor.man0(Zoom)
 							{
 								Animation = Actor.AnimationEnum.Panic,
 								RespectPlatforms = true,
@@ -410,6 +481,10 @@ namespace AvalonUgh.Game.Shared
 
 
 										return;
+									}
+									else
+									{
+										NewPlayer.Actor.Animation = Actor.AnimationEnum.Talk;
 									}
 								};
 

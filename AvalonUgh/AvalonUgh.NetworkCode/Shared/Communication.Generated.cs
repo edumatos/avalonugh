@@ -42,6 +42,10 @@ namespace AvalonUgh.NetworkCode.Shared
             UserSyncFrameEcho,
             SetShakerEnabled,
             UserSetShakerEnabled,
+            SetPaused,
+            UserSetPaused,
+            ClearPaused,
+            UserClearPaused,
         }
         #endregion
 
@@ -80,6 +84,10 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserSyncFrameEchoArguments> UserSyncFrameEcho;
             event Action<RemoteEvents.SetShakerEnabledArguments> SetShakerEnabled;
             event Action<RemoteEvents.UserSetShakerEnabledArguments> UserSetShakerEnabled;
+            event Action<RemoteEvents.SetPausedArguments> SetPaused;
+            event Action<RemoteEvents.UserSetPausedArguments> UserSetPaused;
+            event Action<RemoteEvents.ClearPausedArguments> ClearPaused;
+            event Action<RemoteEvents.UserClearPausedArguments> UserClearPaused;
         }
         #endregion
 
@@ -421,6 +429,62 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void SetPaused(int frame)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.SetPaused, args = new object[] { frame } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.SetPaused(frame);
+                    }
+                }
+            }
+            public void UserSetPaused(int user, int frame)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserSetPaused, args = new object[] { user, frame } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserSetPaused(user, frame);
+                    }
+                }
+            }
+            public void ClearPaused()
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.ClearPaused, args = new object[] {  } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.ClearPaused();
+                    }
+                }
+            }
+            public void UserClearPaused(int user)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserClearPaused, args = new object[] { user } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserClearPaused(user);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -485,6 +549,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.SyncFrame += this.UserSyncFrame;
                     value.SyncFrameEcho += this.UserSyncFrameEcho;
                     value.SetShakerEnabled += this.UserSetShakerEnabled;
+                    value.SetPaused += this.UserSetPaused;
+                    value.ClearPaused += this.UserClearPaused;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -499,6 +565,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.SyncFrame -= this.UserSyncFrame;
                     value.SyncFrameEcho -= this.UserSyncFrameEcho;
                     value.SetShakerEnabled -= this.UserSetShakerEnabled;
+                    value.SetPaused -= this.UserSetPaused;
+                    value.ClearPaused -= this.UserClearPaused;
                 }
                 #endregion
 
@@ -542,6 +610,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserSetShakerEnabled(SetShakerEnabledArguments e)
                 {
                     Target.UserSetShakerEnabled(this.user, e.frame, e.value);
+                }
+                public void UserSetPaused(SetPausedArguments e)
+                {
+                    Target.UserSetPaused(this.user, e.frame);
+                }
+                public void UserClearPaused(ClearPausedArguments e)
+                {
+                    Target.UserClearPaused(this.user);
                 }
                 #endregion
             }
@@ -633,6 +709,22 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserSetShakerEnabled(this.user, e.frame, e.value);
                 }
+                public void UserSetPaused(int frame)
+                {
+                    this.Target.UserSetPaused(this.user, frame);
+                }
+                public void UserSetPaused(UserSetPausedArguments e)
+                {
+                    this.Target.UserSetPaused(this.user, e.frame);
+                }
+                public void UserClearPaused()
+                {
+                    this.Target.UserClearPaused(this.user);
+                }
+                public void UserClearPaused(UserClearPausedArguments e)
+                {
+                    this.Target.UserClearPaused(this.user);
+                }
                 #endregion
             }
             #endregion
@@ -656,6 +748,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserSyncFrame += this.UserSyncFrame;
                     value.UserSyncFrameEcho += this.UserSyncFrameEcho;
                     value.UserSetShakerEnabled += this.UserSetShakerEnabled;
+                    value.UserSetPaused += this.UserSetPaused;
+                    value.UserClearPaused += this.UserClearPaused;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -670,6 +764,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserSyncFrame -= this.UserSyncFrame;
                     value.UserSyncFrameEcho -= this.UserSyncFrameEcho;
                     value.UserSetShakerEnabled -= this.UserSetShakerEnabled;
+                    value.UserSetPaused -= this.UserSetPaused;
+                    value.UserClearPaused -= this.UserClearPaused;
                 }
                 #endregion
 
@@ -733,6 +829,18 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserSetShakerEnabled(this.user, e.frame, e.value);
+                }
+                public void UserSetPaused(UserSetPausedArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserSetPaused(this.user, e.frame);
+                }
+                public void UserClearPaused(UserClearPausedArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserClearPaused(this.user);
                 }
                 #endregion
             }
@@ -1099,6 +1207,60 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserSetShakerEnabledArguments> UserSetShakerEnabled;
+            #region SetPausedArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class SetPausedArguments
+            {
+                public int frame;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<SetPausedArguments> SetPaused;
+            #region UserSetPausedArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserSetPausedArguments : WithUserArguments
+            {
+                public int frame;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserSetPausedArguments> UserSetPaused;
+            #region ClearPausedArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class ClearPausedArguments
+            {
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().ToString();
+                }
+            }
+            #endregion
+            public event Action<ClearPausedArguments> ClearPaused;
+            #region UserClearPausedArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserClearPausedArguments : WithUserArguments
+            {
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserClearPausedArguments> UserClearPaused;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -1126,6 +1288,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserSyncFrameEcho, e => { UserSyncFrameEcho(new UserSyncFrameEchoArguments { user = e.GetInt32(0), frame = e.GetInt32(1), framerate = e.GetInt32(2) }); } },
                             { Messages.SetShakerEnabled, e => { SetShakerEnabled(new SetShakerEnabledArguments { frame = e.GetInt32(0), value = e.GetInt32(1) }); } },
                             { Messages.UserSetShakerEnabled, e => { UserSetShakerEnabled(new UserSetShakerEnabledArguments { user = e.GetInt32(0), frame = e.GetInt32(1), value = e.GetInt32(2) }); } },
+                            { Messages.SetPaused, e => { SetPaused(new SetPausedArguments { frame = e.GetInt32(0) }); } },
+                            { Messages.UserSetPaused, e => { UserSetPaused(new UserSetPausedArguments { user = e.GetInt32(0), frame = e.GetInt32(1) }); } },
+                            { Messages.ClearPaused, e => { ClearPaused(new ClearPausedArguments {  }); } },
+                            { Messages.UserClearPaused, e => { UserClearPaused(new UserClearPausedArguments { user = e.GetInt32(0) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -1153,6 +1319,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserSyncFrameEcho, e => UserSyncFrameEcho },
                             { Messages.SetShakerEnabled, e => SetShakerEnabled },
                             { Messages.UserSetShakerEnabled, e => UserSetShakerEnabled },
+                            { Messages.SetPaused, e => SetPaused },
+                            { Messages.UserSetPaused, e => UserSetPaused },
+                            { Messages.ClearPaused, e => ClearPaused },
+                            { Messages.UserClearPaused, e => UserClearPaused },
                         }
                 ;
             }
@@ -1400,9 +1570,41 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserSetShakerEnabled(v));
             }
 
+            public event Action<RemoteEvents.SetPausedArguments> SetPaused;
+            void IMessages.SetPaused(int frame)
+            {
+                if(SetPaused == null) return;
+                var v = new RemoteEvents.SetPausedArguments { frame = frame };
+                this.VirtualLatency(() => this.SetPaused(v));
+            }
+
+            public event Action<RemoteEvents.UserSetPausedArguments> UserSetPaused;
+            void IMessages.UserSetPaused(int user, int frame)
+            {
+                if(UserSetPaused == null) return;
+                var v = new RemoteEvents.UserSetPausedArguments { user = user, frame = frame };
+                this.VirtualLatency(() => this.UserSetPaused(v));
+            }
+
+            public event Action<RemoteEvents.ClearPausedArguments> ClearPaused;
+            void IMessages.ClearPaused()
+            {
+                if(ClearPaused == null) return;
+                var v = new RemoteEvents.ClearPausedArguments {  };
+                this.VirtualLatency(() => this.ClearPaused(v));
+            }
+
+            public event Action<RemoteEvents.UserClearPausedArguments> UserClearPaused;
+            void IMessages.UserClearPaused(int user)
+            {
+                if(UserClearPaused == null) return;
+                var v = new RemoteEvents.UserClearPausedArguments { user = user };
+                this.VirtualLatency(() => this.UserClearPaused(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 24.12.2008 11:27:13
+// 24.12.2008 14:38:45

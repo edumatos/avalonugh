@@ -215,6 +215,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					);
 
 					this.Content.LocalIdentity.SyncFrame = this.Content.LocalIdentity.SyncFrame.Max(e.frame);
+					this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 				};
 
 
@@ -549,6 +550,53 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						}
 					);
 				};
+
+			#region pause
+			var SetPause = this.Content.SetPause;
+			this.Content.SetPause =
+				(IsPaused, ByWhom) =>
+				{
+					if (IsPaused)
+					{
+						var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+							delegate
+							{
+								SetPause(true, ByWhom);
+							}
+						);
+
+						this.Messages.SetPaused(FutureFrame);
+					}
+					else
+					{
+						SetPause(false, ByWhom);
+						this.Messages.ClearPaused();
+					}
+				};
+
+			this.Events.UserSetPaused +=
+				e =>
+				{
+					var c = this[e];
+
+					this.Content.LocalIdentity.HandleFrame(e.frame,
+						delegate
+						{
+							SetPause(true, c.Name);
+						}
+					);
+				};
+
+			this.Events.UserClearPaused +=
+				e =>
+				{
+					var c = this[e];
+
+					SetPause(false, c.Name);
+				};
+			#endregion
+
+
 		}
 
 		public PlayerIdentity this[int user]
