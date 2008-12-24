@@ -16,6 +16,7 @@ namespace AvalonUgh.Code.Dialogs
 	public class Dialog : ISupportsContainer
 	{
 		public Canvas Container { get; set; }
+		public Canvas BackgroundContainer { get; set; }
 
 
 		public Image Background { get; set; }
@@ -87,14 +88,19 @@ namespace AvalonUgh.Code.Dialogs
 		{
 			this.Container = new Canvas
 			{
-				Background = Brushes.Black
 			};
+
+			this.BackgroundContainer = new Canvas
+			{
+				Background = Brushes.Black
+			}.AttachTo(this.Container);
+
 
 			this.Background = new Image
 			{
 				Stretch = Stretch.Fill,
 				Source = (KnownAssets.Path.Backgrounds + "/005.png").ToSource()
-			}.AttachTo(this);
+			}.AttachTo(this.BackgroundContainer);
 
 			this.Content = new DialogTextBox
 			{
@@ -151,6 +157,9 @@ namespace AvalonUgh.Code.Dialogs
 		{
 			this.Container.Width = Width;
 			this.Container.Height = Height;
+
+			this.BackgroundContainer.Width = Width;
+			this.BackgroundContainer.Height = Height;
 
 			this.Background.Width = Width;
 			this.Background.Height = Height;

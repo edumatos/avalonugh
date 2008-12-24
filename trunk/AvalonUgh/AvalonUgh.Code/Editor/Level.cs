@@ -470,7 +470,7 @@ namespace AvalonUgh.Code.Editor
 								delegate
 								{
 									this.KnownStones.Remove(Entity);
-									Entity.Image.Orphanize();
+									//Entity.Image.Orphanize();
 								}
 						}
 				).Concat(
@@ -525,7 +525,7 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownPlatforms.Remove(Entity);
-										Entity.Image.Orphanize();
+										//Entity.Image.Orphanize();
 									}
 							}
 					)

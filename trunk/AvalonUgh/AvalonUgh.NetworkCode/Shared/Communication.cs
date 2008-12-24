@@ -48,6 +48,12 @@ namespace AvalonUgh.NetworkCode.Shared
 			void SetShakerEnabled(int frame, int value);
 			void UserSetShakerEnabled(int user, int frame, int value);
 
+			void SetPaused(int frame);
+			void UserSetPaused(int user, int frame);
+
+			void ClearPaused();
+			void UserClearPaused(int user);
+
 		}
 
 

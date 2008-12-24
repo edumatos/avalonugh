@@ -159,6 +159,8 @@ namespace AvalonUgh.Labs.MultiplayerTest
 							wininet.SetIEConnectionMode(x.OfflineMode.Checked);
 						};
 
+					x.Text = Files.swf.Name + " " + Files.swf.Length;
+
 					//x.ShowServerWindow.Checked = true;
 					//x.ShowServerWindow.Checked = false;
 
