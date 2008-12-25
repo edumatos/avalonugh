@@ -47,10 +47,25 @@ namespace AvalonUgh.Code.Editor.Sprites
 				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
 
 
-				RemoveEntities(this, Level, Position);
 
 				// we should increment the old sign actually
 				var c = 0;
+
+				{
+					// the stone next to a cave has a window
+					var TriggerPosition = Position[0, 0];
+
+					var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
+
+					var trigger = Level.KnownSigns.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+					if (trigger != null)
+					{
+						c = trigger.Value + 1;
+					}
+				}
+
+				RemoveEntities(this, Level, Position);
 
 				var v = new Sign(Level.Zoom)
 				{

@@ -13,9 +13,9 @@ S-| | |  | |  R-R--|
 # sign: 216;1
 S-S--PP-PP-P--| |  R--
 | |  S-C-| |  SS--S|  
- S-S | | R-R-C-|  S-R-
+SS-S | | R-R-C-|  S-R-
 # sign: 72;2
- | P-P-P-| RF|  S-| | 
+|| P-P-P-| RF|  S-| | 
 # sign: 248;3
  | S-S-R-R--P--P| | S-
  | S-| | |  |  S| S-| 

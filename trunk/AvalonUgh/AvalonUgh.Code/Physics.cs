@@ -207,6 +207,14 @@ namespace AvalonUgh.Code
 			#endregion
 
 
+			foreach (var dino in this.Level.KnownDinos)
+			{
+				if (dino.SnoreArea.Intersects(vehXY))
+					twin.VelocityX += dino.SnoreWind * dino.SnoreWindAmpilfier * this.Level.Zoom ;
+					
+			}
+
+
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
 			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));
 

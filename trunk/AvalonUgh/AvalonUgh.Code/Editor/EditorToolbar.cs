@@ -191,6 +191,7 @@ namespace AvalonUgh.Code.Editor
 					var Image =
 						new Image
 						{
+							Stretch = Stretch.Fill,
 							Source = Selector.ToolbarImage.ToString().ToSource(),
 							Width = w,
 							Height = h
