@@ -466,6 +466,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							this.Content.Console.WriteLine("event remove KeyStateChanged " + Local);
 							ConnectedKeyboard.KeyStateChanged -= Local_KeyStateChanged;
 
+							DeletedLocal.Input.Keyboard = ConnectedKeyboard;
+
 							// we should not listen to that event anymore
 							Dispose();
 						}

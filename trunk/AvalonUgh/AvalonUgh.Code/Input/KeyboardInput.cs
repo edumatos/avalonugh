@@ -15,6 +15,8 @@ namespace AvalonUgh.Code.Input
 		[Script]
 		public class Arguments
 		{
+
+
 			[Script]
 			public class IJKL : Arguments
 			{
@@ -69,7 +71,6 @@ namespace AvalonUgh.Code.Input
 		}
 
 		public readonly Dictionary<Key, bool> KeyState;
-		public readonly Dictionary<Key, int> SyncFrameDelta;
 
 		public event Action<Key, bool> KeyStateChanged;
 
@@ -146,14 +147,7 @@ namespace AvalonUgh.Code.Input
 						};
 
 
-			this.SyncFrameDelta = new Dictionary<Key, int>
-						{
-							{e.Enter, 0},
-							{e.Up, 0},
-							{e.Down, 0},
-							{e.Right, 0},
-							{e.Left, 0},
-						};
+	
 
 			if (e.InputControl != null)
 			{
