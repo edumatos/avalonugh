@@ -137,7 +137,7 @@ namespace AvalonUgh.Game.Shared
 			// prototype the new menu
 
 			//var LobbyLevel = KnownAssets.Path.Assets + "/level01.txt";
-			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_01.txt";
+			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_04.txt";
 
 			#region setting up our console
 			this.Console = new GameConsole();
@@ -225,21 +225,6 @@ namespace AvalonUgh.Game.Shared
 					#endregion
 
 
-
-					#region some menu mockup
-					//new Image
-					//{
-					//    Source = (Assets.Shared.KnownAssets.Path.Levels + "/level0_02.png").ToSource(),
-					//    Stretch = Stretch.Fill
-					//}.SizeTo(80, 50).MoveTo(DefaultWidth - 160, DefaultHeight / 2 - 50).AttachTo(this);
-
-					//new DialogTextBox
-					//{
-					//    Text = " start game",
-					//    Zoom = Zoom,
-					//    Width = DefaultWidth
-					//}.MoveContainerTo(0, DefaultHeight / 2 - 50).AttachContainerTo(this);
-					#endregion
 
 
 					#region PauseDialog
@@ -694,6 +679,11 @@ namespace AvalonUgh.Game.Shared
 							if (this.LocalIdentity.SyncFrame % 30 == 0)
 								if (View.IsShakerEnabled)
 									View.Level.AttributeWater.Value++;
+
+							foreach (var dino in Level.KnownDinos)
+							{
+								dino.Animate(this.LocalIdentity.SyncFrame);
+							}
 
 							// we could pause the game here
 							foreach (var p in Players)

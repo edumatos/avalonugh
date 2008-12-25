@@ -113,6 +113,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly int Zoom;
 
+		public readonly BindingList<Dino> KnownDinos = new BindingList<Dino>();
 		public readonly BindingList<Tree> KnownTrees = new BindingList<Tree>();
 		public readonly BindingList<Sign> KnownSigns = new BindingList<Sign>();
 		public readonly BindingList<Rock> KnownRocks = new BindingList<Rock>();
@@ -164,11 +165,24 @@ namespace AvalonUgh.Code.Editor
 
 			var Create = new
 			{
+				Dino = (Attribute.Int32)"dino",
 				Tree = (Attribute.Int32)"tree",
 				Rock = (Attribute.Int32)"rock",
 				Gold = (Attribute.Int32)"gold",
 				Sign = (Attribute.Int32_Int32)"sign",
 			};
+
+			Create.Dino.Assigned +=
+				x_ =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+					new Dino(Zoom)
+					{
+
+					}.AddTo(KnownDinos).MoveBaseTo(x, y);
+				};
 
 			Create.Tree.Assigned +=
 				x_ =>
@@ -221,6 +235,7 @@ namespace AvalonUgh.Code.Editor
 
 			var Commands = new AttributeDictonary
 			{
+				Create.Dino,
 				Create.Gold,
 				Create.Rock,
 				Create.Sign,
@@ -614,6 +629,19 @@ namespace AvalonUgh.Code.Editor
 									{
 										this.KnownVehicles.Remove(Entity);
 										Entity.Dispose();
+									}
+							}
+					)
+				).Concat(
+					this.KnownDinos.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownDinos.Remove(Entity);
 									}
 							}
 					)

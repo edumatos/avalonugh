@@ -220,6 +220,10 @@ namespace AvalonUgh.Code
 			// unless we unbind from events being created
 
 			#region sync the level platforms into view
+
+			this.Level.KnownDinos.AttachTo(this.Entities);
+
+
 			this.Level.KnownStones.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);

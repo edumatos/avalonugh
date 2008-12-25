@@ -83,6 +83,13 @@ namespace AvalonUgh.Code.Editor
 					(row, index) =>
 					{
 						WriteAttribute.InvokeAsEnumerable(
+							from dino in this.KnownDinos
+							where dino.BaseY == index
+							select new Attribute.Int32 { Key = "dino", Value = dino.UnscaledX }
+						);
+
+
+						WriteAttribute.InvokeAsEnumerable(
 							from tree in  this.KnownTrees
 							where tree.BaseY == index
 							select new Attribute.Int32 { Key = "tree", Value = tree.UnscaledX }

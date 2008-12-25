@@ -424,7 +424,7 @@ namespace AvalonUgh.Code
 			return new Obstacle
 			{
 				Left = x - HalfWidth / 3,
-				Top = y,
+				Top = y + Zoom,
 				Right = x + HalfWidth / 3,
 				Bottom = y + HalfHeight,
 				//SupportsVelocity = this

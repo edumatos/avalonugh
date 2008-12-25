@@ -6,12 +6,19 @@ using ScriptCoreLib;
 using AvalonUgh.Assets.Shared;
 using System.Windows.Media;
 using System.Windows.Controls;
+using ScriptCoreLib.Shared.Avalon.Extensions;
 
 namespace AvalonUgh.Assets.Avalon
 {
 	[Script]
 	public sealed class NameFormat : NameFormatBase
 	{
+		public NameFormat()
+		{
+			this.ToSource = f => f.ToString().ToSource();
+
+		}
+
 		public NameFormat Clone()
 		{
 			return new NameFormat
@@ -31,6 +38,15 @@ namespace AvalonUgh.Assets.Avalon
 			};
 		}
 
+		public NameFormat ToAnimationFrame(int AnimationFrame)
+		{
+			var c = this.Clone();
+
+			c.AnimationFrame = AnimationFrame;
+
+			return c;
+		}
+
 		public NameFormat ToAnimationFrame(string AnimationFrameName)
 		{
 			var c = this.Clone();
@@ -42,18 +58,24 @@ namespace AvalonUgh.Assets.Avalon
 
 		public Func<NameFormat, ImageSource> ToSource;
 
-		public static implicit operator Image(NameFormat e)
+		public Image ToImage()
 		{
-			if (e.ToSource == null)
+			
+			if (this.ToSource == null)
 				throw new ArgumentNullException("e.ToSource");
 
 			return new Image
 			{
-				Source = e.ToSource(e),
+				Source = this.ToSource(this),
 				Stretch = Stretch.Fill,
-				Width = e.Width * PrimitiveTile.Width * e.Zoom,
-				Height = e.Width * PrimitiveTile.Heigth * e.Zoom,
+				Width = this.Width * PrimitiveTile.Width * this.Zoom,
+				Height = this.Height * PrimitiveTile.Heigth * this.Zoom,
 			};
+		}
+
+		public static implicit operator Image(NameFormat e)
+		{
+			return e.ToImage();
 		}
 	}
 }

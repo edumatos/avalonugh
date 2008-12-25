@@ -24,6 +24,7 @@ namespace AvalonUgh.Code.Editor
 					new Sprites.RockSelector(),
 					new Sprites.VehicleSelector(),
 					new Sprites.SignSelector(),
+					new Sprites.DinoSelector(),
 
 					new Tiles.StoneSelector(),
 					new Tiles.RidgeSelector(),

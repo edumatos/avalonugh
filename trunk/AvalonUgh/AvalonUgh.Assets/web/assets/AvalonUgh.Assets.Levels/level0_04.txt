@@ -6,9 +6,8 @@
 ######################
  S-S  S-         S    
  | |S-| S-SS-S-S-|RR--
-S-S-S-| | || | | R-|  
-# vehicle: 200
-| | | S--C-| | R-| R- 
+ SS-S-| | || | | R-|  
+ || | S--C-| | R-| R- 
 S-| | |  | |  R-R--|  
 # tree: 112
 # sign: 216;1
@@ -22,7 +21,8 @@ S-S--PP-PP-P--| |  R--
  | S-| | |  |  S| S-| 
  S-| SS-R-R-RR-S-S-S--
  S-| |S-R-| R--| | |  
- | SS-| | S-|  | SP-- 
+# dino: 312
+ | SS-| | S-|  | SP--P
  | || SS--| S-S| ||   
 S-S-SS-|  | | S-S--R- 
 | | S| S-S| | | |  |  
