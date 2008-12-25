@@ -1,0 +1,30 @@
+# generated map
+# text: Introducing triopterus
+# code: MYSTERIUMINQUITATIS
+# autoscroll: 0
+# water: 28
+######################
+    SS-  S-S-S--   S- 
+ SS-|| S-| | |  SS-|  
+ || C-S| | SS-SS-| S- 
+ S| | ||  S-| || S-|  
+# sign: 152;1
+ P-P-BBBBP-PS--| | |  
+ | R-S-S-| S|  | | S- 
+ R-| | | SS-S-S-S-SS- 
+ | S-| SS-S-| C-| ||  
+ R-| S-|| | | | S- |  
+# sign: 296;2
+ | C-| S| SP-PP-BBBP- 
+ R-|  S-SS-SS-| S-S|  
+# tree: 112
+# sign: 88;3
+ | P-PP-|| || S-| |S- 
+S-SS-S-S-| S-S| | S|  
+| || S-| | | C-S--SS- 
+ S-| | | S | | |  ||  
+# sign: 168;4
+ | S--P-P-PP-PP-SS-|  
+ | |  S-| R-R-| S| |  
+      |   | |   ||    
+######################

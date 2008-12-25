@@ -32,17 +32,17 @@ namespace AvalonUgh.Code.Editor.Tiles
 			this.Sizes =
 				new View.SelectorInfo[]
 				{
-					new Size_Generic(2, 2, 2),
+					new Size_2x2(2),
 				};
 		}
 	
 
 		[Script]
-		private class Size_Generic : TileSelector.Named
+		private class Size_2x2 : TileSelector.Named
 		{
 
-			public Size_Generic(int x, int y, int variations)
-				: base(x, y, variations, "cave")
+			public Size_2x2(int variations)
+				: base(2, 2, variations, "cave")
 			{
 			
 			}
@@ -52,6 +52,24 @@ namespace AvalonUgh.Code.Editor.Tiles
 				Name.Index = (Name.Index + 1) % Name.IndexCount;
 
 				RemovePlatforms(this, Level, Position);
+
+				{
+					// the stone next to a cave has a window
+					var TriggerPosition = Position[-2, -1];
+
+					var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 2, 3);
+
+					var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+					if (trigger != null)
+					{
+						Level.KnownStones.Remove(trigger);
+
+						var Size_2x3 = new StoneSelector.Size_Generic(2, 3, 0);
+						Size_2x3.Name.Index = 200;
+						Size_2x3.CreateTo(Level, TriggerPosition);
+					}
+				}
 
 				var u = new Cave(Level, this)
 				{

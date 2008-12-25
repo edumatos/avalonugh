@@ -91,9 +91,25 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		}
 
+		public Obstacle SnoreArea
+		{
+			get
+			{
+				return this.ToObstacle().WithOffset(
+					PrimitiveTile.Width * Zoom * -3,
+					0
+				);
+			}
+		}
+
+		public double SnoreWindAmpilfier = 0.1;
+		public double SnoreWind;
+
 		public void Animate(int SyncFrame)
 		{
 			AnimationFrame.Orphanize();
+
+			this.SnoreWind = Math.Sin(0.1 * SyncFrame / AnimationFrames.Length * 8);
 
 			AnimationFrame = AnimationFrames.AtModulus(SyncFrame / 8);
 			AnimationFrame.AttachTo(this);

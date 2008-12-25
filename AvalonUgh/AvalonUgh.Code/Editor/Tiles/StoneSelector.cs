@@ -132,7 +132,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 
 		[Script]
-		private class Size_Generic : TileSelector.Named
+		public class Size_Generic : TileSelector.Named
 		{
 
 			public Size_Generic(int x, int y, int variations)
@@ -238,7 +238,6 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{
 							// our tile will look special
 							Name.Index = 200;
-
 						}
 					}
 
