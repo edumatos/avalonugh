@@ -44,7 +44,6 @@ namespace AvalonUgh.Game.Shared
 
 
 		public readonly Stack<PlayerInput> AvailableInputs;
-		public readonly Stack<PlayerInput> ReservedInputs = new Stack<PlayerInput>();
 
 		// what if we would allow multiple levels to be loaded at the same time?
 		// like some could enter a cave and such
@@ -541,7 +540,6 @@ namespace AvalonUgh.Game.Shared
 
 							var i = this.AvailableInputs.Pop();
 
-							this.ReservedInputs.Push(i);
 
 							var p = new PlayerInfo
 							{
@@ -551,11 +549,7 @@ namespace AvalonUgh.Game.Shared
 
 							// the first player can be controlled by
 							// touch input and if we had multitouch so would others
-							if (this.LocalIdentity.Locals.Count == 0)
-							{
-								// not yet
-								//i.Touch = View.TouchInput;
-							}
+						
 
 
 
@@ -576,11 +570,7 @@ namespace AvalonUgh.Game.Shared
 								return;
 
 							var p = this.LocalIdentity.Locals.Last();
-							var i = this.ReservedInputs.Pop();
-
-							i.Touch = null;
-
-							this.AvailableInputs.Push(i);
+							this.AvailableInputs.Push(p.Input);
 							this.LocalIdentity.Locals.Remove(p);
 
 							if (this.LocalIdentity.Locals.Count == 0)
