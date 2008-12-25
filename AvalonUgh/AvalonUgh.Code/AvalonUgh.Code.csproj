@@ -77,7 +77,7 @@
     <Compile Include="Actor.cs" />
     <Compile Include="ASCIIImage.cs" />
     <Compile Include="ASCIITileSizeInfo.cs" />
-    <Compile Include="Bird.cs" />
+    <Compile Include="Editor\Sprites\Bird.cs" />
     <Compile Include="Actor.man0.cs" />
     <Compile Include="Actor.man1.cs" />
     <Compile Include="Actor.woman0.cs" />
@@ -144,6 +144,8 @@
     <Compile Include="Editor\Level.WaterHeight.cs" />
     <Compile Include="Editor\PlatformScan.cs" />
     <Compile Include="Editor\SelectorBase.cs" />
+    <Compile Include="Editor\Sprites\Dino.cs" />
+    <Compile Include="Editor\Sprites\DinoSelector.cs" />
     <Compile Include="Editor\Sprites\Gold.cs" />
     <Compile Include="Editor\Sprites\GoldSelector.cs" />
     <Compile Include="Editor\Sprites\VehicleSelector.cs" />
