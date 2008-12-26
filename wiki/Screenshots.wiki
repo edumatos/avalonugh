@@ -39,3 +39,8 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/033.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/034.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/035.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/036.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/037.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/038.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/039.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/040.png]
