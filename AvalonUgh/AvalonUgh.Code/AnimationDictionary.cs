@@ -93,6 +93,9 @@ namespace AvalonUgh.Code
 
 		public void PlayFrame(int Frame)
 		{
+			if (InternalFrame == Frame)
+				return;
+
 			PlayFrame(Frame, null);
 		}
 

@@ -28,7 +28,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				new[]
 				{
 					Size_2x2
-				}; 
+				};
 		}
 
 		[Script]
@@ -50,14 +50,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				RemoveEntities(this, Level, Position);
 
-				var g = new Tryoperus(Level.Zoom);
+				var g = new Tryoperus(Level);
 
 				g.MoveTo(x, y);
 				g.Container.Opacity = 0.5;
 				g.Animation = Tryoperus.AnimationEnum.Left_Hit;
 
 
-				new Tryoperus(Level.Zoom)
+				new Tryoperus(Level)
 				{
 					Selector = this,
 					StartPosition = g
