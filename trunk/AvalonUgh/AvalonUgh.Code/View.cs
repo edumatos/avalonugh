@@ -229,6 +229,7 @@ namespace AvalonUgh.Code
 			#region sync the level platforms into view
 
 			this.Level.KnownDinos.AttachTo(this.Entities);
+			this.Level.KnownTryoperus.AttachTo(this.Entities);
 
 
 			this.Level.KnownStones.ForEachNewOrExistingItem(
