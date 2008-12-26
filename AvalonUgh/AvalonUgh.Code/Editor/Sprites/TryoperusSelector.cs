@@ -17,15 +17,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public TryoperusSelector()
 		{
 			this.ToolbarImage =
-				new NameFormat
+				new Tryoperus.SpecificNameFormat
 				{
-					Path = Assets.Shared.KnownAssets.Path.Sprites,
-					Name = "tryo",
-					Index = 0,
 					AnimationFrame = Tryoperus.AnimationFrames.Left.HitOffset,
-					Extension = "png",
-					Width = 2,
-					Height = 2
 				};
 
 

@@ -52,7 +52,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 				var g = new Rock(Level.Zoom);
 
 				g.Container.Opacity = 0.5;
-				g.AddTo(Level.KnownStartPositions);
 				g.MoveTo(x, y);
 
 				var v = new Rock(Level.Zoom);

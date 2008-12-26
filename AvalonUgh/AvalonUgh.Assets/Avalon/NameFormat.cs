@@ -11,7 +11,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 namespace AvalonUgh.Assets.Avalon
 {
 	[Script]
-	public sealed class NameFormat : NameFormatBase
+	public class NameFormat : NameFormatBase
 	{
 		public NameFormat()
 		{
@@ -57,6 +57,11 @@ namespace AvalonUgh.Assets.Avalon
 		}
 
 		public Func<NameFormat, ImageSource> ToSource;
+
+		public Image ToImage(int AnimationFrame)
+		{
+			return this.ToAnimationFrame(AnimationFrame).ToImage();
+		}
 
 		public Image ToImage()
 		{

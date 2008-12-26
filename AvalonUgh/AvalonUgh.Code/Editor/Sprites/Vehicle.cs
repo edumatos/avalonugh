@@ -307,12 +307,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void Dispose()
 		{
-			if (this.StartPosition != null)
-			{
-				this.StartPosition.Dispose();
-				this.StartPosition = null;
-			}
-
 			if (this.CurrentDriver != null)
 			{
 				this.CurrentDriver = null;
@@ -322,7 +316,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 			IsDisposed = true;
 
 			this.IsAnimated = false;
-			this.Container.Orphanize();
 		}
 
 		#endregion

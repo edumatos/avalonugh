@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ScriptCoreLib;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
@@ -10,6 +11,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 	{
 		public enum AnimationEnum
 		{
+			Unknown,
+
 			Left_Stun,
 			Left_Hit,
 			Left_Run,
@@ -30,26 +33,56 @@ namespace AvalonUgh.Code.Editor.Sprites
 			public static class Left
 			{
 				public const int StunOffset = 430;
-				public const int StunLength = 6;
+				public const int StunCount = 6;
 
 				public const int HitOffset = 420;
 
 				public const int RunOffset = 410;
-				public const int RunLength = 4;
+				public const int RunCount = 4;
 
 				public const int StareOffset = 400;
-				public const int StareLength = 7;
+				public const int StareCount = 7;
 
 				public const int WalkOffset = 200;
-				public const int WalkLength = 12;
+				public const int WalkCount = 12;
 			}
 
+			[Script]
+			public static class Right
+			{
+				public const int WalkOffset = 100;
+				public const int WalkCount = 12;
+			}
+		}
 
+		[Script]
+		public class SpecificNameFormat : NameFormat
+		{
+			// this will be used to find the embedded resource files
+			// and within the map loader
+			public const string Alias = "tryo";
 
+			public SpecificNameFormat()
+			{
+				Path = Assets.Shared.KnownAssets.Path.Sprites;
+				Name = Alias;
+				Index = 0;
+				Extension = "png";
+				Width = 2;
+				Height = 2;
+			}
+		}
 
-
-			public const int WalkRightOffset = 100;
-			public const int WalkRightLength = 12;
+		public AnimationEnum Animation
+		{
+			get
+			{
+				return (AnimationEnum)InternalAnimation.Frame;
+			}
+			set
+			{
+				InternalAnimation.PlayFrame((int)value);
+			}
 		}
 	}
 }

@@ -8,6 +8,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
 using AvalonUgh.Assets.Avalon;
+using System.Windows.Media;
 
 namespace AvalonUgh.Code.Editor.Tiles
 {
@@ -42,6 +43,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 					{
 						Source = (Assets.Shared.KnownAssets.Path.Tiles + "/" + Name.ToString() + ".png").ToSource(),
 						Stretch = System.Windows.Media.Stretch.Fill,
+
 					};
 
 				u.WithZoom(Level.Zoom)

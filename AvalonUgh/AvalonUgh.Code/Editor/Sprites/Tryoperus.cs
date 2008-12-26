@@ -7,6 +7,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Controls;
 using AvalonUgh.Assets.Shared;
 using AvalonUgh.Assets.Avalon;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
@@ -67,6 +68,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public bool IsSleeping { get; set; }
 
+
+		readonly AnimationDictionary InternalAnimation;
+
 		public Tryoperus(int Zoom)
 		{
 			this.Zoom = Zoom;
@@ -80,20 +84,15 @@ namespace AvalonUgh.Code.Editor.Sprites
 				Height = this.Height
 			};
 
-			var Frame_Hit =
-				new NameFormat
-				{
-					Path = Assets.Shared.KnownAssets.Path.Sprites,
-					Name = "tryo",
-					Index = 0,
-					AnimationFrame = Tryoperus.AnimationFrames.Left.HitOffset,
-					Extension = "png",
-					Width = 2,
-					Height = 2,
-					Zoom = Zoom
-				};
+			this.InternalAnimation = new AnimationDictionary(this, new SpecificNameFormat { Zoom = Zoom }.ToImage)
+			{
+				{ (int)AnimationEnum.Left_Hit, Tryoperus.AnimationFrames.Left.HitOffset},
+				{ (int)AnimationEnum.Left_Stun, 1000 / 24,  
+					Tryoperus.AnimationFrames.Left.StunOffset, 
+					Tryoperus.AnimationFrames.Left.StunCount }
+			};
 
-			Frame_Hit.ToImage().AttachTo(this);
+			this.Animation = AnimationEnum.Left_Hit;
 		}
 
 
@@ -158,7 +157,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void Dispose()
 		{
-		
+
 		}
 
 		#endregion
