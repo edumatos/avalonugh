@@ -27,6 +27,9 @@ namespace AvalonUgh.Game.Shared
 
 		public const int DefaultWidth = 640;
 		public const int DefaultHeight = 400;
+		//public const int DefaultWidth = 640 + 200;
+		//public const int DefaultHeight = 400 + 200;
+
 
 		public GameConsole Console { get; set; }
 		public Canvas TouchContainer { get; set; }
@@ -64,14 +67,14 @@ namespace AvalonUgh.Game.Shared
 
 			var Music = new AudioLoop
 			{
-				Volume = 0.2,
+				Volume = 0.3,
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
 				Enabled = true,
 			};
 
 			var Snore = new AudioLoop
 			{
-				Volume = 0.2,
+				Volume = 0.4,
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/snore1.mp3"),
 			};
 
@@ -144,7 +147,7 @@ namespace AvalonUgh.Game.Shared
 			// prototype the new menu
 
 			//var LobbyLevel = KnownAssets.Path.Assets + "/level01.txt";
-			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_05.txt";
+			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_06.txt";
 
 			#region setting up our console
 			this.Console = new GameConsole();
@@ -174,14 +177,23 @@ namespace AvalonUgh.Game.Shared
 					Level.Physics.CollisionAtVelocity +=
 						Velocity =>
 						{
-							var Volume = (Velocity / (Level.Zoom * 3.0) + 0.5).Max(0).Min(1);
+							var Volume = (Velocity / (Level.Zoom * 3.0) + 0.3).Max(0).Min(1);
 
 
 							if (Volume > 0)
 								(Assets.Shared.KnownAssets.Path.Audio + "/bounce.mp3").PlaySound().SetVolume(Volume);
 
-							// we dont want to log collision info anymore... maybe later
-							//Console.WriteLine("CollisionAtVelocity " + new { Velocity, Volume });
+						};
+
+					Level.Physics.WaterCollisionAtVelocity +=
+						Velocity =>
+						{
+							var Volume = (Velocity / (Level.Zoom * 7.0)).Max(0).Min(1);
+
+
+							if (Volume > 0)
+								(Assets.Shared.KnownAssets.Path.Audio + "/water_slpash.mp3").PlaySound().SetVolume(Volume);
+
 						};
 
 					Level.KnownDinos.ListChanged +=

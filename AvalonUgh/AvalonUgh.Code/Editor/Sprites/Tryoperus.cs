@@ -169,6 +169,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public double VelocityY { get; set; }
 
 		public double LastCollisionVelocity { get; set; }
+		public double LastWaterCollisionVelocity { get; set; }
 
 		public bool PhysicsDisabled
 		{
@@ -226,20 +227,24 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public int Direction = -1;
 
-		public bool HasPlatformUnderneathInDirection(int Direction)
+		public bool CanWalkIntoDirection(int Direction)
 		{
 			if (Direction < 0)
 			{
-				if (HasPlatformUnderneath(-1))
-					if (HasPlatformUnderneath(0))
-						return true;
+				if (HasPlatformUnderneath(-1, 2))
+					if (HasPlatformUnderneath(0, 2))
+						if (!HasPlatformUnderneath(-1, 0))
+							if (!HasPlatformUnderneath(-1, 1))
+								return true;
 
 			}
 			else
 			{
-				if (HasPlatformUnderneath(1))
-					if (HasPlatformUnderneath(2))
-						return true;
+				if (HasPlatformUnderneath(1, 2))
+					if (HasPlatformUnderneath(2, 2))
+						if (!HasPlatformUnderneath(2, 0))
+							if (!HasPlatformUnderneath(2, 1))
+								return true;
 
 			}
 
@@ -247,16 +252,13 @@ namespace AvalonUgh.Code.Editor.Sprites
 		}
 
 
-		public bool HasPlatformUnderneath(int TileOffset)
+		public bool HasPlatformUnderneath(int TileOffset, int TileOffsetY)
 		{
-			var TriggerPosition = Position[TileOffset, 2];
+			var TriggerPosition = Position[TileOffset, TileOffsetY];
 
 			var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
 
-			if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(o_trigger)))
-				return true;
-
-			if (Level.KnownBridges.Any(k => k.ToObstacle().Intersects(o_trigger)))
+			if (Level.ToObstacles().Any(k => k.Intersects(o_trigger)))
 				return true;
 
 			return false;
@@ -288,20 +290,20 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 
 
-			if (this.HasPlatformUnderneathInDirection(this.Direction))
+			if (this.CanWalkIntoDirection(this.Direction))
 			{
 				// we can continue to walk
 
 				// top speed
 				if (this.Direction < 0)
 				{
-					if (this.VelocityX >= -Zoom)
+					if (this.VelocityX >= -Zoom * 0.8)
 						this.VelocityX -= Zoom * 0.05;
 					this.Animation = AnimationEnum.Left_Walk;
 				}
 				else
 				{
-					if (this.VelocityX <= Zoom)
+					if (this.VelocityX <= Zoom * 0.8)
 						this.VelocityX += Zoom * 0.05;
 					this.Animation = AnimationEnum.Right_Walk;
 				}
@@ -315,7 +317,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				if (this.VelocityX == 0)
 				{
 					// there is no use in turning around either
-					if (this.HasPlatformUnderneathInDirection(-this.Direction))
+					if (this.CanWalkIntoDirection(-this.Direction))
 					{
 						this.Direction *= -1;
 					}

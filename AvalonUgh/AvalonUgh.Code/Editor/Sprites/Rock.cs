@@ -38,6 +38,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public Rock StartPosition;
 
 		public double LastCollisionVelocity { get; set; }
+		public double LastWaterCollisionVelocity { get; set; }
  
 		public int UnscaledX
 		{

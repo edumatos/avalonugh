@@ -25,6 +25,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public Vehicle StartPosition;
 
 		public double LastCollisionVelocity { get; set; }
+		public double LastWaterCollisionVelocity { get; set; }
 
 
 		public Level CurrentLevel { get; set; }

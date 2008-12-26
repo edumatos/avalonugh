@@ -21,6 +21,7 @@ namespace AvalonUgh.Code
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
 		public double LastCollisionVelocity { get; set; }
+		public double LastWaterCollisionVelocity { get; set; }
 
 
 		public bool ReadyForGoldPickup = true;

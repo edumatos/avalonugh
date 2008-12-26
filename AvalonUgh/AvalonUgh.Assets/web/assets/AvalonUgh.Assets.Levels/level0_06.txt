@@ -1,0 +1,28 @@
+# generated map
+# text: Introducing diving
+# code: DREAMFORMOTHER
+# autoscroll: 0
+# water: 50
+######################
+    S-                
+ S--| C-S-R-SC-S-S-S- 
+ |  S | | | ||  S| |  
+# sign: 88;1
+# sign: 248;2
+ S-S|P--PBBBBP-P-| |  
+ | R-|  RR-R-| | R-|  
+ | | SS-S| | S-S-| SS-
+ S-R-|| S-SS-| | R-|| 
+ | | S| | || | | | S| 
+ SS-R-| | S| S--R-SS- 
+ || | S-| S-S|  | || 
+S-| SR-S--| S-SR-S-|  
+| | || |  | | || | |  
+S--S-SR-S-S-| R-S| S--
+|  | S-RR-| R-RS-S-|  
+# tree: 176
+ S-S-| S| P-| S-S| S- 
+ S-| | S-S| S-| S--|  
+ | | | | S--| | |  |  
+       | |  | |       
+######################
