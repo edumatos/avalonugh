@@ -1,0 +1,30 @@
+# generated map
+# text: How can i get over there?
+# code: RESURRECTION
+# autoscroll: 0
+# water: 24
+######################
+ SS-       S-     S-  
+ || R-S-SS-| S-SS-| S-
+ S| | | || S-| || C-| 
+S-| R-| S| | |  | | | 
+# sign: 248;1
+| S-| S-S-S--S-P-P--P-
+| | | C-| |  | | S-P| 
+S-| R-| |  S-| SSS-S- 
+# sign: 168;2
+# rock: 144
+| SR--BBBBB| S-||| |  
+| ||  S-SS-| | S-| C- 
+ SS-R-| || S-S-S | |  
+# sign: 264;3
+ || | | S| | | P-P--P-
+S-| R--SS--| | | |  | 
+ S--|  ||  S-SS-SS-R- 
+ |  R-S-SS-| || || C- 
+ SS-| | || | S|  | |  
+# sign: 264;4
+ || S--S-| | P-BBBBBP-
+ S| |  | | SR| S-S--| 
+  |            | |    
+######################

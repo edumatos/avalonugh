@@ -25,6 +25,12 @@ namespace AvalonUgh.NetworkCode.Server
 		"Enable mojo",
 		"Enable mojo in game",
 		false)]
+	[GameSetup.Integer(
+		"level",
+		"Level",
+		"Level",
+		1, 9, 
+		1)]
 	[Script]
 	public class NonobaGame : NonobaGame<NonobaGameUser<VirtualPlayer>>
 	{

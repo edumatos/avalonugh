@@ -1,0 +1,32 @@
+# generated map
+# text: Nasty tree
+# code: PRAYER
+# autoscroll: 0
+# water: 16
+######################
+S-S-  S  S-S-   S-S   
+| | C-|S-| | SS-| |C- 
+|  S| S| SS-S|| |  |  
+# sign: 40;1
+# sign: 296;2
+BBP--P|| || S-| P---BB
+S-|  SS-S-| | | R--S- 
+ C-S-|| |  S-S--|  |  
+ | |  | S- | |  SS-|  
+# sign: 88;3
+P-P---| |  | S-SS-S-S-
+ R-R-SS-|  | | || | | 
+ | | S--SR   R-S| | | 
+# tree: 320
+ | | |  R-   | || P---
+ R--S-S-   R-| S-S-R--
+ |  | |    | S-| | |  
+ C-S| S-   S-| S-S-S- 
+ |  | | SS-| | | | C- 
+# sign: 56;4
+ P--PS-S|| | S-| | |  
+# sign: 296;5
+# rock: 256
+ |  S-S--| S-| BBBBBBB
+    | |  | |          
+######################
