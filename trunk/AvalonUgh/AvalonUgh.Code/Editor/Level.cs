@@ -156,8 +156,10 @@ namespace AvalonUgh.Code.Editor
 
 			this.AttributeGravity.Value = 30;
 			this.AttributeWind.Value = 0;
+			
+			// the water shall be deep enough to enable diving
+			this.AttributeBorderBottom.Value = 96;
 
-			//this.TreeSelector = new TreeSelector(this);
 
 			this.AttributeFlashlightOpacity.Value = 180;
 

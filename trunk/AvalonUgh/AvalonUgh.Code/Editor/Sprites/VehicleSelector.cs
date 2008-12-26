@@ -66,6 +66,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				var v = new Vehicle(Level.Zoom);
 
+				v.CurrentLevel = Level;
 				v.CurrentDriver = null;
 				v.MoveTo(x, y);
 				v.StartPosition = g;

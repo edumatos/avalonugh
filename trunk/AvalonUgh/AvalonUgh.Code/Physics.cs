@@ -177,7 +177,7 @@ namespace AvalonUgh.Code
 							this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
 						);
 
-					
+
 
 						this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 							tree =>
@@ -297,6 +297,24 @@ namespace AvalonUgh.Code
 
 			}
 
+			if (WaterVolume > AirVolume)
+			{
+				if (twin.LastWaterCollisionVelocity == 0)
+				{
+					var WaterCollisionAtVelocity = twin.GetVelocity();
+
+
+					if (this.WaterCollisionAtVelocity != null)
+						this.WaterCollisionAtVelocity(WaterCollisionAtVelocity);
+
+					twin.LastWaterCollisionVelocity = WaterCollisionAtVelocity;
+				}
+			}
+			else
+			{
+				twin.LastWaterCollisionVelocity = 0;
+			}
+
 			if (twin.GetVelocity() < 0.01)
 			{
 				if (twin.Y < this.Level.WaterTop)
@@ -337,6 +355,7 @@ namespace AvalonUgh.Code
 		}
 
 		public event Action<double> CollisionAtVelocity;
+		public event Action<double> WaterCollisionAtVelocity;
 	}
 
 
@@ -381,6 +400,7 @@ namespace AvalonUgh.Code
 		double Density { get; set; }
 
 		double LastCollisionVelocity { get; set; }
+		double LastWaterCollisionVelocity { get; set; }
 	}
 
 	[Script]
