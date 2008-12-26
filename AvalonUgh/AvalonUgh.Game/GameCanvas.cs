@@ -169,7 +169,7 @@ namespace AvalonUgh.Game.Shared
 			LobbyLevel.ToStringAsset(
 				LevelText =>
 				{
-					var Level = new Level(LevelText, Zoom);
+					var Level = new Level(LevelText, Zoom, this.Selectors);
 
 					Level.Physics.CollisionAtVelocity +=
 						Velocity =>

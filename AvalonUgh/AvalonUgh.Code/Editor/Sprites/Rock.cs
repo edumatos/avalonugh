@@ -10,12 +10,31 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Threading;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
 	public class Rock : ISupportsContainer, ISupportsPhysics , IDisposable
 	{
+		[Script]
+		public class SpecificNameFormat : NameFormat
+		{
+			// this will be used to find the embedded resource files
+			// and within the map loader
+			public const string Alias = "rock";
+
+			public SpecificNameFormat()
+			{
+				Path = Assets.Shared.KnownAssets.Path.Sprites;
+				Name = Alias;
+				Index = 0;
+				Extension = "png";
+				Width = 1;
+				Height = 1;
+			}
+		}
+
 		public Rock StartPosition;
 
 		public double LastCollisionVelocity { get; set; }
