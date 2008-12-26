@@ -21,7 +21,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 			Size_1x2 = new Size_Generic(1, 2, 1),
 			Size_1x3 = new Size_Generic(1, 3, 1),
 			Size_2x1 = new Size_Generic(2, 1, 1),
-			Size_2x2 = new Size_Generic(2, 2, 3),
+			Size_2x2 = new Size_Generic(2, 2, 4),
 			Size_2x3 = new Size_Generic(2, 3, 2),
 			Size_3x2 = new Size_Generic(3, 2, 2),
 			Size_3x3 = new Size_Generic(3, 3, 1),

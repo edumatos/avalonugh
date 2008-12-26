@@ -147,7 +147,7 @@ namespace AvalonUgh.Game.Shared
 			// prototype the new menu
 
 			//var LobbyLevel = KnownAssets.Path.Assets + "/level01.txt";
-			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_12.txt";
+			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_13.txt";
 
 			#region setting up our console
 			this.Console = new GameConsole();
