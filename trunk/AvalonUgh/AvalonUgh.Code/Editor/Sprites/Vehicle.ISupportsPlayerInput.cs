@@ -95,6 +95,11 @@ namespace AvalonUgh.Code.Editor.Sprites
 				{
 					this.CurrentDriver.CurrentVehicle = null;
 				}
+
+			if (e.Keyboard.IsPressedDrop)
+			{
+				this.CurrentDriver.RaiseDrop();
+			}
 		}
 
 		#endregion

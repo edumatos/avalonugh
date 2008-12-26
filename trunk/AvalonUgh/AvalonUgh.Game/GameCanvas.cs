@@ -539,6 +539,19 @@ namespace AvalonUgh.Game.Shared
 								}
 							);
 
+							NewPlayer.Actor.Drop +=
+								delegate
+								{
+									var CurrentVehicle = NewPlayer.Actor.CurrentVehicle;
+
+									if (CurrentVehicle != null)
+									{
+										// can we drop a rock?
+
+										CurrentVehicle.CurrentWeapon = null;
+									}
+								};
+
 							NewPlayer.Actor.AttachContainerTo(View.Entities);
 							Level.KnownActors.Add(NewPlayer.Actor);
 						}

@@ -134,13 +134,14 @@ namespace AvalonUgh.Code.Input
 			this.ConstructorArguments = e;
 
 			this.KeyState = new Dictionary<Key, bool>
-						{
-							{e.Enter, false},
-							{e.Up, false},
-							{e.Down, false},
-							{e.Right, false},
-							{e.Left, false},
-						};
+			{
+				{e.Drop, false},
+				{e.Enter, false},
+				{e.Up, false},
+				{e.Down, false},
+				{e.Right, false},
+				{e.Left, false},
+			};
 
 
 	
@@ -190,6 +191,7 @@ namespace AvalonUgh.Code.Input
 
 		}
 
+		public bool IsPressedDrop { get { return KeyState[ConstructorArguments.Drop]; } }
 		public bool IsPressedEnter { get { return KeyState[ConstructorArguments.Enter]; } }
 		public bool IsPressedDown { get { return KeyState[ConstructorArguments.Down]; } }
 		public bool IsPressedUp { get { return KeyState[ConstructorArguments.Up]; } }

@@ -110,9 +110,7 @@ namespace AvalonUgh.Code
 						this.Level.KnownRocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 							rock_ =>
 							{
-								rock_.PhysicsDisabled = true;
 								veh.CurrentWeapon = rock_;
-								rock_.Container.Hide();
 							}
 						);
 					}
@@ -179,11 +177,28 @@ namespace AvalonUgh.Code
 							this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
 						);
 
+					
+
 						this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 							tree =>
 							{
 								// we did will hit a tree
 								tree.GoToSleep();
+								rock.GoToSleep();
+							}
+						);
+
+
+
+						Obstacles = Obstacles.Concat(
+							this.Level.KnownTryoperus.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
+						);
+
+						this.Level.KnownTryoperus.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+							tryo =>
+							{
+								// we did will hit a tree
+								tryo.GoToSleep();
 								rock.GoToSleep();
 							}
 						);

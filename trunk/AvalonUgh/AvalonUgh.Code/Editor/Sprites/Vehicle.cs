@@ -31,7 +31,39 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		// a vehicle can carry a rock
 		// and throw it at trees and animals
-		public Rock CurrentWeapon { get; set; }
+		public event Action CurrentWeaponChanged;
+		Rock InternalWeapon;
+		public Rock CurrentWeapon
+		{
+			get
+			{
+				return InternalWeapon;
+			}
+			set
+			{
+				if (InternalWeapon == value)
+					return;
+
+				if (InternalWeapon != null)
+				{
+					InternalWeapon.MoveTo(this.X, this.Y);
+					InternalWeapon.PhysicsDisabled = false;
+					InternalWeapon.Stability = 0;
+					InternalWeapon.Show();
+				}
+
+				InternalWeapon = value;
+
+				if (InternalWeapon != null)
+				{
+					InternalWeapon.PhysicsDisabled = true;
+					InternalWeapon.Hide();
+				}
+
+				if (CurrentWeaponChanged != null)
+					CurrentWeaponChanged();
+			}
+		}
 
 		Actor _CurrentDriver;
 		public Actor CurrentDriver
@@ -307,6 +339,13 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void Dispose()
 		{
+			// finish some unfinished business
+
+			if (this.CurrentWeapon != null)
+			{
+				this.CurrentWeapon = null;
+			}
+
 			if (this.CurrentDriver != null)
 			{
 				this.CurrentDriver = null;

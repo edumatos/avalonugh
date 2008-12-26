@@ -84,5 +84,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				InternalAnimation.PlayFrame((int)value);
 			}
 		}
+
+	
 	}
 }
