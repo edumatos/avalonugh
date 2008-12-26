@@ -54,6 +54,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				g.MoveTo(x, y);
 				g.Container.Opacity = 0.5;
+				g.Animation = Tryoperus.AnimationEnum.Left_Hit;
 
 
 				new Tryoperus(Level.Zoom)

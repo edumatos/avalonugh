@@ -69,12 +69,20 @@ namespace AvalonUgh.Code
 			if (InternalActor_CurrentVehicle != null)
 			{
 				InternalActor_CurrentVehicle.LocationChanged -= InternalActor_LocationChanged;
+				InternalActor_CurrentVehicle.CurrentWeaponChanged -= InternalActor_CurrentVehicle_CurrentWeaponChanged;
 			}
 			InternalActor_CurrentVehicle = InternalActor.CurrentVehicle;
 			if (InternalActor_CurrentVehicle != null)
 			{
 				InternalActor_CurrentVehicle.LocationChanged += InternalActor_LocationChanged;
+				InternalActor_CurrentVehicle.CurrentWeaponChanged += InternalActor_CurrentVehicle_CurrentWeaponChanged; 
 			}
+		}
+
+		void InternalActor_CurrentVehicle_CurrentWeaponChanged()
+		{
+			if (CurrentVehicle_CurrentWeaponChanged != null)
+				CurrentVehicle_CurrentWeaponChanged();
 		}
 
 		void InternalActor_LocationChanged()
@@ -121,6 +129,7 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public event Action CurrentVehicle_CurrentWeaponChanged;
 		public event Action LocationChanged;
 
 		#endregion
