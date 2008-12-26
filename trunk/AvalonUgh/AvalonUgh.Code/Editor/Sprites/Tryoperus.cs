@@ -115,7 +115,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 					Tryoperus.AnimationFrames.Left.WalkOffset, 
 					Tryoperus.AnimationFrames.Left.WalkCount },
 				{ (int)AnimationEnum.Left_Stand,
-					Tryoperus.AnimationFrames.Left.WalkOffset}
+					Tryoperus.AnimationFrames.Left.WalkOffset},
+
+
+				{ (int)AnimationEnum.Right_Walk, 1000 / 10,  
+					Tryoperus.AnimationFrames.Right.WalkOffset, 
+					Tryoperus.AnimationFrames.Right.WalkCount },
+				{ (int)AnimationEnum.Right_Stand,
+					Tryoperus.AnimationFrames.Right.WalkOffset}
 			};
 
 			this.Animation = AnimationEnum.Left_Walk;
@@ -135,9 +142,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 		{
 			return new Obstacle
 			{
-				Left = x - HalfWidth,
+				Left = x - HalfWidth / 2,
 				Top = y - HalfHeight,
-				Right = x + HalfWidth,
+				Right = x + HalfWidth / 2,
 				Bottom = y + HalfHeight,
 				//SupportsVelocity = this
 			};
@@ -288,27 +295,45 @@ namespace AvalonUgh.Code.Editor.Sprites
 				{
 					if (this.VelocityX >= -Zoom)
 						this.VelocityX -= Zoom * 0.05;
+					this.Animation = AnimationEnum.Left_Walk;
 				}
 				else
 				{
 					if (this.VelocityX <= Zoom)
 						this.VelocityX += Zoom * 0.05;
+					this.Animation = AnimationEnum.Right_Walk;
 				}
 
 
-				this.Animation = AnimationEnum.Left_Walk;
-				return;
 			}
 			else
 			{
 				this.VelocityX *= 0.8;
 
 				if (this.VelocityX == 0)
+				{
 					this.Direction *= -1;
+
+					HasPlatformUnderneath = this.HasPlatformUnderneath().All(k => k);
+
+					if (!HasPlatformUnderneath)
+					{
+						this.Animation = AnimationEnum.Left_Stand;
+						this.Direction *= -1;
+
+						return;
+					}
+				}
+
+
+				if (Direction < 0)
+					this.Animation = AnimationEnum.Left_Stand;
+				else
+					this.Animation = AnimationEnum.Right_Stand;
+
 			}
 
 
-			this.Animation = AnimationEnum.Left_Stand;
 			return;
 		}
 	}
