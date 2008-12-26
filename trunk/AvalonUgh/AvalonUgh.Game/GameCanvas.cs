@@ -190,6 +190,9 @@ namespace AvalonUgh.Game.Shared
 							Snore.Enabled = Level.KnownDinos.Count > 0;
 						};
 
+					Level.KnownTryoperus.ForEachNewOrExistingItem(k => k.HandleFutureFrame = this.LocalIdentity.HandleFutureFrame);
+
+
 					// in menu mode the view does not include status bar
 					// yet later in game we should adjust that
 					View = new View(DefaultWidth, DefaultHeight - 18, Level);
@@ -519,6 +522,11 @@ namespace AvalonUgh.Game.Shared
 									}
 								};
 
+							NewPlayer.CurrentVehicle_CurrentWeaponChanged +=
+								delegate
+								{
+									(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
+								};
 
 							NewPlayer.Actor.CurrentVehicleChanged +=
 								delegate

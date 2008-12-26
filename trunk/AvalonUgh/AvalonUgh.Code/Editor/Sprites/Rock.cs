@@ -194,9 +194,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 		{
 			return new Obstacle
 			{
-				Left = x - HalfWidth,
+				Left = x - HalfWidth / 2,
 				Top = y - HalfHeight,
-				Right = x + HalfWidth,
+				Right = x + HalfWidth / 2,
 				Bottom = y + HalfHeight,
 				SupportsVelocity = this
 			};

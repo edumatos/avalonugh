@@ -93,10 +93,16 @@ namespace AvalonUgh.Code.Editor.Sprites
 				{ (int)AnimationEnum.Left_Hit, Tryoperus.AnimationFrames.Left.HitOffset},
 				{ (int)AnimationEnum.Left_Stun, 1000 / 24,  
 					Tryoperus.AnimationFrames.Left.StunOffset, 
-					Tryoperus.AnimationFrames.Left.StunCount }
+					Tryoperus.AnimationFrames.Left.StunCount },
+				{ (int)AnimationEnum.Left_Run, 1000 / 24,  
+					Tryoperus.AnimationFrames.Left.RunOffset, 
+					Tryoperus.AnimationFrames.Left.RunCount },
+				{ (int)AnimationEnum.Left_Stare, 1000 / 15,  
+					Tryoperus.AnimationFrames.Left.StareOffset, 
+					Tryoperus.AnimationFrames.Left.StareCount }
 			};
 
-			this.Animation = AnimationEnum.Left_Hit;
+			this.Animation = AnimationEnum.Left_Stare;
 		}
 
 
@@ -166,10 +172,21 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		#endregion
 
+		public Func<int, Action, int> HandleFutureFrame; 
+
 		public void GoToSleep()
 		{
 			this.IsSleeping = true;
 			this.Animation = AnimationEnum.Left_Stun;
+
+			// for the next handful of frames we will be sleeping
+			this.HandleFutureFrame(500,
+				delegate
+				{
+					this.IsSleeping = false;
+					this.Animation = AnimationEnum.Left_Stare;
+				}
+			);
 		}
 	}
 }

@@ -161,17 +161,19 @@ namespace AvalonUgh.Code
 				Height = this.ContentActualHeight
 			}.AttachTo(this.Content);
 
+			this.StartPositionsContainer = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
+
 			this.Entities = new Canvas
 			{
 				Width = this.ContentActualWidth,
 				Height = this.ContentActualHeight
 			}.AttachTo(this.Content);
 
-			this.StartPositionsContainer = new Canvas
-			{
-				Width = this.ContentActualWidth,
-				Height = this.ContentActualHeight
-			}.AttachTo(this.Content);
+		
 
 			this.ContentExtendedContainer = new Canvas
 			{
