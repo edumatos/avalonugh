@@ -232,6 +232,12 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownDinos.AttachTo(this.Entities);
 
+
+			this.Level.KnownSigns.ForEachNewOrExistingItem(
+				k => k.AttachContainerTo(this.Entities)
+			);
+
+
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
 			this.Level.KnownTryoperus.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 
@@ -277,10 +283,6 @@ namespace AvalonUgh.Code
 
 
 			this.Level.KnownTrees.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.Entities)
-			);
-
-			this.Level.KnownSigns.ForEachNewOrExistingItem(
 				k => k.AttachContainerTo(this.Entities)
 			);
 

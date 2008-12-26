@@ -226,21 +226,24 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public int Direction = -1;
 
-		public bool[] HasPlatformUnderneath()
+		public bool HasPlatformUnderneathInDirection(int Direction)
 		{
 			if (Direction < 0)
-				return new[]
-				{
-					HasPlatformUnderneath(-1),
-					HasPlatformUnderneath(0),
-				
-				};
-
-			return new[]
 			{
-				HasPlatformUnderneath(1),
-				HasPlatformUnderneath(2),
-			};
+				if (HasPlatformUnderneath(-1))
+					if (HasPlatformUnderneath(0))
+						return true;
+
+			}
+			else
+			{
+				if (HasPlatformUnderneath(1))
+					if (HasPlatformUnderneath(2))
+						return true;
+
+			}
+
+			return false;
 		}
 
 
@@ -284,14 +287,13 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 
 
-			var HasPlatformUnderneath = this.HasPlatformUnderneath().All(k => k);
 
-			if (HasPlatformUnderneath)
+			if (this.HasPlatformUnderneathInDirection(this.Direction))
 			{
 				// we can continue to walk
 
 				// top speed
-				if (Direction < 0)
+				if (this.Direction < 0)
 				{
 					if (this.VelocityX >= -Zoom)
 						this.VelocityX -= Zoom * 0.05;
@@ -312,21 +314,15 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				if (this.VelocityX == 0)
 				{
-					this.Direction *= -1;
-
-					HasPlatformUnderneath = this.HasPlatformUnderneath().All(k => k);
-
-					if (!HasPlatformUnderneath)
+					// there is no use in turning around either
+					if (this.HasPlatformUnderneathInDirection(-this.Direction))
 					{
-						this.Animation = AnimationEnum.Left_Stand;
 						this.Direction *= -1;
-
-						return;
 					}
 				}
 
 
-				if (Direction < 0)
+				if (this.Direction < 0)
 					this.Animation = AnimationEnum.Left_Stand;
 				else
 					this.Animation = AnimationEnum.Right_Stand;
