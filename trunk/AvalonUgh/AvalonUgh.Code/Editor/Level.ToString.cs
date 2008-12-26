@@ -74,6 +74,7 @@ namespace AvalonUgh.Code.Editor
 				WriteTiles(this.KnownStones.ToArray());
 				WriteTiles(this.KnownCaves.ToArray());
 				WriteTiles(this.KnownRidges.ToArray());
+				WriteTiles(this.KnownRidgeTrees.ToArray());
 				WriteTiles(this.KnownFences.ToArray());
 				WriteTiles(this.KnownPlatforms.ToArray());
 				WriteTiles(this.KnownBridges.ToArray());

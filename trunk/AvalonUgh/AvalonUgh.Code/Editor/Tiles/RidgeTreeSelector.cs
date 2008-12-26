@@ -105,79 +105,66 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				Name.Index = (Name.Index + 1) % Name.IndexCount;
+				if (Name.IndexCount > 0)
+					Name.Index = (Name.Index + 1) % Name.IndexCount;
 
-			
+				var Name_Index = Name.Index;
+
+				{
+					// first ridgetree is shown as a cut off tree
+					var TriggerPosition = Position[0, -1];
+
+					var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
+
+					var trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
+
+					if (trigger == null)
+					{
+						Name.Index = 500;
+					}
+				}
 
 				RemovePlatforms(this, Level, Position);
 				RemoveEntities(this, Level, Position);
 
-				//var u = new Ridge(Level, this)
-				//{
-				//    Position = Position,
-				//    Image = ToImage(Level, Position)
-				//};
+				var u = new RidgeTree(Level, this)
+				{
+					Position = Position,
+					Image = ToImage(Level, Position)
+				};
 
-				//Level.KnownRidges.Add(u);
+				Level.KnownRidgeTrees.Add(u);
 
 
 
-				//{
-				//    // bridge connected only by the corner will also have legs!
-				//    var TriggerPosition = Position[-1, -1];
 
-				//    var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
 
-				//    var trigger = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
-
-				//    if (trigger != null)
-				//    {
-				//        Level.KnownBridges.Remove(trigger);
-
-				//        new BridgeSelector().Size_1x1.CreateTo(Level, TriggerPosition);
-				//    }
-				//}
-
-				//{
-				//    // bridge connected only by the corner will also have legs!
-				//    var TriggerPosition = Position[this.PrimitiveTileCountX, -1];
-
-				//    var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
-
-				//    var trigger = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
-
-				//    if (trigger != null)
-				//    {
-				//        Level.KnownBridges.Remove(trigger);
-
-				//        new BridgeSelector().Size_1x1.CreateTo(Level, TriggerPosition);
-				//    }
-				//}
+				Name.Index = Name_Index;
 			}
 		}
 
 		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{
-			//var Selector = new RidgeSelector().Sizes.SingleOrDefault(
-			//    k => k.Equals(Tile)
-			//);
+			var Selector = new RidgeTreeSelector().Sizes.SingleOrDefault(
+				k => k.Equals(Tile)
+			);
 
-			//if (Selector == null)
-			//{
-			//    Console.WriteLine(
-			//        new { InvalidSize = new { Tile.Width, Tile.Height }, Identifier, Position.X, Position.Y }.ToString()
-			//    );
+			if (Selector == null)
+			{
+				Console.WriteLine(
+					new { InvalidSize = new { Tile.Width, Tile.Height }, Identifier, Position.X, Position.Y }.ToString()
+				);
 
-			//    return;
-			//}
+				return;
+			}
 
-			//Selector.CreateTo(Level,
-			//    new View.SelectorPosition
-			//    {
-			//        ContentX = Position.X * PrimitiveTile.Width,
-			//        ContentY = Position.Y * PrimitiveTile.Heigth,
-			//    }
-			//);
+			Selector.CreateTo(Level,
+				new View.SelectorPosition
+				{
+					ContentX = Position.X * PrimitiveTile.Width,
+					ContentY = Position.Y * PrimitiveTile.Heigth,
+				}
+			);
 		}
 	}
 }
