@@ -19,14 +19,14 @@ P-P---| |  | S-SS-S-S-
  | | S--SR   R-S| | | 
 # tree: 320
  | | |  R-   | || P---
- R--S-S-   R-| S-S-R--
- |  | |    | S-| | |  
- C-S| S-   S-| S-S-S- 
+ R--S-S-R--R-| S-S-R--
+ |  | | |  | S-| | |  
+ C-S| S-|  S-| S-S-S- 
  |  | | SS-| | | | C- 
 # sign: 56;4
  P--PS-S|| | S-| | |  
 # sign: 296;5
-# rock: 256
+# rock: 258
  |  S-S--| S-| BBBBBBB
     | |  | |          
 ######################
