@@ -251,12 +251,12 @@ namespace AvalonUgh.Code.Editor
 
 			var Commands = new AttributeDictonary
 			{
-				Create.tryo,
 				Create.Dino,
 				Create.Gold,
 				Create.Rock,
 				Create.Sign,
 				Create.Tree,
+				Create.tryo,
 
 
 				AttributeWind,
