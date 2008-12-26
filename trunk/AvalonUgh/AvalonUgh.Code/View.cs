@@ -229,8 +229,9 @@ namespace AvalonUgh.Code
 			#region sync the level platforms into view
 
 			this.Level.KnownDinos.AttachTo(this.Entities);
-			this.Level.KnownTryoperus.AttachTo(this.Entities);
 
+			this.Level.KnownTryoperus.AttachTo(this.Entities);
+			this.Level.KnownTryoperus.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 
 			this.Level.KnownStones.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)

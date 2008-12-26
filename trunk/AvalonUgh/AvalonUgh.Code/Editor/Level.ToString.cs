@@ -125,6 +125,14 @@ namespace AvalonUgh.Code.Editor
 							select new Attribute.Int32 { Key = "vehicle", Value = StartPosition.UnscaledX }
 						);
 
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownTryoperus
+							let StartPosition = i.StartPosition
+							where StartPosition != null
+							where StartPosition.BaseY == index
+							select new Attribute.Int32 { Key = "tryo", Value = StartPosition.UnscaledX }
+						);
+
 						s.WriteLine(row);
 					}
 				);

@@ -158,11 +158,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void Dispose()
 		{
-			if (this.StartPosition != null)
-			{
-				this.StartPosition.OrphanizeContainer();
-				this.StartPosition = null;
-			}
+		
 		}
 
 		#endregion

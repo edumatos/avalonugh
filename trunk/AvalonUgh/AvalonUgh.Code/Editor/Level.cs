@@ -166,12 +166,26 @@ namespace AvalonUgh.Code.Editor
 
 			var Create = new
 			{
+				tryo = (Attribute.Int32)"tryo",
 				Dino = (Attribute.Int32)"dino",
 				Tree = (Attribute.Int32)"tree",
 				Rock = (Attribute.Int32)"rock",
 				Gold = (Attribute.Int32)"gold",
 				Sign = (Attribute.Int32_Int32)"sign",
 			};
+
+			Create.tryo.Assigned +=
+				x_ =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+					new Tryoperus(Zoom)
+					{
+
+					}.AddTo(KnownTryoperus).MoveBaseTo(x, y);
+				};
+
 
 			Create.Dino.Assigned +=
 				x_ =>
@@ -236,6 +250,7 @@ namespace AvalonUgh.Code.Editor
 
 			var Commands = new AttributeDictonary
 			{
+				Create.tryo,
 				Create.Dino,
 				Create.Gold,
 				Create.Rock,
