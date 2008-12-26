@@ -269,6 +269,9 @@ namespace AvalonUgh.Code
 			this.Level.KnownRidges.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
+			this.Level.KnownRidgeTrees.ForEachNewOrExistingItem(
+				k => k.Image.AttachTo(this.Platforms)
+			);
 
 			this.Level.KnownFences.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)

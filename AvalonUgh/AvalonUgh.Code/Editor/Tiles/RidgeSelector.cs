@@ -107,9 +107,28 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				Name.Index = (Name.Index + 1) % Name.IndexCount;
+				if (Name.IndexCount > 0)
+					Name.Index = (Name.Index + 1) % Name.IndexCount;
 
-			
+				var Name_Index = Name.Index;
+
+				// are we going for a special L shape?
+				if (PrimitiveTileCountX == 3)
+					if (PrimitiveTileCountY == 2)
+					{
+						// first ridgetree is shown as a cut off tree
+						var TriggerPosition = Position[0, -1];
+
+						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
+
+						var trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
+
+						if (trigger != null)
+						{
+							Name.Index = 500;
+						}
+					}
+
 
 				RemovePlatforms(this, Level, Position);
 				RemoveEntities(this, Level, Position);
@@ -155,6 +174,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 						new BridgeSelector().Size_1x1.CreateTo(Level, TriggerPosition);
 					}
 				}
+
+				Name.Index = Name_Index;
+
 			}
 		}
 

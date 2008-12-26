@@ -153,6 +153,7 @@
     <Compile Include="Editor\Sprites\Tryoperus.cs" />
     <Compile Include="Editor\Sprites\TryoperusSelector.cs" />
     <Compile Include="Editor\Sprites\VehicleSelector.cs" />
+    <Compile Include="Editor\Tiles\RidgeTree.cs" />
     <Compile Include="Editor\Tiles\RidgeTreeSelector.cs" />
     <Compile Include="Editor\WaterLevelSelector.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ColorStripe.cs" />

@@ -59,6 +59,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Cave> KnownCaves = new BindingList<Cave>();
 		public readonly BindingList<Stone> KnownStones = new BindingList<Stone>();
 		public readonly BindingList<Ridge> KnownRidges = new BindingList<Ridge>();
+		public readonly BindingList<RidgeTree> KnownRidgeTrees = new BindingList<RidgeTree>();
 		public readonly BindingList<Fence> KnownFences = new BindingList<Fence>();
 		public readonly BindingList<Platform> KnownPlatforms = new BindingList<Platform>();
 		public readonly BindingList<Bridge> KnownBridges = new BindingList<Bridge>();
@@ -377,6 +378,14 @@ namespace AvalonUgh.Code.Editor
 						return;
 					}
 
+					// ridgetree
+					if (k.Value == RidgeTreeSelector.Identifier)
+					{
+						RidgeTreeSelector.AttachToLevel(k, Tile, this);
+
+						return;
+					}
+
 					// cave
 					if (k.Value == CaveSelector.Identifier)
 					{
@@ -465,6 +474,7 @@ namespace AvalonUgh.Code.Editor
 					{
 						KnownBridges,
 						KnownRidges,
+						KnownRidgeTrees,
 						KnownPlatforms
 					}.WhereListChanged(
 						delegate
@@ -473,12 +483,14 @@ namespace AvalonUgh.Code.Editor
 
 							var Bridges = this.KnownBridges.Select(k => k.ToObstacle());
 							var Ridges = this.KnownRidges.Select(k => k.ToObstacle());
+							var RidgeTrees = this.KnownRidgeTrees.Select(k => k.ToObstacle());
 							var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
 
 
 							var value = this.KnownObstacles.AsEnumerable()
 								.Concat(Bridges)
 								.Concat(Ridges)
+								.Concat(RidgeTrees)
 								.Concat(Platforms).ToArray().AsEnumerable();
 
 							return value;
@@ -535,6 +547,20 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownRidges.Remove(Entity);
+										Entity.Image.Orphanize();
+									}
+							}
+					)
+				).Concat(
+					this.KnownRidgeTrees.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownRidgeTrees.Remove(Entity);
 										Entity.Image.Orphanize();
 									}
 							}
