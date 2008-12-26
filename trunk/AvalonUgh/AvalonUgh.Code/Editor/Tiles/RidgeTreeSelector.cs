@@ -16,16 +16,16 @@ namespace AvalonUgh.Code.Editor.Tiles
 	{
 		public const string Identifier = "T";
 
-		public readonly View.SelectorInfo 
-			Size_1x1 = new Size_Generic(1, 1, 3);
-			//Size_2x1 = new Size_Generic(2, 1, 1),
-			//Size_2x2 = new Size_Generic(2, 2, 3),
-			//Size_2x3 = new Size_Generic(2, 3, 2),
-			//Size_3x2 = new Size_Generic(3, 2, 2),
-			//Size_3x3 = new Size_Generic(3, 3, 1),
-			//Size_4x4,
-			//Size_5x5,
-			//Size_5x4;
+		public readonly View.SelectorInfo
+			Size_1x1 = new SelectorSize_1x1(3);
+		//Size_2x1 = new Size_Generic(2, 1, 1),
+		//Size_2x2 = new Size_Generic(2, 2, 3),
+		//Size_2x3 = new Size_Generic(2, 3, 2),
+		//Size_3x2 = new Size_Generic(3, 2, 2),
+		//Size_3x3 = new Size_Generic(3, 3, 1),
+		//Size_4x4,
+		//Size_5x5,
+		//Size_5x4;
 
 
 
@@ -91,37 +91,101 @@ namespace AvalonUgh.Code.Editor.Tiles
 				};
 		}
 
-		
+
 
 		[Script]
-		private class Size_Generic : TileSelector.Named
+		private class SelectorSize_1x1 : TileSelector.Named
 		{
 
-			public Size_Generic(int x, int y, int variations)
-				: base(x, y, variations, "ridgetree")
+			public SelectorSize_1x1(int variations)
+				: base(1, 1, variations, "ridgetree")
 			{
-			
+
 			}
+
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
 				if (Name.IndexCount > 0)
 					Name.Index = (Name.Index + 1) % Name.IndexCount;
 
+				Action Later = null;
+
 				var Name_Index = Name.Index;
 
+				var Top_TriggerPosition = Position[0, -1];
+				var Top_TriggerObstacle = Obstacle.Of(Top_TriggerPosition, Level.Zoom, 1, 1);
+				var Top_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(Top_TriggerObstacle));
+
+
+				var Left_TriggerPosition = Position[-1, 0];
+				var Left_TriggerObstacle = Obstacle.Of(Left_TriggerPosition, Level.Zoom, 1, 1);
+				var Left_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(Left_TriggerObstacle));
+
+				var Right_TriggerPosition = Position[1, 0];
+				var Right_TriggerObstacle = Obstacle.Of(Right_TriggerPosition, Level.Zoom, 1, 1);
+				var Right_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(Right_TriggerObstacle));
+
+
+				var Bottom_TriggerPosition = Position[0, 1];
+				var Bottom_TriggerObstacle = Obstacle.Of(Bottom_TriggerPosition, Level.Zoom, 1, 1);
+				var Bottom_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(Bottom_TriggerObstacle));
+
+				if (Top_Trigger != null)
 				{
-					// first ridgetree is shown as a cut off tree
-					var TriggerPosition = Position[0, -1];
+					Level.KnownRidgeTrees.Remove(Top_Trigger);
 
-					var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
+					Later +=
+						delegate
+						{
+							CreateTo(Level, Top_TriggerPosition);
+						};
+				}
+				else
+				{
+					// cut off tree
+					Name.Index = 500;
+				}
 
-					var trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
-
-					if (trigger == null)
+				if (Left_Trigger != null)
+				{
+					if (Top_Trigger != null)
 					{
-						Name.Index = 500;
+						Name.Index = 520;
 					}
+					else
+					{
+						if (Bottom_Trigger != null)
+						{
+							Name.Index = 510;
+						}
+						else
+						{
+							Name.Index = 300 + Name_Index % 2;
+						}
+					}
+
+					Level.KnownRidgeTrees.Remove(Left_Trigger);
+
+					Later +=
+						delegate
+						{
+							CreateTo(Level, Left_TriggerPosition);
+						};
+				}
+				else
+				{
+					//if (Bottom_Trigger != null)
+					//{
+					//    Name.Index = 530;
+					//}
+					//else
+					//{
+						if (Right_Trigger != null)
+						{
+							Name.Index = 300 + Name_Index % 2;
+						}
+					//}
 				}
 
 				RemovePlatforms(this, Level, Position);
@@ -140,6 +204,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 
 				Name.Index = Name_Index;
+
+				if (Later != null)
+					Later();
 			}
 		}
 
