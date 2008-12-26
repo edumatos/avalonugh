@@ -66,7 +66,11 @@ namespace AvalonUgh.Code.Editor.Sprites
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 		}
 
-		public bool IsSleeping { get; set; }
+		public bool IsSleeping
+		{
+			get;
+			set;
+		}
 
 
 		readonly AnimationDictionary InternalAnimation;
@@ -161,5 +165,11 @@ namespace AvalonUgh.Code.Editor.Sprites
 		}
 
 		#endregion
+
+		public void GoToSleep()
+		{
+			this.IsSleeping = true;
+			this.Animation = AnimationEnum.Left_Stun;
+		}
 	}
 }

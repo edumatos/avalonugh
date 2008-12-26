@@ -510,6 +510,12 @@ namespace AvalonUgh.Code
 				}
 			}
 
+			if (e.Keyboard.IsPressedDrop)
+			{
+				if (Drop != null)
+					Drop();
+			}
+
 			if (!EnterVehicleBlocked)
 				if (e.Keyboard.IsPressedEnter)
 				{
@@ -522,6 +528,7 @@ namespace AvalonUgh.Code
 		}
 
 
+		public event Action Drop;
 		public event Action Jumping;
 		public event Action EnterCave;
 		public event Action EnterVehicle;
@@ -538,5 +545,11 @@ namespace AvalonUgh.Code
 		}
 
 		#endregion
+
+		public void RaiseDrop()
+		{
+			if (this.Drop != null)
+				this.Drop();
+		}
 	}
 }
