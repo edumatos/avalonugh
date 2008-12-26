@@ -728,6 +728,21 @@
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_12.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_13.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge3_2x2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree300.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree301.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree4.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree510.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree520.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree530.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
