@@ -1,0 +1,32 @@
+# generated map
+# text: Zick zack
+# code: UNCERTAINJOURNEY
+# autoscroll: 0
+# water: 21
+##########################
+R-SS-S--S-S-R-S--S-SS-S-R-
+| || |  | | | |  | || S-| 
+R-SSS-C-| S-R-SS-C-S| | R-
+| ||| |  S| | || |  S-| | 
+# sign: 136;1
+# sign: 312;2
+| S-| P--SS-| S| P--| S-| 
+R-| S-|  || R-S--|  | | R-
+| | | SR-S| | |  R-S-S--| 
+| S--S-R-|| R-S-S| | |  | 
+R-|  | | S-S| | |R--S--SR-
+| S-S| R-| S-S-S-|  |  || 
+| | SS-| | S-| | R-S-S-S| 
+C-| || R-| | | S-| | S-|R-
+# vehicle: 72
+| |  | | S--S-S-R--C-| S| 
+# sign: 72;3
+BBBBBBB| |  | | |  | | || 
+# sign: 344;5
+S-S-S-R--C-S| S-SR-P--PPR-
+| | | |  |  | | || |  R-| 
+# tree: 192
+# sign: 184;4
+S-| SR-R-P---S| SR--R-| | 
+| | || R-|   |SS-|  R-R-R-
+##########################

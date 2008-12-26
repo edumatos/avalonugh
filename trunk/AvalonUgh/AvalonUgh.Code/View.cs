@@ -115,7 +115,7 @@ namespace AvalonUgh.Code
 
 			// Content actual size depends on level
 			this.Level = level;
-			
+
 			if (Level.BackgroundImage != null)
 				Level.BackgroundImage.AttachTo(this.Background);
 
@@ -173,7 +173,7 @@ namespace AvalonUgh.Code
 				Height = this.ContentActualHeight
 			}.AttachTo(this.Content);
 
-		
+
 
 			this.ContentExtendedContainer = new Canvas
 			{
@@ -224,7 +224,7 @@ namespace AvalonUgh.Code
 				Opacity = 0
 			}.AttachTo(this.ContentExtendedContainer);
 
-			
+
 			// this level is now frozen to this view!
 			// unless we unbind from events being created
 
@@ -233,9 +233,8 @@ namespace AvalonUgh.Code
 			this.Level.KnownDinos.AttachTo(this.Entities);
 
 
-			this.Level.KnownSigns.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.Entities)
-			);
+
+			this.Level.KnownSigns.AttachTo(this.Entities);
 
 
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
@@ -266,7 +265,7 @@ namespace AvalonUgh.Code
 			this.Level.KnownCaves.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
-		
+
 
 			this.Level.KnownRidges.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
@@ -276,7 +275,7 @@ namespace AvalonUgh.Code
 				k => k.Image.AttachTo(this.Platforms)
 			);
 
-			
+
 			this.Level.KnownBridges.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
@@ -286,14 +285,14 @@ namespace AvalonUgh.Code
 				k => k.AttachContainerTo(this.Entities)
 			);
 
-		
+
 
 			this.Level.KnownGold.ForEachNewOrExistingItem(
 				k => k.AttachContainerTo(this.Entities)
 			);
 
 
-		
+
 
 
 			#endregion
@@ -306,7 +305,7 @@ namespace AvalonUgh.Code
 					DefaultWidth = this.ContentExtendedWidth,
 					DefaultHeight = this.ContentExtendedHeight,
 
-					WaterTop = Convert.ToInt32( this.Level.WaterTop + ContentOffsetY),
+					WaterTop = Convert.ToInt32(this.Level.WaterTop + ContentOffsetY),
 					Zoom = this.Level.Zoom,
 
 					// maybe the map should be able to set this color?
@@ -319,9 +318,9 @@ namespace AvalonUgh.Code
 			this.Level.AttributeWater.Assigned +=
 				delegate
 				{
-					CurrentWater.MoveContainerTo(0, Convert.ToInt32( this.Level.WaterTop + ContentOffsetY));
+					CurrentWater.MoveContainerTo(0, Convert.ToInt32(this.Level.WaterTop.Max(0) + ContentOffsetY));
 				};
-			
+
 			this.LocationTracker = new LocationTracker();
 
 			// center bottom
@@ -383,13 +382,16 @@ namespace AvalonUgh.Code
 
 
 			AttachFilmScratchEffect();
+
+			this.IsShakerEnabled = (Convert.ToBoolean(this.Level.AttributeWaterRise.Value));
+
 			AttachEditorSelector();
 
 			this.TouchInput = new TouchInput(this.TouchOverlay)
 			{
 				OffsetX = ContentOffsetX,
 				OffsetY = ContentOffsetY,
-			};			  
+			};
 		}
 
 
@@ -405,7 +407,7 @@ namespace AvalonUgh.Code
 		{
 			get
 			{
-				return MaxShakeSize + (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2; 
+				return MaxShakeSize + (this.ContainerHeight - this.ContentActualHeight).Max(0) / 2;
 			}
 		}
 

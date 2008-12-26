@@ -125,7 +125,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void Dispose()
 		{
-			this.OrphanizeContainer();
 		}
 	}
 }

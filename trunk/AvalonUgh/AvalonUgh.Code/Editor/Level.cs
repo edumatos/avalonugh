@@ -35,6 +35,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly Attribute.Int32 AttributeWater = "water";
 		public readonly Attribute.Int32 AttributeWind = "wind";
 		public readonly Attribute.Int32 AttributeGravity = "gravity";
+		public readonly Attribute.Int32 AttributeWaterRise = "water-rise";
 
 		public readonly Attribute.Int32 AttributeBorderTop = "border-top";
 		public readonly Attribute.Int32 AttributeBorderLeft = "border-left";
@@ -250,6 +251,7 @@ namespace AvalonUgh.Code.Editor
 					}.AddTo(KnownSigns).MoveBaseTo(x, y);
 				};
 
+		
 
 			var Commands = new AttributeDictonary
 			{
@@ -265,6 +267,8 @@ namespace AvalonUgh.Code.Editor
 				AttributeGravity,
 
 				AttributeWater,
+				AttributeWaterRise,
+
 				AttributeBackgroundWidth,
 				AttributeBackgroundHeight,
 				AttributeCode,

@@ -1,0 +1,31 @@
+# generated map
+# text: Funny water but you will make it
+# code: SPIRITUALCRAMP
+# autoscroll: 0
+# water: 15
+# water-rise: 1
+######################
+    SS-  S-S-S        
+ SS-|| S-| | |S--R-R- 
+ || C-S| | SS-|  | |  
+ S| | ||  S-| SS-SS-R-
+# sign: 152;1
+PP-P-BBBBP-PS--| |C-| 
+ | R-S-S-| S|  |  | R-
+# sign: 280;2
+ R-| | | SS-SS-P-P-P- 
+ | S-| SS-| || S-| |  
+ | FC-S|| SS-| | R-|  
+ R-F| | | || S-| | R- 
+# sign: 120;3
+ | P-P-BBP-| | | S-R--
+ | | R-S-| | S-S-| |  
+ R--S--| | S-S-| S-S-R
+R|  |  | S-| | | | C-R
+RC-S-S-| | | | S | | R
+# sign: 264;4
+R| | |  S| S--BBBBBP-R
+# sign: 120;5
+P---P---|S-|  S-S--|  
+         |    | |     
+######################

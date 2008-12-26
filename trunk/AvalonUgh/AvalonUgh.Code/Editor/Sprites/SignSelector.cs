@@ -57,15 +57,16 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 					var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
 
-					var trigger = Level.KnownSigns.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+					var trigger = Level.KnownSigns.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
 
 					if (trigger != null)
 					{
 						c = trigger.Value + 1;
+
+						Level.KnownSigns.Remove(trigger);
 					}
 				}
 
-				RemoveEntities(this, Level, Position);
 
 				var v = new Sign(Level.Zoom)
 				{
