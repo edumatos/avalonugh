@@ -47,8 +47,8 @@ namespace AvalonUgh.Code
 		{
 			this.Level.KnownVehicles.ForEach(Apply);
 			this.Level.KnownRocks.ForEach(Apply);
-			//this.Level.KnownGold.ForEach(Apply);
 			this.Level.KnownActors.ForEach(Apply);
+			this.Level.KnownTryoperus.ForEach(Apply);
 		}
 
 		void Apply(ISupportsPhysics twin)

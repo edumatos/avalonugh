@@ -64,6 +64,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly BindingList<Actor> KnownActors = new BindingList<Actor>();
 		public readonly BindingList<Vehicle> KnownVehicles = new BindingList<Vehicle>();
+		public readonly BindingList<Tryoperus> KnownTryoperus = new BindingList<Tryoperus>();
 
 		public readonly BindingList<ISupportsContainer> KnownStartPositions = new BindingList<ISupportsContainer>();
 
@@ -642,6 +643,20 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownDinos.Remove(Entity);
+									}
+							}
+					)
+				).Concat(
+					this.KnownTryoperus.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownTryoperus.Remove(Entity);
+										Entity.Dispose();
 									}
 							}
 					)
