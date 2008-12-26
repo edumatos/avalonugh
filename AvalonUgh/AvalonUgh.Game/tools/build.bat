@@ -14,8 +14,6 @@ if '%ERRORLEVEL%' == '-1' (
 :: Namespace name, type name
 @call :mxmlc AvalonUgh/Game/ActionScript GameFlash
 
-:: to upload to nonoba and to reference in tests
-copy "*.swf" "../../../../Public/"
 
 goto :eof
 
@@ -37,6 +35,8 @@ pushd ..\bin\%ConfigurationName%\web
 
 call :build %1 %2
 
+:: to upload to nonoba and to reference in tests
+copy "*.swf" "../../../../Public/"
 
 popd
 goto :eof

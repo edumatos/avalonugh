@@ -12,6 +12,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class TryoperusSelector : SelectorBase
 	{
+
+
 		public TryoperusSelector()
 		{
 			this.ToolbarImage =
@@ -58,7 +60,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 				g.MoveTo(x, y);
 				g.Container.Opacity = 0.5;
 
-				Level.KnownStartPositions.Add(g);
 
 				new Tryoperus(Level.Zoom)
 				{

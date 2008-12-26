@@ -115,7 +115,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		{
 			AnimationFrame.Orphanize();
 
-			this.SnoreWind = Math.Sin(0.1 * SyncFrame / AnimationFrames.Length * 8);
+			this.SnoreWind = Math.Cos(0.1 * SyncFrame / AnimationFrames.Length * 8);
 
 			AnimationFrame = AnimationFrames.AtModulus(SyncFrame / 8);
 			AnimationFrame.AttachTo(this);

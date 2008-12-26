@@ -15,15 +15,17 @@
  | S-| SS-S-| C-| ||  
  R-| S-|| | | | S- |  
 # sign: 296;2
- | C-| S| SP-PP-BBBP- 
+ | C-| S| SP-PP-BBBP-P
  R-|  S-SS-SS-| S-S|  
-# tree: 112
 # sign: 88;3
+# rock: 112
+# tree: 112
  | P-PP-|| || S-| |S- 
 S-SS-S-S-| S-S| | S|  
 | || S-| | | C-S--SS- 
  S-| | | S | | |  ||  
 # sign: 168;4
+# tryo: 128
  | S--P-P-PP-PP-SS-|  
  | |  S-| R-R-| S| |  
       |   | |   ||    
