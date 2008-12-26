@@ -632,6 +632,20 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_405_2x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_406_2x2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_200_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_201_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_202_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_203_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_204_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_205_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_206_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_207_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_208_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_209_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_210_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_211_2x2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

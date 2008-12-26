@@ -723,6 +723,7 @@ namespace AvalonUgh.Game.Shared
 								if (View.IsShakerEnabled)
 									View.Level.AttributeWater.Value++;
 
+							// some animations need to be synced by frame
 							foreach (var dino in Level.KnownDinos)
 							{
 								dino.Animate(this.LocalIdentity.SyncFrame);
@@ -732,6 +733,11 @@ namespace AvalonUgh.Game.Shared
 							foreach (var p in Players)
 							{
 								p.AddAcceleration();
+							}
+
+							foreach (var p in Level.KnownTryoperus)
+							{
+								p.Think();
 							}
 
 							Level.Physics.Apply();

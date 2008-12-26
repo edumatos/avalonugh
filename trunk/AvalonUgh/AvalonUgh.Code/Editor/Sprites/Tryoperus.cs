@@ -58,6 +58,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
+		public int UnscaledY
+		{
+			get
+			{
+				return Convert.ToInt32(Y / Zoom);
+			}
+		}
+
 		public void MoveTo(double x, double y)
 		{
 			this.X = x;
@@ -75,9 +83,12 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		readonly AnimationDictionary InternalAnimation;
 
-		public Tryoperus(int Zoom)
+		readonly Level Level;
+
+		public Tryoperus(Level Level)
 		{
-			this.Zoom = Zoom;
+			this.Level = Level;
+			this.Zoom = Level.Zoom;
 
 			this.Width = PrimitiveTile.Width * Zoom * 2;
 			this.Height = PrimitiveTile.Heigth * Zoom * 2;
@@ -88,7 +99,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				Height = this.Height
 			};
 
-			this.InternalAnimation = new AnimationDictionary(this, new SpecificNameFormat { Zoom = Zoom }.ToImage)
+			this.InternalAnimation = new AnimationDictionary(this, new SpecificNameFormat { Zoom = Level.Zoom }.ToImage)
 			{
 				{ (int)AnimationEnum.Left_Hit, Tryoperus.AnimationFrames.Left.HitOffset},
 				{ (int)AnimationEnum.Left_Stun, 1000 / 24,  
@@ -99,10 +110,15 @@ namespace AvalonUgh.Code.Editor.Sprites
 					Tryoperus.AnimationFrames.Left.RunCount },
 				{ (int)AnimationEnum.Left_Stare, 1000 / 15,  
 					Tryoperus.AnimationFrames.Left.StareOffset, 
-					Tryoperus.AnimationFrames.Left.StareCount }
+					Tryoperus.AnimationFrames.Left.StareCount },
+				{ (int)AnimationEnum.Left_Walk, 1000 / 10,  
+					Tryoperus.AnimationFrames.Left.WalkOffset, 
+					Tryoperus.AnimationFrames.Left.WalkCount },
+				{ (int)AnimationEnum.Left_Stand,
+					Tryoperus.AnimationFrames.Left.WalkOffset}
 			};
 
-			this.Animation = AnimationEnum.Left_Stare;
+			this.Animation = AnimationEnum.Left_Walk;
 		}
 
 
@@ -172,7 +188,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		#endregion
 
-		public Func<int, Action, int> HandleFutureFrame; 
+		public Func<int, Action, int> HandleFutureFrame;
 
 		public void GoToSleep()
 		{
@@ -187,6 +203,113 @@ namespace AvalonUgh.Code.Editor.Sprites
 					this.Animation = AnimationEnum.Left_Stare;
 				}
 			);
+		}
+
+		public View.SelectorPosition Position
+		{
+			get
+			{
+				return new View.SelectorPosition
+				{
+					ContentX = Convert.ToInt32((X - HalfWidth) / Zoom),
+					ContentY = Convert.ToInt32((Y - HalfHeight) / Zoom)
+				};
+			}
+		}
+
+		public int Direction = -1;
+
+		public bool[] HasPlatformUnderneath()
+		{
+			if (Direction < 0)
+				return new[]
+				{
+					HasPlatformUnderneath(-1),
+					HasPlatformUnderneath(0),
+				
+				};
+
+			return new[]
+			{
+				HasPlatformUnderneath(1),
+				HasPlatformUnderneath(2),
+			};
+		}
+
+
+		public bool HasPlatformUnderneath(int TileOffset)
+		{
+			var TriggerPosition = Position[TileOffset, 2];
+
+			var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
+
+			if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(o_trigger)))
+				return true;
+
+			if (Level.KnownBridges.Any(k => k.ToObstacle().Intersects(o_trigger)))
+				return true;
+
+			return false;
+		}
+
+		public void Think()
+		{
+			if (this.IsSleeping)
+			{
+				if (this.VelocityY == 0)
+					this.VelocityX *= 0.9;
+
+				return;
+			}
+
+			if (this.Level.WaterTop < this.Y)
+			{
+				// we dont do anything under water
+				this.Animation = AnimationEnum.Left_Hit;
+				return;
+			}
+
+			if (this.VelocityY != 0)
+			{
+				// we dont do anything not on ground
+				this.Animation = AnimationEnum.Left_Hit;
+				return;
+			}
+
+
+			var HasPlatformUnderneath = this.HasPlatformUnderneath().All(k => k);
+
+			if (HasPlatformUnderneath)
+			{
+				// we can continue to walk
+
+				// top speed
+				if (Direction < 0)
+				{
+					if (this.VelocityX >= -Zoom)
+						this.VelocityX -= Zoom * 0.05;
+				}
+				else
+				{
+					if (this.VelocityX <= Zoom)
+						this.VelocityX += Zoom * 0.05;
+				}
+
+
+				this.Animation = AnimationEnum.Left_Walk;
+				return;
+			}
+			else
+			{
+				this.VelocityX *= 0.8;
+
+				if (this.VelocityX == 0)
+					this.Direction *= -1;
+			}
+
+
+			this.Animation = AnimationEnum.Left_Stand;
+			return;
 		}
 	}
 }

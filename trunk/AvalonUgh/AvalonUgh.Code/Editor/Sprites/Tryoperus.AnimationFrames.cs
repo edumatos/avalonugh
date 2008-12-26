@@ -15,6 +15,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			Left_Stun,
 			Left_Hit,
+			Left_Stand,
 			Left_Run,
 			Left_Stare,
 			Left_Walk,
@@ -84,6 +85,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 				InternalAnimation.PlayFrame((int)value);
 			}
 		}
+
+
 
 	
 	}
