@@ -16,8 +16,10 @@ namespace AvalonUgh.Code.Editor.Tiles
 	{
 		public const string Identifier = "R";
 
-		public readonly View.SelectorInfo 
+		public readonly View.SelectorInfo
 			Size_1x1 = new Size_Generic(1, 1, 2),
+			Size_1x2 = new Size_Generic(1, 2, 1),
+			Size_1x3 = new Size_Generic(1, 3, 1),
 			Size_2x1 = new Size_Generic(2, 1, 1),
 			Size_2x2 = new Size_Generic(2, 2, 3),
 			Size_2x3 = new Size_Generic(2, 3, 2),
@@ -81,6 +83,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 				new View.SelectorInfo[]
 				{
 					Size_1x1,
+					Size_1x2,
+					Size_1x3,
 					Size_2x1,
 					Size_2x2,
 					Size_2x3,

@@ -1,0 +1,30 @@
+# generated map
+# text: Big cave
+# code: DEATHWISH
+# autoscroll: 0
+# water: 28
+##########################
+R-SS-SS-S-S-S-SS-S-S-SS-R-
+| |SS-S-S-| S--S-| | |S-| 
+R-S|| | | | |  | S-S--| R-
+| S-| | | R--S-| | |  | | 
+| | | | R-|  | SS-S--S--| 
+RC-S--SR| SS-| || |  |  R-
+# tree: 320
+|| |   || || SC-| SP-SS-| 
+# sign: 104;1
+|PP-P--|R-S|  | S-S| R--| 
+# sign: 216;2
+# rock: 276
+R-R-|  R| || P--P-|| |  R-
+| SS-R--R-S--S--S--R-|  | 
+| S| |  | |  |  |  | R-R| 
+R-S| |  S-S-S-S-S-S-RR--R-
+| S-S-S-| | | | | | ||  | 
+R-| C-| | | S-S-| | R--R| 
+| | | | | S | | | R-|  |R-
+# sign: 184;3
+R-S-P-BBBBP-| | R-| R--|| 
+| | | S-S-| S-R--R--|  R| 
+| S-S-| | | | |  |  |  |R-
+##########################
