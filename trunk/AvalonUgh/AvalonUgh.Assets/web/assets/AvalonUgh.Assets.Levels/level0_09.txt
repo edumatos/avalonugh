@@ -1,6 +1,6 @@
 # generated map
 # text: Bottleneck 1
-# code: Copy of
+# code: ROMEOSDISTRESS
 # autoscroll: 0
 # water: 30
 ######################
