@@ -13,28 +13,26 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class RockSelector : SelectorBase
 	{
+		public readonly SelectorSize_1x1 Size_1x1 = new SelectorSize_1x1();
+
 		public RockSelector()
 		{
-			this.ToolbarImage = new NameFormat
+			this.ToolbarImage = new Rock.SpecificNameFormat
 			{
-				Path = Assets.Shared.KnownAssets.Path.Sprites,
-				Name = "rock",
-				Index = 0,
-				Extension = "png"
 			};
 
 			// clicking on the toolbar will shuffle between those sizes
 			// also while loading tiles the map will tell us which size to use
 			this.Sizes = new[]
 			{
-				new Size_1x1()
+				Size_1x1
 			};
 		}
 	
 		[Script]
-		public class Size_1x1 : SpriteSelector
+		public class SelectorSize_1x1 : SpriteSelector
 		{
-			public Size_1x1()
+			public SelectorSize_1x1()
 			{
 				PrimitiveTileCountX = 1;
 				PrimitiveTileCountY = 1;

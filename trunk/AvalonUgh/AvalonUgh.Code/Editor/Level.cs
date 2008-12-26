@@ -48,7 +48,7 @@ namespace AvalonUgh.Code.Editor
 
 		//public Water KnownWater { get; set; }
 
-	
+
 
 		public Image BackgroundImage;
 
@@ -67,7 +67,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Tryoperus> KnownTryoperus = new BindingList<Tryoperus>();
 
 
-		public  IEnumerable<Tile> KnownLandingTiles
+		public IEnumerable<Tile> KnownLandingTiles
 		{
 			get
 			{
@@ -145,9 +145,9 @@ namespace AvalonUgh.Code.Editor
 		public readonly Physics Physics;
 
 
-		public Level(string source, int Zoom)
+		public Level(string source, int Zoom, KnownSelectors Selectors)
 		{
-			
+
 
 			this.Physics = new Physics
 			{
@@ -166,23 +166,36 @@ namespace AvalonUgh.Code.Editor
 			var Create = new
 			{
 				tryo = (Attribute.Int32)Sprites.Tryoperus.SpecificNameFormat.Alias,
+				Rock = (Attribute.Int32)Sprites.Rock.SpecificNameFormat.Alias,
 				Dino = (Attribute.Int32)"dino",
 				Tree = (Attribute.Int32)"tree",
-				Rock = (Attribute.Int32)"rock",
 				Gold = (Attribute.Int32)"gold",
 				Sign = (Attribute.Int32_Int32)"sign",
 			};
 
-			Create.tryo.Assigned +=
-				x_ =>
+			Create.Rock.Assigned +=
+				x =>
 				{
-					var x = x_ * Zoom;
-					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+					Selectors.Rock.Size_1x1.CreateTo(this,
+						new View.SelectorPosition
+						{
+							ContentX = x - PrimitiveTile.Heigth / 2,
+							ContentY = (this.TileRowsProcessed - 1) * PrimitiveTile.Heigth
+						}
+					);
+				};
 
-					new Tryoperus(Zoom)
-					{
 
-					}.AddTo(KnownTryoperus).MoveBaseTo(x, y);
+			Create.tryo.Assigned +=
+				x =>
+				{
+					Selectors.Tryoperus.Size_2x2.CreateTo(this,
+						new View.SelectorPosition
+						{
+							ContentX = x - PrimitiveTile.Heigth,
+							ContentY = (this.TileRowsProcessed - 2) * PrimitiveTile.Heigth
+						}
+					);
 				};
 
 
@@ -222,18 +235,7 @@ namespace AvalonUgh.Code.Editor
 					}.AddTo(KnownGold).MoveBaseTo(x, y);
 				};
 
-			Create.Rock.Assigned +=
-				x_ =>
-				{
-					var x = x_ * Zoom;
-					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
-
-					new Rock(Zoom)
-					{
-
-					}.AddTo(KnownRocks).MoveBaseTo(x, y);
-				};
-
+		
 			Create.Sign.Assigned +=
 				(x_, SignValue) =>
 				{
@@ -305,7 +307,7 @@ namespace AvalonUgh.Code.Editor
 				};
 			}
 
-	
+
 
 			// at this point we need to load the map tiles
 

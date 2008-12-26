@@ -12,6 +12,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class TryoperusSelector : SelectorBase
 	{
+		public readonly SelectorSize_2x2 Size_2x2 = new SelectorSize_2x2();
 
 
 		public TryoperusSelector()
@@ -26,14 +27,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 			this.Sizes =
 				new[]
 				{
-					new Size_2x2()
+					Size_2x2
 				}; 
 		}
 
 		[Script]
-		public class Size_2x2 : SpriteSelector
+		public class SelectorSize_2x2 : SpriteSelector
 		{
-			public Size_2x2()
+			public SelectorSize_2x2()
 			{
 				Width = PrimitiveTile.Width * 2;
 				Height = PrimitiveTile.Heigth * 2;

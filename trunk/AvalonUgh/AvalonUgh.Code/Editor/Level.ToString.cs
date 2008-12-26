@@ -109,14 +109,7 @@ namespace AvalonUgh.Code.Editor
 							select new Attribute.Int32_Int32 { Key = "sign", Value0 = i.UnscaledX, Value1 = i.Value }
 						);
 
-						WriteAttribute.InvokeAsEnumerable(
-							from i in this.KnownRocks
-							let rock = i.StartPosition
-							where rock != null
-							where rock.BaseY == index
-							select new Attribute.Int32 { Key = "rock", Value = rock.UnscaledX }
-						);
-
+					
 						WriteAttribute.InvokeAsEnumerable(
 							from i in this.KnownVehicles
 							let StartPosition = i.StartPosition
@@ -132,6 +125,15 @@ namespace AvalonUgh.Code.Editor
 							where StartPosition.BaseY == index
 							select new Attribute.Int32 { Key = Sprites.Tryoperus.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
 						);
+
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownRocks
+							let StartPosition = i.StartPosition
+							where StartPosition != null
+							where StartPosition.BaseY == index
+							select new Attribute.Int32 { Key = Sprites.Tryoperus.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
+						);
+
 
 						s.WriteLine(row);
 					}

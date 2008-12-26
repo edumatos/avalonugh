@@ -12,6 +12,9 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly SelectorBase[] Types;
 
+		public readonly Sprites.TryoperusSelector Tryoperus = new Sprites.TryoperusSelector();
+		public readonly Sprites.RockSelector Rock = new Sprites.RockSelector();
+
 		public KnownSelectors()
 		{
 			this.Types =
@@ -21,11 +24,11 @@ namespace AvalonUgh.Code.Editor
 
 					new Sprites.TreeSelector(),
 					new Sprites.GoldSelector(),
-					new Sprites.RockSelector(),
+					Rock,
 					new Sprites.VehicleSelector(),
 					new Sprites.SignSelector(),
 					new Sprites.DinoSelector(),
-					new Sprites.TryoperusSelector(),
+					Tryoperus,
 
 					new Tiles.StoneSelector(),
 					new Tiles.RidgeSelector(),
