@@ -22,6 +22,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			Right_Stun,
 			Right_Hit,
+			Right_Stand,
 			Right_Run,
 			Right_Stare,
 			Right_Walk
