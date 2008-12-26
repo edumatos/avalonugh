@@ -32,6 +32,7 @@ namespace AvalonUgh.Code.Editor
 
 					new Tiles.StoneSelector(),
 					new Tiles.RidgeSelector(),
+					new Tiles.RidgeTreeSelector(),
 					new Tiles.PlatformSelector(),
 					new Tiles.CaveSelector(),
 					new Tiles.FenceSelector(),
