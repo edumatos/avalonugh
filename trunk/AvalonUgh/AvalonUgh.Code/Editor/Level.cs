@@ -66,7 +66,6 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Vehicle> KnownVehicles = new BindingList<Vehicle>();
 		public readonly BindingList<Tryoperus> KnownTryoperus = new BindingList<Tryoperus>();
 
-		public readonly BindingList<ISupportsContainer> KnownStartPositions = new BindingList<ISupportsContainer>();
 
 		public  IEnumerable<Tile> KnownLandingTiles
 		{
@@ -166,7 +165,7 @@ namespace AvalonUgh.Code.Editor
 
 			var Create = new
 			{
-				tryo = (Attribute.Int32)"tryo",
+				tryo = (Attribute.Int32)Sprites.Tryoperus.SpecificNameFormat.Alias,
 				Dino = (Attribute.Int32)"dino",
 				Tree = (Attribute.Int32)"tree",
 				Rock = (Attribute.Int32)"rock",

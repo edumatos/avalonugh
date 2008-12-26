@@ -132,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIDirector.cs" />
+    <Compile Include="AnimationDictionary.cs" />
     <Compile Include="AudioLoop.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogTextBox.cs" />

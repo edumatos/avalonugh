@@ -233,6 +233,14 @@ namespace AvalonUgh.Code
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
 			this.Level.KnownTryoperus.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 
+			this.Level.KnownRocks.AttachTo(this.Entities);
+			this.Level.KnownRocks.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
+
+			this.Level.KnownVehicles.AttachTo(this.Entities);
+			this.Level.KnownVehicles.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
+
+
+
 			this.Level.KnownStones.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
@@ -274,22 +282,15 @@ namespace AvalonUgh.Code
 				k => k.AttachContainerTo(this.Entities)
 			);
 
-			this.Level.KnownRocks.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.Entities)
-			);
+		
 
 			this.Level.KnownGold.ForEachNewOrExistingItem(
 				k => k.AttachContainerTo(this.Entities)
 			);
 
 
-			this.Level.KnownVehicles.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.Entities)
-			);
+		
 
-			this.Level.KnownStartPositions.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.StartPositionsContainer)
-			);
 
 			#endregion
 

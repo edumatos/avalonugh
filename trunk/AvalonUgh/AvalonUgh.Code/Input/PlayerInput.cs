@@ -48,19 +48,19 @@ namespace AvalonUgh.Code.Input
 			}
 			set
 			{
-				if (InternalKeyboard != null)
-				{
-					InternalKeyboard.Drop -= new Action(InternalKeyboard_Drop);
-					InternalKeyboard.Enter -= new Action(InternalKeyboard_Enter);
-				}
+				//if (InternalKeyboard != null)
+				//{
+				//    InternalKeyboard.Drop -= new Action(InternalKeyboard_Drop);
+				//    InternalKeyboard.Enter -= new Action(InternalKeyboard_Enter);
+				//}
 
 				InternalKeyboard = value;
 
-				if (InternalKeyboard != null)
-				{
-					InternalKeyboard.Drop += new Action(InternalKeyboard_Drop);
-					InternalKeyboard.Enter += new Action(InternalKeyboard_Enter);
-				}
+				//if (InternalKeyboard != null)
+				//{
+				//    InternalKeyboard.Drop += new Action(InternalKeyboard_Drop);
+				//    InternalKeyboard.Enter += new Action(InternalKeyboard_Enter);
+				//}
 			}
 		}
 

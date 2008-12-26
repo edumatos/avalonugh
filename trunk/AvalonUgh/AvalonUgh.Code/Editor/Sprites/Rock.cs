@@ -200,13 +200,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void Dispose()
 		{
-			if (this.StartPosition != null)
-			{
-				this.StartPosition.Dispose();
-				this.StartPosition = null;
-			}
-
-			this.Container.Orphanize();
 			AnimationTimer.Stop();
 		}
 	}

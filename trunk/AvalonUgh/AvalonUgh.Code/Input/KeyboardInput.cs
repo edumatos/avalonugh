@@ -74,11 +74,7 @@ namespace AvalonUgh.Code.Input
 
 		public event Action<Key, bool> KeyStateChanged;
 
-
-		public event Action Enter;
-		public event Action Drop;
-
-		readonly Arguments a;
+		readonly Arguments ConstructorArguments;
 
 		static Arguments DefaultArguments = new Arguments();
 
@@ -86,22 +82,22 @@ namespace AvalonUgh.Code.Input
 		{
 			var y = DefaultArguments;
 
-			if (key == a.Up)
+			if (key == ConstructorArguments.Up)
 				return y.Up;
 
-			if (key == a.Down)
+			if (key == ConstructorArguments.Down)
 				return y.Down;
 
-			if (key == a.Left)
+			if (key == ConstructorArguments.Left)
 				return y.Left;
 
-			if (key == a.Right)
+			if (key == ConstructorArguments.Right)
 				return y.Right;
 
-			if (key == a.Enter)
+			if (key == ConstructorArguments.Enter)
 				return y.Enter;
 
-			if (key == a.Drop)
+			if (key == ConstructorArguments.Drop)
 				return y.Drop;
 
 			return key;
@@ -110,7 +106,7 @@ namespace AvalonUgh.Code.Input
 		public Key FromDefaultTranslation(Key key)
 		{
 			var a = DefaultArguments;
-			var y = this.a;
+			var y = this.ConstructorArguments;
 
 			if (key == a.Up)
 				return y.Up;
@@ -135,7 +131,7 @@ namespace AvalonUgh.Code.Input
 
 		public KeyboardInput(Arguments e)
 		{
-			this.a = e;
+			this.ConstructorArguments = e;
 
 			this.KeyState = new Dictionary<Key, bool>
 						{
@@ -184,21 +180,7 @@ namespace AvalonUgh.Code.Input
 							}
 						}
 
-						if (args.Key == e.Drop)
-						{
-							if (Drop != null)
-								Drop();
-
-							args.Handled = true;
-						}
-
-						if (args.Key == e.Enter)
-						{
-							if (Enter != null)
-								Enter();
-
-							args.Handled = true;
-						}
+					
 					};
 			}
 
@@ -208,11 +190,11 @@ namespace AvalonUgh.Code.Input
 
 		}
 
-		public bool IsPressedEnter { get { return KeyState[a.Enter]; } }
-		public bool IsPressedDown { get { return KeyState[a.Down]; } }
-		public bool IsPressedUp { get { return KeyState[a.Up]; } }
-		public bool IsPressedLeft { get { return KeyState[a.Left]; } }
-		public bool IsPressedRight { get { return KeyState[a.Right]; } }
+		public bool IsPressedEnter { get { return KeyState[ConstructorArguments.Enter]; } }
+		public bool IsPressedDown { get { return KeyState[ConstructorArguments.Down]; } }
+		public bool IsPressedUp { get { return KeyState[ConstructorArguments.Up]; } }
+		public bool IsPressedLeft { get { return KeyState[ConstructorArguments.Left]; } }
+		public bool IsPressedRight { get { return KeyState[ConstructorArguments.Right]; } }
 
 	}
 }

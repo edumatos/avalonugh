@@ -63,7 +63,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 				g.MoveTo(x, y);
 				g.Container.Opacity = 0.5;
 
-				Level.KnownStartPositions.Add(g);
 
 				var v = new Vehicle(Level.Zoom);
 
