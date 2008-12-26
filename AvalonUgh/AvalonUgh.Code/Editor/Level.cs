@@ -561,7 +561,6 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownRidgeTrees.Remove(Entity);
-										Entity.Image.Orphanize();
 									}
 							}
 					)
