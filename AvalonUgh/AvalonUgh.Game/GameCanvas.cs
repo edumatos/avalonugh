@@ -56,6 +56,7 @@ namespace AvalonUgh.Game.Shared
 		public Dialog PauseDialog;
 		public Action<double> PauseDialog_SetOpacity;
 		public Action<bool, string> SetPause;
+		public Func<PlayerInfo> Locals_Increase;
 
 		public GameCanvas()
 		{
@@ -63,15 +64,22 @@ namespace AvalonUgh.Game.Shared
 
 			var Music = new AudioLoop
 			{
-				Volume = 0.1,
+				Volume = 0.2,
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
 				Enabled = true,
 			};
 
+			var Snore = new AudioLoop
+			{
+				Volume = 0.2,
+				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/snore1.mp3"),
+			};
+
+
 			var WaterRaise = new AudioLoop
 			{
 
-				Volume = 0.4,
+				Volume = 0.5,
 				Start = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise_start.mp3"),
 				Stop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise_stop.mp3"),
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise2.mp3")
@@ -176,6 +184,11 @@ namespace AvalonUgh.Game.Shared
 							//Console.WriteLine("CollisionAtVelocity " + new { Velocity, Volume });
 						};
 
+					Level.KnownDinos.ListChanged +=
+						delegate
+						{
+							Snore.Enabled = Level.KnownDinos.Count > 0;
+						};
 
 					// in menu mode the view does not include status bar
 					// yet later in game we should adjust that
@@ -211,6 +224,15 @@ namespace AvalonUgh.Game.Shared
 
 					et.EditorSelectorChanged +=
 						() => View.EditorSelector = et.EditorSelector;
+
+					et.VisibilityChanged +=
+						delegate
+						{
+							var IsVisible = et.Container.Visibility == Visibility.Visible;
+
+							View.StartPositionsContainer.Show(IsVisible);
+							View.EditorSelectorRectangle.Show(IsVisible);
+						};
 
 					View.EditorSelector = et.EditorSelector;
 
@@ -340,8 +362,7 @@ namespace AvalonUgh.Game.Shared
 
 							if (args.Key == Key.T)
 							{
-								et.Container.ToggleVisible();
-								View.EditorSelectorRectangle.ToggleVisible();
+								et.ToggleVisibility();
 							}
 
 							if (args.Key == Key.H)
@@ -416,7 +437,16 @@ namespace AvalonUgh.Game.Shared
 							// nor are we inside a cave
 
 							// where are the spawnpoints in this level?
-							NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 4);
+							if (Level.KnownCaves.Count == 0)
+							{
+								NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 4);
+							}
+							else
+							{
+								var CandidateCave = Level.KnownCaves.Random();
+
+								AIDirector.ActorExitAnyCave(NewPlayer.Actor, CandidateCave);
+							}
 
 							// we need to play jumping sound
 							NewPlayer.Actor.Jumping +=
@@ -530,13 +560,13 @@ namespace AvalonUgh.Game.Shared
 
 
 
-					Action Locals_Increase =
+					this.Locals_Increase =
 						delegate
 						{
 							// do we have any predefined key sets to allow 
 							// another player?
 							if (this.AvailableInputs.Count == 0)
-								return;
+								return null;
 
 							var i = this.AvailableInputs.Pop();
 
@@ -549,7 +579,7 @@ namespace AvalonUgh.Game.Shared
 
 							// the first player can be controlled by
 							// touch input and if we had multitouch so would others
-						
+
 
 
 
@@ -558,6 +588,8 @@ namespace AvalonUgh.Game.Shared
 							this.LocalIdentity.Locals.Add(p);
 
 							(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
+
+							return p;
 						};
 
 					Action Locals_Decrase =

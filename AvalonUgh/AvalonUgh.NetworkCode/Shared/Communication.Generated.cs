@@ -261,59 +261,59 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void LocalPlayers_Increase()
+            public void LocalPlayers_Increase(int frame)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.LocalPlayers_Increase, args = new object[] {  } });
+                    Send(new SendArguments { i = Messages.LocalPlayers_Increase, args = new object[] { frame } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.LocalPlayers_Increase();
+                        Target__.LocalPlayers_Increase(frame);
                     }
                 }
             }
-            public void UserLocalPlayers_Increase(int user)
+            public void UserLocalPlayers_Increase(int user, int frame)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserLocalPlayers_Increase, args = new object[] { user } });
+                    Send(new SendArguments { i = Messages.UserLocalPlayers_Increase, args = new object[] { user, frame } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserLocalPlayers_Increase(user);
+                        Target__.UserLocalPlayers_Increase(user, frame);
                     }
                 }
             }
-            public void LocalPlayers_Decrease()
+            public void LocalPlayers_Decrease(int frame)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.LocalPlayers_Decrease, args = new object[] {  } });
+                    Send(new SendArguments { i = Messages.LocalPlayers_Decrease, args = new object[] { frame } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.LocalPlayers_Decrease();
+                        Target__.LocalPlayers_Decrease(frame);
                     }
                 }
             }
-            public void UserLocalPlayers_Decrease(int user)
+            public void UserLocalPlayers_Decrease(int user, int frame)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserLocalPlayers_Decrease, args = new object[] { user } });
+                    Send(new SendArguments { i = Messages.UserLocalPlayers_Decrease, args = new object[] { user, frame } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserLocalPlayers_Decrease(user);
+                        Target__.UserLocalPlayers_Decrease(user, frame);
                     }
                 }
             }
@@ -589,11 +589,11 @@ namespace AvalonUgh.NetworkCode.Shared
                 }
                 public void UserLocalPlayers_Increase(LocalPlayers_IncreaseArguments e)
                 {
-                    Target.UserLocalPlayers_Increase(this.user);
+                    Target.UserLocalPlayers_Increase(this.user, e.frame);
                 }
                 public void UserLocalPlayers_Decrease(LocalPlayers_DecreaseArguments e)
                 {
-                    Target.UserLocalPlayers_Decrease(this.user);
+                    Target.UserLocalPlayers_Decrease(this.user, e.frame);
                 }
                 public void UserEditorSelector(EditorSelectorArguments e)
                 {
@@ -661,21 +661,21 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserVehicle_TeleportTo(this.user, e.index, e.x, e.y, e.vx, e.vy);
                 }
-                public void UserLocalPlayers_Increase()
+                public void UserLocalPlayers_Increase(int frame)
                 {
-                    this.Target.UserLocalPlayers_Increase(this.user);
+                    this.Target.UserLocalPlayers_Increase(this.user, frame);
                 }
                 public void UserLocalPlayers_Increase(UserLocalPlayers_IncreaseArguments e)
                 {
-                    this.Target.UserLocalPlayers_Increase(this.user);
+                    this.Target.UserLocalPlayers_Increase(this.user, e.frame);
                 }
-                public void UserLocalPlayers_Decrease()
+                public void UserLocalPlayers_Decrease(int frame)
                 {
-                    this.Target.UserLocalPlayers_Decrease(this.user);
+                    this.Target.UserLocalPlayers_Decrease(this.user, frame);
                 }
                 public void UserLocalPlayers_Decrease(UserLocalPlayers_DecreaseArguments e)
                 {
-                    this.Target.UserLocalPlayers_Decrease(this.user);
+                    this.Target.UserLocalPlayers_Decrease(this.user, e.frame);
                 }
                 public void UserEditorSelector(int frame, int type, int size, int x, int y)
                 {
@@ -798,13 +798,13 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserLocalPlayers_Increase(this.user);
+                    _target.UserLocalPlayers_Increase(this.user, e.frame);
                 }
                 public void UserLocalPlayers_Decrease(UserLocalPlayers_DecreaseArguments e)
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserLocalPlayers_Decrease(this.user);
+                    _target.UserLocalPlayers_Decrease(this.user, e.frame);
                 }
                 public void UserEditorSelector(UserEditorSelectorArguments e)
                 {
@@ -1034,10 +1034,11 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class LocalPlayers_IncreaseArguments
             {
+                public int frame;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().ToString();
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1047,10 +1048,11 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class UserLocalPlayers_IncreaseArguments : WithUserArguments
             {
+                public int frame;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1060,10 +1062,11 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class LocalPlayers_DecreaseArguments
             {
+                public int frame;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().ToString();
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1073,10 +1076,11 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class UserLocalPlayers_DecreaseArguments : WithUserArguments
             {
+                public int frame;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1276,10 +1280,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), local = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
                             { Messages.Vehicle_TeleportTo, e => { Vehicle_TeleportTo(new Vehicle_TeleportToArguments { index = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
                             { Messages.UserVehicle_TeleportTo, e => { UserVehicle_TeleportTo(new UserVehicle_TeleportToArguments { user = e.GetInt32(0), index = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
-                            { Messages.LocalPlayers_Increase, e => { LocalPlayers_Increase(new LocalPlayers_IncreaseArguments {  }); } },
-                            { Messages.UserLocalPlayers_Increase, e => { UserLocalPlayers_Increase(new UserLocalPlayers_IncreaseArguments { user = e.GetInt32(0) }); } },
-                            { Messages.LocalPlayers_Decrease, e => { LocalPlayers_Decrease(new LocalPlayers_DecreaseArguments {  }); } },
-                            { Messages.UserLocalPlayers_Decrease, e => { UserLocalPlayers_Decrease(new UserLocalPlayers_DecreaseArguments { user = e.GetInt32(0) }); } },
+                            { Messages.LocalPlayers_Increase, e => { LocalPlayers_Increase(new LocalPlayers_IncreaseArguments { frame = e.GetInt32(0) }); } },
+                            { Messages.UserLocalPlayers_Increase, e => { UserLocalPlayers_Increase(new UserLocalPlayers_IncreaseArguments { user = e.GetInt32(0), frame = e.GetInt32(1) }); } },
+                            { Messages.LocalPlayers_Decrease, e => { LocalPlayers_Decrease(new LocalPlayers_DecreaseArguments { frame = e.GetInt32(0) }); } },
+                            { Messages.UserLocalPlayers_Decrease, e => { UserLocalPlayers_Decrease(new UserLocalPlayers_DecreaseArguments { user = e.GetInt32(0), frame = e.GetInt32(1) }); } },
                             { Messages.EditorSelector, e => { EditorSelector(new EditorSelectorArguments { frame = e.GetInt32(0), type = e.GetInt32(1), size = e.GetInt32(2), x = e.GetInt32(3), y = e.GetInt32(4) }); } },
                             { Messages.UserEditorSelector, e => { UserEditorSelector(new UserEditorSelectorArguments { user = e.GetInt32(0), frame = e.GetInt32(1), type = e.GetInt32(2), size = e.GetInt32(3), x = e.GetInt32(4), y = e.GetInt32(5) }); } },
                             { Messages.SyncFrame, e => { SyncFrame(new SyncFrameArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1) }); } },
@@ -1475,34 +1479,34 @@ namespace AvalonUgh.NetworkCode.Shared
             }
 
             public event Action<RemoteEvents.LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
-            void IMessages.LocalPlayers_Increase()
+            void IMessages.LocalPlayers_Increase(int frame)
             {
                 if(LocalPlayers_Increase == null) return;
-                var v = new RemoteEvents.LocalPlayers_IncreaseArguments {  };
+                var v = new RemoteEvents.LocalPlayers_IncreaseArguments { frame = frame };
                 this.VirtualLatency(() => this.LocalPlayers_Increase(v));
             }
 
             public event Action<RemoteEvents.UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
-            void IMessages.UserLocalPlayers_Increase(int user)
+            void IMessages.UserLocalPlayers_Increase(int user, int frame)
             {
                 if(UserLocalPlayers_Increase == null) return;
-                var v = new RemoteEvents.UserLocalPlayers_IncreaseArguments { user = user };
+                var v = new RemoteEvents.UserLocalPlayers_IncreaseArguments { user = user, frame = frame };
                 this.VirtualLatency(() => this.UserLocalPlayers_Increase(v));
             }
 
             public event Action<RemoteEvents.LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
-            void IMessages.LocalPlayers_Decrease()
+            void IMessages.LocalPlayers_Decrease(int frame)
             {
                 if(LocalPlayers_Decrease == null) return;
-                var v = new RemoteEvents.LocalPlayers_DecreaseArguments {  };
+                var v = new RemoteEvents.LocalPlayers_DecreaseArguments { frame = frame };
                 this.VirtualLatency(() => this.LocalPlayers_Decrease(v));
             }
 
             public event Action<RemoteEvents.UserLocalPlayers_DecreaseArguments> UserLocalPlayers_Decrease;
-            void IMessages.UserLocalPlayers_Decrease(int user)
+            void IMessages.UserLocalPlayers_Decrease(int user, int frame)
             {
                 if(UserLocalPlayers_Decrease == null) return;
-                var v = new RemoteEvents.UserLocalPlayers_DecreaseArguments { user = user };
+                var v = new RemoteEvents.UserLocalPlayers_DecreaseArguments { user = user, frame = frame };
                 this.VirtualLatency(() => this.UserLocalPlayers_Decrease(v));
             }
 
@@ -1607,4 +1611,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 24.12.2008 14:38:45
+// 26.12.2008 9:33:26

@@ -15,5 +15,10 @@ namespace AvalonUgh.Code.Editor
 
 		public NameFormat ToolbarImage;
 		public View.SelectorInfo[] Sizes;
+
+		public SelectorBase()
+		{
+			this.Sizes = new View.SelectorInfo[0];
+		}
 	}
 }

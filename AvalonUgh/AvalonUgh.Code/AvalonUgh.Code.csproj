@@ -148,6 +148,8 @@
     <Compile Include="Editor\Sprites\DinoSelector.cs" />
     <Compile Include="Editor\Sprites\Gold.cs" />
     <Compile Include="Editor\Sprites\GoldSelector.cs" />
+    <Compile Include="Editor\Sprites\Tryoperus.cs" />
+    <Compile Include="Editor\Sprites\TryoperusSelector.cs" />
     <Compile Include="Editor\Sprites\VehicleSelector.cs" />
     <Compile Include="Editor\WaterLevelSelector.cs" />
     <Compile Include="Editor\Sprites\Vehicle.ColorStripe.cs" />

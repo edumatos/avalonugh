@@ -136,6 +136,8 @@ namespace AvalonUgh.Code
 
 				}
 
+			bool DinoWindEnabled = true;
+
 			var actor = twin as Actor;
 			if (actor != null)
 			{
@@ -160,9 +162,8 @@ namespace AvalonUgh.Code
 					}
 				}
 
-				//    1000.AtDelay(() => actor.ReadyForGoldPickup = true);
-				//}
-
+				if (actor.AIInputEnabled)
+					DinoWindEnabled = false;
 
 			}
 
@@ -206,13 +207,13 @@ namespace AvalonUgh.Code
 			}
 			#endregion
 
+			if (DinoWindEnabled)
+				foreach (var dino in this.Level.KnownDinos)
+				{
+					if (dino.SnoreArea.Intersects(vehXY))
+						twin.VelocityX += dino.SnoreWind * dino.SnoreWindAmpilfier * this.Level.Zoom;
 
-			foreach (var dino in this.Level.KnownDinos)
-			{
-				if (dino.SnoreArea.Intersects(vehXY))
-					twin.VelocityX += dino.SnoreWind * dino.SnoreWindAmpilfier * this.Level.Zoom ;
-					
-			}
+				}
 
 
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));

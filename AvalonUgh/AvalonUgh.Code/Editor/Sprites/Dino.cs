@@ -14,6 +14,12 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class Dino : ISupportsContainer, ISupportsMoveTo, ISupportsObstacle
 	{
+		//DINOSAUR
+		//--------
+		//HE SLEEPS PEACEFULLY ON HIS PLATFORM, AND YOU MIGHT THINK THAT HE CAN`T DO
+		//ANY HARM, HOWEVER, HIS HEAVY SNORING CONSTANTLY THREATENS TO THROW YOUR
+		//HELICOPTER OFF COURSE.
+
 		public View.SelectorInfo Selector { get; set; }
 
 		public Canvas Container { get; set; }

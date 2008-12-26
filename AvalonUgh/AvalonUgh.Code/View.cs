@@ -33,6 +33,7 @@ namespace AvalonUgh.Code
 		public Canvas PlatformsInfoOverlay { get; set; }
 
 		public Canvas Entities { get; set; }
+		public Canvas StartPositionsContainer { get; set; }
 
 		public Canvas ContentExtendedContainer { get; set; }
 
@@ -166,6 +167,12 @@ namespace AvalonUgh.Code
 				Height = this.ContentActualHeight
 			}.AttachTo(this.Content);
 
+			this.StartPositionsContainer = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
+
 			this.ContentExtendedContainer = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
@@ -279,7 +286,7 @@ namespace AvalonUgh.Code
 			);
 
 			this.Level.KnownStartPositions.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.Entities)
+				k => k.AttachContainerTo(this.StartPositionsContainer)
 			);
 
 			#endregion
