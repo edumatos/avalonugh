@@ -131,7 +131,7 @@ namespace AvalonUgh.Code.Editor
 							let StartPosition = i.StartPosition
 							where StartPosition != null
 							where StartPosition.BaseY == index
-							select new Attribute.Int32 { Key = Sprites.Tryoperus.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
+							select new Attribute.Int32 { Key = Sprites.Rock.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
 						);
 
 

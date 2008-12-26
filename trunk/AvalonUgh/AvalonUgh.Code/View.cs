@@ -232,8 +232,7 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownDinos.AttachTo(this.Entities);
 
-
-
+		
 			this.Level.KnownSigns.AttachTo(this.Entities);
 
 
@@ -279,6 +278,10 @@ namespace AvalonUgh.Code
 			this.Level.KnownBridges.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
+			this.Level.KnownBridges.ForEachItemDeleted(
+				k => k.Image.Orphanize()
+			);
+
 
 
 			this.Level.KnownTrees.ForEachNewOrExistingItem(

@@ -1,0 +1,33 @@
+# generated map
+# text: Bottleneck 1
+# code: Copy of
+# autoscroll: 0
+# water: 30
+######################
+    S--  S-S  S-S-    
+ R-R|  S-| |S-| | RR--
+ | S-S-| SC-| | SS-|  
+R-SS-| |  | | | || SR-
+# sign: 152;1
+# rock: 240
+| || SP--PP-PP--S| || 
+ RS| ||  SS-S|  S-S-R-
+R-SS-S--S-| S-S-| | | 
+| || |  | | | | | | R-
+ C-| S-S| S-S-| S--C- 
+ | | |  | | |  S|  |  
+# tree: 272
+# sign: 232;3
+# sign: 120;2
+# tryo: 84
+P---BBBBP-| P-P--BBP--
+R-SS-S-S| S-| S-SS-R--
+| || | S-S-S-S-S|| |  
+ S-| C-| | | | C-| S- 
+S-S--| | | | | | | |  
+# sign: 120;4
+# sign: 216;5
+| |  P-BBBS-BBBP-S-S--
+| SR-| S-SR-S--| R-|  
+   |   | || |         
+######################

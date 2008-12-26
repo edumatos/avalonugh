@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public  class BridgeSelector : SelectorBase
+	public class BridgeSelector : SelectorBase
 	{
 		public const string Identifier = "B";
 
@@ -115,44 +115,61 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				#region scan to right
 				var right = o.WithOffset(this.Width * z, 0);
+				var right_down = o.WithOffset(this.Width * z, this.Height * z);
 
 				// is there a bridge to my right?
 				var right_p = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(right));
 				if (right_p == null)
 				{
-					var right_platform = Level.KnownPlatforms.FirstOrDefault(k => k.ToObstacle().Intersects(right));
-					if (right_platform != null)
+					if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(right)))
 					{
 						this.Name.Index = VariationRight;
 					}
-
-					var right_ridge = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Intersects(right));
-					if (right_ridge != null)
+					else if (Level.KnownRidges.Any(k => k.ToObstacle().Intersects(right)))
 					{
 						this.Name.Index = VariationRight;
 					}
-
+					else if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(right_down)))
+					{
+						this.Name.Index = VariationRight;
+					}
+					else if (Level.KnownRidges.Any(k => k.ToObstacle().Intersects(right_down)))
+					{
+						this.Name.Index = VariationRight;
+					}
 				}
 				#endregion
 
 				#region scan to left
 				var left = o.WithOffset(-this.Width * z, 0);
+				var left_down = o.WithOffset(-this.Width * z, this.Height * z);
 
 				// is there a bridge to my right?
 				var left_p = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(left));
 				if (left_p == null)
 				{
-					var left_platform = Level.KnownPlatforms.FirstOrDefault(k => k.ToObstacle().Intersects(left));
-					if (left_platform != null)
+					if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(left)))
 					{
 						if (this.Name.Index == VariationRight)
 							this.Name.Index = VariationMiddle;
 						else
 							this.Name.Index = VariationLeft;
 					}
-
-					var left_ridge = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Intersects(left));
-					if (left_ridge != null)
+					else if (Level.KnownRidges.Any(k => k.ToObstacle().Intersects(left)))
+					{
+						if (this.Name.Index == VariationRight)
+							this.Name.Index = VariationMiddle;
+						else
+							this.Name.Index = VariationLeft;
+					}
+					else if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(left_down)))
+					{
+						if (this.Name.Index == VariationRight)
+							this.Name.Index = VariationMiddle;
+						else
+							this.Name.Index = VariationLeft;
+					}
+					else if (Level.KnownRidges.Any(k => k.ToObstacle().Intersects(left_down)))
 					{
 						if (this.Name.Index == VariationRight)
 							this.Name.Index = VariationMiddle;

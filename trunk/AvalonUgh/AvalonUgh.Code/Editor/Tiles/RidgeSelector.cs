@@ -107,6 +107,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 			{
 				Name.Index = (Name.Index + 1) % Name.IndexCount;
 
+			
+
 				RemovePlatforms(this, Level, Position);
 				RemoveEntities(this, Level, Position);
 
@@ -117,6 +119,40 @@ namespace AvalonUgh.Code.Editor.Tiles
 				};
 
 				Level.KnownRidges.Add(u);
+
+
+
+				{
+					// bridge connected only by the corner will also have legs!
+					var TriggerPosition = Position[-1, -1];
+
+					var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
+
+					var trigger = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
+
+					if (trigger != null)
+					{
+						Level.KnownBridges.Remove(trigger);
+
+						new BridgeSelector().Size_1x1.CreateTo(Level, TriggerPosition);
+					}
+				}
+
+				{
+					// bridge connected only by the corner will also have legs!
+					var TriggerPosition = Position[this.PrimitiveTileCountX, -1];
+
+					var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
+
+					var trigger = Level.KnownBridges.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
+
+					if (trigger != null)
+					{
+						Level.KnownBridges.Remove(trigger);
+
+						new BridgeSelector().Size_1x1.CreateTo(Level, TriggerPosition);
+					}
+				}
 			}
 		}
 
