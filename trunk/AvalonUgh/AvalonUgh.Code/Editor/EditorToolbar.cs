@@ -305,5 +305,14 @@ namespace AvalonUgh.Code.Editor
 
 
 
+		public event Action VisibilityChanged;
+
+		public void ToggleVisibility()
+		{
+			this.Container.ToggleVisible();
+
+			if (VisibilityChanged != null)
+				VisibilityChanged();
+		}
 	}
 }

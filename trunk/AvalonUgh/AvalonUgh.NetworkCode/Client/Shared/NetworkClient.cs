@@ -159,7 +159,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 					foreach (var p in this.Content.LocalIdentity.Locals)
 					{
-						this.Messages.UserLocalPlayers_Increase(e.user);
+						this.Messages.UserLocalPlayers_Increase(e.user, 0);
 						this.Messages.UserTeleportTo(e.user,
 							p.IdentityLocal,
 							p.Actor.X,
@@ -399,11 +399,11 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 
 
-
+		
 			this.Content.LocalIdentity.Locals.ForEachNewOrExistingItem(
 				Local =>
 				{
-					this.Messages.LocalPlayers_Increase();
+					this.Messages.LocalPlayers_Increase(0);
 					this.Messages.TeleportTo(Local.IdentityLocal,
 						Local.Actor.X,
 						Local.Actor.Y,
@@ -476,8 +476,9 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			);
 
 			this.Content.LocalIdentity.Locals.ForEachItemDeleted(
-				Local => this.Messages.LocalPlayers_Decrease()
+				Local => this.Messages.LocalPlayers_Decrease(0)
 			);
+
 			#endregion
 
 			#region EditorSelectorApplied
@@ -527,6 +528,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 			#endregion
 
+			#region SetShakerEnabled
 			// we are overriding default behaviour
 			// as we need to act upon events in the future
 			this.Content.SetShakerEnabled =
@@ -552,6 +554,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						}
 					);
 				};
+			#endregion
+
 
 			#region pause
 			var SetPause = this.Content.SetPause;
