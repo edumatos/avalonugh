@@ -30,6 +30,7 @@ namespace AvalonUgh.Game.Shared
 
 		public const int DefaultWidth = 640;
 		public const int DefaultHeight = 400;
+
 		//public const int DefaultWidth = 640 + 200;
 		//public const int DefaultHeight = 400 + 200;
 
@@ -142,8 +143,10 @@ namespace AvalonUgh.Game.Shared
 
 			#region Locals
 
-			this.LocalIdentity.Locals.ForEachNewItem(i => Players.Add(i));
-			this.LocalIdentity.Locals.ForEachItemDeleted(i => Players.Remove(i));
+			this.LocalIdentity.Locals.AttachTo(Players);
+
+			//this.LocalIdentity.Locals.ForEachNewItem(i => Players.Add(i));
+			//this.LocalIdentity.Locals.ForEachItemDeleted(i => Players.Remove(i));
 
 			#endregion
 
@@ -181,6 +184,7 @@ namespace AvalonUgh.Game.Shared
 				LevelText =>
 				{
 					var Level = new Level(LevelText, Zoom, this.Selectors);
+					//var Level2 = new Level(LevelText, Zoom, this.Selectors);
 
 					this.LoadEmbeddedLevel =
 						LevelNumber =>
@@ -225,8 +229,10 @@ namespace AvalonUgh.Game.Shared
 					// in menu mode the view does not include status bar
 					// yet later in game we should adjust that
 					View = new View(DefaultWidth, DefaultHeight - 18, Level);
+					//var View2 = new View(DefaultWidth, DefaultHeight / 2, Level2);
 
 					View.AttachContainerTo(this);
+					//View2.MoveContainerTo(0, DefaultHeight / 2).AttachContainerTo(this);
 					View.EditorSelector = null;
 
 					View.IsShakerEnabledChanged +=
@@ -260,7 +266,7 @@ namespace AvalonUgh.Game.Shared
 					et.EditorSelectorChanged +=
 						() => View.EditorSelector = et.EditorSelector;
 
-			
+
 
 					var et_load = new LoadWindow
 					{
@@ -311,7 +317,7 @@ namespace AvalonUgh.Game.Shared
 							{
 								et_load.OrphanizeContainer();
 							}
-							
+
 						};
 
 					View.EditorSelector = et.EditorSelector;
