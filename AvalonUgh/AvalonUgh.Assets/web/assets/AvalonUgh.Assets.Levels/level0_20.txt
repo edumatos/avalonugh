@@ -1,0 +1,32 @@
+# generated map
+# text: A capital g
+# code: ANDROGYNOUSNOISE
+# autoscroll: 0
+# water: 18
+######################
+   S-      R--R-R-    
+ S-| C-R-R-|  | | R-- 
+ |  S| | | S-S-R-R|   
+# sign: 56;1
+ | P-P-R--S| | | S-S- 
+SS-| | |  || | S-| C- 
+|| R--RSS-S-S--| S |  
+# sign: 296;2
+S| |  S-| | |  | |P---
+# tree: 224
+|| SR-| | S-P--| S-R--
+ SS-| C-| | |  S-| |  
+ || | | S S--R-SS-SC- 
+# sign: 152;3
+# rock: 146
+S-| R-BBBB|  R-||  |  
+# sign: 296;4
+| | R-S-S-SS-| S| P-- 
+S-S-| | C-|| R-|| |   
+| S-R-| |  | | S--S-S-
+# sign: 168;5
+| | | P--P---| |  | | 
+| | S-|  |   S-SS-| | 
+S-| | S--S-S-| || | S-
+|   | |    | |  |   | 
+######################
