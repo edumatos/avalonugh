@@ -23,7 +23,7 @@ namespace AvalonUgh.Game.Shared
 	[Script]
 	public class GameCanvas : Canvas
 	{
-		const string LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_20.txt";
+		const string LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_21.txt";
 
 
 		public const int Zoom = 2;
