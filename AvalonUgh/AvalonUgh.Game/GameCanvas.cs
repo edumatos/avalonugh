@@ -64,6 +64,10 @@ namespace AvalonUgh.Game.Shared
 		public Action<bool, string> SetPause;
 		public Func<PlayerInfo> Locals_Increase;
 
+		public Action<int> LoadEmbeddedLevel;
+
+		public Level CurrentLevel;
+
 		public GameCanvas()
 		{
 			this.Background = Brushes.Black;
@@ -178,6 +182,15 @@ namespace AvalonUgh.Game.Shared
 				{
 					var Level = new Level(LevelText, Zoom, this.Selectors);
 
+					this.LoadEmbeddedLevel =
+						LevelNumber =>
+						{
+							Console.WriteLine("done loading embedded level... #" + LevelNumber);
+							Level.Clear();
+						};
+
+					this.CurrentLevel = Level;
+
 					Level.Physics.CollisionAtVelocity +=
 						Velocity =>
 						{
@@ -257,9 +270,20 @@ namespace AvalonUgh.Game.Shared
 					et_load.Click +=
 						NextLevel =>
 						{
-							Console.WriteLine("loading next level...");
-
 							et_load.OrphanizeContainer();
+
+							// are we trying to load a custom level?
+
+							if (NextLevel.Location.Embedded == null)
+							{
+								Console.WriteLine("loading custom level... ???");
+							}
+							else
+							{
+								Console.WriteLine("loading embedded level... #" + NextLevel.Location.Embedded.AnimationFrame);
+
+								LoadEmbeddedLevel(NextLevel.Location.Embedded.AnimationFrame);
+							}
 						};
 
 					et.VisibilityChanged +=
@@ -424,6 +448,11 @@ namespace AvalonUgh.Game.Shared
 							if (args.Key == Key.H)
 							{
 								SetShakerEnabled(!View.IsShakerEnabled);
+							}
+
+							if (args.Key == Key.M)
+							{
+								Music.Enabled = !Music.Enabled;
 							}
 
 							if (args.Key == Key.P)

@@ -54,6 +54,12 @@ namespace AvalonUgh.NetworkCode.Shared
 			void ClearPaused();
 			void UserClearPaused(int user);
 
+			void LoadEmbeddedLevel(int frame, int level);
+			void UserLoadEmbeddedLevel(int user, int frame, int level);
+
+			void LoadCustomLevel(int frame, string data);
+			void UserLoadCustomLevel(int user, int frame, string data);
+
 		}
 
 

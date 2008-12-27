@@ -603,6 +603,26 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			#endregion
 
 
+			var LoadEmbeddedLevel = this.Content.LoadEmbeddedLevel;
+			this.Content.LoadEmbeddedLevel =
+				LevelNumber =>
+				{
+					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+						delegate
+						{
+							LoadEmbeddedLevel(LevelNumber);
+						}
+					);
+
+					this.Messages.LoadEmbeddedLevel(FutureFrame, LevelNumber);
+				};
+
+			this.Events.UserLoadEmbeddedLevel +=
+				e =>
+				{
+					LoadEmbeddedLevel(e.level);
+				};
+
 		}
 
 		public PlayerIdentity this[int user]
