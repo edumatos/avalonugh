@@ -167,7 +167,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-
+				Action Later = null;
 
 				if (Name.IndexCount > 0)
 					Name.Index = (Name.Index + 1) % Name.IndexCount;
@@ -181,22 +181,33 @@ namespace AvalonUgh.Code.Editor.Tiles
 					if (PrimitiveTileCountY == 3)
 					{
 						// yay, is there a 1x2 tile to the west?
-						var TriggerPosition = Position[-1, 0];
+						var Left_TriggerPosition = Position[-1, 0];
+						var Left_TriggerObstacle = Obstacle.Of(Left_TriggerPosition, Level.Zoom, 1, 2);
+						var Left_Trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(Left_TriggerObstacle));
 
-						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 2);
-
-						var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
-
-						if (trigger != null)
+						if (Left_Trigger != null)
 						{
-							// our tile will look special
-							Name.Index = 100;
+							var Bottom_TriggerPosition = Position[0, 3];
+							var Bottom_TriggerObstacle = Obstacle.Of(Bottom_TriggerPosition, Level.Zoom, 1, 1);
+							var Bottom_Trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(Bottom_TriggerObstacle));
 
-							Level.KnownStones.Remove(trigger);
+							if (Bottom_Trigger == null)
+							{
+								// our tile will look special
+								Name.Index = 100;
+							}
+							else
+							{
+								Name.Index = 102;
+							}
 
-							var Size_1x2 = new Size_Generic(1, 2, 0);
-							Size_1x2.Name.Index = 100;
-							Size_1x2.CreateTo(Level, TriggerPosition);
+							Later +=
+								delegate
+								{
+									var Size_1x2 = new Size_Generic(1, 2, 0);
+									Size_1x2.Name.Index = 100;
+									Size_1x2.CreateTo(Level, Left_TriggerPosition);
+								};
 						}
 					}
 
@@ -215,11 +226,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 							// our tile will look special
 							Name.Index = 100;
 
-							Level.KnownStones.Remove(trigger);
 
-							var Size_1x2 = new Size_Generic(1, 2, 0);
-							Size_1x2.Name.Index = 100;
-							Size_1x2.CreateTo(Level, TriggerPosition);
+							Later +=
+								delegate
+								{
+									var Size_1x2 = new Size_Generic(1, 2, 0);
+									Size_1x2.Name.Index = 100;
+									Size_1x2.CreateTo(Level, TriggerPosition);
+								};
 						}
 					}
 
@@ -238,11 +252,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 								// our tile will look special
 								Name.Index = 101;
 
-								Level.KnownStones.Remove(trigger);
-
-								var Size_2x3 = new Size_Generic(2, 3, 0);
-								Size_2x3.Name.Index = 101;
-								Size_2x3.CreateTo(Level, TriggerPosition);
+							
+								Later +=
+									delegate
+									{
+										var Size_2x3 = new Size_Generic(2, 3, 0);
+										Size_2x3.Name.Index = 101;
+										Size_2x3.CreateTo(Level, TriggerPosition);
+									};
 							}
 						}
 
@@ -257,11 +274,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 								// our tile will look special
 								Name.Index = 101;
 
-								Level.KnownStones.Remove(trigger);
 
-								var Size_2x3 = new Size_Generic(2, 2, 0);
-								Size_2x3.Name.Index = 101;
-								Size_2x3.CreateTo(Level, TriggerPosition);
+								Later +=
+									delegate
+									{
+										var Size_2x2 = new Size_Generic(2, 2, 0);
+										Size_2x2.Name.Index = 101;
+										Size_2x2.CreateTo(Level, TriggerPosition);
+									};
 							}
 						}
 					}
@@ -293,6 +313,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 				Level.KnownStones.Add(u);
 
 				Name.Index = Name_Index;
+
+				if (Later != null)
+					Later();
 			}
 		}
 

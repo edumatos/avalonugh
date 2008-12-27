@@ -157,9 +157,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 					}
 					else if (Level.KnownRidges.Any(k => k.ToObstacle().Intersects(left)))
 					{
-						if (this.Name.Index == VariationRight)
-							this.Name.Index = VariationMiddle;
-						else
+						if (this.Name.Index != VariationRight)
 							this.Name.Index = VariationLeft;
 					}
 					else if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(left_down)))

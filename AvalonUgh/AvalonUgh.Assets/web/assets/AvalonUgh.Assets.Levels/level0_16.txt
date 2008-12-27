@@ -1,0 +1,31 @@
+# generated map
+# text: The easy cave
+# code: SLEEPWALK
+# autoscroll: 0
+# water: 20
+######################
+ S-S-   S-SR--  S-S-- 
+ | | S--| ||  R-| |   
+ | | |  | S-R-| SS-S- 
+ S--R-R-| | | | || |  
+ |  | | SS-S-R-C-| |  
+ S-S-R--|| C-| | S S- 
+# sign: 296;3
+ S-| |   | | | P---| B
+# sign: 136;2
+ | SS-R-BP--BR--S-S|  
+ | S| R-S|  S|  | S-S-
+ | || | S-S-|R-SS-| S-
+S--S-S| | S--| || | | 
+|  | S--| |  SS-| | | 
+SS-| |  S-S-C-| S-S-- 
+|| S-S- | | | | | |   
+# sign: 120;1
+# rock: 146
+S| | | P--PPP--S| SC- 
+|| S-| |  R-|  | S-|  
+# tree: 48
+# sign: 264;4
+PP---P-S--| SS-P-P---P
+ |     |  |  | | |    
+######################
