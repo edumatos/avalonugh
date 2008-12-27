@@ -14,6 +14,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public partial class Tryoperus : ISupportsContainer, ISupportsPhysics, IDisposable
 	{
+		public double MassCenterModifier { get; set; }
+
 		//TRYOPERUS
 		//---------
 		//AS LONG AS YOU DONT DISTURB HIM ON HIS PLATFORM HE IS A HARMLESS FELLOW.

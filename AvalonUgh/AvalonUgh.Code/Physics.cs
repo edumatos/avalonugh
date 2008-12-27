@@ -57,21 +57,23 @@ namespace AvalonUgh.Code
 				return;
 
 			// y relative to water
-			var y = twin.Y - this.Level.WaterTop;
+			var y = (twin.Y - this.Level.WaterTop) ;
 
 
 			// 0..1 how much volume is in air
 
 			var AirVolume = (-y / twin.HalfHeight).Min(1).Max(0);
-			var WaterVolume = (y / twin.HalfHeight).Min(1).Max(0);
+			var WaterVolume = ((y + twin.HalfHeight * twin.MassCenterModifier) / twin.HalfHeight).Min(1).Max(0);
+
+	
 
 			// add gravity
-			twin.VelocityY += Level.AttributeGravity.Value * 0.01 * AirVolume;
+			twin.VelocityY += Level.AttributeGravity.Value * 0.01 * AirVolume * AirVolume;
 
 
 			const double WaterDensity = 1.0;
 			var DeltaDensity = twin.Density - WaterDensity;
-			var Bouyancy = DeltaDensity * WaterVolume * 0.2;
+			var Bouyancy = DeltaDensity * WaterVolume * WaterVolume * 0.2;
 
 			// add water levitation
 			twin.VelocityY += Bouyancy;
@@ -396,6 +398,7 @@ namespace AvalonUgh.Code
 
 		bool PhysicsDisabled { get; }
 
+		double MassCenterModifier { get; }
 
 		double Density { get; set; }
 

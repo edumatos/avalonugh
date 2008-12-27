@@ -20,6 +20,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public double MassCenterModifier { get; set; }
+
 		public double LastCollisionVelocity { get; set; }
 		public double LastWaterCollisionVelocity { get; set; }
 
@@ -55,11 +57,10 @@ namespace AvalonUgh.Code
 				if (InternalCurrentVehicle == null)
 				{
 					this.AIInputEnabled = false;
-					this.Animation = Actor.AnimationEnum.Idle;
 
 					this.MoveTo(v.X, v.Y - this.ToObstacle().Height / 2);
-
 					this.BringContainerToFront();
+					this.Show();
 
 					if (v.CurrentDriver != null)
 						v.CurrentDriver = null;
@@ -68,7 +69,7 @@ namespace AvalonUgh.Code
 				{
 
 					this.AIInputEnabled = true;
-					this.Animation = Actor.AnimationEnum.Hidden;
+					this.Hide();
 
 					if (InternalCurrentVehicle.CurrentDriver != this)
 						InternalCurrentVehicle.CurrentDriver = this;
@@ -520,11 +521,9 @@ namespace AvalonUgh.Code
 			if (!EnterVehicleBlocked)
 				if (e.Keyboard.IsPressedEnter)
 				{
-					if (this.VelocityY == 0)
-					{
-						if (EnterVehicle != null)
-							EnterVehicle();
-					}
+
+					if (EnterVehicle != null)
+						EnterVehicle();
 				}
 		}
 
