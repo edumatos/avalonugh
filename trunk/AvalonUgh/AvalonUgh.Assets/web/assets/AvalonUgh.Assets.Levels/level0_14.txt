@@ -1,0 +1,25 @@
+# generated map
+# text: Diving fun
+# code: DOGS
+# autoscroll: 0
+# water: 20
+######################
+                      
+  C-                  
+  |                   
+ P---                 
+ TTTR-                
+ R-T|                 
+ | T|                 
+ TTTR-                
+TTR-|                 
+R-| R-                
+| | |                 
+                      
+                      
+                      
+                      
+                      
+                      
+                      
+######################

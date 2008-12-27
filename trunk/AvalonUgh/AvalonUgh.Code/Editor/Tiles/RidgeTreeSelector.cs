@@ -17,7 +17,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public const string Identifier = "T";
 
 		public readonly View.SelectorInfo
-			Size_1x1 = new SelectorSize_1x1(3);
+			Size_1x1 = new SelectorSize_1x1();
 		//Size_2x1 = new Size_Generic(2, 1, 1),
 		//Size_2x2 = new Size_Generic(2, 2, 3),
 		//Size_2x3 = new Size_Generic(2, 3, 2),
@@ -97,8 +97,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 		private class SelectorSize_1x1 : TileSelector.Named
 		{
 
-			public SelectorSize_1x1(int variations)
-				: base(1, 1, variations, "ridgetree")
+			public SelectorSize_1x1()
+				: base(1, 1, 0, "ridgetree")
 			{
 
 			}
@@ -106,10 +106,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				if (Name.IndexCount > 0)
-					Name.Index = (Name.Index + 1) % Name.IndexCount;
+				Name.Index++;
 
-				Action Later = null;
 
 				var Name_Index = Name.Index;
 
@@ -131,62 +129,56 @@ namespace AvalonUgh.Code.Editor.Tiles
 				var Bottom_TriggerObstacle = Obstacle.Of(Bottom_TriggerPosition, Level.Zoom, 1, 1);
 				var Bottom_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(Bottom_TriggerObstacle));
 
-				if (Top_Trigger != null)
-				{
-					Level.KnownRidgeTrees.Remove(Top_Trigger);
+				Func<int, int, Func<int>> ToLookupValue =
+					(offset, count) =>
+						() => this.Name.Index % count + offset;
 
-					Later +=
-						delegate
-						{
-							CreateTo(Level, Top_TriggerPosition);
-						};
-				}
-				else
+				var Tiles = new
 				{
-					// cut off tree
-					Name.Index = 500;
-				}
-
-				if (Left_Trigger != null)
-				{
-					if (Top_Trigger != null)
+					Triggers = new[]
 					{
-						Name.Index = 520;
-					}
-					else
+						// 2, 4, 8, 16
+						Left_Trigger, 
+						Top_Trigger, 
+						Right_Trigger, 
+						Bottom_Trigger
+					},
+					Vertical = ToLookupValue(0, 4),
+					Horizontal = ToLookupValue(300, 2),
+					Cut = ToLookupValue(500, 1),
+					LeftToBottom = ToLookupValue(510, 1),
+					LeftToTop = ToLookupValue(520, 2),
+					RightToBottom = ToLookupValue(540, 1),
+				};
+
+				var Lookup =
+					new Dictionary<int, Func<int>>
 					{
-						if (Bottom_Trigger != null)
-						{
-							Name.Index = 510;
-						}
-						else
-						{
-							Name.Index = 300 + Name_Index % 2;
-						}
-					}
+						{0, Tiles.Vertical},
 
-					Level.KnownRidgeTrees.Remove(Left_Trigger);
+						{4, Tiles.Vertical},
+						{20, Tiles.Vertical},
 
-					Later +=
-						delegate
-						{
-							CreateTo(Level, Left_TriggerPosition);
-						};
-				}
-				else
-				{
-					//if (Bottom_Trigger != null)
-					//{
-					//    Name.Index = 530;
-					//}
-					//else
-					//{
-						if (Right_Trigger != null)
-						{
-							Name.Index = 300 + Name_Index % 2;
-						}
-					//}
-				}
+						{2, Tiles.Horizontal},
+						{8, Tiles.Horizontal},
+						{2 + 8, Tiles.Horizontal},
+
+						{2 + 16, Tiles.LeftToBottom},
+						{2 + 4, Tiles.LeftToTop},
+						{8 + 16, Tiles.RightToBottom},
+
+						{16, Tiles.Cut}
+					};
+
+				Func<int, int> DynamicLookup =
+					Flags =>
+					{
+						return Tiles.Cut();
+					};
+
+				Name.Index = Tiles.Triggers.SelectByFlags(Lookup, DynamicLookup);
+
+
 
 				RemovePlatforms(this, Level, Position);
 				RemoveEntities(this, Level, Position);
@@ -199,14 +191,23 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				Level.KnownRidgeTrees.Add(u);
 
-
-
-
-
 				Name.Index = Name_Index;
 
-				if (Later != null)
-					Later();
+				// we are going to do the ripple update
+
+				var self = this;
+				
+				// todo: jsc probably emits a base call here, which we do not need
+
+				if (Top_Trigger != null)
+				{
+					self.CreateTo(Level, Top_TriggerPosition);
+				}
+
+				if (Left_Trigger != null)
+				{
+					self.CreateTo(Level, Left_TriggerPosition);
+				}
 			}
 		}
 
