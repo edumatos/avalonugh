@@ -16,6 +16,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class Gold : ISupportsContainer, ISupportsPhysics , IDisposable
 	{
+		public double MassCenterModifier { get; set; }
+
 		public double LastCollisionVelocity { get; set; }
 		public double LastWaterCollisionVelocity { get; set; }
 

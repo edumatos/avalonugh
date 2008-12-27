@@ -22,6 +22,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		ISupportsContainer, ISupportsVelocity, ISupportsPhysics,
 		ISupportsLocationChanged, IDisposable
 	{
+		public double MassCenterModifier { get; set; }
 		public Vehicle StartPosition;
 
 		public double LastCollisionVelocity { get; set; }
@@ -241,6 +242,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		readonly Image[] frames;
 		public Vehicle(int Zoom)
 		{
+			this.MassCenterModifier = 1.8;
 			this.Density = 0.4;
 			this.Zoom = Zoom;
 

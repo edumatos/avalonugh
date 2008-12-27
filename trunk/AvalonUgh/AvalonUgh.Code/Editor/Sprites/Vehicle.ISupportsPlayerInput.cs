@@ -68,7 +68,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				// if we are under water, we cannot go down
 				if (this.CurrentLevel != null)
 				{
-					if (this.Y > this.CurrentLevel.WaterTop)
+					if ((this.Y + this.HalfHeight) > this.CurrentLevel.WaterTop)
 					{
 						y = 0;
 

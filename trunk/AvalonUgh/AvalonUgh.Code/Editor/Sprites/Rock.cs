@@ -17,6 +17,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class Rock : ISupportsContainer, ISupportsPhysics , IDisposable
 	{
+		public double MassCenterModifier { get; set; }
+
 		[Script]
 		public class SpecificNameFormat : NameFormat
 		{
