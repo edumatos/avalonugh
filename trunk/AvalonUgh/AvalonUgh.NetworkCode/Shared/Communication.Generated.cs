@@ -46,6 +46,10 @@ namespace AvalonUgh.NetworkCode.Shared
             UserSetPaused,
             ClearPaused,
             UserClearPaused,
+            LoadEmbeddedLevel,
+            UserLoadEmbeddedLevel,
+            LoadCustomLevel,
+            UserLoadCustomLevel,
         }
         #endregion
 
@@ -88,6 +92,10 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserSetPausedArguments> UserSetPaused;
             event Action<RemoteEvents.ClearPausedArguments> ClearPaused;
             event Action<RemoteEvents.UserClearPausedArguments> UserClearPaused;
+            event Action<RemoteEvents.LoadEmbeddedLevelArguments> LoadEmbeddedLevel;
+            event Action<RemoteEvents.UserLoadEmbeddedLevelArguments> UserLoadEmbeddedLevel;
+            event Action<RemoteEvents.LoadCustomLevelArguments> LoadCustomLevel;
+            event Action<RemoteEvents.UserLoadCustomLevelArguments> UserLoadCustomLevel;
         }
         #endregion
 
@@ -485,6 +493,62 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void LoadEmbeddedLevel(int frame, int level)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.LoadEmbeddedLevel, args = new object[] { frame, level } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.LoadEmbeddedLevel(frame, level);
+                    }
+                }
+            }
+            public void UserLoadEmbeddedLevel(int user, int frame, int level)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserLoadEmbeddedLevel, args = new object[] { user, frame, level } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserLoadEmbeddedLevel(user, frame, level);
+                    }
+                }
+            }
+            public void LoadCustomLevel(int frame, string data)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.LoadCustomLevel, args = new object[] { frame, data } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.LoadCustomLevel(frame, data);
+                    }
+                }
+            }
+            public void UserLoadCustomLevel(int user, int frame, string data)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserLoadCustomLevel, args = new object[] { user, frame, data } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserLoadCustomLevel(user, frame, data);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -551,6 +615,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.SetShakerEnabled += this.UserSetShakerEnabled;
                     value.SetPaused += this.UserSetPaused;
                     value.ClearPaused += this.UserClearPaused;
+                    value.LoadEmbeddedLevel += this.UserLoadEmbeddedLevel;
+                    value.LoadCustomLevel += this.UserLoadCustomLevel;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -567,6 +633,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.SetShakerEnabled -= this.UserSetShakerEnabled;
                     value.SetPaused -= this.UserSetPaused;
                     value.ClearPaused -= this.UserClearPaused;
+                    value.LoadEmbeddedLevel -= this.UserLoadEmbeddedLevel;
+                    value.LoadCustomLevel -= this.UserLoadCustomLevel;
                 }
                 #endregion
 
@@ -618,6 +686,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserClearPaused(ClearPausedArguments e)
                 {
                     Target.UserClearPaused(this.user);
+                }
+                public void UserLoadEmbeddedLevel(LoadEmbeddedLevelArguments e)
+                {
+                    Target.UserLoadEmbeddedLevel(this.user, e.frame, e.level);
+                }
+                public void UserLoadCustomLevel(LoadCustomLevelArguments e)
+                {
+                    Target.UserLoadCustomLevel(this.user, e.frame, e.data);
                 }
                 #endregion
             }
@@ -725,6 +801,22 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserClearPaused(this.user);
                 }
+                public void UserLoadEmbeddedLevel(int frame, int level)
+                {
+                    this.Target.UserLoadEmbeddedLevel(this.user, frame, level);
+                }
+                public void UserLoadEmbeddedLevel(UserLoadEmbeddedLevelArguments e)
+                {
+                    this.Target.UserLoadEmbeddedLevel(this.user, e.frame, e.level);
+                }
+                public void UserLoadCustomLevel(int frame, string data)
+                {
+                    this.Target.UserLoadCustomLevel(this.user, frame, data);
+                }
+                public void UserLoadCustomLevel(UserLoadCustomLevelArguments e)
+                {
+                    this.Target.UserLoadCustomLevel(this.user, e.frame, e.data);
+                }
                 #endregion
             }
             #endregion
@@ -750,6 +842,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserSetShakerEnabled += this.UserSetShakerEnabled;
                     value.UserSetPaused += this.UserSetPaused;
                     value.UserClearPaused += this.UserClearPaused;
+                    value.UserLoadEmbeddedLevel += this.UserLoadEmbeddedLevel;
+                    value.UserLoadCustomLevel += this.UserLoadCustomLevel;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -766,6 +860,8 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserSetShakerEnabled -= this.UserSetShakerEnabled;
                     value.UserSetPaused -= this.UserSetPaused;
                     value.UserClearPaused -= this.UserClearPaused;
+                    value.UserLoadEmbeddedLevel -= this.UserLoadEmbeddedLevel;
+                    value.UserLoadCustomLevel -= this.UserLoadCustomLevel;
                 }
                 #endregion
 
@@ -841,6 +937,18 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserClearPaused(this.user);
+                }
+                public void UserLoadEmbeddedLevel(UserLoadEmbeddedLevelArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserLoadEmbeddedLevel(this.user, e.frame, e.level);
+                }
+                public void UserLoadCustomLevel(UserLoadCustomLevelArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserLoadCustomLevel(this.user, e.frame, e.data);
                 }
                 #endregion
             }
@@ -1265,6 +1373,66 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserClearPausedArguments> UserClearPaused;
+            #region LoadEmbeddedLevelArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class LoadEmbeddedLevelArguments
+            {
+                public int frame;
+                public int level;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", level = ").Append(this.level).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<LoadEmbeddedLevelArguments> LoadEmbeddedLevel;
+            #region UserLoadEmbeddedLevelArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserLoadEmbeddedLevelArguments : WithUserArguments
+            {
+                public int frame;
+                public int level;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", level = ").Append(this.level).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserLoadEmbeddedLevelArguments> UserLoadEmbeddedLevel;
+            #region LoadCustomLevelArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class LoadCustomLevelArguments
+            {
+                public int frame;
+                public string data;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", data = ").Append(this.data).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<LoadCustomLevelArguments> LoadCustomLevel;
+            #region UserLoadCustomLevelArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserLoadCustomLevelArguments : WithUserArguments
+            {
+                public int frame;
+                public string data;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", data = ").Append(this.data).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserLoadCustomLevelArguments> UserLoadCustomLevel;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -1296,6 +1464,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserSetPaused, e => { UserSetPaused(new UserSetPausedArguments { user = e.GetInt32(0), frame = e.GetInt32(1) }); } },
                             { Messages.ClearPaused, e => { ClearPaused(new ClearPausedArguments {  }); } },
                             { Messages.UserClearPaused, e => { UserClearPaused(new UserClearPausedArguments { user = e.GetInt32(0) }); } },
+                            { Messages.LoadEmbeddedLevel, e => { LoadEmbeddedLevel(new LoadEmbeddedLevelArguments { frame = e.GetInt32(0), level = e.GetInt32(1) }); } },
+                            { Messages.UserLoadEmbeddedLevel, e => { UserLoadEmbeddedLevel(new UserLoadEmbeddedLevelArguments { user = e.GetInt32(0), frame = e.GetInt32(1), level = e.GetInt32(2) }); } },
+                            { Messages.LoadCustomLevel, e => { LoadCustomLevel(new LoadCustomLevelArguments { frame = e.GetInt32(0), data = e.GetString(1) }); } },
+                            { Messages.UserLoadCustomLevel, e => { UserLoadCustomLevel(new UserLoadCustomLevelArguments { user = e.GetInt32(0), frame = e.GetInt32(1), data = e.GetString(2) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -1327,6 +1499,10 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserSetPaused, e => UserSetPaused },
                             { Messages.ClearPaused, e => ClearPaused },
                             { Messages.UserClearPaused, e => UserClearPaused },
+                            { Messages.LoadEmbeddedLevel, e => LoadEmbeddedLevel },
+                            { Messages.UserLoadEmbeddedLevel, e => UserLoadEmbeddedLevel },
+                            { Messages.LoadCustomLevel, e => LoadCustomLevel },
+                            { Messages.UserLoadCustomLevel, e => UserLoadCustomLevel },
                         }
                 ;
             }
@@ -1606,9 +1782,41 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserClearPaused(v));
             }
 
+            public event Action<RemoteEvents.LoadEmbeddedLevelArguments> LoadEmbeddedLevel;
+            void IMessages.LoadEmbeddedLevel(int frame, int level)
+            {
+                if(LoadEmbeddedLevel == null) return;
+                var v = new RemoteEvents.LoadEmbeddedLevelArguments { frame = frame, level = level };
+                this.VirtualLatency(() => this.LoadEmbeddedLevel(v));
+            }
+
+            public event Action<RemoteEvents.UserLoadEmbeddedLevelArguments> UserLoadEmbeddedLevel;
+            void IMessages.UserLoadEmbeddedLevel(int user, int frame, int level)
+            {
+                if(UserLoadEmbeddedLevel == null) return;
+                var v = new RemoteEvents.UserLoadEmbeddedLevelArguments { user = user, frame = frame, level = level };
+                this.VirtualLatency(() => this.UserLoadEmbeddedLevel(v));
+            }
+
+            public event Action<RemoteEvents.LoadCustomLevelArguments> LoadCustomLevel;
+            void IMessages.LoadCustomLevel(int frame, string data)
+            {
+                if(LoadCustomLevel == null) return;
+                var v = new RemoteEvents.LoadCustomLevelArguments { frame = frame, data = data };
+                this.VirtualLatency(() => this.LoadCustomLevel(v));
+            }
+
+            public event Action<RemoteEvents.UserLoadCustomLevelArguments> UserLoadCustomLevel;
+            void IMessages.UserLoadCustomLevel(int user, int frame, string data)
+            {
+                if(UserLoadCustomLevel == null) return;
+                var v = new RemoteEvents.UserLoadCustomLevelArguments { user = user, frame = frame, data = data };
+                this.VirtualLatency(() => this.UserLoadCustomLevel(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 26.12.2008 9:33:26
+// 27.12.2008 20:11:58
