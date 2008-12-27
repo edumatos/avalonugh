@@ -247,6 +247,21 @@ namespace AvalonUgh.Game.Shared
 					et.EditorSelectorChanged +=
 						() => View.EditorSelector = et.EditorSelector;
 
+			
+
+					var et_load = new LoadWindow
+					{
+						DragContainer = this
+					};
+
+					et_load.Click +=
+						NextLevel =>
+						{
+							Console.WriteLine("loading next level...");
+
+							et_load.OrphanizeContainer();
+						};
+
 					et.VisibilityChanged +=
 						delegate
 						{
@@ -254,12 +269,9 @@ namespace AvalonUgh.Game.Shared
 
 							View.StartPositionsContainer.Show(IsVisible);
 							View.EditorSelectorRectangle.Show(IsVisible);
-						};
 
-					var et_load = new LoadWindow
-					{
-						DragContainer = this
-					};
+							et_load.Show(IsVisible);
+						};
 
 					et.LoadClicked +=
 						delegate
