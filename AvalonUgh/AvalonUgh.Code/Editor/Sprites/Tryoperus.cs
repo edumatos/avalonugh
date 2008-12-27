@@ -12,7 +12,7 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public partial class Tryoperus : ISupportsContainer, ISupportsPhysics, IDisposable
+	public partial class Tryoperus : ISupportsContainer, ISupportsPhysics, IDisposable, ISupportsLocationChanged
 	{
 		public double MassCenterModifier { get; set; }
 
@@ -74,6 +74,10 @@ namespace AvalonUgh.Code.Editor.Sprites
 			this.Y = y;
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
+
+
+			if (LocationChanged != null)
+				LocationChanged();
 		}
 
 		public bool IsSleeping
@@ -336,5 +340,12 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			return;
 		}
+
+		#region ISupportsLocationChanged Members
+
+
+		public event Action LocationChanged;
+
+		#endregion
 	}
 }
