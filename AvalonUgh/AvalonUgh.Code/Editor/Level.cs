@@ -161,6 +161,8 @@ namespace AvalonUgh.Code.Editor
 			
 			// the water shall be deep enough to enable diving
 			this.AttributeBorderBottom.Value = 96;
+			this.AttributeBackgroundWidth.Value = 320;
+			this.AttributeBackgroundHeight.Value = 200;
 
 
 			this.AttributeFlashlightOpacity.Value = 180;

@@ -24,8 +24,8 @@ namespace AvalonUgh.Labs.Shared
 	[Script]
 	public class LabsCanvas : Canvas
 	{
-		public const int DefaultWidth = 800;
-		public const int DefaultHeight = 600;
+		public const int DefaultWidth = 640;
+		public const int DefaultHeight = 400;
 	
 		public LabsCanvas()
 		{
@@ -33,7 +33,7 @@ namespace AvalonUgh.Labs.Shared
 			Height = DefaultHeight;
 
 
-			var w = new Workspace();
+			var w = new Workspace(DefaultWidth, DefaultHeight);
 
 			
 			w.AttachContainerTo(this);

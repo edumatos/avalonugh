@@ -31,7 +31,8 @@ namespace AvalonUgh.Code.Editor
 					AttributeText,
 					AttributeCode,
 					AttributeAutoscroll,
-					AttributeWater
+					AttributeWater,
+					AttributeBackground
 				);
 
 				s.WriteLine(new string('#', w));
