@@ -143,6 +143,7 @@
     <Compile Include="Editor\BackgroundSelector.cs" />
     <Compile Include="Editor\KnownSelectors.cs" />
     <Compile Include="Editor\Level.WaterHeight.cs" />
+    <Compile Include="Editor\LevelReference.cs" />
     <Compile Include="Editor\LoadWindow.cs" />
     <Compile Include="Editor\PlatformScan.cs" />
     <Compile Include="Editor\SelectorBase.cs" />

@@ -6,73 +6,103 @@ using ScriptCoreLib;
 using System.Windows.Controls;
 using AvalonUgh.Assets.Avalon;
 using ScriptCoreLib.Shared.Avalon.Extensions;
+using System.ComponentModel;
+using System.Windows.Media;
+using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Shapes;
+using System.Windows.Input;
 
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
 	public class LoadWindow : Window
 	{
+		public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
+
+		const int ItemsPerRow = 8;
+
+		public event Action<LevelReference> Click;
+
 		public LoadWindow()
 		{
-			this.Width = 400;
-			this.Height = 200;
+			this.Width = Padding + (48 + Padding) * ItemsPerRow;
+			this.Height = Padding + 100 + Padding + (30 + Padding) * 3;
 
+			const string DefaultText = "Select a level below!";
 
-			new Image
+			var Info = new TextBox
 			{
-				Width = 160,
+				IsReadOnly = true,
+				AcceptsReturn = true,
+
+				Width = Width - 160 - Padding * 3,
 				Height = 100,
-				Stretch = System.Windows.Media.Stretch.Fill,
-				Source = new NameFormat
-				{
-					Path = Assets.Shared.KnownAssets.Path.Levels,
-					Name = "level",
-					Extension = "png",
-					AnimationFrame = 1,
-				},
-			}.MoveTo(Padding, Padding).AttachTo(this);
-
-			new TextBox
-			{
-				Text = "Name: Name"
+				Background = Brushes.Transparent,
+				BorderThickness = new System.Windows.Thickness(0),
+				Text = DefaultText
 			}.MoveTo(Padding * 2 + 160, Padding).AttachTo(this);
 
+			this.DraggableArea.BringToFront();
+
+
+
+			this.Items.ForEachNewOrExistingItem(
+				(value, index) =>
+				{
+					value.Preview.MoveTo(Padding, Padding);
+
+					var x = index % ItemsPerRow * (value.SmallPreview.Width + Padding) + Padding;
+					var y = value.Preview.Height + Padding * 2
+						+ Convert.ToInt32(index / ItemsPerRow) * (value.SmallPreview.Height + Padding);
+
+					value.SmallPreview.AttachTo(this).MoveTo(
+						x, y
+					);
+
+					var TouchOverlay = new Rectangle
+					{
+						Width = value.SmallPreview.Width,
+						Height = value.SmallPreview.Height,
+						Fill = Brushes.Black,
+						Opacity = 0,
+						Cursor = Cursors.Hand
+					}.AttachTo(this).MoveTo(x, y);
+
+					TouchOverlay.MouseEnter +=
+						delegate
+						{
+							value.Preview.AttachTo(this);
+							Info.Text = "Loading...";
+						};
+
+					TouchOverlay.MouseLeave +=
+						delegate
+						{
+							value.Preview.Orphanize();
+							Info.Text = DefaultText;
+						};
+
+					TouchOverlay.MouseLeftButtonUp +=
+						delegate
+						{
+							if (Click != null)
+								Click(value);
+						};
+				}
+			);
+
+			Enumerable.Range(1, 20).ForEach(
+				LevelNumber =>
+				{
+					this.Items.Add(new LevelReference(LevelNumber));
+				}
+			);
+
 			// list
-
-			new Image
-			{
-
-				Stretch = System.Windows.Media.Stretch.Fill,
-				Source = new NameFormat
-				{
-					Path = Assets.Shared.KnownAssets.Path.Levels,
-					Name = "level",
-					Extension = "png",
-					AnimationFrame = 2,
-				},
-				Width = 48,
-				Height = 30,
-			}.MoveTo(Padding, Padding * 2 + 100).AttachTo(this);
-
-
-			new Image
-			{
-		
-				Stretch = System.Windows.Media.Stretch.Fill,
-				Source = new NameFormat
-				{
-					Path = Assets.Shared.KnownAssets.Path.Levels,
-					Name = "level",
-					Extension = "png",
-					AnimationFrame = 3,
-				},
-				Width = 48,
-				Height = 30,
-			}.MoveTo(Padding + 48 + Padding, Padding * 2 + 100).AttachTo(this);
 
 			this.Update();
 		}
 
-	
+
 	}
 }
