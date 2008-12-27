@@ -1,0 +1,33 @@
+# generated map
+# text: Dino likes the ladies
+# code: THEBLUEHOUR
+# autoscroll: 0
+# water: 20
+######################
+     S- R--    R--    
+SS-S-| S|  R--R|  R-- 
+|| | | ||  |  ||  |   
+S| | SC-R--S--S-R-R-- 
+|| |  | |  |  | S-|   
+# sign: 88;3
+S--P-P--RR-C-SS-| SR- 
+|  | |  || |  | | ||  
+# sign: 216;2
+ S-S-S-S|R-P--PS--S-S-
+ | | | S-S-|  S|  | | 
+# dino: 312
+ | | | | | SS-S-S-P-P-
+ S-S--S| SS-| | | | | 
+RR-|  || || | | | S-| 
+# tree: 144
+ | SS-S-P-| S-| SS-R--
+ R--| | | | | SS-| |  
+ |  C-SS| SC-S|| | |  
+ |  | | R- | |S| SR-- 
+# sign: 120;4
+# sign: 168;1
+# tryo: 224
+# rock: 256
+BR--P--P| P---P--B|   
+ |        |           
+######################

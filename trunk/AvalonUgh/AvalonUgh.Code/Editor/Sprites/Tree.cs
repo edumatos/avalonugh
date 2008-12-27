@@ -164,7 +164,6 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void Dispose()
 		{
-			this.Container.Orphanize();
 			AnimationTimer.Stop();
 		}
 

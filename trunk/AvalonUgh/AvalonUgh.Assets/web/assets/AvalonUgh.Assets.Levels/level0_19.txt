@@ -1,0 +1,32 @@
+# generated map
+# text: Diving for professionals
+# code: ASEVENINGFALLS
+# autoscroll: 0
+# water: 32
+######################
+          S--         
+ S-R--S-S-|  SS-S-SRR-
+ | |  | | C-S|| | R-| 
+ | R-S--| | | | S-| R-
+# tree: 208
+# sign: 216;2
+SS-| |  P-P--PS--R--| 
+|| R-SS-| |  S|  |  R-
+S| | || R-R-S-S-S-R-| 
+|| | S| | S-| | | S-| 
+ S-R-|| R-C-SS| | | R-
+# dino: 296
+ | R-S-S| | | | SP--| 
+# sign: 216;2
+# rock: 208
+ | | | R--P--PSS-|  | 
+ S-R-| |  |  S-| R-R- 
+ | | S-S-S-R-| SS-R|  
+ SS-R| | C-| | || C-S 
+ || SSS- | R-|  | | F 
+# sign: 248;4
+# sign: 136;1
+ S| ||| P--| BBBBBP-R-
+ || S-| S--R-S-S-S| | 
+      | |    |   |    
+######################

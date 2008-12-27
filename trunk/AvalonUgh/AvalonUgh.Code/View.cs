@@ -234,6 +234,7 @@ namespace AvalonUgh.Code
 
 		
 			this.Level.KnownSigns.AttachTo(this.Entities);
+			this.Level.KnownTrees.AttachTo(this.Entities);
 
 
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
@@ -264,10 +265,16 @@ namespace AvalonUgh.Code
 			this.Level.KnownCaves.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
+			this.Level.KnownCaves.ForEachItemDeleted(
+				k => k.Image.Orphanize()
+			);
 
 
 			this.Level.KnownRidges.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
+			);
+			this.Level.KnownRidges.ForEachItemDeleted(
+				k => k.Image.Orphanize()
 			);
 
 
@@ -282,6 +289,9 @@ namespace AvalonUgh.Code
 			this.Level.KnownFences.ForEachNewOrExistingItem(
 				k => k.Image.AttachTo(this.Platforms)
 			);
+			this.Level.KnownFences.ForEachItemDeleted(
+				k => k.Image.Orphanize()
+			);
 
 
 			this.Level.KnownBridges.ForEachNewOrExistingItem(
@@ -293,9 +303,6 @@ namespace AvalonUgh.Code
 
 
 
-			this.Level.KnownTrees.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.Entities)
-			);
 
 
 

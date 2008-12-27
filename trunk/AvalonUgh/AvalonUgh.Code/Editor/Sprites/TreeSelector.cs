@@ -33,7 +33,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				new[]
 				{
 					new Size_2x2()
-				}; 
+				};
 		}
 
 
@@ -50,15 +50,21 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				RemoveEntities(this, Level, Position);
+				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
+				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
+
+
+
+				{
+					var TriggerObstacle = Obstacle.Of(Position, Level.Zoom, this.PrimitiveTileCountX, this.PrimitiveTileCountY);
+
+					Level.KnownTrees.Remove(k => k.ToObstacle().Intersects(TriggerObstacle));
+				}
 
 				new Tree(Level.Zoom)
 				{
 					Selector = this
-				}.AddTo(Level.KnownTrees).MoveTo(
-					(Position.ContentX + this.HalfWidth) * Level.Zoom,
-					(Position.ContentY + this.HalfHeight) * Level.Zoom
-				);
+				}.AddTo(Level.KnownTrees).MoveTo(x, y);
 			}
 
 		}

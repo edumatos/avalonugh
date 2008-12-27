@@ -682,9 +682,6 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_08.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge1_2x3.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_08.png" />
   </ItemGroup>
   <ItemGroup>
@@ -781,6 +778,21 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_17.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone102_2x4.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_18.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_19.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_19.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
