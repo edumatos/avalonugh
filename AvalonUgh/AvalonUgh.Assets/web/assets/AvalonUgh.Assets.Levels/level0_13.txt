@@ -17,7 +17,7 @@
 # sign: 184;3
 # rock: 148
  TTTR-P---P-S--S-S-SS-
- TR-| R--S--|  | | || 
+TTR-| R--S--|  | | || 
 R-| R-|  |  SS-S-| S| 
 | | | |  RS-|| | S--| 
 S--S-SR-R-| S| | |  S-
