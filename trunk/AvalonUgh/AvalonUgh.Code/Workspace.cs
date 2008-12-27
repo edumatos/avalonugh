@@ -8,6 +8,11 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using AvalonUgh.Code.Editor;
 using System.ComponentModel;
+using AvalonUgh.Code.Dialogs;
+using System.Windows.Input;
+using ScriptCoreLib.Shared.Avalon.Tween;
+using System.Windows;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
@@ -20,6 +25,10 @@ namespace AvalonUgh.Code
 		// workspace provides syncing, console and input
 
 		public Canvas Container { get; set; }
+
+		public Canvas Content { get; set; }
+
+		public Canvas Overlay { get; set; }
 
 		public readonly KnownSelectors Selectors = new KnownSelectors();
 
@@ -39,89 +48,235 @@ namespace AvalonUgh.Code
 			public Level Level;
 			public View View;
 
+			public Canvas Container;
+
+			public int Left;
+			public int Top;
 			public int Width;
 			public int Height;
 
 			public int Zoom;
+
+			public KnownSelectors Selectors;
+
+			LevelReference InternalLevelReference;
+			public LevelReference LevelReference
+			{
+				get
+				{
+					return InternalLevelReference;
+				}
+				set
+				{
+					if (Level != null)
+						Level.Clear();
+
+					if (View != null)
+						View.OrphanizeContainer();
+
+
+					Level = null;
+					View = null;
+
+					InternalLevelReference = value;
+
+					InternalLevelReference.Location.Embedded.ToString().ToStringAsset(
+						Data =>
+						{
+							if (Level != null)
+								throw new Exception("InternalLevelReference");
+
+							this.Level = new Level(Data, this.Zoom, this.Selectors);
+							this.View = new View(Width, Height, this.Level);
+							this.View.Show(this.InternalVisible);
+							this.View.MoveContainerTo(this.Left, this.Top).AttachContainerTo(this.Container);
+						}
+					);
+				}
+			}
+
+			bool InternalVisible = true;
+			public bool Visible
+			{
+				get
+				{
+					return InternalVisible;
+				}
+				set
+				{
+					InternalVisible = value;
+
+					if (this.View != null)
+						this.View.Show(value);
+				}
+			}
 		}
+
+		const int PortIdentity_Lobby = 1000;
+		const int PortIdentity_Editor = 2000;
+		const int PortIdentity_Mission = 3000;
 
 		public readonly BindingList<Port> Ports = new BindingList<Port>();
 
-		public Workspace()
+		public GameConsole Console { get; set; }
+
+		const int DefaultZoom = 2;
+
+		public Workspace(int DefaultWidth, int DefaultHeight)
 		{
 			this.Container = new Canvas
 			{
-				Background = Brushes.Gray,
-				Width = 640,
-				Height = 400
+				Background = Brushes.Black,
+				Width = DefaultWidth,
+				Height = DefaultHeight
 			};
 
-			const string LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_21.txt";
+			this.Content = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this);
 
-			LobbyLevel.ToStringAsset(
-				LevelText =>
+			this.Overlay = new Canvas
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight
+			}.AttachTo(this);
+
+			#region setting up our console
+			this.Console = new GameConsole();
+
+			this.Console.SizeTo(DefaultWidth, DefaultHeight / 2);
+			this.Console.WriteLine("Avalon Ugh! Console ready.");
+			this.Console.AnimatedTop = -this.Console.Height;
+
+			this.Console.AttachContainerTo(this.Overlay);
+			#endregion
+
+
+			#region PauseDialog
+			var PauseDialog = new Dialog
+			{
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = DefaultZoom,
+				BackgroundVisible = false,
+				VerticalAlignment = VerticalAlignment.Center,
+				Text = @"
+						   game was paused
+						     by
+							you
+						",
+				AnimatedOpacity = 0
+			}.AttachContainerTo(this.Overlay);
+
+
+
+			Action<bool, string> SetPause =
+				(IsPaused, ByWhom) =>
 				{
+					this.LocalIdentity.SyncFramePaused = IsPaused;
+
+					if (IsPaused)
 					{
-						var Level = new Level(LevelText, 2, this.Selectors);
-						var View = new View(320, 200, Level);
+						PauseDialog.Text = @"
+								   game was paused
+									 by
+									" + ByWhom;
 
-						View.AttachContainerTo(this).MoveContainerTo(32, 32);
-
-						Ports.Add(
-							new Port
-							{
-								Level = Level,
-								View = View,
-							}
-						);
+						ActiveDialog = PauseDialog;
 					}
-
+					else
 					{
-						var w = new Window
-						{
-							DragContainer = this.Container,
-							Width = 256 + 10,
-							Height = 256 + 10
-						};
-
-						var Level = new Level(LevelText, 2, this.Selectors);
-						var View = new View(256, 256, Level);
-
-						w.Update();
-
-						View.MoveContainerTo(w.Padding, w.Padding).AttachContainerTo(w);
-
-						w.DraggableArea.BringToFront();
-						w.MoveContainerTo(360, 64).AttachContainerTo(this);
-
-						Ports.Add(
-							new Port
-							{
-								Level = Level,
-								View = View,
-							}
-						);
+						ActiveDialog = null;
 					}
+				};
 
-					{
-						var Level = new Level(LevelText, 2, this.Selectors);
-						var View = new View(196, 128, Level);
 
-						View.AttachContainerTo(this).MoveContainerTo(32, 230);
-						View.AutoscrollEnabled = true;
-						View.Flashlight.Visible = true;
-						View.LocationTracker.Target = Level.KnownTryoperus.FirstOrDefault();
+			#endregion
 
-						Ports.Add(
-							new Port
-							{
-								Level = Level,
-								View = View,
-							}
-						);
-					}
+
+
+			this.Ports.Add(
+				new Port
+				{
+					Container = this.Content,
+
+					Selectors = this.Selectors,
+
+					Zoom = DefaultZoom,
+
+					Width = DefaultWidth,
+					Height = DefaultHeight - 18,
+
+					PortIdentity = PortIdentity_Lobby,
+
+					LevelReference = new LevelReference(0)
 				}
 			);
+
+
+
+
+			this.Container.KeyUp +=
+				(sender, args) =>
+				{
+					// oem7 will trigger the console
+					if (args.Key == Key.Oem7)
+					{
+						args.Handled = true;
+
+						if (Console.AnimatedTop == 0)
+						{
+							Console.AnimatedTop = -Console.Height;
+						}
+						else
+						{
+							Console.AnimatedTop = 0;
+						}
+
+						// the console is on top
+						// of the game view
+						// and under the transparent touch overlay
+						// when the view is in editor mode
+					}
+
+					if (args.Key == Key.D1)
+					{
+						args.Handled = true;
+						foreach (var p in this.Ports)
+						{
+							p.Visible = p.PortIdentity == PortIdentity_Lobby;
+						}
+					}
+
+					if (args.Key == Key.D2)
+					{
+						args.Handled = true;
+						foreach (var p in this.Ports)
+						{
+							p.Visible = p.PortIdentity == PortIdentity_Editor;
+						}
+					}
+
+					if (args.Key == Key.P)
+					{
+						SetPause(!this.LocalIdentity.SyncFramePaused, "you");
+					}
+				};
+
+			// we are going for the keyboard input
+			// we want to enable the tilde console feature
+			this.Container.FocusVisualStyle = null;
+			this.Container.Focusable = true;
+			this.Container.Focus();
+
+			// at this time we should add a local player
+			this.Container.MouseLeftButtonDown +=
+				(sender, args) =>
+				{
+					this.Container.Focus();
+				};
 
 			(1000 / 50).AtInterval(Think);
 		}
@@ -148,15 +303,17 @@ namespace AvalonUgh.Code
 				}
 			}
 
+			foreach (var p in this.Ports)
+			{
+				if (p.Level == null)
+					return;
+			}
+
 			//if (this.LocalIdentity.SyncFrame % 30 == 0)
 			//    if (View.IsShakerEnabled)
 			//        View.Level.AttributeWater.Value++;
 
-			// some animations need to be synced by frame
-			//foreach (var dino in Level.KnownDinos)
-			//{
-			//    dino.Animate(this.LocalIdentity.SyncFrame);
-			//}
+
 
 			//// we could pause the game here
 			//foreach (var p in Players)
@@ -166,6 +323,12 @@ namespace AvalonUgh.Code
 
 			foreach (var p in this.Ports)
 			{
+				// some animations need to be synced by frame
+				foreach (var dino in p.Level.KnownDinos)
+				{
+					dino.Animate(this.LocalIdentity.SyncFrame);
+				}
+
 				foreach (var t in p.Level.KnownTryoperus)
 				{
 					t.Think();
@@ -173,9 +336,28 @@ namespace AvalonUgh.Code
 
 				p.Level.Physics.Apply();
 			}
-	
+
 
 			this.LocalIdentity.SyncFrame++;
+		}
+
+		Dialog InternalActiveDialog;
+		public Dialog ActiveDialog
+		{
+			get
+			{
+				return InternalActiveDialog;
+			}
+			set
+			{
+				if (InternalActiveDialog != null)
+					InternalActiveDialog.AnimatedOpacity = 0;
+
+				InternalActiveDialog = value;
+
+				if (InternalActiveDialog != null)
+					InternalActiveDialog.AnimatedOpacity = 0.5;
+			}
 		}
 	}
 }

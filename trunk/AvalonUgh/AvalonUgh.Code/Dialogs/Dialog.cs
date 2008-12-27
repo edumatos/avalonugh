@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows;
 using AvalonUgh.Assets.Shared;
 using ScriptCoreLib.Shared.Lambda;
+using ScriptCoreLib.Shared.Avalon.Tween;
 
 namespace AvalonUgh.Code.Dialogs
 {
@@ -135,6 +136,44 @@ namespace AvalonUgh.Code.Dialogs
 				};
 
 			this.BackgroundVisible = true;
+
+			this._SetOpacity__ = NumericEmitter.Of(
+				(x, y) =>
+				{
+					var Opacity = x * 0.01;
+
+					if (Opacity == 0)
+					{
+						this.Container.Hide();
+					}
+					else
+					{
+						this.Container.Show();
+					}
+
+					this.Content.Container.Opacity = (Opacity * 2).Min(1);
+					this.BackgroundContainer.Opacity = Opacity;
+				}
+			);
+
+		
+		}
+
+		Action<int, int> _SetOpacity__;
+
+		double InternalAnimatedOpacity;
+
+		public double AnimatedOpacity
+		{
+			get
+			{
+				return InternalAnimatedOpacity;
+			}
+			set
+			{
+				InternalAnimatedOpacity = value;
+				_SetOpacity__(Convert.ToInt32(value * 100), 0);
+			}
 		}
 
 		int VerticalAlignmentOffset
