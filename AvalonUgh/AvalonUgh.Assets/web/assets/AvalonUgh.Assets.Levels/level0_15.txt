@@ -1,0 +1,33 @@
+# generated map
+# text: The triops and you
+# code: AWAKEATTHEWALL
+# autoscroll: 0
+# water: 28
+######################
+S-SS-S-    S-  S-S-   
+| || | S-S-| S-| | S- 
+ S-| S-| | | | | C-|  
+ | C-| | | S-| S | |  
+# sign: 264;5
+# rock: 224
+ | | S | S-| P-P-P-S--
+# sign: 104;2
+P--PP---S| | | | | |  
+|  S-S-R--S--S-| S-S-B
+ R-| S-|  |  | S-| |  
+S--| | C-R-S-| | | S- 
+|  S | | | | | S--S|  
+# sign: 72;3
+ SS-BBBBBR-S-S-|  ||  
+# tree: 304
+ || S-SS-| | | S-P--PP
+ S| | || S-| | | |  R-
+ C-S| S| | S-SS-C-RR--
+ | || S- | | || |  |  
+# sign: 136;1
+# sign: 296;4
+# tryo: 96
+PP--P-P--PB| BPP--R-- 
+ |  | |  S-S-S-|  |   
+         | | |        
+######################

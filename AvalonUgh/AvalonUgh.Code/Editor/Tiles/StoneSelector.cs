@@ -227,23 +227,42 @@ namespace AvalonUgh.Code.Editor.Tiles
 				if (PrimitiveTileCountX == 1)
 					if (PrimitiveTileCountY == 1)
 					{
-						// yay, is there a 1x2 tile to the west?
-						var TriggerPosition = Position[0, -3];
-
-						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 2, 3);
-
-						var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
-
-						if (trigger != null)
 						{
-							// our tile will look special
-							Name.Index = 101;
+							// yay, is there a 1x2 tile to the west?
+							var TriggerPosition = Position[0, -3];
+							var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 2, 3);
+							var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
 
-							Level.KnownStones.Remove(trigger);
+							if (trigger != null)
+							{
+								// our tile will look special
+								Name.Index = 101;
 
-							var Size_2x3 = new Size_Generic(2, 3, 0);
-							Size_2x3.Name.Index = 101;
-							Size_2x3.CreateTo(Level, TriggerPosition);
+								Level.KnownStones.Remove(trigger);
+
+								var Size_2x3 = new Size_Generic(2, 3, 0);
+								Size_2x3.Name.Index = 101;
+								Size_2x3.CreateTo(Level, TriggerPosition);
+							}
+						}
+
+						{
+							// yay, is there a 1x2 tile to the west?
+							var TriggerPosition = Position[0, -2];
+							var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 2, 2);
+							var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+							if (trigger != null)
+							{
+								// our tile will look special
+								Name.Index = 101;
+
+								Level.KnownStones.Remove(trigger);
+
+								var Size_2x3 = new Size_Generic(2, 2, 0);
+								Size_2x3.Name.Index = 101;
+								Size_2x3.CreateTo(Level, TriggerPosition);
+							}
 						}
 					}
 
