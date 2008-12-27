@@ -12,6 +12,7 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly SelectorBase[] Types;
 
+		public readonly ArrowSelector Arrow = new ArrowSelector();
 		public readonly Sprites.TryoperusSelector Tryoperus = new Sprites.TryoperusSelector();
 		public readonly Sprites.RockSelector Rock = new Sprites.RockSelector();
 
@@ -20,7 +21,7 @@ namespace AvalonUgh.Code.Editor
 			this.Types =
 				new SelectorBase[]
 				{
-					new ArrowSelector(),
+					Arrow,
 
 					new Sprites.TreeSelector(),
 					new Sprites.GoldSelector(),

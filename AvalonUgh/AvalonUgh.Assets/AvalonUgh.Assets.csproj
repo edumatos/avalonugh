@@ -803,6 +803,10 @@
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_21.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\btn_load.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\btn_save.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

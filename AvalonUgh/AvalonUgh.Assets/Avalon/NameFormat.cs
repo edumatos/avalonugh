@@ -58,6 +58,11 @@ namespace AvalonUgh.Assets.Avalon
 
 		public Func<NameFormat, ImageSource> ToSource;
 
+		public static implicit operator ImageSource(NameFormat e)
+		{
+			return e.ToSource(e);
+		}
+
 		public Image ToImage(int AnimationFrame)
 		{
 			return this.ToAnimationFrame(AnimationFrame).ToImage();

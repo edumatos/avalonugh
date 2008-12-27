@@ -15,6 +15,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.TiledImageButton;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
+using System.ComponentModel;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -45,30 +46,66 @@ namespace AvalonUgh.Code.Editor
 		[Script]
 		public class Button
 		{
-			public Image Image;
-			public Rectangle TouchOverlay;
+			public readonly Image Image;
+			public readonly Rectangle TouchOverlay;
+
+			public event Action Click;
+
+			public Button(Image Image)
+			{
+				this.Image = Image;
+
+				this.TouchOverlay = new Rectangle
+				{
+					Width = PrimitiveTile.Width * 2,
+					Height = PrimitiveTile.Heigth * 2,
+					Fill = Brushes.Red,
+					Opacity = 0,
+					Cursor = Cursors.Hand
+				};
+
+				this.TouchOverlay.MouseEnter +=
+					delegate
+					{
+						this.Image.Opacity = 0.6;
+					};
+
+				this.TouchOverlay.MouseLeave +=
+					delegate
+					{
+						this.Image.Opacity = 1;
+					};
+
+				this.TouchOverlay.MouseLeftButtonUp +=
+					delegate
+					{
+						if (this.Click != null)
+							this.Click();
+					};
+			}
+			public void MoveTo(int x, int y)
+			{
+				Image.MoveTo(x + PrimitiveTile.Width - Image.Width / 2, y + PrimitiveTile.Heigth - Image.Height / 2);
+				TouchOverlay.MoveTo(x, y);
+			}
+
+		
 		}
 
 		public readonly KnownSelectors Selectors;
 
-		public EditorToolbar(Canvas DragContainer, KnownSelectors Selectors)
+		public readonly BindingList<Button> Buttons = new BindingList<Button>();
+
+		public event Action LoadClicked;
+		public event Action SaveClicked;
+
+		public EditorToolbar( KnownSelectors Selectors)
 		{
 			this.Selectors = Selectors;
 			this.Padding = 8;
 
-			var DraggableArea = new Rectangle
-			{
-				Width = Width,
-				Height = Height,
-				Fill = Brushes.Black,
-				Opacity = 0
-			}.AttachTo(this.Container).MoveTo(0, 0);
 
-			var Drag = new DragBehavior(DraggableArea, Container, DragContainer)
-			{
-				SnapX = x => x.Max(Padding - Width).Min(DragContainer.Width - Padding),
-				SnapY = y => y.Max(Padding - Height).Min(DragContainer.Height - Padding)
-			};
+		
 
 
 			// how to turn off arrow key tabbing? 
@@ -89,17 +126,80 @@ namespace AvalonUgh.Code.Editor
 				BorderThickness = new Thickness(0)
 			};
 
-			var Buttons = new List<Button>();
-
+			
 			Func<int> ButtonsWidth = () => Padding + Convert.ToInt32(Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
 
-			CreateButtons(Buttons, ButtonsWidth);
+			// non-selectors: load save
+
+			Buttons.ForEachNewOrExistingItem(
+				(value, index) =>
+				{
+					var x = Padding + Convert.ToInt32(index / 2) * (PrimitiveTile.Width * 2 + Padding);
+					var y = Padding;
+
+					if (index  % 2 == 1)
+						y += PrimitiveTile.Heigth * 2 + Padding;
+
+					value.MoveTo(
+						x, y
+					);
+
+					value.Image.AttachTo(this);
+					value.TouchOverlay.AttachTo(this);
+				}
+			);
+
+			var ButtonLoad =
+				new Button(
+					new Image
+					{
+						Width = 16,
+						Height = 16,
+						Stretch = Stretch.Fill,
+						Source = new NameFormat
+						{
+							Path = Assets.Shared.KnownAssets.Path.Assets,
+							Index = -1,
+							Name = "btn_load",
+							Extension = "png"
+						}
+					}
+				);
+
+		
+			ButtonLoad.Click +=
+				delegate
+				{
+
+					if (LoadClicked != null)
+						LoadClicked();
+				};
+
+			ButtonLoad.AddTo(Buttons);
+
+			new Button(
+				new Image
+				{
+					Width = 16,
+					Height = 16,
+					Stretch = Stretch.Fill,
+					Source = new NameFormat
+					{
+						Path = Assets.Shared.KnownAssets.Path.Assets,
+						Index = -1,
+						Name = "btn_save",
+						Extension = "png"
+					}
+				}
+			).AddTo(Buttons);
+
+
+			CreateButtons(ButtonsWidth);
 
 			this.Width = ButtonsWidth() + (PrimitiveTile.Width * 2 + Padding);
 			this.Height = this.Width * 2 / 3;
 
-			DraggableArea.Width = this.Width;
-			DraggableArea.Height = this.Height;
+	
 
 			this.Update();
 
@@ -151,7 +251,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly TextBox LevelText;
 
-		private void CreateButtons(List<Button> Buttons, Func<int> ButtonsWidth)
+		private void CreateButtons(Func<int> ButtonsWidth)
 		{
 			var SelectionMarker = new Rectangle
 			{
@@ -195,39 +295,13 @@ namespace AvalonUgh.Code.Editor
 							Source = Selector.ToolbarImage.ToString().ToSource(),
 							Width = w,
 							Height = h
-						}.MoveTo(
-							x + PrimitiveTile.Width - w / 2,
-							y + PrimitiveTile.Heigth - h / 2
-						);
+						};
 
 
 					var Sizes = Selector.Sizes;
-
 					var EditorSelectorDefault = Sizes.FirstOrDefault();
 
-
-					Image.AttachTo(this);
-
-					var TouchOverlay = new Rectangle
-					{
-						Width = PrimitiveTile.Width * 2,
-						Height = PrimitiveTile.Heigth * 2,
-						Fill = Brushes.Red,
-						Opacity = 0,
-						Cursor = Cursors.Hand
-					}.AttachTo(this).MoveTo(x, y);
-
-					TouchOverlay.MouseEnter +=
-						delegate
-						{
-							Image.Opacity = 0.6;
-						};
-
-					TouchOverlay.MouseLeave +=
-						delegate
-						{
-							Image.Opacity = 1;
-						};
+			
 
 
 					Action Select =
@@ -262,15 +336,14 @@ namespace AvalonUgh.Code.Editor
 							this.EditorSelector = EditorSelectorDefault;
 						};
 
-					TouchOverlay.MouseLeftButtonUp +=
-						delegate
-						{
-							Select();
-						};
+					var btn = new Button(Image);
+
+					btn.Click += Select;
 
 
 
-					if (Buttons.Count == 0)
+
+					if (Selector == Selectors.Arrow)
 					{
 						Select();
 
@@ -283,11 +356,7 @@ namespace AvalonUgh.Code.Editor
 							};
 					}
 
-					new Button
-					{
-						Image = Image,
-						TouchOverlay = TouchOverlay
-					}.AddTo(Buttons);
+					btn.AddTo(Buttons);
 				};
 
 			#endregion
