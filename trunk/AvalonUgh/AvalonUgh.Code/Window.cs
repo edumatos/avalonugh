@@ -7,6 +7,9 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using System.Windows;
+using ScriptCoreLib.Shared.Avalon.Controls;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
@@ -94,9 +97,63 @@ namespace AvalonUgh.Code
 						Height - BorderWidth * 2
 					).MoveTo(BorderWidth, BorderWidth);
 
+					this.DraggableArea.SizeTo(Width, Height);
 				};
 
+			this.DraggableArea = new Rectangle
+			{
+				Width = Width,
+				Height = Height,
+				Fill = Brushes.Black,
+				Opacity = 0
+			}.AttachTo(this).MoveTo(0, 0);
+
 			Update();
+		}
+
+		readonly public Rectangle DraggableArea;
+
+		Canvas InternalDragContainer;
+
+		public Canvas DragContainer
+		{
+			get
+			{
+				return InternalDragContainer;
+			}
+			set
+			{
+				if (InternalDragContainer != null)
+					throw new ArgumentException();
+
+				InternalDragContainer = value;
+
+				var Drag = new DragBehavior(DraggableArea, Container, DragContainer)
+				{
+					SnapX = x => x.Max(Padding - Width).Min(DragContainer.Width - Padding),
+					SnapY = y => y.Max(Padding - Height).Min(DragContainer.Height - Padding)
+				};
+			}
+		}
+
+		public Visibility Visibility
+		{
+			get
+			{
+				return this.Container.Visibility;
+			}
+			set
+			{
+				this.Container.Visibility = value;
+			}
+		}
+
+		public void MoveToCenter(Canvas c)
+		{
+			this.MoveContainerTo(
+				Convert.ToInt32((c.Width - this.Width) / 2),
+				Convert.ToInt32((c.Height - this.Height) / 2)
+			);
 		}
 	}
 }

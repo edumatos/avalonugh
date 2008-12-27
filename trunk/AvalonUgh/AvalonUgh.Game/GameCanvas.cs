@@ -232,7 +232,10 @@ namespace AvalonUgh.Game.Shared
 
 					#region editor
 
-					var et = new EditorToolbar(this, Selectors);
+					var et = new EditorToolbar(Selectors)
+					{
+						DragContainer = this
+					};
 
 					// move it to bottom center
 					et.MoveContainerTo(
@@ -251,6 +254,28 @@ namespace AvalonUgh.Game.Shared
 
 							View.StartPositionsContainer.Show(IsVisible);
 							View.EditorSelectorRectangle.Show(IsVisible);
+						};
+
+					var et_load = new LoadWindow
+					{
+						DragContainer = this
+					};
+
+					et.LoadClicked +=
+						delegate
+						{
+							if (et_load.Container.Parent == null)
+							{
+
+
+								et_load.MoveToCenter(this);
+								et_load.AttachContainerTo(this);
+							}
+							else
+							{
+								et_load.OrphanizeContainer();
+							}
+							
 						};
 
 					View.EditorSelector = et.EditorSelector;
