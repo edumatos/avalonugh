@@ -44,8 +44,11 @@ namespace AvalonUgh.Code.Editor.Sprites
 				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
 
 
-				// add a new fence tile
-				RemoveEntities(this, Level, Position);
+				{
+					var TriggerObstacle = Obstacle.Of(Position, Level.Zoom, this.PrimitiveTileCountX, this.PrimitiveTileCountY);
+
+					Level.KnownRocks.Remove(k => k.ToObstacle().Intersects(TriggerObstacle));
+				}
 
 				var g = new Rock(Level.Zoom);
 

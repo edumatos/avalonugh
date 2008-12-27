@@ -150,10 +150,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 				{
 					if (Level.KnownPlatforms.Any(k => k.ToObstacle().Intersects(left)))
 					{
-						if (this.Name.Index == VariationRight)
-							this.Name.Index = VariationMiddle;
-						else
-							this.Name.Index = VariationLeft;
+
+						this.Name.Index = VariationLeft;
 					}
 					else if (Level.KnownRidges.Any(k => k.ToObstacle().Intersects(left)))
 					{

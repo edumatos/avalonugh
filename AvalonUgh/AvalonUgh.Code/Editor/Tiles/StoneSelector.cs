@@ -215,24 +215,32 @@ namespace AvalonUgh.Code.Editor.Tiles
 					if (PrimitiveTileCountY == 4)
 					{
 						// yay, is there a 1x2 tile to the west?
-						var TriggerPosition = Position[-1, 0];
+						var Left_TriggerPosition = Position[-1, 0];
+						var Left_TriggerObstacle = Obstacle.Of(Left_TriggerPosition, Level.Zoom, 1, 2);
+						var Left_Trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(Left_TriggerObstacle));
 
-						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 2);
-
-						var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
-
-						if (trigger != null)
+						if (Left_Trigger != null)
 						{
-							// our tile will look special
-							Name.Index = 100;
+							var Bottom_TriggerPosition = Position[0, 4];
+							var Bottom_TriggerObstacle = Obstacle.Of(Bottom_TriggerPosition, Level.Zoom, 1, 1);
+							var Bottom_Trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(Bottom_TriggerObstacle));
 
+							if (Bottom_Trigger == null)
+							{
+								// our tile will look special
+								Name.Index = 100;
+							}
+							else
+							{
+								Name.Index = 102;
+							}
 
 							Later +=
 								delegate
 								{
 									var Size_1x2 = new Size_Generic(1, 2, 0);
 									Size_1x2.Name.Index = 100;
-									Size_1x2.CreateTo(Level, TriggerPosition);
+									Size_1x2.CreateTo(Level, Left_TriggerPosition);
 								};
 						}
 					}

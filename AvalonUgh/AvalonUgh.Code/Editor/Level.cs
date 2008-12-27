@@ -520,7 +520,6 @@ namespace AvalonUgh.Code.Editor
 								delegate
 								{
 									this.KnownStones.Remove(Entity);
-									//Entity.Image.Orphanize();
 								}
 						}
 				).Concat(
@@ -533,7 +532,6 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownCaves.Remove(Entity);
-										Entity.Image.Orphanize();
 									}
 							}
 					)
@@ -547,7 +545,6 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownRidges.Remove(Entity);
-										Entity.Image.Orphanize();
 									}
 							}
 					)
@@ -574,7 +571,6 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownFences.Remove(Entity);
-										Entity.Image.Orphanize();
 									}
 							}
 					)
@@ -588,7 +584,6 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownPlatforms.Remove(Entity);
-										//Entity.Image.Orphanize();
 									}
 							}
 					)
@@ -602,7 +597,6 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownBridges.Remove(Entity);
-										Entity.Image.Orphanize();
 									}
 							}
 					)
