@@ -162,6 +162,7 @@
     <Compile Include="Editor\Sprites\Vehicle.ISupportsPlayerInput.cs" />
     <Compile Include="PlayerIdentity.cs" />
     <Compile Include="PlayerInfo.cs" />
+    <Compile Include="Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Documents\UIConcept.jnt" />
