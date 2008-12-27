@@ -23,6 +23,9 @@ namespace AvalonUgh.Game.Shared
 	[Script]
 	public class GameCanvas : Canvas
 	{
+		const string LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_14.txt";
+
+
 		public const int Zoom = 2;
 
 		public const int DefaultWidth = 640;
@@ -147,7 +150,6 @@ namespace AvalonUgh.Game.Shared
 			// prototype the new menu
 
 			//var LobbyLevel = KnownAssets.Path.Assets + "/level01.txt";
-			var LobbyLevel = Assets.Shared.KnownAssets.Path.Levels + "/level0_14.txt";
 
 			#region setting up our console
 			this.Console = new GameConsole();
@@ -168,6 +170,8 @@ namespace AvalonUgh.Game.Shared
 				{
 					Console.WriteLine("WaterRaise.LoopStopped");
 				};
+
+			Console.WriteLine(LobbyLevel);
 
 			LobbyLevel.ToStringAsset(
 				LevelText =>
