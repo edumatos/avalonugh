@@ -1,0 +1,34 @@
+# generated map
+# text: My fight against the triop
+# code: THEDROWNING
+# autoscroll: 0
+# water: 22
+######################
+    S-S-S-R--S-  SS-  
+ S--| | | |  | S-|| S-
+ |  | | C-R-RC-| S| | 
+S-S-| S | R-F|  S-| | 
+# sign: 248;2
+# sign: 120;1
+| | SS-P--| P-P-| S-S-
+ C-S|| |  | | | | | | 
+ | | | R-S-SS-R-| | | 
+# tree: 320
+# sign: 72;3
+PP--P| | | || S-SS-P-P
+ |  S--| | S| | || |  
+S-S-|  R-| || | S| C- 
+| | SS-| SS-S-S-|S |  
+# sign: 296;4
+| | || R--| | | P-P-P-
+ S-S-| |  | | SS-S| | 
+ | S-S--R-SS-S-| S-S- 
+ C-| |  | || | | | C- 
+ | S S-S-S-| | S | |  
+# sign: 72;5
+# sign: 264;0
+# tryo: 288
+# rock: 226
+BBBP-| | | | P--P---P-
+     | | |   |  |   | 
+######################

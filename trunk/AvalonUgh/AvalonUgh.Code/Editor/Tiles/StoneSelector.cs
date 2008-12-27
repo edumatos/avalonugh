@@ -243,6 +243,28 @@ namespace AvalonUgh.Code.Editor.Tiles
 					{
 						{
 							// yay, is there a 1x2 tile to the west?
+							var TriggerPosition = Position[0, -4];
+							var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 2, 4);
+							var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
+
+							if (trigger != null)
+							{
+								// our tile will look special
+								Name.Index = 101;
+
+
+								Later +=
+									delegate
+									{
+										var Size_2x3 = new Size_Generic(2, 4, 0);
+										Size_2x3.Name.Index = 101;
+										Size_2x3.CreateTo(Level, TriggerPosition);
+									};
+							}
+						}
+
+						{
+							// yay, is there a 1x2 tile to the west?
 							var TriggerPosition = Position[0, -3];
 							var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 2, 3);
 							var trigger = Level.KnownStones.FirstOrDefault(k => k.ToObstacle().Equals(o_trigger));
