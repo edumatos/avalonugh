@@ -224,6 +224,12 @@ namespace AvalonUgh.Code
 
 					};
 
+			// serialize current level
+			EditorToolbar.LevelText.GotFocus +=
+				delegate
+				{
+					EditorToolbar.LevelText.Text = EditorPort.Level.ToString();
+				};
 
 			Menu.AttachContainerTo(this.Overlay);
 
@@ -318,16 +324,19 @@ namespace AvalonUgh.Code
 				{
 					Local0.Input.Keyboard.Disabled = Menu.EnteringPassword != null;
 				};
-
 			Action OpenEditor = null;
+
+			Menu.Editor +=
+				delegate
+				{
+					OpenEditor();
+				};
+
 
 			Local0.Actor.WaterCollision +=
 				delegate
 				{
 					Console.WriteLine("yay, water!");
-
-					if (LobbyPort.Level.KnownActors.Contains(Local0.Actor))
-						OpenEditor();
 				};
 
 			this.LocalIdentity.Locals.Add(Local0);

@@ -121,6 +121,17 @@ namespace AvalonUgh.Code
 
 		public void StabilityReached()
 		{
+			if (CurrentLevel != null)
+			{
+
+				if (this.ToObstacle().Bottom < this.CurrentLevel.WaterTop)
+				{
+					if (this.Animation == AnimationEnum.Panic)
+						this.Animation = AnimationEnum.Idle;
+				}
+			}
+
+
 			if (Level == null)
 				return;
 
