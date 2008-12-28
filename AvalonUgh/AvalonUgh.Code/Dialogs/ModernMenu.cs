@@ -234,7 +234,12 @@ namespace AvalonUgh.Code.Dialogs
 								}
 							}
 						).Stop;
+
+						
 					}
+
+					if (EnteringPasswordChanged != null)
+						EnteringPasswordChanged();
 				};
 
 			Options_3.Click += Options_3_Click;
@@ -263,6 +268,7 @@ namespace AvalonUgh.Code.Dialogs
 		}
 
 		public Action EnteringPassword;
+		public event Action EnteringPasswordChanged;
 
 		Action<int, int> _SetBackgroundOpacity__;
 

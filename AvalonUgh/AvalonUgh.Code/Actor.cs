@@ -560,5 +560,30 @@ namespace AvalonUgh.Code
 			if (WaterCollision != null)
 				WaterCollision();
 		}
+
+
+		Level InternalCurrentLevel;
+		public Level CurrentLevel
+		{
+			get
+			{
+				return InternalCurrentLevel;
+			}
+			set
+			{
+				if (this.InternalCurrentLevel != null)
+				{
+					this.InternalCurrentLevel.KnownActors.Remove(this);
+				}
+
+				this.InternalCurrentLevel = value;
+
+				if (this.InternalCurrentLevel != null)
+				{
+					this.InternalCurrentLevel.KnownActors.Add(this);
+				}
+
+			}
+		}
 	}
 }

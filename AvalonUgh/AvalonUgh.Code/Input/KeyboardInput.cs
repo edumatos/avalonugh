@@ -129,6 +129,9 @@ namespace AvalonUgh.Code.Input
 			return key;
 		}
 
+		public bool Disabled { get; set; }
+
+
 		public KeyboardInput(Arguments e)
 		{
 			this.ConstructorArguments = e;
@@ -151,6 +154,9 @@ namespace AvalonUgh.Code.Input
 				e.InputControl.KeyDown +=
 					(sender, args) =>
 					{
+						if (Disabled)
+							return;
+
 						if (KeyState.ContainsKey(args.Key))
 						{
 							args.Handled = true;
@@ -168,6 +174,9 @@ namespace AvalonUgh.Code.Input
 				e.InputControl.KeyUp +=
 					(sender, args) =>
 					{
+						if (Disabled)
+							return;
+
 						if (KeyState.ContainsKey(args.Key))
 						{
 							args.Handled = true;
