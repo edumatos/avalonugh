@@ -146,13 +146,7 @@ namespace AvalonUgh.Code
 				Height = DefaultHeight
 			}.AttachTo(this);
 
-			var MainMenu = new MainMenuDialog
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Zoom = DefaultZoom,
-				AnimatedOpacity = 0
-			}.AttachContainerTo(this.Overlay);
+
 
 			#region setting up our console
 			this.Console = new GameConsole();
@@ -164,104 +158,12 @@ namespace AvalonUgh.Code
 			this.Console.AttachContainerTo(this.Overlay);
 			#endregion
 
-			var Options_Background = new Rectangle
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
-				Fill = Brushes.Black,
-				Opacity = 0.5,
-				Visibility = Visibility.Hidden
-			}.AttachTo(this.Overlay);
 
-			var Options_Y = (DefaultHeight - PrimitiveFont.Heigth * DefaultZoom) / 2;
-			var Options = new DialogTextBox
-			{
-				Width = DefaultWidth,
-				Zoom = DefaultZoom,
-				TextAlignment = TextAlignment.Center,
-				Text = "options"
-			}.AttachContainerTo(this.Overlay).MoveContainerTo(0, Options_Y);
+			var Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
 
-			Options.TouchOverlay.AttachTo(this.Overlay).MoveTo(0, Options_Y);
+			
+			Menu.AttachContainerTo(this.Overlay);
 
-
-			var Options_1_Y = Options_Y - (PrimitiveFont.Heigth * DefaultZoom + 4) * 1;
-			var Options_1 = new DialogTextBox
-			{
-				Width = DefaultWidth,
-				Zoom = DefaultZoom,
-				TextAlignment = TextAlignment.Center,
-				Text = "play",
-				Visibility = Visibility.Visible
-			}.AttachContainerTo(this.Overlay).MoveContainerTo(0, Options_1_Y);
-
-			Options_1.TouchOverlay.AttachTo(this.Overlay).MoveTo(0, Options_1_Y);
-
-
-			var Options_3_Y = Options_Y - (PrimitiveFont.Heigth * DefaultZoom + 4) * 1;
-			var Options_3 = new DialogTextBox
-			{
-				Width = DefaultWidth,
-				Zoom = DefaultZoom,
-				TextAlignment = TextAlignment.Center,
-				Text = "password",
-				Visibility = Visibility.Hidden
-			}.AttachContainerTo(this.Overlay).MoveContainerTo(0, Options_3_Y);
-
-			Options_3.TouchOverlay.AttachTo(this.Overlay).MoveTo(0, Options_3_Y);
-
-			var Options_2_Y = Options_Y - (PrimitiveFont.Heigth * DefaultZoom + 4) * -1;
-			var Options_2 = new DialogTextBox
-			{
-				Width = DefaultWidth,
-				Zoom = DefaultZoom,
-				TextAlignment = TextAlignment.Center,
-				Text = "easy",
-				Visibility = Visibility.Hidden
-			}.AttachContainerTo(this.Overlay).MoveContainerTo(0, Options_2_Y);
-
-			Options_2.TouchOverlay.AttachTo(this.Overlay).MoveTo(0, Options_2_Y);
-
-			var Options_4_Y = Options_Y - (PrimitiveFont.Heigth * DefaultZoom + 4) * -2;
-			var Options_4 = new DialogTextBox
-			{
-				Width = DefaultWidth,
-				Zoom = DefaultZoom,
-				TextAlignment = TextAlignment.Center,
-				Text = "1 player",
-				Visibility = Visibility.Hidden
-			}.AttachContainerTo(this.Overlay).MoveContainerTo(0, Options_4_Y);
-
-			Options_4.TouchOverlay.AttachTo(this.Overlay).MoveTo(0, Options_4_Y);
-
-			Options_3.Click +=
-				delegate
-				{
-					Options_2.Show(Options.Visibility == Visibility.Hidden);
-					Options_4.Show(Options.Visibility == Visibility.Hidden);
-					Options.Show(Options.Visibility == Visibility.Hidden);
-				};
-
-			Options.Click +=
-				delegate
-				{
-					if (Options_Background.Visibility == Visibility.Hidden)
-					{
-						Options_Background.Visibility = Visibility.Visible;
-						Options_1.Visibility = Visibility.Hidden;
-						Options_3.Visibility = Visibility.Visible;
-						Options_2.Visibility = Visibility.Visible;
-						Options_4.Visibility = Visibility.Visible;
-					}
-					else
-					{
-						Options_Background.Visibility = Visibility.Hidden;
-						Options_1.Visibility = Visibility.Visible;
-						Options_3.Visibility = Visibility.Hidden;
-						Options_2.Visibility = Visibility.Hidden;
-						Options_4.Visibility = Visibility.Hidden;
-					}
-				};
 
 
 			#region PauseDialog
@@ -305,8 +207,6 @@ namespace AvalonUgh.Code
 
 			#endregion
 
-
-
 			this.Ports.Add(
 				new Port
 				{
@@ -324,9 +224,6 @@ namespace AvalonUgh.Code
 					LevelReference = new LevelReference(0)
 				}
 			);
-
-
-
 
 			this.Container.KeyUp +=
 				(sender, args) =>
@@ -351,23 +248,22 @@ namespace AvalonUgh.Code
 						// when the view is in editor mode
 					}
 
-					if (args.Key == Key.Escape)
-					{
-						args.Handled = true;
+					//if (args.Key == Key.Escape)
+					//{
+					//    args.Handled = true;
 
-						if (MainMenu.AnimatedOpacity == 0)
-							MainMenu.AnimatedOpacity = 0.5;
-						else
-							MainMenu.AnimatedOpacity = 0;
-					}
+					//    if (MainMenu.AnimatedOpacity == 0)
+					//        MainMenu.AnimatedOpacity = 0.5;
+					//    else
+					//        MainMenu.AnimatedOpacity = 0;
+					//}
 
-					if (MainMenu.AnimatedOpacity != 0)
-					{
-						MainMenu.HandleKeyUp(args);
 
-						if (args.Handled)
-							return;
-					}
+					Menu.HandleKeyUp(args);
+
+					if (args.Handled)
+						return;
+
 
 					if (args.Key == Key.D1)
 					{
@@ -414,7 +310,21 @@ namespace AvalonUgh.Code
 			(1000 / 50).AtInterval(Think);
 
 
+			Menu.Play +=
+				delegate
+				{
+					Menu.Hide();
 
+					Console.WriteLine("loading level - " + Menu.Password);
+
+					// fade in the level start menu
+					// create and load new port
+					// hide other ports
+					// fade out
+
+					// if we are in multyplayer
+					// we need to do this in sync
+				};
 		}
 
 		void Think()

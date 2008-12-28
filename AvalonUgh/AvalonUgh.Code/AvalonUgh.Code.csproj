@@ -139,6 +139,7 @@
     <Compile Include="Dialogs\GameConsole.cs" />
     <Compile Include="Dialogs\LevelIntroDialog.cs" />
     <Compile Include="Dialogs\MainMenuDialog.cs" />
+    <Compile Include="Dialogs\ModernMenu.cs" />
     <Compile Include="Dialogs\TopFiveDialog.cs" />
     <Compile Include="Editor\ArrowSelector.cs" />
     <Compile Include="Editor\BackgroundSelector.cs" />
