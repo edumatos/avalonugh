@@ -199,7 +199,9 @@ namespace AvalonUgh.Code
 			{
 				DragContainer = this.Container,
 				Visibility = Visibility.Hidden
-			}.AttachContainerTo(this);
+			};
+
+			EditorToolbar_LoadLevel.AttachContainerTo(this);
 
 			EditorToolbar_LoadLevel.MoveToCenter(this.Overlay);
 
@@ -311,6 +313,12 @@ namespace AvalonUgh.Code
 					}
 				};
 
+			Menu.EnteringPasswordChanged +=
+				delegate
+				{
+					Local0.Input.Keyboard.Disabled = Menu.EnteringPassword != null;
+				};
+
 			Action OpenEditor = null;
 
 			Local0.Actor.WaterCollision +=
@@ -335,7 +343,8 @@ namespace AvalonUgh.Code
 						(LobbyPort.View.ContentActualWidth / 2).Random(),
 						LobbyPort.View.ContentActualHeight / 2);
 
-					LobbyPort.Level.KnownActors.Add(Local0.Actor);
+					Local0.Actor.CurrentLevel = LobbyPort.Level;
+
 				};
 
 			LobbyPort.LevelReference = new LevelReference(0);
@@ -350,6 +359,7 @@ namespace AvalonUgh.Code
 			this.Container.KeyUp +=
 				(sender, args) =>
 				{
+
 					// oem7 will trigger the console
 					if (args.Key == Key.Oem7)
 					{
@@ -403,16 +413,13 @@ namespace AvalonUgh.Code
 
 							// re-entering lobby
 
-							if (EditorPort != null)
-								if (EditorPort.Level != null)
-									EditorPort.Level.KnownActors.Remove(Local0.Actor);
-
+						
+							Local0.Actor.CurrentLevel = LobbyPort.Level;
 							Local0.Actor.MoveTo(
 								(LobbyPort.View.ContentActualWidth / 4) +
 								(LobbyPort.View.ContentActualWidth / 2).Random(),
 								LobbyPort.View.ContentActualHeight / 2);
 
-							LobbyPort.Level.KnownActors.Add(Local0.Actor);
 						}
 
 
@@ -442,6 +449,8 @@ namespace AvalonUgh.Code
 			this.Container.MouseLeftButtonDown +=
 				(sender, args) =>
 				{
+					Console.WriteLine("focusing...");
+
 					this.Container.Focus();
 				};
 
@@ -462,7 +471,7 @@ namespace AvalonUgh.Code
 
 						this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
 
-						this.EditorPort.Level.KnownActors.Remove(Local0.Actor);
+						Local0.Actor.CurrentLevel = Resumeable.Level;
 
 						Console.WriteLine("resume...");
 
@@ -534,10 +543,8 @@ namespace AvalonUgh.Code
 						100,
 						delegate
 						{
-							if (this.EditorPort != null)
-								if (this.EditorPort.Level != null)
-									this.EditorPort.Level.KnownActors.Remove(Local0.Actor);
-
+							Local0.Actor.CurrentLevel = NextLevelPort.Level;
+					
 							Menu.Hide();
 
 							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
@@ -550,8 +557,6 @@ namespace AvalonUgh.Code
 			EditorToolbar_LoadLevel.Click +=
 				NextLevelForEditor =>
 				{
-					EditorPort.Level.KnownActors.Remove(Local0.Actor);
-
 					EditorPort.LevelReference = NextLevelForEditor;
 
 					EditorToolbar_LoadLevel.Hide();
@@ -585,6 +590,8 @@ namespace AvalonUgh.Code
 								this.EditorPort.Loaded +=
 									delegate
 									{
+										Local0.Actor.CurrentLevel = EditorPort.Level;
+
 										if (this.EditorPort.Level.KnownCaves.Count == 0)
 										{
 											Local0.Actor.MoveTo(
@@ -603,7 +610,6 @@ namespace AvalonUgh.Code
 											);
 										}
 
-										EditorPort.Level.KnownActors.Add(Local0.Actor);
 
 										this.EditorPort.View.EditorSelectorNextSize += () => EditorToolbar.EditorSelectorNextSize();
 										this.EditorPort.View.EditorSelectorPreviousSize += () => EditorToolbar.EditorSelectorPreviousSize();
@@ -617,12 +623,13 @@ namespace AvalonUgh.Code
 							}
 							else
 							{
+								Local0.Actor.CurrentLevel = EditorPort.Level;
 								Local0.Actor.MoveTo(
 											(EditorPort.View.ContentActualWidth / 4) +
 											(EditorPort.View.ContentActualWidth / 2).Random(),
 											EditorPort.View.ContentActualHeight / 2);
 
-								EditorPort.Level.KnownActors.Add(Local0.Actor);
+
 							}
 
 							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Editor);
