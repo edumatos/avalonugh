@@ -1,5 +1,5 @@
 # generated map
-# text: LOBBY
+# text: Dive for the editor
 # code: LOBBY
 # autoscroll: 0
 # water: 10
@@ -18,7 +18,7 @@
                       
                       
                       
-P-BBBBP-BBBBBP--PBBBBB
+P-BBBBP-BBBBBP--PBBBB
 R-SSS-| S--S-|  S-S-- 
  R-|| | |  | R--| |   
  | S| R--S-| |  | S-S-

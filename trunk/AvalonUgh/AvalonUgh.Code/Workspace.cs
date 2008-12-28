@@ -146,6 +146,10 @@ namespace AvalonUgh.Code
 
 		const int DefaultZoom = 2;
 
+
+		public Port EditorPort;
+		public Port LobbyPort;
+
 		public Workspace(int DefaultWidth, int DefaultHeight)
 		{
 			this.Container = new Canvas
@@ -182,6 +186,23 @@ namespace AvalonUgh.Code
 
 			var Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
 
+			var EditorToolbar = new EditorToolbar(this.Selectors);
+
+			EditorToolbar.DragContainer = this.Overlay;
+			EditorToolbar.Hide();
+			EditorToolbar.AttachContainerTo(this.Overlay);
+
+			// move it to bottom center
+			EditorToolbar.MoveContainerTo(
+				(DefaultWidth - EditorToolbar.Width) / 2,
+				DefaultHeight - EditorToolbar.Padding * 3 - PrimitiveTile.Heigth * 4
+			);
+
+			EditorToolbar.EditorSelectorChanged +=
+				delegate
+				{
+					this.EditorPort.View.EditorSelector = EditorToolbar.EditorSelector;
+				};
 
 			Menu.AttachContainerTo(this.Overlay);
 
@@ -238,7 +259,7 @@ namespace AvalonUgh.Code
 
 			#endregion
 
-			var LobbyPort = new Port
+			this.LobbyPort = new Port
 			{
 				Container = this.Content,
 
@@ -247,12 +268,13 @@ namespace AvalonUgh.Code
 				Zoom = DefaultZoom,
 
 				Width = DefaultWidth,
-				Height = DefaultHeight - 18,
+				Height = DefaultHeight,
 
 				PortIdentity = PortIdentity_Lobby,
 
 
 			};
+
 
 
 			var Local0 =
@@ -270,6 +292,17 @@ namespace AvalonUgh.Code
 					}
 				};
 
+			Action OpenEditor = null;
+
+			Local0.Actor.WaterCollision +=
+				delegate
+				{
+					Console.WriteLine("yay, water!");
+
+					if (LobbyPort.Level.KnownActors.Contains(Local0.Actor))
+						OpenEditor();
+				};
+
 			this.LocalIdentity.Locals.Add(Local0);
 
 
@@ -283,7 +316,6 @@ namespace AvalonUgh.Code
 						(LobbyPort.View.ContentActualWidth / 2).Random(),
 						LobbyPort.View.ContentActualHeight / 2);
 
-
 					LobbyPort.Level.KnownActors.Add(Local0.Actor);
 				};
 
@@ -292,6 +324,7 @@ namespace AvalonUgh.Code
 			this.Players.Add(Local0);
 
 			this.Ports.Add(LobbyPort);
+
 
 
 
@@ -337,12 +370,29 @@ namespace AvalonUgh.Code
 
 							// if we are inside a mission, submission or editor this will bring us back
 
-							this.Ports.Where(k => k.PortIdentity != PortIdentity_Lobby).ForEach(k => k.Visible = false);
+							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Lobby);
 
 							// if all players quit the game
 							// we would be able to start another level
-							Menu.PlayText = "resume";
+							if (this.Ports.Any(k => k.PortIdentity == PortIdentity_Mission))
+								Menu.PlayText = "resume";
+
 							Menu.Show();
+
+							EditorToolbar.Hide();
+
+							// re-entering lobby
+
+							if (EditorPort != null)
+								if (EditorPort.Level != null)
+									EditorPort.Level.KnownActors.Remove(Local0.Actor);
+
+							Local0.Actor.MoveTo(
+								(LobbyPort.View.ContentActualWidth / 4) +
+								(LobbyPort.View.ContentActualWidth / 2).Random(),
+								LobbyPort.View.ContentActualHeight / 2);
+
+							LobbyPort.Level.KnownActors.Add(Local0.Actor);
 						}
 
 
@@ -389,7 +439,11 @@ namespace AvalonUgh.Code
 					if (Resumeable != null)
 					{
 						Menu.Hide();
-						Resumeable.Visible = true;
+
+						this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
+
+						this.EditorPort.Level.KnownActors.Remove(Local0.Actor);
+
 						Console.WriteLine("resume...");
 
 						return;
@@ -455,15 +509,84 @@ namespace AvalonUgh.Code
 
 					this.Ports.Add(NextLevelPort);
 
+
 					this.LocalIdentity.HandleFutureFrame(
 						100,
 						delegate
 						{
+							this.EditorPort.Level.KnownActors.Remove(Local0.Actor);
+
 							Menu.Hide();
 
-							NextLevelPort.Visible = true;
+							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
 
 							LevelIntro.AnimatedOpacity = 0;
+						}
+					);
+				};
+
+			OpenEditor =
+				delegate
+				{
+
+					this.LocalIdentity.HandleFutureFrame(
+						delegate
+						{
+							LobbyPort.Level.KnownActors.Remove(Local0.Actor);
+
+							if (this.EditorPort == null)
+							{
+								this.EditorPort = new Port
+								{
+									Container = this.Content,
+
+									Selectors = this.Selectors,
+
+									Zoom = DefaultZoom,
+
+									Width = DefaultWidth,
+									Height = DefaultHeight - 18,
+
+									PortIdentity = PortIdentity_Editor,
+								};
+
+								this.EditorPort.Loaded +=
+									delegate
+									{
+										Local0.Actor.MoveTo(
+											(EditorPort.View.ContentActualWidth / 4) +
+											(EditorPort.View.ContentActualWidth / 2).Random(),
+											EditorPort.View.ContentActualHeight / 2);
+
+										EditorPort.Level.KnownActors.Add(Local0.Actor);
+									};
+
+								this.Ports.Add(this.EditorPort);
+
+								this.EditorPort.LevelReference = new LevelReference(0);
+							}
+							else
+							{
+								Local0.Actor.MoveTo(
+											(EditorPort.View.ContentActualWidth / 4) +
+											(EditorPort.View.ContentActualWidth / 2).Random(),
+											EditorPort.View.ContentActualHeight / 2);
+
+								EditorPort.Level.KnownActors.Add(Local0.Actor);
+							}
+
+							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Editor);
+
+
+
+							// we are entering the editor
+							// if anyone is there
+							// then we need to sync
+							Menu.Hide();
+							EditorToolbar.Show();
+
+
+
 						}
 					);
 				};
@@ -492,7 +615,7 @@ namespace AvalonUgh.Code
 				}
 			}
 
-			if (this.Ports.Any(k => k == null))
+			if (this.Ports.Any(k => k.Level == null))
 				return;
 
 			//if (this.LocalIdentity.SyncFrame % 30 == 0)

@@ -309,6 +309,9 @@ namespace AvalonUgh.Code
 					if (this.WaterCollisionAtVelocity != null)
 						this.WaterCollisionAtVelocity(WaterCollisionAtVelocity);
 
+					if (actor != null)
+						actor.RaiseWaterCollision();
+
 					twin.LastWaterCollisionVelocity = WaterCollisionAtVelocity;
 				}
 			}
