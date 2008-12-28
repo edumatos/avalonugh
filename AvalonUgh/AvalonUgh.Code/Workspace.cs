@@ -15,6 +15,7 @@ using System.Windows;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
 using System.Windows.Shapes;
+using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Code
 {
@@ -91,9 +92,14 @@ namespace AvalonUgh.Code
 								throw new Exception("InternalLevelReference");
 
 							this.Level = new Level(Data, this.Zoom, this.Selectors);
+
 							this.View = new View(Width, Height, this.Level);
 							this.View.Show(this.InternalVisible);
 							this.View.MoveContainerTo(this.Left, this.Top).AttachContainerTo(this.Container);
+
+							if (this.Loaded != null)
+								this.Loaded();
+
 						};
 
 					if (value.Data == null)
@@ -124,6 +130,8 @@ namespace AvalonUgh.Code
 						this.View.Show(value);
 				}
 			}
+
+			public event Action Loaded;
 		}
 
 		const int PortIdentity_Lobby = 1000;
@@ -132,6 +140,7 @@ namespace AvalonUgh.Code
 
 
 		public readonly BindingList<Port> Ports = new BindingList<Port>();
+		public readonly BindingList<PlayerInfo> Players = new BindingList<PlayerInfo>();
 
 		public GameConsole Console { get; set; }
 
@@ -242,8 +251,48 @@ namespace AvalonUgh.Code
 
 				PortIdentity = PortIdentity_Lobby,
 
-				LevelReference = new LevelReference(0)
+
 			};
+
+
+			var Local0 =
+				new PlayerInfo
+				{
+					Actor = new Actor.man0(DefaultZoom),
+					Input = new PlayerInput
+					{
+						Keyboard = new KeyboardInput(
+							new KeyboardInput.Arguments.Arrows
+							{
+								InputControl = this.Container
+							}
+						)
+					}
+				};
+
+			this.LocalIdentity.Locals.Add(Local0);
+
+
+			LobbyPort.Loaded +=
+				delegate
+				{
+					Console.WriteLine("adding an actor to lobby");
+
+					Local0.Actor.MoveTo(
+						(LobbyPort.View.ContentActualWidth / 4) +
+						(LobbyPort.View.ContentActualWidth / 2).Random(),
+						LobbyPort.View.ContentActualHeight / 2);
+
+
+					LobbyPort.Level.KnownActors.Add(Local0.Actor);
+				};
+
+			LobbyPort.LevelReference = new LevelReference(0);
+
+			this.Players.Add(Local0);
+
+			this.Ports.Add(LobbyPort);
+
 
 
 			this.Container.KeyUp +=
@@ -290,6 +339,8 @@ namespace AvalonUgh.Code
 
 							this.Ports.Where(k => k.PortIdentity != PortIdentity_Lobby).ForEach(k => k.Visible = false);
 
+							// if all players quit the game
+							// we would be able to start another level
 							Menu.PlayText = "resume";
 							Menu.Show();
 						}
@@ -417,7 +468,6 @@ namespace AvalonUgh.Code
 					);
 				};
 
-
 		}
 
 		void Think()
@@ -452,10 +502,10 @@ namespace AvalonUgh.Code
 
 
 			//// we could pause the game here
-			//foreach (var p in Players)
-			//{
-			//    p.AddAcceleration();
-			//}
+			foreach (var p in Players)
+			{
+				p.AddAcceleration();
+			}
 
 			foreach (var p in this.Ports)
 			{
