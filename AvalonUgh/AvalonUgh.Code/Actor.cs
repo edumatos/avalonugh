@@ -551,5 +551,14 @@ namespace AvalonUgh.Code
 			if (this.Drop != null)
 				this.Drop();
 		}
+
+
+		public event Action WaterCollision;
+
+		public void RaiseWaterCollision()
+		{
+			if (WaterCollision != null)
+				WaterCollision();
+		}
 	}
 }
