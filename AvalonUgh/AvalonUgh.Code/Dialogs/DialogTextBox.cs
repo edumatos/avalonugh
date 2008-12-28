@@ -10,6 +10,8 @@ using System.Windows.Controls;
 using System.IO;
 using AvalonUgh.Assets.Shared;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Shapes;
+using System.Windows.Input;
 
 namespace AvalonUgh.Code.Dialogs
 {
@@ -64,9 +66,39 @@ namespace AvalonUgh.Code.Dialogs
 			}
 		}
 
+		public readonly Rectangle TouchOverlay;
+
+		public event Action Click;
+
 		public DialogTextBox()
 		{
 			this.Container = new Canvas();
+
+			this.TouchOverlay = new Rectangle
+			{
+				Fill = Brushes.Red,
+				Opacity = 0,
+				Cursor = Cursors.Hand
+			};
+
+			this.TouchOverlay.MouseEnter +=
+				delegate
+				{
+					this.Color = Colors.Blue;
+				};
+
+			this.TouchOverlay.MouseLeave +=
+				delegate
+				{
+					this.Color = Colors.Brown;
+				};
+
+			this.TouchOverlay.MouseLeftButtonUp +=
+				delegate
+				{
+					if (this.Click != null)
+						this.Click();
+				};
 		}
 
 
@@ -174,8 +206,21 @@ namespace AvalonUgh.Code.Dialogs
 
 			this._Height = Convert.ToInt32( PrimitiveFont.Heigth * Zoom * y);
 			// render em
+
+			this.TouchOverlay.SizeTo(_Width, _Height);
 		}
 
-
+		public Visibility Visibility
+		{
+			get
+			{
+				return this.Container.Visibility;
+			}
+			set
+			{
+				this.Container.Visibility = value;
+				this.TouchOverlay.Visibility = value;
+			}
+		}
 	}
 }
