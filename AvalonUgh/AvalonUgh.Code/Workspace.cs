@@ -33,6 +33,8 @@ namespace AvalonUgh.Code
 		public Canvas Overlay { get; set; }
 
 		public readonly KnownSelectors Selectors = new KnownSelectors();
+		public readonly BindingList<LevelReference> Levels = new BindingList<LevelReference>();
+
 
 
 		/// <summary>
@@ -82,7 +84,7 @@ namespace AvalonUgh.Code
 
 					InternalLevelReference = value;
 
-					InternalLevelReference.Location.Embedded.ToString().ToStringAsset(
+					Action<string> ApplyData =
 						Data =>
 						{
 							if (Level != null)
@@ -92,8 +94,18 @@ namespace AvalonUgh.Code
 							this.View = new View(Width, Height, this.Level);
 							this.View.Show(this.InternalVisible);
 							this.View.MoveContainerTo(this.Left, this.Top).AttachContainerTo(this.Container);
-						}
-					);
+						};
+
+					if (value.Data == null)
+					{
+						InternalLevelReference.Location.Embedded.ToString().ToStringAsset(
+							ApplyData
+						);
+					}
+					else
+					{
+						ApplyData(value.Data);
+					}
 				}
 			}
 
@@ -161,9 +173,19 @@ namespace AvalonUgh.Code
 
 			var Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
 
-			
+
 			Menu.AttachContainerTo(this.Overlay);
 
+			var LevelIntro = new LevelIntroDialog
+			{
+				AnimatedOpacity = 0,
+				Width = DefaultWidth,
+				Height = DefaultHeight,
+				Zoom = DefaultZoom,
+				AnimatedOpacityContentMultiplier = 1
+			};
+
+			LevelIntro.AttachContainerTo(this.Overlay);
 
 
 			#region PauseDialog
@@ -207,23 +229,22 @@ namespace AvalonUgh.Code
 
 			#endregion
 
-			this.Ports.Add(
-				new Port
-				{
-					Container = this.Content,
+			var LobbyPort = new Port
+			{
+				Container = this.Content,
 
-					Selectors = this.Selectors,
+				Selectors = this.Selectors,
 
-					Zoom = DefaultZoom,
+				Zoom = DefaultZoom,
 
-					Width = DefaultWidth,
-					Height = DefaultHeight - 18,
+				Width = DefaultWidth,
+				Height = DefaultHeight - 18,
 
-					PortIdentity = PortIdentity_Lobby,
+				PortIdentity = PortIdentity_Lobby,
 
-					LevelReference = new LevelReference(0)
-				}
-			);
+				LevelReference = new LevelReference(0)
+			};
+
 
 			this.Container.KeyUp +=
 				(sender, args) =>
@@ -248,48 +269,44 @@ namespace AvalonUgh.Code
 						// when the view is in editor mode
 					}
 
-					//if (args.Key == Key.Escape)
-					//{
-					//    args.Handled = true;
-
-					//    if (MainMenu.AnimatedOpacity == 0)
-					//        MainMenu.AnimatedOpacity = 0.5;
-					//    else
-					//        MainMenu.AnimatedOpacity = 0;
-					//}
-
-
-					Menu.HandleKeyUp(args);
-
-					if (args.Handled)
-						return;
-
-
-					if (args.Key == Key.D1)
+					if (this.LocalIdentity.SyncFramePaused)
 					{
-						args.Handled = true;
-						foreach (var p in this.Ports)
+						if (args.Key == Key.P)
 						{
-							p.Visible = p.PortIdentity == PortIdentity_Lobby;
+							args.Handled = true;
+							SetPause(false, "you");
+
+							return;
+						}
+
+					}
+					else
+					{
+						if (args.Key == Key.Escape)
+						{
+							args.Handled = true;
+
+							// if we are inside a mission, submission or editor this will bring us back
+
+							this.Ports.Where(k => k.PortIdentity != PortIdentity_Lobby).ForEach(k => k.Visible = false);
+
+							Menu.PlayText = "resume";
+							Menu.Show();
+						}
+
+
+						Menu.HandleKeyUp(args);
+
+						if (args.Handled)
+							return;
+
+
+
+						if (args.Key == Key.P)
+						{
+							SetPause(true, "you");
 						}
 					}
-
-					if (args.Key == Key.D2)
-					{
-						args.Handled = true;
-						foreach (var p in this.Ports)
-						{
-							p.Visible = p.PortIdentity == PortIdentity_Editor;
-						}
-					}
-
-					if (args.Key == Key.P)
-					{
-						SetPause(!this.LocalIdentity.SyncFramePaused, "you");
-					}
-
-
-
 
 
 				};
@@ -309,13 +326,54 @@ namespace AvalonUgh.Code
 
 			(1000 / 50).AtInterval(Think);
 
+			this.Levels.AddRange(
+				new KnownLevels().Levels
+			);
 
 			Menu.Play +=
 				delegate
 				{
-					Menu.Hide();
+					var Resumeable = this.Ports.FirstOrDefault(k => k.PortIdentity == PortIdentity_Mission);
 
-					Console.WriteLine("loading level - " + Menu.Password);
+					if (Resumeable != null)
+					{
+						Menu.Hide();
+						Resumeable.Visible = true;
+						Console.WriteLine("resume...");
+
+						return;
+					}
+
+					if (this.Levels.Any(k => k.Data == null))
+					{
+						Console.WriteLine("loading...");
+						return;
+					}
+
+					var NextLevel = this.Levels.FirstOrDefault(k => k.Code.ToLower() == Menu.Password.ToLower());
+
+					if (NextLevel == null)
+					{
+						// password does not match
+						NextLevel = this.Levels.FirstOrDefault(k => k.Code.ToLower() == "cavity");
+					}
+
+					if (NextLevel == null)
+					{
+						Console.WriteLine("no next level...");
+						return;
+					}
+
+
+					//Menu.Hide();
+
+					Console.WriteLine("loading level - " + NextLevel.Text);
+
+					LevelIntro.LevelNumber = NextLevel.Location.Embedded.AnimationFrame;
+					LevelIntro.LevelTitle = NextLevel.Text;
+					LevelIntro.LevelPassword = NextLevel.Code;
+
+					LevelIntro.AnimatedOpacity = 1;
 
 					// fade in the level start menu
 					// create and load new port
@@ -324,7 +382,42 @@ namespace AvalonUgh.Code
 
 					// if we are in multyplayer
 					// we need to do this in sync
+
+					var NextLevelPort =
+						new Port
+						{
+							Container = this.Content,
+
+							Selectors = this.Selectors,
+
+							Zoom = DefaultZoom,
+
+							Width = DefaultWidth,
+							Height = DefaultHeight - 18,
+
+							PortIdentity = PortIdentity_Mission,
+
+							LevelReference = NextLevel,
+
+							Visible = false,
+						};
+
+					this.Ports.Add(NextLevelPort);
+
+					this.LocalIdentity.HandleFutureFrame(
+						100,
+						delegate
+						{
+							Menu.Hide();
+
+							NextLevelPort.Visible = true;
+
+							LevelIntro.AnimatedOpacity = 0;
+						}
+					);
 				};
+
+
 		}
 
 		void Think()

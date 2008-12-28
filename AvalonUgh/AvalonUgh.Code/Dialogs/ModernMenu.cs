@@ -36,9 +36,25 @@ namespace AvalonUgh.Code.Dialogs
 		public string Password;
 
 		readonly DialogTextBox Options_5;
+		readonly Action Options_3_Click;
+		readonly DialogTextBox Options_1;
+
+		public string PlayText
+		{
+			get
+			{
+				return Options_1.Text;
+			}
+			set
+			{
+				Options_1.Text = value;
+			}
+		}
 
 		public ModernMenu(int Zoom, int Width, int Height)
 		{
+			this.Password = "";
+
 			this.Zoom = Zoom;
 			this.Width = Width;
 			this.Height = Height;
@@ -95,7 +111,7 @@ namespace AvalonUgh.Code.Dialogs
 
 
 			var Options_1_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * 1;
-			var Options_1 = new DialogTextBox
+			this.Options_1 = new DialogTextBox
 			{
 				Width = Width,
 				Zoom = Zoom,
@@ -186,7 +202,7 @@ namespace AvalonUgh.Code.Dialogs
 						this.PlayersChanged();
 				};
 
-			Options_3.Click +=
+			Options_3_Click =
 				delegate
 				{
 					var Opening = Options.Visibility != Visibility.Hidden;
@@ -220,6 +236,9 @@ namespace AvalonUgh.Code.Dialogs
 						).Stop;
 					}
 				};
+
+			Options_3.Click += Options_3_Click;
+				
 
 			Options.Click +=
 				delegate
@@ -309,7 +328,12 @@ namespace AvalonUgh.Code.Dialogs
 		{
 			if (EnteringPassword != null)
 			{
-				if (args.Key == Key.Delete)
+				var IsDelete = args.Key == Key.Delete;
+
+				if (args.Key == Key.Back)
+					IsDelete = true;
+
+				if (IsDelete)
 				{
 					// backspace need special care for javascript
 					// and isnt currently useble
@@ -328,13 +352,12 @@ namespace AvalonUgh.Code.Dialogs
 				{
 					args.Handled = true;
 
-					EnteringPassword();
-					EnteringPassword = null;
-
 					if (string.IsNullOrEmpty(this.Password))
 						this.Options_5.Text = "none";
 					else
 						this.Options_5.Text = this.Password;
+
+					this.Options_3_Click();
 
 					return;
 				}
