@@ -70,6 +70,12 @@ namespace AvalonUgh.Code.Dialogs
 
 		public event Action Click;
 
+		public void Show(bool value)
+		{
+			this.Container.Show(value);
+			this.TouchOverlay.Show(value);
+		}
+
 		public DialogTextBox()
 		{
 			this.Container = new Canvas();
@@ -136,7 +142,6 @@ namespace AvalonUgh.Code.Dialogs
 				{
 					w = n.Length.Max(w);
 
-				
 					if (this.TextAlignment == TextAlignment.Center)
 						a.Add(n.Trim());
 					else
@@ -181,8 +186,13 @@ namespace AvalonUgh.Code.Dialogs
 
 						var px = x * (PrimitiveFont.Width + 1) * Zoom;
 
+						var nLength = n.Length;
+
+						if (n.EndsWith("?"))
+							nLength--;
+
 						if (this.TextAlignment == TextAlignment.Center)
-							px += (this.Width - n.Length * (PrimitiveFont.Width + 1) * Zoom) / 2;
+							px += (this.Width - nLength  * (PrimitiveFont.Width + 1) * Zoom) / 2;
 
 						var py = y * PrimitiveFont.Heigth * Zoom;
 
