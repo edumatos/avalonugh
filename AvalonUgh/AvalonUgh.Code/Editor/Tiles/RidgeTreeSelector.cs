@@ -17,13 +17,13 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public const string Identifier = "T";
 
 		public readonly View.SelectorInfo
-			Size_1x1 = new SelectorSize_1x1();
-		//Size_2x1 = new Size_Generic(2, 1, 1),
-		//Size_2x2 = new Size_Generic(2, 2, 3),
-		//Size_2x3 = new Size_Generic(2, 3, 2),
-		//Size_3x2 = new Size_Generic(3, 2, 2),
-		//Size_3x3 = new Size_Generic(3, 3, 1),
-		//Size_4x4,
+			Size_1x1 = new SelectorSize_1x1(),
+			//Size_2x1 = new Size_Generic(2, 1, 1),
+			//Size_2x2 = new Size_Generic(2, 2, 3),
+			//Size_2x3 = new Size_Generic(2, 3, 2),
+			//Size_3x2 = new Size_Generic(3, 2, 2),
+			//Size_3x3 = new Size_Generic(3, 3, 1),
+			Size_1x2;
 		//Size_5x5,
 		//Size_5x4;
 
@@ -41,17 +41,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 					Extension = "png"
 				};
 
-			//this.Size_5x5 =
-			//    new TileSelector.Composite(5, 5,
-			//        (Level, Position) =>
-			//        {
-			//            this.Size_1x1.CreateTo(Level, Position[2, 2]);
-			//            this.Size_3x2.CreateTo(Level, Position[0, 0]);
-			//            this.Size_2x3.CreateTo(Level, Position[0, 2]);
-			//            this.Size_2x3.CreateTo(Level, Position[3, 0]);
-			//            this.Size_3x2.CreateTo(Level, Position[2, 3]);
-			//        }
-			//    );
+			this.Size_1x2 =
+				new TileSelector.Composite(1, 2,
+					(Level, Position) =>
+					{
+						this.Size_1x1.CreateTo(Level, Position[0, 0]);
+						this.Size_1x1.CreateTo(Level, Position[0, 1]);
+					}
+				);
 
 			//this.Size_5x4 =
 			//    new TileSelector.Composite(5, 4,
@@ -79,6 +76,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 				new View.SelectorInfo[]
 				{
 					Size_1x1,
+					Size_1x2,
 					//Size_2x1,
 					//Size_2x2,
 					//Size_2x3,

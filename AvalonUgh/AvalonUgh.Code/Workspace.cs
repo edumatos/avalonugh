@@ -186,11 +186,22 @@ namespace AvalonUgh.Code
 
 			var Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
 
+
+
+
 			var EditorToolbar = new EditorToolbar(this.Selectors);
 
-			EditorToolbar.DragContainer = this.Overlay;
+			EditorToolbar.DragContainer = this.Container;
 			EditorToolbar.Hide();
 			EditorToolbar.AttachContainerTo(this.Overlay);
+
+			var EditorToolbar_LoadLevel = new LoadWindow(this.Levels)
+			{
+				DragContainer = this.Container,
+				Visibility = Visibility.Hidden
+			}.AttachContainerTo(this);
+
+			EditorToolbar_LoadLevel.MoveToCenter(this.Overlay);
 
 			// move it to bottom center
 			EditorToolbar.MoveContainerTo(
@@ -203,6 +214,14 @@ namespace AvalonUgh.Code
 				{
 					this.EditorPort.View.EditorSelector = EditorToolbar.EditorSelector;
 				};
+
+			EditorToolbar.LoadClicked +=
+					delegate
+					{
+						EditorToolbar_LoadLevel.Show(EditorToolbar_LoadLevel.Visibility == Visibility.Hidden);
+
+					};
+
 
 			Menu.AttachContainerTo(this.Overlay);
 
@@ -380,6 +399,7 @@ namespace AvalonUgh.Code
 							Menu.Show();
 
 							EditorToolbar.Hide();
+							EditorToolbar_LoadLevel.Hide();
 
 							// re-entering lobby
 
@@ -514,7 +534,9 @@ namespace AvalonUgh.Code
 						100,
 						delegate
 						{
-							this.EditorPort.Level.KnownActors.Remove(Local0.Actor);
+							if (this.EditorPort != null)
+								if (this.EditorPort.Level != null)
+									this.EditorPort.Level.KnownActors.Remove(Local0.Actor);
 
 							Menu.Hide();
 
@@ -523,6 +545,16 @@ namespace AvalonUgh.Code
 							LevelIntro.AnimatedOpacity = 0;
 						}
 					);
+				};
+
+			EditorToolbar_LoadLevel.Click +=
+				NextLevelForEditor =>
+				{
+					EditorPort.Level.KnownActors.Remove(Local0.Actor);
+
+					EditorPort.LevelReference = NextLevelForEditor;
+
+					EditorToolbar_LoadLevel.Hide();
 				};
 
 			OpenEditor =
@@ -553,15 +585,33 @@ namespace AvalonUgh.Code
 								this.EditorPort.Loaded +=
 									delegate
 									{
-										Local0.Actor.MoveTo(
-											(EditorPort.View.ContentActualWidth / 4) +
-											(EditorPort.View.ContentActualWidth / 2).Random(),
-											EditorPort.View.ContentActualHeight / 2);
+										if (this.EditorPort.Level.KnownCaves.Count == 0)
+										{
+											Local0.Actor.MoveTo(
+												(EditorPort.View.ContentActualWidth / 4) +
+												(EditorPort.View.ContentActualWidth / 2).Random(),
+												EditorPort.View.ContentActualHeight / 2);
+
+										}
+										else
+										{
+											var EntryPointCave = this.EditorPort.Level.KnownCaves.Random();
+
+											Local0.Actor.MoveTo(
+												EntryPointCave.X,
+												EntryPointCave.Y
+											);
+										}
 
 										EditorPort.Level.KnownActors.Add(Local0.Actor);
+
+										this.EditorPort.View.EditorSelectorNextSize += () => EditorToolbar.EditorSelectorNextSize();
+										this.EditorPort.View.EditorSelectorPreviousSize += () => EditorToolbar.EditorSelectorPreviousSize();
+
 									};
 
 								this.Ports.Add(this.EditorPort);
+
 
 								this.EditorPort.LevelReference = new LevelReference(0);
 							}

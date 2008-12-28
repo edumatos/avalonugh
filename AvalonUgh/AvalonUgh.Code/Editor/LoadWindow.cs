@@ -23,8 +23,27 @@ namespace AvalonUgh.Code.Editor
 
 		public event Action<LevelReference> Click;
 
-		public LoadWindow()
+		public LoadWindow() :this(null)
 		{
+		}
+
+		public LoadWindow(BindingList<LevelReference> Items)
+		{
+			if (Items != null)
+			{
+				this.Items = Items;
+			}
+			else
+			{
+				Enumerable.Range(1, 20).ForEach(
+					LevelNumber =>
+					{
+						this.Items.Add(new LevelReference(LevelNumber));
+					}
+				);
+			}
+
+
 			this.Width = Padding + (48 + Padding) * ItemsPerRow;
 			this.Height = Padding + 100 + Padding + (30 + Padding) * 3;
 
@@ -72,7 +91,7 @@ namespace AvalonUgh.Code.Editor
 						delegate
 						{
 							value.Preview.AttachTo(this);
-							Info.Text = "Loading...";
+							Info.Text = value.Text;
 						};
 
 					TouchOverlay.MouseLeave +=
@@ -91,12 +110,7 @@ namespace AvalonUgh.Code.Editor
 				}
 			);
 
-			Enumerable.Range(1, 20).ForEach(
-				LevelNumber =>
-				{
-					this.Items.Add(new LevelReference(LevelNumber));
-				}
-			);
+		
 
 			// list
 
