@@ -23,7 +23,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 			//Size_2x3 = new Size_Generic(2, 3, 2),
 			//Size_3x2 = new Size_Generic(3, 2, 2),
 			//Size_3x3 = new Size_Generic(3, 3, 1),
-			Size_1x2;
+			Size_1x2,
+			Size_2x1;
 		//Size_5x5,
 		//Size_5x4;
 
@@ -45,8 +46,18 @@ namespace AvalonUgh.Code.Editor.Tiles
 				new TileSelector.Composite(1, 2,
 					(Level, Position) =>
 					{
-						this.Size_1x1.CreateTo(Level, Position[0, 0]);
 						this.Size_1x1.CreateTo(Level, Position[0, 1]);
+						this.Size_1x1.CreateTo(Level, Position[0, 0]);
+					}
+				);
+
+
+			this.Size_2x1 =
+				new TileSelector.Composite(2, 1,
+					(Level, Position) =>
+					{
+						this.Size_1x1.CreateTo(Level, Position[1, 0]);
+						this.Size_1x1.CreateTo(Level, Position[0, 0]);
 					}
 				);
 
@@ -77,7 +88,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 				{
 					Size_1x1,
 					Size_1x2,
-					//Size_2x1,
+					Size_2x1,
 					//Size_2x2,
 					//Size_2x3,
 					//Size_3x2,
