@@ -11,6 +11,7 @@ using ScriptCoreLib.Shared.Avalon.Tween;
 using System.Windows.Shapes;
 using AvalonUgh.Code.Editor;
 using AvalonUgh.Code.Input;
+using System.ComponentModel;
 
 namespace AvalonUgh.Code
 {
@@ -86,6 +87,7 @@ namespace AvalonUgh.Code
 		public int ContainerHeight { get; set; }
 
 		public const int MaxShakeSize = 4;
+
 
 		public View(int width, int height, Level level)
 		{
@@ -230,12 +232,11 @@ namespace AvalonUgh.Code
 
 			#region sync the level platforms into view
 
+			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownDinos.AttachTo(this.Entities);
-
 		
 			this.Level.KnownSigns.AttachTo(this.Entities);
 			this.Level.KnownTrees.AttachTo(this.Entities);
-
 
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
 			this.Level.KnownTryoperus.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
