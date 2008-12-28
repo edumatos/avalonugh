@@ -36,7 +36,19 @@ namespace AvalonUgh.Code.Dialogs
 		public DialogTextBox InputContent { get; set; }
 
 		int _Zoom;
-		public int Zoom { get { return _Zoom; } set { _Zoom = value; Update(); } }
+		public int Zoom
+		{
+			get { return _Zoom; }
+			set
+			{
+				_Zoom = value;
+				this.Content.Zoom = value;
+				this.LabelContent.Zoom = value;
+				this.InputContent.Zoom = value;
+
+				Update();
+			}
+		}
 
 		int _Width;
 		public int Width { get { return _Width; } set { _Width = value; Update(); } }
@@ -87,6 +99,8 @@ namespace AvalonUgh.Code.Dialogs
 
 		public Dialog()
 		{
+			this._Zoom = 1;
+
 			this.Container = new Canvas
 			{
 			};
@@ -100,7 +114,7 @@ namespace AvalonUgh.Code.Dialogs
 			this.Background = new Image
 			{
 				Stretch = Stretch.Fill,
-				Source = (KnownAssets.Path.Backgrounds + "/005.png").ToSource()
+				Source = (KnownAssets.Path.Backgrounds + "/004.png").ToSource()
 			}.AttachTo(this.BackgroundContainer);
 
 			this.Content = new DialogTextBox
@@ -135,6 +149,12 @@ namespace AvalonUgh.Code.Dialogs
 
 				};
 
+			this.InputContent.TextChanged +=
+				delegate
+				{
+					UpdatePositions();
+				};
+
 			this.BackgroundVisible = true;
 
 			this._SetOpacity__ = NumericEmitter.Of(
@@ -151,12 +171,15 @@ namespace AvalonUgh.Code.Dialogs
 						this.Container.Show();
 					}
 
-					this.Content.Container.Opacity = (Opacity * 2).Min(1);
+					var ContentOpacity = (Opacity * 2).Min(1);
+					this.Content.Container.Opacity = ContentOpacity;
+					this.InputContent.Container.Opacity = ContentOpacity;
+					this.LabelContent.Container.Opacity = ContentOpacity;
 					this.BackgroundContainer.Opacity = Opacity;
 				}
 			);
 
-		
+
 		}
 
 		Action<int, int> _SetOpacity__;
