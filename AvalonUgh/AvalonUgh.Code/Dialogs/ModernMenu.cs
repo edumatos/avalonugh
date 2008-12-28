@@ -27,6 +27,7 @@ namespace AvalonUgh.Code.Dialogs
 		public readonly Rectangle Background;
 
 		public event Action Play;
+		public event Action Editor;
 
 		public int DifficultyLevel;
 
@@ -36,6 +37,7 @@ namespace AvalonUgh.Code.Dialogs
 		public string Password;
 
 		readonly DialogTextBox Options_5;
+		readonly Action Options_Click;
 		readonly Action Options_3_Click;
 		readonly DialogTextBox Options_1;
 
@@ -155,7 +157,7 @@ namespace AvalonUgh.Code.Dialogs
 
 
 			var DifficultyLevel_Labels = new[] { "easy", "medium", "hard" };
-			var Options_2_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -1;
+			var Options_2_Y = Convert.ToInt32(Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -1.5);
 			var Options_2 = new DialogTextBox
 			{
 				Width = Width,
@@ -178,7 +180,7 @@ namespace AvalonUgh.Code.Dialogs
 
 
 			var Players_Labels = new[] { "just watching", "1 player", "2 players", "3 players" };
-			var Options_4_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -2;
+			var Options_4_Y = Convert.ToInt32(Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -2.5);
 			var Options_4 = new DialogTextBox
 			{
 				Width = Width,
@@ -202,6 +204,28 @@ namespace AvalonUgh.Code.Dialogs
 						this.PlayersChanged();
 				};
 
+
+			var Options_6_Y =Convert.ToInt32(  Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -4);
+			var Options_6 = new DialogTextBox
+			{
+				Width = Width,
+				Zoom = Zoom,
+				TextAlignment = TextAlignment.Center,
+				Text = "editor",
+				Visibility = Visibility.Hidden
+			}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_6_Y);
+
+			Options_6.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_6_Y);
+			Options_6.Click +=
+				delegate
+				{
+					if (this.Editor != null)
+						this.Editor();
+
+					Options_Click();
+				};
+
+
 			Options_3_Click =
 				delegate
 				{
@@ -209,6 +233,7 @@ namespace AvalonUgh.Code.Dialogs
 
 					Options_5.Show(Options.Visibility != Visibility.Hidden);
 
+					Options_6.Show(Options.Visibility == Visibility.Hidden);
 					Options_2.Show(Options.Visibility == Visibility.Hidden);
 					Options_4.Show(Options.Visibility == Visibility.Hidden);
 					Options.Show(Options.Visibility == Visibility.Hidden);
@@ -245,9 +270,11 @@ namespace AvalonUgh.Code.Dialogs
 			Options_3.Click += Options_3_Click;
 				
 
-			Options.Click +=
+			Options_Click =
 				delegate
 				{
+					Options_6.Show(Options_1.Visibility != Visibility.Hidden);
+
 					if (Options_1.Visibility == Visibility.Visible)
 					{
 						AnimatedBackgroundOpacity = 0.5;
@@ -265,6 +292,9 @@ namespace AvalonUgh.Code.Dialogs
 						Options_4.Visibility = Visibility.Hidden;
 					}
 				};
+
+			Options.Click += Options_Click;
+
 		}
 
 		public Action EnteringPassword;
