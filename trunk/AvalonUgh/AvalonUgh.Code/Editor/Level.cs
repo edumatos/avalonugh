@@ -80,8 +80,8 @@ namespace AvalonUgh.Code.Editor
 			}
 		}
 
-		const string Comment = "#";
-		const string Assignment = ":";
+		public const string Comment = "#";
+		public const string Assignment = ":";
 
 		public int TileRowsProcessed;
 

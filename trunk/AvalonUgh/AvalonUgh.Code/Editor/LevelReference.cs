@@ -5,6 +5,9 @@ using System.Text;
 using ScriptCoreLib;
 using AvalonUgh.Assets.Avalon;
 using System.Windows.Controls;
+using ScriptCoreLib.Shared.Lambda;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using System.IO;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -40,6 +43,8 @@ namespace AvalonUgh.Code.Editor
 		public readonly Image Preview;
 		public readonly Image SmallPreview;
 
+		public string Data;
+
 		public LevelReference(StorageLocation Location)
 		{
 			this.Location = Location;
@@ -64,9 +69,72 @@ namespace AvalonUgh.Code.Editor
 				Width = 48,
 				Height = 30,
 			};
+
+			Location.Embedded.ToString().ToStringAsset(
+				Data =>
+				{
+					this.Data = Data;
+				}
+			);
+				
 		}
 
 
+		public string Code
+		{
+			get
+			{
+				var value = "";
 
+				ApplyAttribute("code", k => value = k);
+
+				return value;
+			}
+		}
+
+		public string Text
+		{
+			get
+			{
+				var value = "";
+
+				ApplyAttribute("text", k => value = k);
+
+				return value;
+			}
+		}
+
+		public void ApplyAttribute(string AttributeKey, Action<string> handler)
+		{
+			if (this.Data == null)
+				return;
+
+			using (var r = new StringReader(this.Data))
+			{
+				var e = r.ReadLine();
+
+				while (e != null)
+				{
+					if (e.StartsWith(Level.Comment))
+					{
+						var i = e.IndexOf(Level.Assignment);
+
+						if (i > 0)
+						{
+							var Key = e.Substring(Level.Comment.Length, i - Level.Comment.Length).Trim().ToLower();
+
+							if (AttributeKey.ToLower() == Key)
+							{
+								var Value = e.Substring(i + Level.Assignment.Length).Trim();
+
+								handler(Value);
+							}
+						}
+					}
+
+					e = r.ReadLine();
+				}
+			}
+		}
 	}
 }

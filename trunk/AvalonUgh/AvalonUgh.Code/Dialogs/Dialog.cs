@@ -171,7 +171,7 @@ namespace AvalonUgh.Code.Dialogs
 						this.Container.Show();
 					}
 
-					var ContentOpacity = (Opacity * 2).Min(1);
+					var ContentOpacity = (Opacity * AnimatedOpacityContentMultiplier).Min(1);
 					this.Content.Container.Opacity = ContentOpacity;
 					this.InputContent.Container.Opacity = ContentOpacity;
 					this.LabelContent.Container.Opacity = ContentOpacity;
@@ -181,6 +181,8 @@ namespace AvalonUgh.Code.Dialogs
 
 
 		}
+
+		public double AnimatedOpacityContentMultiplier = 2;
 
 		Action<int, int> _SetOpacity__;
 
