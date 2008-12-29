@@ -19,7 +19,7 @@ using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Code
 {
-	partial class Workspace 
+	partial class Workspace
 	{
 		void HandleKeyUp(object sender, KeyEventArgs args)
 		{
@@ -42,6 +42,35 @@ namespace AvalonUgh.Code
 				// and under the transparent touch overlay
 				// when the view is in editor mode
 			}
+
+
+			if (this.Menu.EnteringPassword == null)
+			{
+				// allow single frame step
+				if (args.Key == Key.PageUp)
+				{
+					this.LocalIdentity.SyncFramePausedSkip = true;
+				}
+
+				// instant pause
+				if (args.Key == Key.PageDown)
+				{
+					this.LocalIdentity.SyncFramePaused = !this.LocalIdentity.SyncFramePaused;
+				}
+
+				if (args.Key == Key.Insert)
+				{
+					// more locals!
+					this.Menu.Players++;
+				}
+
+				if (args.Key == Key.Insert)
+				{
+					// less locals!
+					this.Menu.Players--;
+				}
+			}
+
 		}
 	}
 }

@@ -31,7 +31,28 @@ namespace AvalonUgh.Code.Dialogs
 
 		public int DifficultyLevel;
 
-		public int Players;
+		public int MaxPlayers = 3;
+
+		int InternalPlayers;
+		public int Players
+		{
+			get
+			{
+				return InternalPlayers;
+			}
+
+			set
+			{
+				// there can only be so many okayers on a single keyboard
+				value = value.Max(0).Min(MaxPlayers);
+
+				InternalPlayers = value;
+
+				if (this.PlayersChanged != null)
+					this.PlayersChanged();
+			}
+		}
+
 		public event Action PlayersChanged;
 
 		public string Password;
@@ -179,29 +200,49 @@ namespace AvalonUgh.Code.Dialogs
 				};
 
 
-			var Players_Labels = new[] { "just watching", "1 player", "2 players", "3 players" };
 			var Options_4_Y = Convert.ToInt32(Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -2.5);
 			var Options_4 = new DialogTextBox
 			{
 				Width = Width,
 				Zoom = Zoom,
 				TextAlignment = TextAlignment.Center,
-				Text = Players_Labels[Players],
 				Visibility = Visibility.Hidden
 			}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_4_Y);
 
 			Options_4.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_4_Y);
+
+			Action Options_4_Update =
+				delegate
+				{
+					if (this.Players == 0)
+					{
+						Options_4.Text = "just watching";
+						return;
+					}
+
+					if (this.Players > 1)
+					{
+						Options_4.Text = this.Players + " players";
+						return;
+					}
+
+					Options_4.Text = "1 player";
+				};
+
+			this.PlayersChanged +=
+				delegate
+				{
+					Options_4_Update();
+				};
+
+			Options_4_Update();
+
 			Options_4.Click +=
 				delegate
 				{
 
-					Players++;
-					Players = Players % Players_Labels.Length;
+					Players = (Players + 1) % (MaxPlayers + 1);
 
-					Options_4.Text = Players_Labels[Players];
-
-					if (this.PlayersChanged != null)
-						this.PlayersChanged();
 				};
 
 
