@@ -1,0 +1,32 @@
+# generated map
+# text: Twisting by the pool
+# code: FACE
+# autoscroll: 0
+# water: 75
+# background: 
+######################
+  S-S-S-S-  SS-S--    
+S-| | | | C-|| |  C-S-
+| | SS-SS-|  | S- | | 
+# sign: 280;3
+# sign: 200;2
+S--S|| || P--S-| P--| 
+|  C-| S| |  | | |  | 
+S- | | S--S-S-C-S-SS- 
+# sign: 40;1
+| P--S-|  | | |  S||  
+# sign: 264;3
+| |  | S-S| | P--S-|  
+SS-S-| | SS-| |  | |  
+|| | S-| || S-SS-| SS-
+S| | | | S| | || S--| 
+# tree: 128
+# rock: 128
+|| | P--P-| | S| |  | 
+R-R--|  | R--SR-R-RR- 
+| |  S-R-S|  || | ||  
+R-R-S| | S--R-RS-R-R- 
+| | S-R-R|  | S| | |  
+ R-S-R--R-SR-R-| SR-S-
+ | | |  | || |   |    
+######################

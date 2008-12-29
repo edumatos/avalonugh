@@ -1,0 +1,33 @@
+# generated map
+# text: Especially for you
+# code: LAMENTOVERTHESHADOWS
+# autoscroll: 0
+# water: 38
+# background: 
+######################
+          S-S--       
+ R--R-RSS-| |  S-SS-R-
+ |  | S|| | C-S| || | 
+ R-S-SS-| S | F| S| R 
+# sign: 184;3
+ | | || | P--P-PSS-S- 
+ R-| S| SR|  | S|| |  
+ | C-|S-R-R-S-S--| R- 
+ S-|  S-| C-| |  | |  
+# sign: 88;1
+BBBBP-| | | |  S-S-R--
+# sign: 232;3
+ S--| | R-P-P--| | |  
+ |  S-| | | |  | S-R- 
+ SS-| S-S-S-R-S-SS-|  
+ || S-| | C-| C-|| R- 
+ S| | S | | FF|  | |  
+# tree: 48
+# sign: 120;2
+# sign: 264;5
+# rock: 162
+P---| |BBP--R-P---R-R-
+|   S-S-S|  | R-S-| | 
+S-S-| | S--R--R-S--R- 
+| | | | |  |  | |  |  
+######################

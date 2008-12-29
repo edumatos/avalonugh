@@ -45,7 +45,7 @@ namespace AvalonUgh.Code.Editor
 
 
 			this.Width = Padding + (48 + Padding) * ItemsPerRow;
-			this.Height = Padding + 100 + Padding + (30 + Padding) * 3;
+			this.Height = Padding + 100 + Padding + (30 + Padding) * 4;
 
 			const string DefaultText = "Select a level below!";
 
