@@ -1,0 +1,33 @@
+# generated map
+# text: Trees on the top
+# code: ASHES
+# autoscroll: 0
+# water: 20
+# background: 
+######################
+     S-S         S  S-
+ S-S-| |C-R--S-S-|C-| 
+ | | |  | |  | |  | R-
+# sign: 120;3
+# sign: 280;2
+ | | SBBBP|  | | BBB| 
+ S--S-SS-RR--SS-S-S-| 
+ |  | || ||  || | | S-
+S-S-S--| R--S-| S--S| 
+| S-|  | |  | S-|  || 
+# tree: 80
+# tree: 272
+S-| P-S-S-R-| | P-S-- 
+| S-| | | | S-| | |   
+| | | | | | | | | SS- 
+| | R--SS-S-S--R-S-|  
+ S-S|  || | |  | | |  
+ | S-R--| S-S--| C-|  
+ | C-|  C-| |  R-| S  
+# sign: 328;1
+ | |  R-| | S R--P--PP
+# sign: 88;4
+# sign: 216;5
+P---BB| P---P-|  |  R 
+|     | |   |         
+######################

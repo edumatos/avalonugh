@@ -1,0 +1,30 @@
+# generated map
+# text: Divers delight II
+# code: ASHESPARTII
+# autoscroll: 0
+# water: 16
+# background: 
+######################
+    S-     R-R-       
+ S--| C-R--| | C-S-S- 
+ |   S| |  RR--| S |  
+# sign: 296;2
+# sign: 72;1
+# rock: 272
+ S-SPP--R-R-|  P--P|  
+ | |R|  | | RR-|  S-- 
+ | R--R-R-S--| SS-|   
+ | |  SR| |  R-|| S-S 
+ S-R-S-S-S-S-| S| | | 
+# tree: 304
+ | | | | | | | || P---
+ | | | | | | R-S-S|   
+ S-R-| SR-S| R-| |SR- 
+ | R-SS-| S-S| | S-|  
+ S-| || R-| |R-| | R- 
+ | R-S| | | S| S-S-|  
+ | | || R-S--R-| | R- 
+ S-R-S--| |  | | | |  
+ | S-|  | SS-S-S--R-- 
+ | |      ||   |  |   
+######################

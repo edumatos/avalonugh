@@ -3,6 +3,7 @@
 # code: CERVIXCOUCH
 # autoscroll: 0
 # water: 16
+# water-rise: 1
 # background: 
 ######################
      S-   S-       S- 

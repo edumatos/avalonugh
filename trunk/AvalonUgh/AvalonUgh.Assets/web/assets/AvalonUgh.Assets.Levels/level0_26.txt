@@ -1,0 +1,33 @@
+# generated map
+# text: In the cave
+# code: THESOMNOLENTPERSUIT
+# autoscroll: 0
+# water: 20
+# background: 
+######################
+   S-         R--  R--
+ S-| C-S--SS-R|  R-|  
+ | S | |  || S-S-| R- 
+# sign: 72;1
+# rock: 162
+ | P---P-P-| | | C-|  
+ | |   | | | |  S| R- 
+# sign: 248;3
+# tryo: 224
+ SS-R--R-R-P--PPP--|  
+ || |  | | |  R-|  R--
+S-| SR-| S--S-S-S-R|  
+| | || R-|  | | | S-R 
+S-S-S-R-SSS-| | | | S-
+| | | | ||| R-C-| SSS-
+R-| | S-S-| | | S ||| 
+# sign: 280;2
+| RSS-| | | R-P---S-| 
+R--|| | S-S-| S-S-| | 
+|  S| | | | S-| | SC- 
+# tree: 64
+R--P-P--| S-| S-|  |  
+# sign: 296;4
+|  | |  R-| | | P---P 
+        | |   | |     
+######################
