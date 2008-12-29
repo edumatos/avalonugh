@@ -101,7 +101,11 @@ namespace AvalonUgh.Code
 			this.Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
 
 
-
+			this.Menu.PlayersChanged +=
+				delegate
+				{
+					Console.WriteLine("players: " + this.Menu.Players);
+				};
 
 			var EditorToolbar = new EditorToolbar(this.Selectors);
 

@@ -46,6 +46,9 @@ namespace AvalonUgh.Code.Dialogs
 				// there can only be so many okayers on a single keyboard
 				value = value.Max(0).Min(MaxPlayers);
 
+				if (InternalPlayers == value)
+					return;
+
 				InternalPlayers = value;
 
 				if (this.PlayersChanged != null)

@@ -64,7 +64,7 @@ namespace AvalonUgh.Code
 					this.Menu.Players++;
 				}
 
-				if (args.Key == Key.Insert)
+				if (args.Key == Key.Delete)
 				{
 					// less locals!
 					this.Menu.Players--;
