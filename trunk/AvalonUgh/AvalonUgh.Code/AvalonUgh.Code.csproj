@@ -134,6 +134,8 @@
     <Compile Include="AIDirector.cs" />
     <Compile Include="AnimationDictionary.cs" />
     <Compile Include="AudioLoop.cs" />
+    <Compile Include="Workspace.HandleKeyUp.cs" />
+    <Compile Include="Workspace.Think.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogTextBox.cs" />
     <Compile Include="Dialogs\GameConsole.cs" />

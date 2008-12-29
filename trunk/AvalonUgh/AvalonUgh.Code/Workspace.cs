@@ -20,7 +20,7 @@ using AvalonUgh.Code.Input;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Workspace : ISupportsContainer
+	public partial class Workspace : ISupportsContainer
 	{
 		// workspace contains
 		// multiple views to multiple concurrent
@@ -364,33 +364,19 @@ namespace AvalonUgh.Code
 
 
 
+			this.Container.KeyUp += HandleKeyUp;
 
 			this.Container.KeyUp +=
 				(sender, args) =>
 				{
 
-					// oem7 will trigger the console
-					if (args.Key == Key.Oem7)
-					{
-						args.Handled = true;
-
-						if (Console.AnimatedTop == 0)
-						{
-							Console.AnimatedTop = -Console.Height;
-						}
-						else
-						{
-							Console.AnimatedTop = 0;
-						}
-
-						// the console is on top
-						// of the game view
-						// and under the transparent touch overlay
-						// when the view is in editor mode
-					}
+			
 
 					if (this.LocalIdentity.SyncFramePaused)
 					{
+						// if the game is paused
+						// we cannot handle a future frame and thus we need to unpause momentarily
+
 						if (args.Key == Key.P)
 						{
 							args.Handled = true;
@@ -659,64 +645,7 @@ namespace AvalonUgh.Code
 
 		}
 
-		void Think()
-		{
-			if (this.LocalIdentity.SyncFramePaused)
-			{
-				if (this.LocalIdentity.SyncFramePausedSkip)
-				{
-					this.LocalIdentity.SyncFramePausedSkip = false;
-				}
-				else
-				{
-					return;
-				}
-			}
-
-			if (this.LocalIdentity.SyncFrameLimit > 0)
-			{
-				if (this.LocalIdentity.SyncFrameLimit <= this.LocalIdentity.SyncFrame)
-				{
-					return;
-				}
-			}
-
-			if (this.Ports.Any(k => k.Level == null))
-				return;
-
-			//if (this.LocalIdentity.SyncFrame % 30 == 0)
-			//    if (View.IsShakerEnabled)
-			//        View.Level.AttributeWater.Value++;
-
-
-
-			//// we could pause the game here
-			foreach (var p in Players)
-			{
-				p.AddAcceleration();
-			}
-
-			foreach (var p in this.Ports)
-			{
-				// some animations need to be synced by frame
-				foreach (var dino in p.Level.KnownDinos)
-				{
-					dino.Animate(this.LocalIdentity.SyncFrame);
-				}
-
-				foreach (var t in p.Level.KnownTryoperus)
-				{
-					t.Think();
-				}
-
-				p.Level.Physics.Apply();
-			}
-
-
-			this.LocalIdentity.SyncFrame++;
-		}
-
-
+	
 		Dialog InternalActiveDialog;
 		public Dialog ActiveDialog
 		{
