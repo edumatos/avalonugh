@@ -45,95 +45,7 @@ namespace AvalonUgh.Code
 		/// </summary>
 		public readonly PlayerIdentity LocalIdentity = new PlayerIdentity { Name = "LocalPlayer" };
 
-		[Script]
-		public class Port
-		{
-			public int PortIdentity;
-
-			public Level Level;
-			public View View;
-
-			public Canvas Container;
-
-			public int Left;
-			public int Top;
-			public int Width;
-			public int Height;
-
-			public int Zoom;
-
-			public KnownSelectors Selectors;
-
-			LevelReference InternalLevelReference;
-			public LevelReference LevelReference
-			{
-				get
-				{
-					return InternalLevelReference;
-				}
-				set
-				{
-					if (Level != null)
-						Level.Clear();
-
-					if (View != null)
-						View.OrphanizeContainer();
-
-
-					Level = null;
-					View = null;
-
-					InternalLevelReference = value;
-
-					Action<string> ApplyData =
-						Data =>
-						{
-							if (Level != null)
-								throw new Exception("InternalLevelReference");
-
-							this.Level = new Level(Data, this.Zoom, this.Selectors);
-
-							this.View = new View(Width, Height, this.Level);
-							this.View.Show(this.InternalVisible);
-							this.View.MoveContainerTo(this.Left, this.Top).AttachContainerTo(this.Container);
-
-							if (this.Loaded != null)
-								this.Loaded();
-
-						};
-
-					if (value.Data == null)
-					{
-						InternalLevelReference.Location.Embedded.ToString().ToStringAsset(
-							ApplyData
-						);
-					}
-					else
-					{
-						ApplyData(value.Data);
-					}
-				}
-			}
-
-			bool InternalVisible = true;
-			public bool Visible
-			{
-				get
-				{
-					return InternalVisible;
-				}
-				set
-				{
-					InternalVisible = value;
-
-					if (this.View != null)
-						this.View.Show(value);
-				}
-			}
-
-			public event Action Loaded;
-		}
-
+	
 		const int PortIdentity_Lobby = 1000;
 		const int PortIdentity_Editor = 2000;
 		const int PortIdentity_Mission = 3000;
@@ -149,6 +61,8 @@ namespace AvalonUgh.Code
 
 		public Port EditorPort;
 		public Port LobbyPort;
+
+		public readonly ModernMenu Menu;
 
 		public Workspace(int DefaultWidth, int DefaultHeight)
 		{
@@ -184,7 +98,7 @@ namespace AvalonUgh.Code
 			#endregion
 
 
-			var Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
+			this.Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
 
 
 

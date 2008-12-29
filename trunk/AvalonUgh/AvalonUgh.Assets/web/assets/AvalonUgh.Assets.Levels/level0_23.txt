@@ -1,0 +1,33 @@
+# generated map
+# text: Tower of atlantis
+# code: CERVIXCOUCH
+# autoscroll: 0
+# water: 16
+# background: 
+######################
+     S-   S-       S- 
+S--S-| SS-| SS-S-S-|  
+|  | | || | || | | |  
+ S-S-SS-| | S| | | |  
+# tree: 192
+ | | || C-P-P-S-S--S- 
+ | S- | | | | RS|  |  
+# sign: 88;5
+# rock: 96
+SS-| P---PR-| R-S-SS- 
+|| | S-S-R--R-| | ||  
+S| | | C-|  | C-| S|  
+ SS- | | RR--F| S ||  
+# sign: 280;4
+# sign: 72;3
+ || P-P--||  P--PP-S- 
+S-| | |  R--R|  SS-|  
+S-S-S-S-S|  |S-S-| | P
+| | | | ||  |C-| | |  
+| | | | C-R-F| |  SS- 
+# sign: 280;2
+ S-S--S | | P-PBBB||  
+# sign: 120;1
+P| |  BBP-R-| RS-S-|  
+ |   S  | | |  |      
+######################

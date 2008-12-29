@@ -91,7 +91,10 @@ namespace AvalonUgh.Code.Editor
 						delegate
 						{
 							value.Preview.AttachTo(this);
-							Info.Text = value.Text;
+
+							Info.Clear();
+							Info.AppendTextLine("Level " + value.Location.Embedded.AnimationFrame);
+							Info.AppendTextLine(value.Text);
 						};
 
 					TouchOverlay.MouseLeave +=
