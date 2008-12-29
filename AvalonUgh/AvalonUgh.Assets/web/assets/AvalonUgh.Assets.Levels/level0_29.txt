@@ -1,0 +1,33 @@
+# generated map
+# text: Bottleneck for beginners
+# code: WHENIWASBED
+# autoscroll: 0
+# water: 21
+# background: 
+######################
+    S--    S-   S--   
+ C-S|  S-S-| SS-|  C- 
+ | | S-| | SS-| S- |  
+# sign: 296;2
+# sign: 72;1
+P-P--| S-| || | SP-P--
+| |  | | SS-| S--| |  
+ S-SS-S| || | |  S-S- 
+ | || R-R-| R-R-SS-|  
+ | S| | | | | | || S- 
+ | S-R-S-SS-S-SR-| |  
+ S-| | C-|| | || | |  
+SS-R--F|  | | C-R-S-- 
+# sign: 152;3
+|| |  BBBBS-S | | |   
+# sign: 216;4
+S| R-SS-S-| |BBBBR--S 
+|| | || | | S-S-S|  | 
+S-R-C-S--S--| | S-R-R-
+| | | |  |  | S-| | | 
+# tree: 176
+# sign: 120;5
+# rock: 176
+R--P-P--PBBBP-| | SR--
+|  | |      | |   ||  
+######################

@@ -1,0 +1,34 @@
+# generated map
+# text: A cave under water
+# code: THISGLASSHOUSE
+# autoscroll: 0
+# water: 23
+# background: 
+######################
+      R-  R-- R-   R- 
+R-R-R-| R-|  R| R--|  
+| | | R-| S-S-R-|  R- 
+R--R--| S--S| S-R-R|  
+|  |  S-|  || | | R-- 
+ R-S-S| S-S-| | C-|   
+ C-| || | | S-S | FR- 
+# sign: 248;1
+ | |  | | | | BBBBB|  
+# tree: 152
+# sign: 88;2
+P--P---P--PSS-S-S--SS-
+R-R--R-|  S|| | |  || 
+| |  | S-S-S| | SC-S| 
+ R-R-S-| | ||  S-| || 
+# sign: 232;3
+# tryo: 260
+# rock: 194
+ | S-| S-| P-BBBBP-S--
+S-S| | | R-| S-S-| |  
+ C-| S-R-| C-| | SS-S-
+ | | R-| S-|  S| || | 
+# sign: 216;5
+# sign: 72;4
+P-P--R--RP---P-| S| | 
+| |  |   |   |        
+######################
