@@ -1,0 +1,11 @@
+﻿To add a level to the list:
+
+1. Copy the last level and increment the level number by 1. 
+2. Increment max level at '\AvalonUgh.Code\Editor\KnownLevels.cs'
+3. Look up the correct level password.
+4. Run the original dos version to get the text and snapshot of that level.
+5. Set the level text 
+6. Resize the snapshot to 160x100 and copy it next to the level.
+7. Include snapshot as embedded resource
+8. Edit the new level
+9. Save it and you are done.

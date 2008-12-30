@@ -46,8 +46,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 				new TileSelector.Composite(1, 2,
 					(Level, Position) =>
 					{
-						this.Size_1x1.CreateTo(Level, Position[0, 1]);
 						this.Size_1x1.CreateTo(Level, Position[0, 0]);
+						this.Size_1x1.CreateTo(Level, Position[0, 1]);
 					}
 				);
 
@@ -56,8 +56,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 				new TileSelector.Composite(2, 1,
 					(Level, Position) =>
 					{
-						this.Size_1x1.CreateTo(Level, Position[1, 0]);
 						this.Size_1x1.CreateTo(Level, Position[0, 0]);
+						this.Size_1x1.CreateTo(Level, Position[1, 0]);
 					}
 				);
 
@@ -120,6 +120,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				var Name_Index = Name.Index;
 
+				var TopRight_TriggerPosition = Position[1, -1];
+				var TopRight_TriggerObstacle = Obstacle.Of(TopRight_TriggerPosition, Level.Zoom, 1, 1);
+				var TopRight_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(TopRight_TriggerObstacle));
+
+
+
 				var Top_TriggerPosition = Position[0, -1];
 				var Top_TriggerObstacle = Obstacle.Of(Top_TriggerPosition, Level.Zoom, 1, 1);
 				var Top_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(Top_TriggerObstacle));
@@ -158,6 +164,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 					LeftToBottom = ToLookupValue(510, 1),
 					LeftToTop = ToLookupValue(520, 2),
 					RightToBottom = ToLookupValue(540, 1),
+					BottomToTopAndRight = ToLookupValue(550, 1),
 				};
 
 				var Lookup =
@@ -166,7 +173,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{0, Tiles.Vertical},
 
 						{4, Tiles.Vertical},
-						{20, Tiles.Vertical},
+						{4 + 16, Tiles.Vertical},
+						{4 + 16 + 8, Tiles.Vertical},
 
 						{2, Tiles.Horizontal},
 						{8, Tiles.Horizontal},
@@ -175,18 +183,30 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{2 + 16, Tiles.LeftToBottom},
 						{2 + 4, Tiles.LeftToTop},
 						{8 + 16, Tiles.RightToBottom},
+						{2 + 16 + 8, Tiles.RightToBottom},
 
-						{16, Tiles.Cut}
+						{16, Tiles.Cut},
+
+						{-1, Tiles.BottomToTopAndRight}
 					};
 
-				Func<int, int> DynamicLookup =
-					Flags =>
+
+				var Flags = Tiles.Triggers.ToFlags();
+
+				if (Lookup.ContainsKey(Flags))
+				{
+					if (Flags == 4 + 16 + 8)
 					{
-						return Tiles.Cut();
-					};
+						if (TopRight_Trigger != null)
+							Flags = -1;
+					}
 
-				Name.Index = Tiles.Triggers.SelectByFlags(Lookup, DynamicLookup);
-
+					Name.Index = Lookup[Flags]();
+				}
+				else
+				{
+					Name.Index = Tiles.Cut();
+				}
 
 
 				RemovePlatforms(this, Level, Position);
