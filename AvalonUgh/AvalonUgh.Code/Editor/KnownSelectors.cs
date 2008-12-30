@@ -62,7 +62,6 @@ namespace AvalonUgh.Code.Editor
 					new BackgroundSelector(),
 
 					new Sprites.GoldSelector(),
-					new Sprites.BoxSelector(),
 
 				};
 
