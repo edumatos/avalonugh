@@ -64,6 +64,8 @@ namespace AvalonUgh.Code
 
 		public readonly ModernMenu Menu;
 
+		public readonly EditorToolbar EditorToolbar;
+
 		public Workspace(int DefaultWidth, int DefaultHeight)
 		{
 			this.Container = new Canvas
@@ -107,7 +109,7 @@ namespace AvalonUgh.Code
 					Console.WriteLine("players: " + this.Menu.Players);
 				};
 
-			var EditorToolbar = new EditorToolbar(this.Selectors);
+			this.EditorToolbar = new EditorToolbar(this.Selectors);
 
 			EditorToolbar.DragContainer = this.Container;
 			EditorToolbar.Hide();

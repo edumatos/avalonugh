@@ -51,6 +51,14 @@ namespace AvalonUgh.Code.Editor
 
 			public event Action Click;
 
+			public void RaiseClick()
+			{
+				if (Click != null)
+					Click();
+			}
+
+			public SelectorBase SelectorType;
+
 			public Button(Image Image)
 			{
 				this.Image = Image;
@@ -99,6 +107,18 @@ namespace AvalonUgh.Code.Editor
 		public event Action LoadClicked;
 		public event Action SaveClicked;
 
+		internal SelectorBase InternalSelectorType;
+		public SelectorBase SelectorType
+		{
+			get
+			{
+				return InternalSelectorType;
+			}
+			set
+			{
+				this.Buttons.FirstOrDefault(k => k.SelectorType == value).Apply(k => k.RaiseClick());
+			}
+		}
 		public EditorToolbar( KnownSelectors Selectors)
 		{
 			this.Selectors = Selectors;
@@ -307,6 +327,8 @@ namespace AvalonUgh.Code.Editor
 					Action Select =
 						delegate
 						{
+							this.InternalSelectorType = Selector;
+
 							SelectionMarkerMove(x - 2, y - 2);
 
 							if (Sizes.Length == 0)
@@ -336,7 +358,10 @@ namespace AvalonUgh.Code.Editor
 							this.EditorSelector = EditorSelectorDefault;
 						};
 
-					var btn = new Button(Image);
+					var btn = new Button(Image)
+					{
+						SelectorType = Selector
+					};
 
 					btn.Click += Select;
 

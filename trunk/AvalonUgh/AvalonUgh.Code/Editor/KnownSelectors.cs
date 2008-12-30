@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Input;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -13,8 +14,23 @@ namespace AvalonUgh.Code.Editor
 		public readonly SelectorBase[] Types;
 
 		public readonly ArrowSelector Arrow = new ArrowSelector();
+		public readonly WaterLevelSelector WaterLevel = new WaterLevelSelector();
+
 		public readonly Sprites.TryoperusSelector Tryoperus = new Sprites.TryoperusSelector();
 		public readonly Sprites.RockSelector Rock = new Sprites.RockSelector();
+		public readonly Sprites.SignSelector Sign = new Sprites.SignSelector();
+		public readonly Sprites.DinoSelector Dino = new Sprites.DinoSelector();
+		public readonly Sprites.TreeSelector Tree = new Sprites.TreeSelector();
+
+		public readonly Tiles.StoneSelector Stone = new Tiles.StoneSelector();
+		public readonly Tiles.RidgeSelector Ridge = new Tiles.RidgeSelector();
+		public readonly Tiles.RidgeTreeSelector RidgeTree = new Tiles.RidgeTreeSelector();
+		public readonly Tiles.PlatformSelector Platform = new Tiles.PlatformSelector();
+		public readonly Tiles.CaveSelector Cave = new Tiles.CaveSelector();
+		public readonly Tiles.FenceSelector Fence = new Tiles.FenceSelector();
+		public readonly Tiles.BridgeSelector Bridge = new Tiles.BridgeSelector();
+
+		public readonly Dictionary<Key, Func<SelectorBase>> DefaultKeyShortcut;
 
 		public KnownSelectors()
 		{
@@ -23,26 +39,39 @@ namespace AvalonUgh.Code.Editor
 				{
 					Arrow,
 
-					new Sprites.TreeSelector(),
+					Tree,
 					new Sprites.GoldSelector(),
 					Rock,
 					new Sprites.VehicleSelector(),
-					new Sprites.SignSelector(),
-					new Sprites.DinoSelector(),
+					Sign,
+					Dino,
 					Tryoperus,
 
-					new Tiles.StoneSelector(),
-					new Tiles.RidgeSelector(),
-					new Tiles.RidgeTreeSelector(),
-					new Tiles.PlatformSelector(),
-					new Tiles.CaveSelector(),
-					new Tiles.FenceSelector(),
-					new Tiles.BridgeSelector(),
+					Stone,
+					Ridge,
+					RidgeTree,
+					Platform,
+					Cave,
+					Fence,
+					Bridge,
 
 					new DemolishSelector(),
-					new WaterLevelSelector(),
+					WaterLevel,
 					new BackgroundSelector()
 				};
+
+			ParamsFunc<SelectorBase, Func<SelectorBase>> f =
+				e => e.AsCyclicEnumerator().Take;
+
+			this.DefaultKeyShortcut = new Dictionary<Key, Func<SelectorBase>>
+			{
+				{ Key.D1, f(this.Stone, this.Cave, this.Fence)  },
+				{ Key.D2, f(this.Ridge, this.RidgeTree) },
+				{ Key.D3, f(this.Platform, this.Bridge) },
+				{ Key.D4, f(this.Sign, this.Tree, this.Rock) },
+				{ Key.D5, f(this.Dino, this.Tryoperus) },
+				{ Key.D6, f(this.WaterLevel, this.Arrow) },
+			};
 		}
 
 
