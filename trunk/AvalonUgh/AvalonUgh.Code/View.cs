@@ -306,7 +306,6 @@ namespace AvalonUgh.Code
 
 
 
-			this.Level.KnownBoxes.AttachTo(this.Entities);
 			this.Level.KnownGold.AttachTo(this.Entities);
 
 
