@@ -1,0 +1,35 @@
+# generated map
+# text: Tina triop and donald doni
+# code: AMATERASU
+# autoscroll: 0
+# water: 18
+# background: 
+######################
+ R-   S R--R-S  R-  R-
+ | S--|R|  | |S-| R-| 
+R-S|  S-|  SS-| SRR-R-
+| C-S-| S-S|| | S-| | 
+R-|  S| | S-| S-| SR- 
+# sign: 72;1
+| BBBSS-| | | | | ||  
+# tree: 208
+ C-S-|| | | P-| S-S-R-
+ | | S| S-S-| | | | | 
+# sign: 88;2
+ P--P-S-S-| SR-S--| S-
+ C-SS-| | | || |  | | 
+# dino: 312
+ | || | | SC-R-S-SP-- 
+# sign: 56;3
+# tryo: 104
+# rock: 128
+ P--P--P-S | | | ||   
+# sign: 168;4
+ |  |  | P-P-| | S-R--
+ S-SS-S-SS-| R-S-| |  
+ C-|| | || S-| | SS-R-
+ |  | | S| | S-S-|| | 
+# sign: 56;5
+ P-P---S--S| | | S| R-
+ | |   |  |    | || | 
+######################

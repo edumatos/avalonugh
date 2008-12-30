@@ -69,6 +69,11 @@ namespace AvalonUgh.Code
 					// less locals!
 					this.Menu.Players--;
 				}
+
+				if (this.Selectors.DefaultKeyShortcut.ContainsKey(args.Key))
+				{
+					this.EditorToolbar.SelectorType = this.Selectors.DefaultKeyShortcut[args.Key]();
+				}
 			}
 
 		}
