@@ -1,0 +1,35 @@
+# generated map
+# text: The stairway to heaven
+# code: LACRIMACHRISTI
+# autoscroll: 0
+# water: 21
+# background: 
+######################
+       S--S-S-  S--   
+S--S-S-|  | | S-|  S- 
+|  | | S-S--SS-S-S-|  
+SS-| | | |  || | | |  
+# tree: 64
+|| P-C-| S-S-| | | |  
+S| | | S | | | SS-S-- 
+# sign: 136;4
+# rock: 112
+|| R-P--PC-| S--| |   
+ S-| |  R| S |  | SS- 
+# sign: 200;3
+ | SR--R-P---C-SS-||  
+ | ||  | RR--| | S-|  
+# sign: 264;2
+S-S--R-R--|  P--P| C- 
+| |  | |  RR-|  RS |  
+# sign: 296;1
+R-S-S-SS-S-S-S-R-BBBBB
+| | | |C-| | | S-S--S-
+ R-S|  | | | | C-|  | 
+# sign: 104;0
+# tryo: 144
+ | PP--PP--S | | S-S| 
+# sign: 200;5
+ R--|  R|  P---P-| || 
+ |             | |    
+######################

@@ -1,0 +1,30 @@
+# generated map
+# text: Race for fuel
+# code: BETWEENYOUTH
+# autoscroll: 0
+# water: 40
+# background: 
+######################
+        R-R-R-R- R-   
+ R--R-R-| | | | R| R--
+ |  | | R-R-R-R-RR-|  
+R-R-R-R-| R-| | R-R-R-
+| | | S-S-| S-S-| | | 
+R-R--S| | S-| | SR--R-
+| |  |S-S-SSS-S--|  | 
+R-R-S-| | ||| |  SR-R-
+| | C-| | R-| S-C-| | 
+ R-F|  SS-| S-- | FR- 
+# sign: 104;1
+# sign: 248;4
+ | BBBB|| | |  BBBB|  
+ R-S-SS-| R-S-S-SS-R--
+ | C-|| | R-| | |C-|  
+ R-|  | S-| | |  | R- 
+# sign: 88;2
+# sign: 264;3
+ | BBBBB| R-| BBBBB|  
+ R-S--S-S-| SS-S-S-R- 
+ | |  | | R-|| | | R- 
+      | | | S| | | |  
+######################

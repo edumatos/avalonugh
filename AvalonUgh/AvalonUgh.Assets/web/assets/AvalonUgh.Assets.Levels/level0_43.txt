@@ -1,0 +1,32 @@
+# generated map
+# text: Girls they wanna have fun
+# code: AFTERTHERAIN
+# autoscroll: 0
+# water: 19
+# background: 
+######################
+   S-S-S-  S-S-  S    
+ C-| | | S-| | S-|C-S-
+ | S | | | | | |  | | 
+# sign: 280;2
+# sign: 72;1
+BBBBBBBP-| S-P-BBBBBBB
+ SS-SS-| | | | S-SS-S-
+ || || S-S--S-S| || | 
+S-| S| | |  | C-S-| | 
+| | S-S| S- | | | | | 
+# sign: 184;5
+| S-| P-BBBBBBP-| S-- 
+| | | | SS-SS-| | |   
+S-| S-SS-| || SS-S-S- 
+| C-| || S--| || | C- 
+| | |  | |  |  | | |  
+# sign: 104;4
+# sign: 232;3
+BBBBBBBP-S-S-P-BBBBBBB
+ S-SS-S| | C-| S--SS- 
+ | || |S-S | S-|  ||  
+# sign: 168;0
+ | S| P-BBBBBP-S--S|  
+ | || |     S| |  ||  
+######################

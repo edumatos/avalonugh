@@ -881,7 +881,15 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_37.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_38.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_39.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_40.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_41.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_42.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_43.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_43.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_42.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_41.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_40.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_39.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_38.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_37.png" />
