@@ -1,0 +1,28 @@
+# generated map
+# text: Zick zack diving
+# code: WINDKISSEDPICTURES
+# autoscroll: 0
+# water: 58
+# background: 
+######################
+   S     R-  R-R-R-   
+ S-|C-R--| R-| | | R--
+ |  | |  S-| R-| S-|  
+# sign: 56;1
+ | P--RS-| S-| SS-SC- 
+ | |  S| | | R-||  |  
+# sign: 296;2
+SS-R-SS-S| | | S| P---
+|| | || |RS-S| |S-|   
+S| R-S| R-| SR-S-SR-S-
+SS-| || R-| || | || | 
+|| RRS--| SS-R-| S| | 
+S| R-|  R-|| | S--R-| 
+|| | SS-| S| R-|  | S-
+ S-| || R-SS-S-S-SR-| 
+ | S-S| | || | | || S 
+ | | |S-| S| | | R--S-
+S--| S-SR--| R-| |  | 
+|  R-| ||  R-| R-RR-S 
+   | |     |   |  | | 
+######################

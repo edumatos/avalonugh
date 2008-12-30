@@ -1,0 +1,35 @@
+# generated map
+# text: A day at woolworth
+# code: THELAKEOFFIRE
+# autoscroll: 0
+# water: 23
+# background: 
+######################
+ S-         SSS-S-S-- 
+ | S-S-S-SS-||| | |   
+ C-| | | || S-| | C-S-
+ | | | |  | | | | | F 
+# sign: 152;1
+# sign: 232;2
+ P-P--BBBB| BBBBP--P- 
+ | |  SS-SS-S--S|  |  
+S--S-S-| || |  |S-S-S-
+|  | | S-S| S-S-| S-| 
+ C-| | | S-S| | C-| | 
+ | | S | | || | | | | 
+# sign: 216;4
+# sign: 104;3
+# rock: 304
+P-PP---| | S-P-P--PP- 
+| S-S-SSS-S| S-|  S-- 
+S-S-| ||| SS-| S-S|   
+| | C-S-| || | | S-C- 
+| | | | | S| | | | |  
+# tree: 144
+# sign: 200;0
+# sign: 120;5
+# tryo: 48
+P--BBBBBP-S-P--P---BBB
+|  S-S--| | |  S--S-S-
+   | |    |    |  | | 
+######################

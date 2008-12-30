@@ -10,6 +10,7 @@ S-| S-S-| SS-| S-S-S-
 | C-| | | || | | | |  
 | | S | S-S| S-| C-|  
 # sign: 88;1
+# tryo: 112
  P--BBBP-S-| | S-|  F 
 # tree: 208
 # sign: 312;5
