@@ -1,0 +1,35 @@
+# generated map
+# text: May the force be with you
+# code: OFTHEWOUND
+# autoscroll: 0
+# water: 20
+# background: 
+######################
+     S-S-S- S--S-S-S- 
+ S-S-| | | S|  | | |  
+ | | | | | |C-TC-| |  
+# tree: 160
+ | | S--SP- | T|  S|  
+# sign: 184;2
+# sign: 280;1
+ S-S-|  TRRP--TBBBBBS-
+ | | SS-T|TTTTTS-SS-| 
+ | S-|C-TTTSS--| || | 
+SS-|  | TTC-|  | S| S-
+# sign: 88;4
+|| BBP--TF|  S-| || | 
+# sign: 200;3
+# rock: 258
+S| S-|  R-P--PP--S--| 
+|| | R-R| |  S-S-|  S-
+ S-| | R--R--| | S-S- 
+ | | | |  |  | S-| |  
+ | S-S-C-R|  C-| | |  
+S- | | | FRR-| | S |  
+# sign: 296;5
+# sign: 40;0
+# tryo: 260
+P-BBBBBBBB|| BBBBBBBP-
+| S--S-SS-R--S--S-S-| 
+  |  | || |  |  | |   
+######################

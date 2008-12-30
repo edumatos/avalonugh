@@ -137,6 +137,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 					{
 						this.Name.Index = VariationRight;
 					}
+					else if (Level.KnownRidgeTrees.Any(k => k.ToObstacle().Intersects(right)))
+					{
+						this.Name.Index = VariationRight;
+					}
+					else if (Level.KnownRidgeTrees.Any(k => k.ToObstacle().Intersects(right_down)))
+					{
+						this.Name.Index = VariationRight;
+					}
 				}
 				#endregion
 
@@ -172,7 +180,18 @@ namespace AvalonUgh.Code.Editor.Tiles
 						else
 							this.Name.Index = VariationLeft;
 					}
-
+					else if (Level.KnownRidgeTrees.Any(k => k.ToObstacle().Intersects(left)))
+					{
+						if (this.Name.Index != VariationRight)
+							this.Name.Index = VariationLeft;
+					}
+					else if (Level.KnownRidgeTrees.Any(k => k.ToObstacle().Intersects(left_down)))
+					{
+						if (this.Name.Index == VariationRight)
+							this.Name.Index = VariationMiddle;
+						else
+							this.Name.Index = VariationLeft;
+					}
 				}
 				#endregion
 

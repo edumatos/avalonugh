@@ -1,0 +1,33 @@
+# generated map
+# text: Triopterus nastius
+# code: THELUXURYOFTEARS
+# autoscroll: 0
+# water: 20
+# background: 
+######################
+SS- S-S-S--  SS-R--   
+|| S| | |  S-|| |  R--
+S| |S--C-S-| S| S--|  
+||  |  | | | || |  S- 
+# sign: 56;4
+P-PBBBP--| S-S-S-S-SS-
+| SS-S|  | | | | | || 
+S-|| S-S-S-S--S| | S| 
+# tree: 304
+S--C-| | | |  S-P-P---
+|  | S | | SS-| R--R--
+# sign: 104;1
+S-P--P--P--|| S-|  |  
+| |  R--|  S| | SS-|  
+SS-S-|  S-S-S-| || S- 
+|| | SS-| | | S-S| C- 
+S| | || | | | |  | |  
+# sign: 264;3
+# rock: 240
+ S-S--| | SC-P--PP-P--
+ | |  S S-|| |  R--R--
+# sign: 120;2
+# tryo: 96
+P--BBP---P--PR--|  |  
+|    |   |   |  |  |  
+######################
