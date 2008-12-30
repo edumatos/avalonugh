@@ -138,11 +138,14 @@ namespace AvalonUgh.Code
 
 			bool DinoWindEnabled = true;
 
+		
+
 			var actor = twin as Actor;
 			if (actor != null)
 			{
 				if (!actor.RespectPlatforms)
 					Obstacles = new Obstacle[0].AsEnumerable();
+
 
 				//if (actor.ReadyForGoldPickup)
 				//{

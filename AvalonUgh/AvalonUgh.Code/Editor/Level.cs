@@ -120,6 +120,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Sign> KnownSigns = new BindingList<Sign>();
 		public readonly BindingList<Rock> KnownRocks = new BindingList<Rock>();
 		public readonly BindingList<Gold> KnownGold = new BindingList<Gold>();
+		public readonly BindingList<Box> KnownBoxes = new BindingList<Box>();
 
 		public readonly List<Obstacle> KnownObstacles = new List<Obstacle>();
 
@@ -477,7 +478,8 @@ namespace AvalonUgh.Code.Editor
 						KnownBridges,
 						KnownRidges,
 						KnownRidgeTrees,
-						KnownPlatforms
+						KnownPlatforms,
+						KnownBoxes,
 					}.WhereListChanged(
 						delegate
 						{
@@ -487,13 +489,16 @@ namespace AvalonUgh.Code.Editor
 							var Ridges = this.KnownRidges.Select(k => k.ToObstacle());
 							var RidgeTrees = this.KnownRidgeTrees.Select(k => k.ToObstacle());
 							var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
+							var Boxes = this.KnownBoxes.Select(k => k.ToObstacle());
 
 
 							var value = this.KnownObstacles.AsEnumerable()
 								.Concat(Bridges)
 								.Concat(Ridges)
 								.Concat(RidgeTrees)
-								.Concat(Platforms).ToArray().AsEnumerable();
+								.Concat(Platforms)
+								.Concat(Boxes)
+								.ToArray().AsEnumerable();
 
 							return value;
 						}
@@ -644,6 +649,20 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownGold.Remove(Entity);
+										Entity.Dispose();
+									}
+							}
+					)
+				).Concat(
+					this.KnownBoxes.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownBoxes.Remove(Entity);
 										Entity.Dispose();
 									}
 							}

@@ -306,10 +306,8 @@ namespace AvalonUgh.Code
 
 
 
-
-			this.Level.KnownGold.ForEachNewOrExistingItem(
-				k => k.AttachContainerTo(this.Entities)
-			);
+			this.Level.KnownBoxes.AttachTo(this.Entities);
+			this.Level.KnownGold.AttachTo(this.Entities);
 
 
 
