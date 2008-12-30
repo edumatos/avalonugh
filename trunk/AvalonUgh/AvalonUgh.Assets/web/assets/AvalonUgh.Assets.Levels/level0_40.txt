@@ -1,0 +1,37 @@
+# generated map
+# text: Two triops
+# code: THEABSOLUTE
+# autoscroll: 0
+# water: 32
+# background: 
+######################
+ S-S-          S-S-   
+ | | SS-S-S-SS-| | C- 
+ S-C-|| | | || | S |  
+# sign: 296;0
+ | | S| | | S| S-P--- 
+# tree: 128
+# sign: 88;1
+ | P---P--C-|| | S-R- 
+ | S-S-|  |  SS| | |  
+# sign: 200;5
+ S-S-| SR-P--P|S-S-S- 
+ | | C-|| |  S-| S-|  
+ | | |  R-S--| | | C- 
+# sign: 120;0
+S--P-P--| |  | S | |  
+# sign: 264;3
+|  S-SS-R--S-| BBBP-- 
+SS-| || |  | S-SS-|   
+|| | S| C-R-SS-|| C-R 
+S| |  | | | || S| | F 
+# sign: 248;3
+# sign: 88;2
+# tryo: 272
+# tryo: 64
+# rock: 112
+R-R-BBBBBBBBP--P---P--
+| | S-SS-S--|  SS--|  
+ R--| || |  R--||  R- 
+ |  | S|    |         
+######################
