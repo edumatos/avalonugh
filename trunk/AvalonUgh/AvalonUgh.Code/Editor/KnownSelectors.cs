@@ -40,7 +40,8 @@ namespace AvalonUgh.Code.Editor
 					Arrow,
 
 					Tree,
-					new Sprites.GoldSelector(),
+					
+				
 					Rock,
 					new Sprites.VehicleSelector(),
 					Sign,
@@ -55,9 +56,14 @@ namespace AvalonUgh.Code.Editor
 					Fence,
 					Bridge,
 
+					
 					new DemolishSelector(),
 					WaterLevel,
-					new BackgroundSelector()
+					new BackgroundSelector(),
+
+					new Sprites.GoldSelector(),
+					new Sprites.BoxSelector(),
+
 				};
 
 			ParamsFunc<SelectorBase, Func<SelectorBase>> f =

@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ScriptCoreLib;
-using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
-using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
-using System.Windows;
-using System.Windows.Threading;
+using System.Windows.Controls;
 using AvalonUgh.Assets.Shared;
+using ScriptCoreLib;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class Gold : ISupportsContainer, ISupportsPhysics , IDisposable
+	public class Box
+		 : ISupportsContainer, ISupportsPhysics , IDisposable
 	{
 		public double MassCenterModifier { get; set; }
 
@@ -99,7 +97,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		}
 
 
-		public Gold(int Zoom)
+		public Box(int Zoom)
 		{
 			this.Density = 2.3;
 			this.Zoom = Zoom;
@@ -115,7 +113,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			new Image
 			{
-				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/gold0.png").ToSource(),
+				Source = (Assets.Shared.KnownAssets.Path.Sprites + "/box0.png").ToSource(),
 				Stretch = Stretch.Fill,
 				Width = this.Width,
 				Height = this.Height,
@@ -130,11 +128,10 @@ namespace AvalonUgh.Code.Editor.Sprites
 		{
 			return new Obstacle
 			{
-				Left = x - HalfWidth,
-				Top = y - HalfHeight,
-				Right = x + HalfWidth,
+				Left = x - HalfWidth / 2,
+				Top = y,
+				Right = x + HalfWidth / 2,
 				Bottom = y + HalfHeight,
-				SupportsVelocity = this
 			};
 		}
 

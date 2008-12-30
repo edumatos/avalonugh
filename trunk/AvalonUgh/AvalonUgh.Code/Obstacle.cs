@@ -10,6 +10,7 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Obstacle
 	{
+
 		public static Obstacle Of(AvalonUgh.Code.View.SelectorPosition p, int Zoom, int PrimitiveTileCountX, int PrimitiveTileCountY)
 		{
 			return new Obstacle
