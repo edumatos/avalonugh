@@ -126,6 +126,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 
 
+
 				var Top_TriggerPosition = Position[0, -1];
 				var Top_TriggerObstacle = Obstacle.Of(Top_TriggerPosition, Level.Zoom, 1, 1);
 				var Top_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(Top_TriggerObstacle));
@@ -163,6 +164,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 					Cut = ToLookupValue(500, 1),
 					LeftToBottom = ToLookupValue(510, 1),
 					LeftToTop = ToLookupValue(520, 2),
+					RightToTop = ToLookupValue(530, 1),
 					RightToBottom = ToLookupValue(540, 1),
 					BottomToTopAndRight = ToLookupValue(550, 1),
 				};
@@ -185,6 +187,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{8 + 16, Tiles.RightToBottom},
 						{2 + 16 + 8, Tiles.RightToBottom},
 
+						{4 + 8, Tiles.RightToTop},
 						{16, Tiles.Cut},
 
 						{-1, Tiles.BottomToTopAndRight}
@@ -225,7 +228,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 				// we are going to do the ripple update
 
 				var self = this;
-				
+
 				// todo: jsc probably emits a base call here, which we do not need
 
 				if (Top_Trigger != null)
@@ -236,6 +239,31 @@ namespace AvalonUgh.Code.Editor.Tiles
 				if (Left_Trigger != null)
 				{
 					self.CreateTo(Level, Left_TriggerPosition);
+				}
+
+				if (Left_Trigger != null)
+				{
+					var LeftBottom_Ridge_2x2_TriggerPosition = Position[-1, 1];
+					var LeftBottom_Ridge_2x2_TriggerObstacle = Obstacle.Of(LeftBottom_Ridge_2x2_TriggerPosition, Level.Zoom, 2, 2);
+					var LeftBottom_Ridge_2x2_Trigger = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Equals(LeftBottom_Ridge_2x2_TriggerObstacle));
+
+
+					if (LeftBottom_Ridge_2x2_Trigger != null)
+					{
+						new RidgeSelector().Size_2x2.CreateTo(Level, LeftBottom_Ridge_2x2_TriggerPosition);
+
+					}
+
+					var LeftBottom_Ridge_3x2_TriggerPosition = Position[-1, 1];
+					var LeftBottom_Ridge_3x2_TriggerObstacle = Obstacle.Of(LeftBottom_Ridge_3x2_TriggerPosition, Level.Zoom, 3, 2);
+					var LeftBottom_Ridge_3x2_Trigger = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Equals(LeftBottom_Ridge_3x2_TriggerObstacle));
+
+
+					if (LeftBottom_Ridge_3x2_Trigger != null)
+					{
+						new RidgeSelector().Size_3x2.CreateTo(Level, LeftBottom_Ridge_3x2_TriggerPosition);
+
+					}
 				}
 			}
 		}
