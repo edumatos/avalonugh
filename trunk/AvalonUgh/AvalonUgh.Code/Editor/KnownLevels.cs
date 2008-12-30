@@ -14,7 +14,7 @@ namespace AvalonUgh.Code.Editor
 
 		public KnownLevels()
 		{
-			this.Levels = Enumerable.Range(0, 35).ToArray(i => new LevelReference(i));
+			this.Levels = Enumerable.Range(0, 36).ToArray(i => new LevelReference(i));
 		}
 	}
 }

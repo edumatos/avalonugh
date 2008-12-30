@@ -153,41 +153,66 @@ namespace AvalonUgh.Code.Editor.Tiles
 					if (PrimitiveTileCountY == 2)
 					{
 						// showing roots
-						var TriggerPosition = Position[0, -1];
-						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
-						var trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
+						var Top1_TriggerPosition = Position[0, -1];
+						var Top1_TriggerObstacle = Obstacle.Of(Top1_TriggerPosition, Level.Zoom, 1, 1);
+						var Top1_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top1_TriggerObstacle));
 
-						if (trigger != null)
-						{
-							Name.Index = 500;
+						var Top2_TriggerPosition = Position[1, -1];
+						var Top2_TriggerObstacle = Obstacle.Of(Top2_TriggerPosition, Level.Zoom, 1, 1);
+						var Top2_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top2_TriggerObstacle));
 
-							var Ridge1_TriggerPosition = Position[-1, 1];
-							var Ridge1_TriggerObstacle = Obstacle.Of(Ridge1_TriggerPosition, Level.Zoom, 1, 1);
-							var Ridge1_Trigger = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Intersects(Ridge1_TriggerObstacle));
 
-							if (Ridge1_Trigger != null)
+						if (Top2_Trigger == null)
+							if (Top1_Trigger != null)
 							{
-								Later +=
-									delegate
-									{
-										new RidgeSelector().Size_1x1.CreateTo(Level, Ridge1_TriggerPosition);
-									};
+								Name.Index = 500;
+
+								var Ridge1_TriggerPosition = Position[-1, 1];
+								var Ridge1_TriggerObstacle = Obstacle.Of(Ridge1_TriggerPosition, Level.Zoom, 1, 1);
+								var Ridge1_Trigger = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Equals(Ridge1_TriggerObstacle));
+
+								if (Ridge1_Trigger != null)
+								{
+									Later +=
+										delegate
+										{
+											new RidgeSelector().Size_1x1.CreateTo(Level, Ridge1_TriggerPosition);
+										};
+								}
 							}
-						}
 					}
 
 				if (PrimitiveTileCountX == 3)
 					if (PrimitiveTileCountY == 2)
 					{
 						// showing roots
-						var TriggerPosition = Position[0, -1];
-						var o_trigger = Obstacle.Of(TriggerPosition, Level.Zoom, 1, 1);
-						var trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(o_trigger));
+						var Top1_TriggerPosition = Position[0, -1];
+						var Top1_TriggerObstacle = Obstacle.Of(Top1_TriggerPosition, Level.Zoom, 1, 1);
+						var Top1_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top1_TriggerObstacle));
 
-						if (trigger != null)
-						{
-							Name.Index = 500;
-						}
+						var Top2_TriggerPosition = Position[1, -1];
+						var Top2_TriggerObstacle = Obstacle.Of(Top2_TriggerPosition, Level.Zoom, 1, 1);
+						var Top2_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top2_TriggerObstacle));
+
+
+						if (Top2_Trigger == null)
+							if (Top1_Trigger != null)
+							{
+								Name.Index = 500;
+
+								var Ridge1_TriggerPosition = Position[-1, 1];
+								var Ridge1_TriggerObstacle = Obstacle.Of(Ridge1_TriggerPosition, Level.Zoom, 1, 1);
+								var Ridge1_Trigger = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Equals(Ridge1_TriggerObstacle));
+
+								if (Ridge1_Trigger != null)
+								{
+									Later +=
+										delegate
+										{
+											new RidgeSelector().Size_1x1.CreateTo(Level, Ridge1_TriggerPosition);
+										};
+								}
+							}
 					}
 
 

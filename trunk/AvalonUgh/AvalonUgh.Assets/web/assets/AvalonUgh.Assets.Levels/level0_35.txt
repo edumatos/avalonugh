@@ -1,0 +1,33 @@
+# generated map
+# text: Wooden problems
+# code: BELIEVERSOFTHEUNPURE
+# autoscroll: 0
+# water: 20
+# background: 
+######################
+  S-    S-   S-       
+S-| S-S-| SS-| S-S-S- 
+| C-| | | || | | | |  
+| | S | S-S| S-| C-|  
+# sign: 88;1
+ P--BBBP-S-| | S-|  F 
+# tree: 208
+# sign: 312;5
+ |  S-S| | SP--BBBBBP-
+ S--| |S-| ||  S-S--R-
+ |  | S| | S-S-| |  | 
+S-S-SS-| S-| | | S-S| 
+| | || C-| S--S| | C- 
+| |  | | | |  S- | |  
+# sign: 264;4
+# sign: 72;2
+# rock: 48
+P-BBBBP--SS-S-| P--P--
+ S-TS-|  || | S-|  |  
+ | T| S-S-| | | SRTTTT
+ | T| C-| S-| | ||TR--
+ R-R-F| S | S--R--T|  
+# sign: 152;3
+ | | P--P---|  |  TTT 
+     |  |      |    T 
+######################
