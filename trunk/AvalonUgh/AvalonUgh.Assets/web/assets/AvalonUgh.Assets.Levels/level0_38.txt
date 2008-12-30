@@ -1,0 +1,33 @@
+# generated map
+# text: Beware of the dino
+# code: BLASTOFTHEBOUGH
+# autoscroll: 0
+# water: 18
+# background: 
+######################
+     R-  S-S-  S-  S--
+ R--R| S-| | S-| S-|  
+ |  |S-| | | | | | C- 
+ |  S| | C-| | S-- |  
+# sign: 296;2
+ R-S-| S-| S R-|  P-- 
+# sign: 200;3
+ | | | | P-P-| SS-|   
+ RS-S--R-| | | || R-S-
+S-| |  | | S-R-S| | R-
+| | S--R-S-| S-|| SR| 
+| S-|  | C-| | S-S--S-
+| | S--R-| | S | |  | 
+# dino: 312
+# sign: 232;1
+# rock: 192
+S-| |  | P--PP-S--P-P-
+| SS-S-S-|  R| |  | | 
+S-|| | | S--S-S--S-S| 
+| S| | | |  | |  | C- 
+| |S-S-S--S-SS-S-S |  
+# tree: 48
+# sign: 296;4
+ P---| |  | || | P--- 
+ |   |    | S| | |    
+######################
