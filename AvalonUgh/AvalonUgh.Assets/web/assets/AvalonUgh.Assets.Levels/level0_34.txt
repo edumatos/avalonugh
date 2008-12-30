@@ -1,0 +1,35 @@
+# generated map
+# text: The last triopterus
+# code: BELIEVERSOFTHEUNPURE
+# autoscroll: 0
+# water: 20
+# background: 
+######################
+    S-  R--R--SS-S-S- 
+R--R| S-|  |  || | |  
+|  S| | SC-R-S-| | C- 
+R-S--S|  | | | | S |  
+# sign: 136;3
+# sign: 296;3
+| |  |P-P-PRSSS-BBBBP-
+ SS-S-S-| R-||| S-S-| 
+ || | S-| | C-| | | S-
+ S| | | C-| | S | SS- 
+# sign: 248;5
+# rock: 274
+ || S | | R-P--PP-||  
+# sign: 88;2
+S-S-P--P--| |  S-S-|  
+| | SS-|  SS-S-| | |  
+| | || S-S-| | | | C- 
+SS-S-| | | S-| S | |  
+# tree: 288
+# sign: 264;0
+|| S-C-| | | P-P--PP--
+S| | | | S | | |  R|  
+# sign: 168;1
+# tryo: 144
+|| | P-BBBBP-| R-R-R--
+ R--R| S--S| R-| | |  
+ |  |  |  |  | |   |  
+######################

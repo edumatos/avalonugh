@@ -185,7 +185,7 @@ namespace AvalonUgh.Code.Editor
 					Selectors.Rock.Size_1x1.CreateTo(this,
 						new View.SelectorPosition
 						{
-							ContentX = x - PrimitiveTile.Heigth / 2,
+							ContentX = x - PrimitiveTile.Width / 2,
 							ContentY = (this.TileRowsProcessed - 1) * PrimitiveTile.Heigth
 						}
 					);
@@ -198,7 +198,7 @@ namespace AvalonUgh.Code.Editor
 					Selectors.Tryoperus.Size_2x2.CreateTo(this,
 						new View.SelectorPosition
 						{
-							ContentX = x - PrimitiveTile.Heigth,
+							ContentX = x - PrimitiveTile.Width,
 							ContentY = (this.TileRowsProcessed - 2) * PrimitiveTile.Heigth
 						}
 					);
