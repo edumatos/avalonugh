@@ -887,7 +887,11 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_43.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_44.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_45.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_46.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_47.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_47.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_46.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_45.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree555.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_44.png" />

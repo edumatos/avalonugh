@@ -1,0 +1,35 @@
+# generated map
+# text: In a small cave
+# code: WILLOTHEWISP
+# autoscroll: 0
+# water: 22
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+ R--R--       R--R--  
+ |  |  S-S-SS-|  |  R-
+ R-SSS-| | || |  S-S| 
+ S-||| | SS-| S-S| C- 
+ | C-| S--| | |  | |  
+# sign: 264;1
+ | | S |  | BBBBBBBP--
+# tree: 128
+# sign: 104;2
+ P-P--P--P| S-S-S-S|  
+ | |  |  SS-| | | S-R-
+R--R--R-S-| | | S-| | 
+|  |  | | SS-SS-| | | 
+|  |  S-| || || | C-S-
+ R--S-| S--| S| | |   
+# sign: 328;4
+# rock: 272
+ |  | | |  SS-| P-P-- 
+ SS-| S-S-C-| R-R-|   
+ || | | | | R-| | R-- 
+# sign: 120;3
+# tryo: 144
+ S| SP-BBBP-| R--R|   
+ || S| S-S| | |  ||   
+       | |            
+######################
