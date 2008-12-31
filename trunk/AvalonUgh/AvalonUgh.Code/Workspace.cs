@@ -276,6 +276,53 @@ namespace AvalonUgh.Code
 					}
 				};
 
+			Local0.Actor.EnterCave +=
+				delegate
+				{
+					var ManAsObstacle = Local0.Actor.ToObstacle();
+
+					// are we trying to enter a cave?
+					var NearbyCave = Local0.Actor.CurrentLevel.KnownCaves.FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+
+					if (NearbyCave != null)
+					{
+						// we need to align us in front of the cave
+						// and show entering animation
+
+						Console.WriteLine("entering a cave");
+
+						AIDirector.WalkActorToTheCaveAndEnter(Local0.Actor, NearbyCave,
+							delegate
+							{
+								Console.WriteLine("inside a cave");
+
+								// should we load another level and enter that?
+								// for the first version lets keep it simple
+								// lets just exit another cave
+
+								if (Local0.Actor.CurrentLevel.KnownCaves.Count == 0)
+								{
+									// whatif the cave is destroyed?
+									AIDirector.ActorExitCaveFast(Local0.Actor);
+									return;
+								}
+
+								var NextCave = Local0.Actor.CurrentLevel.KnownCaves.Next(k => k == NearbyCave);
+
+
+								AIDirector.ActorExitAnyCave(Local0.Actor, NextCave);
+							}
+						);
+
+
+						return;
+					}
+					else
+					{
+						Local0.Actor.Animation = Actor.AnimationEnum.Talk;
+					}
+				};
+
 			this.LocalIdentity.Locals.Add(Local0);
 
 
