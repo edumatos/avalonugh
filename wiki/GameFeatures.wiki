@@ -51,8 +51,9 @@ Door tiles: 2x2
  # http://www.lemonamiga.com/?game_id=1088
  # http://hol.abime.net/1791
  # http://www.answers.com/topic/ugh-game
+ # http://www.the-underdogs.info/game.php?gameid=2213
  # http://www.gamespot.com/pc/action/ugh/hints.html?om_act=convert&om_clk=gsbottomnav&tag=quicklinks;cheats
-http://www.dosgamesarchive.com/download/game/87
+ # http://www.dosgamesarchive.com/download/game/87
 
 = Latest version under development =
 
