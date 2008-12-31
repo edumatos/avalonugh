@@ -54,6 +54,8 @@ Door tiles: 2x2
  # http://www.the-underdogs.info/game.php?gameid=2213
  # http://www.gamespot.com/pc/action/ugh/hints.html?om_act=convert&om_clk=gsbottomnav&tag=quicklinks;cheats
  # http://www.dosgamesarchive.com/download/game/87
+ # http://www.goodolddays.net/0_0_0_1_0_0_0_0_0_0_0_0_0_0_en_0_166_show_1_ugh_0_0/
+
 
 = Latest version under development =
 
