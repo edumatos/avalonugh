@@ -153,6 +153,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 					if (PrimitiveTileCountY == 2)
 					{
 						// showing roots
+						var Top0_TriggerPosition = Position[-1, -1];
+						var Top0_TriggerObstacle = Obstacle.Of(Top0_TriggerPosition, Level.Zoom, 1, 1);
+						var Top0_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top0_TriggerObstacle));
+
+
 						var Top1_TriggerPosition = Position[0, -1];
 						var Top1_TriggerObstacle = Obstacle.Of(Top1_TriggerPosition, Level.Zoom, 1, 1);
 						var Top1_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top1_TriggerObstacle));
@@ -162,29 +167,35 @@ namespace AvalonUgh.Code.Editor.Tiles
 						var Top2_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top2_TriggerObstacle));
 
 
-						if (Top2_Trigger == null)
-							if (Top1_Trigger != null)
-							{
-								Name.Index = 500;
-
-								var Ridge1_TriggerPosition = Position[-1, 1];
-								var Ridge1_TriggerObstacle = Obstacle.Of(Ridge1_TriggerPosition, Level.Zoom, 1, 1);
-								var Ridge1_Trigger = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Equals(Ridge1_TriggerObstacle));
-
-								if (Ridge1_Trigger != null)
+						if (Top0_Trigger == null)
+							if (Top2_Trigger == null)
+								if (Top1_Trigger != null)
 								{
-									Later +=
-										delegate
-										{
-											new RidgeSelector().Size_1x1.CreateTo(Level, Ridge1_TriggerPosition);
-										};
+									Name.Index = 500;
+
+									var Ridge1_TriggerPosition = Position[-1, 1];
+									var Ridge1_TriggerObstacle = Obstacle.Of(Ridge1_TriggerPosition, Level.Zoom, 1, 1);
+									var Ridge1_Trigger = Level.KnownRidges.FirstOrDefault(k => k.ToObstacle().Equals(Ridge1_TriggerObstacle));
+
+									if (Ridge1_Trigger != null)
+									{
+										Later +=
+											delegate
+											{
+												new RidgeSelector().Size_1x1.CreateTo(Level, Ridge1_TriggerPosition);
+											};
+									}
 								}
-							}
 					}
 
 				if (PrimitiveTileCountX == 3)
 					if (PrimitiveTileCountY == 2)
 					{
+						var Top0_TriggerPosition = Position[-1, -1];
+						var Top0_TriggerObstacle = Obstacle.Of(Top0_TriggerPosition, Level.Zoom, 1, 1);
+						var Top0_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top0_TriggerObstacle));
+
+
 						// showing roots
 						var Top1_TriggerPosition = Position[0, -1];
 						var Top1_TriggerObstacle = Obstacle.Of(Top1_TriggerPosition, Level.Zoom, 1, 1);
@@ -194,8 +205,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 						var Top2_TriggerObstacle = Obstacle.Of(Top2_TriggerPosition, Level.Zoom, 1, 1);
 						var Top2_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Intersects(Top2_TriggerObstacle));
 
-
-						if (Top2_Trigger == null)
+						if (Top0_Trigger == null)
+							if (Top2_Trigger == null)
 							if (Top1_Trigger != null)
 							{
 								Name.Index = 500;

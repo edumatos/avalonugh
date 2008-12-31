@@ -1,0 +1,37 @@
+# generated map
+# text: Lonely tree
+# code: WILLOTHEWISP
+# autoscroll: 0
+# water: 22
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+ S-  S--S-         S--
+ | S-|  | S-S-S--S-|  
+ C-| SS-| | | |  | S- 
+ | |  | S-| | SS-S-|  
+# tree: 176
+# sign: 88;3
+BBBP--| | P-SS|| | |  
+ S--S-| | | |S-| | C- 
+ |  | S-S-S--| T | |  
+# sign: 264;2
+# tryo: 288
+SS-TC-| | |  S-TP--P- 
+|| T| | |  S-| TTTTTT 
+# sign: 168;4
+# tryo: 112
+S| TP-PP---| | RR-R-T 
+|| TTTR--C-S-| || | T 
+S-S--T|  | |  S|TTTTT 
+# sign: 216;1
+| |  TTTTBBBBBBTTR--R-
+| S-S-S-TS-STTTTR|  | 
+| | | C-T| |TR--||  R-
+  | | | TTTTT|  R-R-- 
+# sign: 24;5
+# rock: 32
+ P--P---STR-RR--| |   
+ |  |   | |  |  | |   
+######################

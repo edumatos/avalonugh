@@ -45,7 +45,7 @@ namespace AvalonUgh.Code
 		/// </summary>
 		public readonly PlayerIdentity LocalIdentity = new PlayerIdentity { Name = "LocalPlayer" };
 
-	
+
 		const int PortIdentity_Lobby = 1000;
 		const int PortIdentity_Editor = 2000;
 		const int PortIdentity_Mission = 3000;
@@ -259,6 +259,23 @@ namespace AvalonUgh.Code
 					Console.WriteLine("yay, water!");
 				};
 
+			Local0.Actor.EnterVehicle +=
+				delegate
+				{
+					// exiting a vehicle is easy
+					// entering is a bit harder
+					// as we need to find it and reserve its use for us
+
+					var ManAsObstacle = Local0.Actor.ToObstacle();
+
+					var NearbyVehicle = Local0.Actor.CurrentLevel.KnownVehicles.Where(k => k.CurrentDriver == null).FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+
+					if (NearbyVehicle != null)
+					{
+						NearbyVehicle.CurrentDriver = Local0.Actor;
+					}
+				};
+
 			this.LocalIdentity.Locals.Add(Local0);
 
 
@@ -290,7 +307,7 @@ namespace AvalonUgh.Code
 				(sender, args) =>
 				{
 
-			
+
 
 					if (this.LocalIdentity.SyncFramePaused)
 					{
@@ -328,7 +345,7 @@ namespace AvalonUgh.Code
 
 							// re-entering lobby
 
-						
+
 							Local0.Actor.CurrentLevel = LobbyPort.Level;
 							Local0.Actor.MoveTo(
 								(LobbyPort.View.ContentActualWidth / 4) +
@@ -459,7 +476,7 @@ namespace AvalonUgh.Code
 						delegate
 						{
 							Local0.Actor.CurrentLevel = NextLevelPort.Level;
-					
+
 							Menu.Hide();
 
 							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
@@ -506,6 +523,8 @@ namespace AvalonUgh.Code
 									delegate
 									{
 										Local0.Actor.CurrentLevel = EditorPort.Level;
+										
+										this.EditorPort.View.LocationTracker.Target = Local0;
 
 										if (this.EditorPort.Level.KnownCaves.Count == 0)
 										{
@@ -565,7 +584,7 @@ namespace AvalonUgh.Code
 
 		}
 
-	
+
 		Dialog InternalActiveDialog;
 		public Dialog ActiveDialog
 		{

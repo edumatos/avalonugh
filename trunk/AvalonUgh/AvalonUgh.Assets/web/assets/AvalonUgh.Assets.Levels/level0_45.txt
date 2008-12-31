@@ -1,0 +1,35 @@
+# generated map
+# text: Tricky diving
+# code: TALESOFINNOCENCE
+# autoscroll: 0
+# water: 42
+# water-rise: 0
+# snow: 0
+# background: 
+##########################
+R- S-S-S-R-R--     S-   R 
+|  | | | | |  SS-S-| SS-R 
+R- | | | S-R-S|| | | || | 
+| S-S-S--| | S-| | SS-| | 
+# tree: 304
+R-| | |  S-R-| | SP-| | R 
+# tree: 112
+| | S-P-S| RC-S-S|| SC- | 
+# vehicle: 240
+| | | | || ||  SS-R- |  | 
+# sign: 232;2
+# sign: 328;3
+# rock: 336
+C-S-| R-SS-|BBB|| | P--P- 
+| |  S| || R-S-S| | S-S-  
+# sign: 72;1
+P-P---R-S| R-| S--R-| |   
+   SS-| || | | |  R-| S-  
+   || | S--R--S-S-| | |   
+  S-| R-|  |  | | R-RS|   
+  | SR-S-SS-RR-S| | R-S-  
+  R--| | || || S-S-R-R--  
+  |  S-| S| S-S--| | |    
+  RS-| S--S-| |  | SR|    
+  || | |  | |      ||     
+##########################
