@@ -120,9 +120,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				var Name_Index = Name.Index;
 
-				var TopRight_TriggerPosition = Position[1, -1];
-				var TopRight_TriggerObstacle = Obstacle.Of(TopRight_TriggerPosition, Level.Zoom, 1, 1);
-				var TopRight_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(TopRight_TriggerObstacle));
+				//var TopRight_TriggerPosition = Position[1, -1];
+				//var TopRight_TriggerObstacle = Obstacle.Of(TopRight_TriggerPosition, Level.Zoom, 1, 1);
+				//var TopRight_Trigger = Level.KnownRidgeTrees.FirstOrDefault(k => k.ToObstacle().Equals(TopRight_TriggerObstacle));
 
 
 
@@ -167,6 +167,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 					RightToTop = ToLookupValue(530, 1),
 					RightToBottom = ToLookupValue(540, 1),
 					BottomToTopAndRight = ToLookupValue(550, 1),
+					BottomToLeftAndRight = ToLookupValue(555, 1),
 				};
 
 				var Lookup =
@@ -176,7 +177,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 						{4, Tiles.Vertical},
 						{4 + 16, Tiles.Vertical},
-						{4 + 16 + 8, Tiles.Vertical},
+						//{4 + 16 + 8, Tiles.Vertical},
 
 						{2, Tiles.Horizontal},
 						{8, Tiles.Horizontal},
@@ -185,12 +186,15 @@ namespace AvalonUgh.Code.Editor.Tiles
 						{2 + 16, Tiles.LeftToBottom},
 						{2 + 4, Tiles.LeftToTop},
 						{8 + 16, Tiles.RightToBottom},
-						{2 + 16 + 8, Tiles.RightToBottom},
+						//{2 + 16 + 8, Tiles.RightToBottom},
+
+						// 2, 4, 8, 16
 
 						{4 + 8, Tiles.RightToTop},
 						{16, Tiles.Cut},
 
-						{-1, Tiles.BottomToTopAndRight}
+						{2 + 16 + 8, Tiles.BottomToLeftAndRight},
+						{4 + 16 + 8, Tiles.BottomToTopAndRight}
 					};
 
 
@@ -198,11 +202,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				if (Lookup.ContainsKey(Flags))
 				{
-					if (Flags == 4 + 16 + 8)
-					{
-						if (TopRight_Trigger != null)
-							Flags = -1;
-					}
+					//if (Flags == 4 + 16 + 8)
+					//{
+					//    if (TopRight_Trigger != null)
+					//        Flags = -1;
+					//}
 
 					Name.Index = Lookup[Flags]();
 				}
@@ -231,14 +235,21 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 				// todo: jsc probably emits a base call here, which we do not need
 
-				if (Top_Trigger != null)
+				if (RippleEnabled)
 				{
-					self.CreateTo(Level, Top_TriggerPosition);
-				}
+					RippleEnabled = false;
 
-				if (Left_Trigger != null)
-				{
-					self.CreateTo(Level, Left_TriggerPosition);
+					if (Top_Trigger != null)
+					{
+						self.CreateTo(Level, Top_TriggerPosition);
+					}
+
+					if (Left_Trigger != null)
+					{
+						self.CreateTo(Level, Left_TriggerPosition);
+					}
+
+					RippleEnabled = true;
 				}
 
 				if (Left_Trigger != null)
@@ -266,7 +277,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 					}
 				}
 			}
+
+			public bool RippleEnabled = true;
+
 		}
+
 
 		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{

@@ -32,6 +32,8 @@ namespace AvalonUgh.Code.Editor
 					AttributeCode,
 					AttributeAutoscroll,
 					AttributeWater,
+					AttributeWaterRise,
+					AttributeSnow,
 					AttributeBackground
 				);
 

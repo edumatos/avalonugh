@@ -242,7 +242,7 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownDinos.AttachTo(this.Entities);
-		
+
 			this.Level.KnownSigns.AttachTo(this.Entities);
 			this.Level.KnownTrees.AttachTo(this.Entities);
 
@@ -357,6 +357,13 @@ namespace AvalonUgh.Code
 					CurrentSnow.Show(this.Level.AttributeSnow.BooleanValue);
 				};
 
+			{
+				var WaterTop = Convert.ToInt32(this.Level.WaterTop.Max(0) + ContentOffsetY);
+
+				CurrentSnow.Container.ClipTo(0, 0, this.ContentExtendedWidth, WaterTop);
+
+				CurrentWater.MoveContainerTo(0, WaterTop);
+			}
 
 			// we are now listening to water attribute in the context of Level
 			// if the Level changes we need to adjust our binding
@@ -429,7 +436,7 @@ namespace AvalonUgh.Code
 					}
 				};
 
-		
+
 			AttachFilmScratchEffect();
 
 			this.IsShakerEnabled = (Convert.ToBoolean(this.Level.AttributeWaterRise.Value));
