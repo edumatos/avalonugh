@@ -69,6 +69,8 @@ namespace AvalonUgh.Code
 
 			// add gravity
 			twin.VelocityY += Level.AttributeGravity.Value * 0.01 * AirVolume * AirVolume;
+			
+
 
 
 			const double WaterDensity = 1.0;
@@ -286,8 +288,8 @@ namespace AvalonUgh.Code
 			}
 			else
 			{
-				if (twin is Vehicle)
-					twin.VelocityX += Level.AttributeWind.Value * 0.01 * AirVolume;
+				
+				twin.VelocityX += Level.AttributeWind.Value * 0.1 * AirVolume * AirVolume;
 			}
 
 			if (CollisionAtVelocityEnabled)

@@ -34,6 +34,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly Attribute.Int32 AttributeBackgroundHeight = "background-height";
 		public readonly Attribute.Int32 AttributeWater = "water";
 		public readonly Attribute.Int32 AttributeWind = "wind";
+		public readonly Attribute.Int32 AttributeSnow = "snow";
 		public readonly Attribute.Int32 AttributeGravity = "gravity";
 		public readonly Attribute.Int32 AttributeWaterRise = "water-rise";
 
@@ -267,6 +268,7 @@ namespace AvalonUgh.Code.Editor
 
 
 				AttributeWind,
+				AttributeSnow,
 				AttributeGravity,
 
 				AttributeWater,

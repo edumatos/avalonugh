@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using AvalonUgh.Assets.Avalon;
 using System.Windows.Media;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Threading;
 
 namespace AvalonUgh.Code
 {
@@ -40,6 +41,8 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public readonly DispatcherTimer Timer;
+
 		public Snow(int DefaultWidth, int DefaultHeight, int DefaultZoom)
 		{
 			this.Container = new Canvas
@@ -53,64 +56,48 @@ namespace AvalonUgh.Code
 			var CountX = Convert.ToInt32(DefaultWidth / SnowFlake_Size) + 2;
 			var CountY = Convert.ToInt32(DefaultHeight / SnowFlake_Size) + 2;
 
-		
-
-
+			var Name = new NameFormat
 			{
-				var Name = new NameFormat
+				Path = Assets.Shared.KnownAssets.Path.Assets,
+				Name = "snow",
+				Extension = "png"
+			};
+
+			var Name0 = Name.ToIndex(0);
+			var Name1 = Name.ToIndex(1);
+
+			var Frames0 = Enumerable.ToArray(
+				CountX.ToRange().SelectMany(x => CountY.ToRange().Select(y => new Flake(x, y, Name0, SnowFlake_Size, this.Container)))
+			);
+
+			var Frames1 = Enumerable.ToArray(
+				CountX.ToRange().SelectMany(x => CountY.ToRange().Select(y => new Flake(x, y, Name1, SnowFlake_Size, this.Container)))
+			);
+
+			this.Timer = (1000 / 50).AtIntervalWithCounter(
+				c =>
 				{
-					Path = Assets.Shared.KnownAssets.Path.Assets,
-					Name = "snow",
-					Extension = "png"
-				};
-
-				var Frames = Enumerable.ToArray(
-					CountX.ToRange().SelectMany(x => CountY.ToRange().Select(y =>	new Flake(x, y, Name, SnowFlake_Size, this.Container)))
-				);
-
-
-				(1000 / 60).AtIntervalWithCounter(
-					y =>
 					{
-						y *= 2;
-						y %= SnowFlake_Size;
+						var y = (c * 2) % SnowFlake_Size;
 						var x = SnowFlake_Size - y;
 
-						Frames.ForEach(
+						Frames0.ForEach(
 							k => k.Image.MoveTo(x + k.offsetx, y + k.offsety)
 						);
 					}
-				);
-			}
 
-			{
-				var Name = new NameFormat
-				{
-					Path = Assets.Shared.KnownAssets.Path.Assets,
-					Name = "snow",
-					Index = 1,
-					Extension = "png"
-				};
-
-				var Frames = Enumerable.ToArray(
-					CountX.ToRange().SelectMany(x => CountY.ToRange().Select(y => new Flake(x, y, Name, SnowFlake_Size, this.Container)))
-				);
-
-
-				(1000 / 60).AtIntervalWithCounter(
-					y =>
 					{
-						y *= 3;
-						y %= SnowFlake_Size;
+						var y = (c * 3) % SnowFlake_Size;
 						var x = SnowFlake_Size - y;
-						
 
-						Frames.ForEach(
+						Frames1.ForEach(
 							k => k.Image.MoveTo(x + k.offsetx, y + k.offsety)
 						);
 					}
-				);
-			}
+				}
+			);
+
+
 		}
 	}
 }
