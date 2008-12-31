@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using AvalonUgh.Code.Editor;
 using AvalonUgh.Code.Input;
 using System.ComponentModel;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code
 {
@@ -22,7 +23,7 @@ namespace AvalonUgh.Code
 	/// the active player be it a vehicle or an actor
 	/// </summary>
 	[Script]
-	public partial class View : ISupportsContainer
+	public partial class View : ISupportsContainer, IDisposable
 	{
 		public Canvas Container { get; set; }
 
@@ -38,6 +39,7 @@ namespace AvalonUgh.Code
 
 		public Canvas ContentExtendedContainer { get; set; }
 
+		public Canvas SnowContainer { get; set; }
 		public Canvas WaterContainer { get; set; }
 
 		public Canvas FilmScratchContainer { get; set; }
@@ -182,6 +184,12 @@ namespace AvalonUgh.Code
 				Width = this.ContentExtendedWidth,
 				Height = this.ContentExtendedHeight
 			}.AttachTo(this.Container);
+
+			this.SnowContainer = new Canvas
+			{
+				Width = this.ContentExtendedWidth,
+				Height = this.ContentExtendedHeight
+			}.AttachTo(this.ContentExtendedContainer);
 
 			this.WaterContainer = new Canvas
 			{
@@ -330,12 +338,24 @@ namespace AvalonUgh.Code
 				}
 			).AttachContainerTo(this.WaterContainer);
 
+			var CurrentSnow = new Snow(
+				this.ContentExtendedWidth,
+				this.ContentExtendedHeight,
+				this.Level.Zoom
+			).AttachContainerTo(this.SnowContainer);
+
+		
+
 			// we are now listening to water attribute in the context of Level
 			// if the Level changes we need to adjust our binding
 			this.Level.AttributeWater.Assigned +=
 				delegate
 				{
-					CurrentWater.MoveContainerTo(0, Convert.ToInt32(this.Level.WaterTop.Max(0) + ContentOffsetY));
+					var WaterTop = Convert.ToInt32(this.Level.WaterTop.Max(0) + ContentOffsetY);
+
+					CurrentSnow.Container.ClipTo(0, 0, this.ContentExtendedWidth, WaterTop);
+
+					CurrentWater.MoveContainerTo(0, WaterTop);
 				};
 
 			this.LocationTracker = new LocationTracker();
@@ -397,7 +417,7 @@ namespace AvalonUgh.Code
 					}
 				};
 
-
+		
 			AttachFilmScratchEffect();
 
 			this.IsShakerEnabled = (Convert.ToBoolean(this.Level.AttributeWaterRise.Value));
@@ -469,5 +489,14 @@ namespace AvalonUgh.Code
 			);
 		}
 
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			// we need to kill the timers
+		}
+
+		#endregion
 	}
 }
