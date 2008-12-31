@@ -344,7 +344,19 @@ namespace AvalonUgh.Code
 				this.Level.Zoom
 			).AttachContainerTo(this.SnowContainer);
 
-		
+			if (!Level.AttributeSnow.BooleanValue)
+			{
+				CurrentSnow.Timer.Stop();
+				CurrentSnow.Hide();
+			}
+
+			this.Level.AttributeSnow.Assigned +=
+				delegate
+				{
+					CurrentSnow.Timer.IsEnabled = this.Level.AttributeSnow.BooleanValue;
+					CurrentSnow.Show(this.Level.AttributeSnow.BooleanValue);
+				};
+
 
 			// we are now listening to water attribute in the context of Level
 			// if the Level changes we need to adjust our binding

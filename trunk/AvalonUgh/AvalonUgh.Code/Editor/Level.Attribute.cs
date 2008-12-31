@@ -87,6 +87,18 @@ namespace AvalonUgh.Code.Editor
 					}
 				}
 
+				public bool BooleanValue
+				{
+					get
+					{
+						return Convert.ToBoolean(this.Value);
+					}
+					set
+					{
+						this.Value = Convert.ToInt32(value);
+					}
+				}
+
 				public event Action<int> Assigned;
 
 
