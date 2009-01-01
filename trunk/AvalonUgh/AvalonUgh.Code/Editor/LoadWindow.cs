@@ -11,6 +11,7 @@ using System.Windows.Media;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Shapes;
 using System.Windows.Input;
+using ScriptCoreLib.Shared.Avalon.Tween;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -23,7 +24,8 @@ namespace AvalonUgh.Code.Editor
 
 		public event Action<LevelReference> Click;
 
-		public LoadWindow() :this(null)
+		public LoadWindow()
+			: this(null)
 		{
 		}
 
@@ -45,7 +47,7 @@ namespace AvalonUgh.Code.Editor
 
 
 			this.Width = Padding + (48 + Padding) * ItemsPerRow;
-			this.Height = Padding + 100 + Padding + (30 + Padding) * 4;
+			this.Height = Padding + 100 + Padding + (30 + Padding) * 5;
 
 			const string DefaultText = "Select a level below!";
 
@@ -63,6 +65,41 @@ namespace AvalonUgh.Code.Editor
 
 			this.DraggableArea.BringToFront();
 
+			var PreviewContainer_Height = (30 + Padding) * 5 - Padding;
+			var PreviewContainer = new Canvas
+			{
+				//Background = Brushes.Blue,
+				Width = (48 + Padding) * ItemsPerRow - Padding,
+				Height = PreviewContainer_Height,
+				ClipToBounds = true,
+			}.AttachTo(this).MoveTo(
+				Padding,
+				Padding * 2 + 100
+
+			);
+
+			var PreviewArea = new Canvas
+			{
+				//Background = Brushes.Red,
+				Width = (48 + Padding) * ItemsPerRow - Padding,
+			}.AttachTo(PreviewContainer);
+
+			var PreviewArea_Move = NumericEmitter.OfDouble(
+				(x, y) =>
+				{
+					PreviewArea.MoveTo(x, y);
+				}
+			);
+			PreviewArea_Move(0, 0);
+
+			PreviewContainer.MouseMove +=
+				(sender, args) =>
+				{
+					var p = args.GetPosition(PreviewContainer);
+					var y = ((p.Y - 30) / (PreviewContainer_Height - 60)).Max(0).Min(1);
+
+					PreviewArea_Move(0, (PreviewArea.Height - PreviewContainer_Height) * -y);
+				};
 
 
 			this.Items.ForEachNewOrExistingItem(
@@ -70,11 +107,10 @@ namespace AvalonUgh.Code.Editor
 				{
 					value.Preview.MoveTo(Padding, Padding);
 
-					var x = index % ItemsPerRow * (value.SmallPreview.Width + Padding) + Padding;
-					var y = value.Preview.Height + Padding * 2
-						+ Convert.ToInt32(index / ItemsPerRow) * (value.SmallPreview.Height + Padding);
+					var x = index % ItemsPerRow * (value.SmallPreview.Width + Padding);
+					var y = Convert.ToInt32(index / ItemsPerRow) * (value.SmallPreview.Height + Padding);
 
-					value.SmallPreview.AttachTo(this).MoveTo(
+					value.SmallPreview.AttachTo(PreviewArea).MoveTo(
 						x, y
 					);
 
@@ -85,7 +121,7 @@ namespace AvalonUgh.Code.Editor
 						Fill = Brushes.Black,
 						Opacity = 0,
 						Cursor = Cursors.Hand
-					}.AttachTo(this).MoveTo(x, y);
+					}.AttachTo(PreviewArea).MoveTo(x, y);
 
 					TouchOverlay.MouseEnter +=
 						delegate
@@ -110,10 +146,12 @@ namespace AvalonUgh.Code.Editor
 							if (Click != null)
 								Click(value);
 						};
+
+					PreviewArea.Height = (30 + Padding) * (Convert.ToInt32(index / ItemsPerRow) + 1) - Padding;
 				}
 			);
 
-		
+
 
 			// list
 
