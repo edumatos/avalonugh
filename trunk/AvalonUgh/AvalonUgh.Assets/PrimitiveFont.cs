@@ -26,6 +26,12 @@ namespace AvalonUgh.Assets.Shared
 			if (s == ".")
 				return "_Dot";
 
+			if (s == ",")
+				return "_Comma";
+
+			if (s == "'")
+				return "_Apostrophe";
+
 			return s.ToLower();
 		}
 	}

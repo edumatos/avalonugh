@@ -1,0 +1,37 @@
+# generated map
+# text: The capital I
+# code: CHIMEREDESIDELA
+# autoscroll: 0
+# water: 20
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+ S-       SR-   S--   
+ | S-SS-S-|| SS-|  C- 
+ C-| || | R-R-| S- |  
+# sign: 296;5
+ | |  | | | | | | BBP-
+# sign: 88;4
+P-P---S-S-S--SS-| S-| 
+| SS--S-| |  || S-| S-
+S-||  | | R-R-| | | S-
+| S-S-| | | | | | | | 
+# dino: 312
+ C-S| S-S--R-S-S--P---
+ |  | | |  | | |  S-S 
+# sign: 56;3
+# rock: 96
+ P-BBP-SSS-| | S-S-C- 
+ | S-| ||| R-S-| | |  
+# sign: 280;2
+ S--S-SS-| R-| | BBPP-
+ |  | || | | | S-S-R| 
+S-C-| S| SR-R--| | SR-
+| | |  | || |  | | || 
+# tree: 128
+# sign: 104;1
+# tryo: 80
+ P-BBBBBP-R-S-R-S| S- 
+ |      |   | | |  |  
+######################
