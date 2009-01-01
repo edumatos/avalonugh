@@ -1,0 +1,37 @@
+# generated map
+# text: Lost in a cage
+# code: VENTRILOQUIST
+# autoscroll: 0
+# water: 30
+# water-rise: 0
+# snow: 0
+# background: 
+##########################
+R-R-R-SS-S-SS-S-SS-S-S-SR-
+| R-R-SS-| || | || | S-|| 
+R-| | || SS-| S-S| | | SR-
+| R--S-| || S-| |C-| | || 
+R-|  | | S| | |  | SS-S-| 
+# tree: 160
+# sign: 264;1
+# tryo: 304
+# rock: 240
+| RR-S-SP--P| PP--P-| | R-
+R--| | ||  S-S-|  S--S-S| 
+|  R-S-S-R-C-| R-S|  S-|| 
+|  | | | | | | | C-S-| SR-
+# sign: 216;2
+C-S--| | R-BBBBR-| | | || 
+# sign: 312;4
+# vehicle: 112
+| |  S R-| S-S-| PP-SS-S| 
+# sign: 104;3
+P--P---| C-| S--R-| || |R-
+SS-S-S-| | | |  SR--S| S| 
+# sign: 184;5
+|| | | R-BBBBS-S-|  || || 
+S| | SR--SS-S| | S-R-S-SR-
+|| S-||  || || S-| | | || 
+S--| R-S-S| S-S| | S-| S| 
+|  | | | || | S| S-| | |R-
+##########################
