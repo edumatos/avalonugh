@@ -889,7 +889,17 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_45.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_46.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_47.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_48.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_49.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_50.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_51.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Apostrophe.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Comma.png" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_51.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_50.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_49.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_48.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_47.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_46.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_45.png" />
