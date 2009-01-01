@@ -576,6 +576,9 @@ namespace AvalonUgh.Code
 				if (this.InternalCurrentLevel != null)
 				{
 					this.InternalCurrentLevel.KnownActors.Remove(this);
+
+					if (this.CurrentVehicle != null)
+						this.CurrentVehicle = null;
 				}
 
 				this.InternalCurrentLevel = value;

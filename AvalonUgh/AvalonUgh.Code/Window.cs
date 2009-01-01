@@ -23,7 +23,10 @@ namespace AvalonUgh.Code
 		public int Width { get; set; }
 		public int Height { get; set; }
 		public int BorderWidth { get; set; }
-		public int Padding { get; set; }
+
+
+		int InternalPadding;
+		public int Padding { get { return InternalPadding; } set { InternalPadding = value; Update(); } }
 
 		public readonly Action Update;
 
@@ -61,7 +64,7 @@ namespace AvalonUgh.Code
 			Width = 360;
 			Height = 200;
 			BorderWidth = 1;
-			Padding = BorderWidth + 4;
+			
 
 			this.Container = new Canvas
 			{
@@ -98,7 +101,6 @@ namespace AvalonUgh.Code
 			#endregion
 
 			this.ContentContainer = new Canvas().AttachTo(this.Container);
-			this.ContentContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
 
 		
 			Update =
@@ -141,6 +143,7 @@ namespace AvalonUgh.Code
 					this.DraggableArea.SizeTo(Width, Height);
 				};
 
+			
 			this.DraggableArea = new Rectangle
 			{
 				Width = Width,
@@ -156,8 +159,8 @@ namespace AvalonUgh.Code
 				};
 
 			this.OverlayContainer = new Canvas().AttachTo(this.Container);
-			this.OverlayContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
 
+			InternalPadding = BorderWidth + 4;
 
 			Update();
 		}
