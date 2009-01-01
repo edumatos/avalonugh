@@ -509,7 +509,6 @@ namespace AvalonUgh.Code
 
 							// re-entering lobby
 
-
 							Local0.Actor.CurrentLevel = Lobby.Level;
 							Local0.Actor.MoveTo(
 								(Lobby.View.ContentActualWidth / 4) +
@@ -550,7 +549,7 @@ namespace AvalonUgh.Code
 					this.Container.Focus();
 				};
 
-			(1000 / 60).AtInterval(Think);
+			(1000 / 50).AtInterval(Think);
 
 			this.Levels.AddRange(
 				new KnownLevels().Levels
@@ -565,9 +564,12 @@ namespace AvalonUgh.Code
 					{
 						Lobby.Menu.Hide();
 
-						this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
+						//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
+
 
 						Local0.Actor.CurrentLevel = Resumeable.Level;
+
+						Resumeable.BringContainerToFront();
 
 						Console.WriteLine("resume...");
 
@@ -622,7 +624,7 @@ namespace AvalonUgh.Code
 							Padding = args.WindowPadding,
 							Width = args.PortWidth,
 							StatusbarHeight = 18,
-							Height = args.PortHeight - 18,
+							Height = args.PortHeight,
 
 							PortIdentity = PortIdentity_Mission,
 
