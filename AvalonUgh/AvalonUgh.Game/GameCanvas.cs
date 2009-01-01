@@ -517,7 +517,7 @@ namespace AvalonUgh.Game.Shared
 							{
 								Animation = Actor.AnimationEnum.Panic,
 								RespectPlatforms = true,
-								Level = Level,
+								CurrentLevel = Level,
 								CanBeHitByVehicle = false
 							};
 
@@ -648,8 +648,8 @@ namespace AvalonUgh.Game.Shared
 									}
 								};
 
-							NewPlayer.Actor.AttachContainerTo(View.Entities);
-							Level.KnownActors.Add(NewPlayer.Actor);
+							//NewPlayer.Actor.AttachContainerTo(View.Entities);
+							//Level.KnownActors.Add(NewPlayer.Actor);
 						}
 					);
 

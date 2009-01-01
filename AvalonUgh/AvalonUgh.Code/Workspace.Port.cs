@@ -24,17 +24,17 @@ namespace AvalonUgh.Code
 		[Script]
 		public class Port
 		{
+			public readonly Window Window = new Window();
+
 			public int PortIdentity;
 
 			public Level Level;
 			public View View;
 
-			public Canvas Container;
 
-			public int Left;
-			public int Top;
-			public int Width;
-			public int Height;
+
+			public int Width { get { return this.Window.ClientWidth; } set { this.Window.ClientWidth = value; } }
+			public int Height { get { return this.Window.ClientHeight; } set { this.Window.ClientHeight = value; } }
 
 			public int Zoom;
 
@@ -71,7 +71,25 @@ namespace AvalonUgh.Code
 
 							this.View = new View(Width, Height, this.Level);
 							this.View.Show(this.InternalVisible);
-							this.View.MoveContainerTo(this.Left, this.Top).AttachContainerTo(this.Container);
+							this.View.AttachContainerTo(this.Window.ContentContainer);
+
+							// we are doing some advanced layering now
+							var TouchContainerForViewContent = new Canvas
+							{
+								// we need to update this if the level changes
+								// in size
+								Width = View.ContentExtendedWidth,
+								Height = View.ContentExtendedHeight
+							}.AttachTo(this.Window.OverlayContainer);
+
+							View.ContentExtendedContainerMoved +=
+								(x, y) => TouchContainerForViewContent.MoveTo(x, y);
+
+							// raise that event so we stay in sync
+							View.MoveContentTo();
+							View.TouchOverlay.Orphanize().AttachTo(TouchContainerForViewContent);
+
+							
 
 							if (this.Loaded != null)
 								this.Loaded();
@@ -108,6 +126,16 @@ namespace AvalonUgh.Code
 			}
 
 			public event Action Loaded;
+
+			public void WhenLoaded(Action e)
+			{
+				Loaded += e;
+
+				if (Level != null)
+				{
+					e();
+				}
+			}
 		}
 	}
 }
