@@ -149,6 +149,12 @@ namespace AvalonUgh.Code
 				Opacity = 0
 			}.AttachTo(this).MoveTo(0, 0);
 
+			this.DraggableArea.MouseLeftButtonDown +=
+				delegate
+				{
+					this.Container.BringToFront();
+				};
+
 			this.OverlayContainer = new Canvas().AttachTo(this.Container);
 			this.OverlayContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
 

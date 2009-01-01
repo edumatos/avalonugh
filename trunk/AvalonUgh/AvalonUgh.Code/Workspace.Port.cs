@@ -22,16 +22,26 @@ namespace AvalonUgh.Code
 	partial class Workspace
 	{
 		[Script]
-		public class Port
+		public class Port : ISupportsContainer
 		{
 			public readonly Window Window = new Window();
+
+			public Canvas Container
+			{
+				get
+				{
+					return this.Window.Container;
+				}
+			}
 
 			public int PortIdentity;
 
 			public Level Level;
 			public View View;
 
+			public int StatusbarHeight;
 
+			public int Padding { get { return this.Window.Padding; } set { this.Window.Padding = value; } }
 
 			public int Width { get { return this.Window.ClientWidth; } set { this.Window.ClientWidth = value; } }
 			public int Height { get { return this.Window.ClientHeight; } set { this.Window.ClientHeight = value; } }
@@ -69,7 +79,7 @@ namespace AvalonUgh.Code
 
 							this.Level = new Level(Data, this.Zoom, this.Selectors);
 
-							this.View = new View(Width, Height, this.Level);
+							this.View = new View(Width, Height - StatusbarHeight, this.Level);
 							this.View.Show(this.InternalVisible);
 							this.View.AttachContainerTo(this.Window.ContentContainer);
 
