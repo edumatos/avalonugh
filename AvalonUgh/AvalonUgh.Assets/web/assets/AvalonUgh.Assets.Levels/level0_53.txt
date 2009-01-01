@@ -1,0 +1,35 @@
+# generated map
+# text: Divers delight I
+# code: THEDEATHOFJOSEF
+# autoscroll: 0
+# water: 17
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+    S-R--R-R--S-R-    
+ R-S| |  | |  | | R-R-
+ | |S-S-SS-SS-S-S-| | 
+ S--| C-|| || | S--R- 
+ |  | |  | S| | |  |  
+# sign: 136;2
+# tryo: 80
+# rock: 240
+ S-SP--P--BBBBP-S-SC- 
+ | R|  |  SS-S| |  |  
+# sign: 296;3
+SS-R--SS-S-| |R-| P-P-
+|| |  || | SS-| | | | 
+S| R-S-| | || | S-S-R-
+# tree: 160
+|| | | S-P-S| R-| SS- 
+S--| SC-SR-S--R-C-||  
+|  R-||  | |  | | S|  
+# sign: 296;4
+# sign: 136;1
+ S-| BBBBR-S-SR-P-P-S-
+ | R-SS-S| | || | | S-
+ | | || S-S| SS-S-S-| 
+ | S--| | S-S|| | | | 
+   |      | |S|   | | 
+######################

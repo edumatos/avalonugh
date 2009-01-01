@@ -1,0 +1,38 @@
+# generated map
+# text: Diagonal disaster
+# code: SONGOFSOLOMON
+# autoscroll: 0
+# water: 22
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+ S--S-    S-SS-S-  R- 
+ |  | S-S-| || | R-|  
+ C-S| | | | S| R-| R--
+ | |S | | S--| | S-|  
+# sign: 88;1
+# rock: 64
+ P-BBB| S-|  SR-S| SS-
+ C-S-SS-| SS-|| || C- 
+ | |  | | || R-S-- |  
+# tree: 128
+# sign: 88;3
+# sign: 296;2
+ P-BBBBBBS-| | |  P---
+ | S-S-S-| SR-SS-S-C- 
+ R-C-| | | || ||  S|  
+# sign: 280;4
+ | | | | | R-S-| P-P- 
+# sign: 88;5
+ | P-P-| SR-R| | SC-R 
+ R-S-S-S-|| S| S- | F 
+# sign: 280;0
+ C-| | | R-SS-S-P-P---
+ | S | | | || | SS-C- 
+# sign: 72;0
+ P-P-S-| S--| |  | |  
+# sign: 264;0
+ | S-| S-|  S--BBBBP- 
+   |   |    |      |  
+######################
