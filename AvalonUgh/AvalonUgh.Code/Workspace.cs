@@ -722,7 +722,8 @@ namespace AvalonUgh.Code
 
 							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Editor);
 
-							this.EditorPort.Window.BringContainerToFront();
+							this.EditorPort.BringContainerToFront();
+							this.EditorToolbar.BringContainerToFront();
 
 							// we are entering the editor
 							// if anyone is there
