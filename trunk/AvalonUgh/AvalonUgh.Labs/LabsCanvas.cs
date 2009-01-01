@@ -26,13 +26,17 @@ namespace AvalonUgh.Labs.Shared
 	{
 		public const int WindowPadding = 4;
 
-		public const int PortWidth = 640 - WindowPadding * 2 * 4;
-		public const int PortHeight = 400 - WindowPadding * 2 * 4;
+		//public const int PortWidth = 640 - WindowPadding * 2 * 4;
+		//public const int PortHeight = 400 - WindowPadding * 2 * 4;
 
-		//public const int DefaultWidth = 800;
-		//public const int DefaultHeight = 600;
-		public const int DefaultWidth = 640;
-		public const int DefaultHeight = 400;
+		public const int PortWidth = 640;
+		public const int PortHeight = 400;
+
+		public const int DefaultWidth = 800;
+		public const int DefaultHeight = 600;
+	
+
+
 
 		public LabsCanvas()
 		{

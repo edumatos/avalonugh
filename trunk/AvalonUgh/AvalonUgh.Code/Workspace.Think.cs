@@ -43,7 +43,7 @@ namespace AvalonUgh.Code
 				}
 			}
 
-			if (this.Ports.Any(k => k.Level == null))
+			if (this.Ports.Any(k => k.IsLoading))
 				return;
 
 
@@ -55,22 +55,25 @@ namespace AvalonUgh.Code
 
 			foreach (var p in this.Ports)
 			{
-				if (this.LocalIdentity.SyncFrame % 30 == 0)
-					if (p.Level.AttributeWaterRise.BooleanValue)
-						p.Level.AttributeWater.Value++;
-
-				// some animations need to be synced by frame
-				foreach (var dino in p.Level.KnownDinos)
+				if (p.Level != null)
 				{
-					dino.Animate(this.LocalIdentity.SyncFrame);
-				}
+					if (this.LocalIdentity.SyncFrame % 30 == 0)
+						if (p.Level.AttributeWaterRise.BooleanValue)
+							p.Level.AttributeWater.Value++;
 
-				foreach (var t in p.Level.KnownTryoperus)
-				{
-					t.Think();
-				}
+					// some animations need to be synced by frame
+					foreach (var dino in p.Level.KnownDinos)
+					{
+						dino.Animate(this.LocalIdentity.SyncFrame);
+					}
 
-				p.Level.Physics.Apply();
+					foreach (var t in p.Level.KnownTryoperus)
+					{
+						t.Think();
+					}
+
+					p.Level.Physics.Apply();
+				}
 			}
 
 

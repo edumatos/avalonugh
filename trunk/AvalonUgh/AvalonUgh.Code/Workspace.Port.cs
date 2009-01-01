@@ -26,6 +26,11 @@ namespace AvalonUgh.Code
 		{
 			public readonly Window Window = new Window();
 
+			public Port()
+			{
+				this.Window.ContentContainer.Background = Brushes.Black;
+			}
+
 			public Canvas Container
 			{
 				get
@@ -50,6 +55,19 @@ namespace AvalonUgh.Code
 
 			public KnownSelectors Selectors;
 
+			public bool IsLoading
+			{
+				get
+				{
+					if (this.LevelReference == null)
+						return false;
+
+					if (this.Level != null)
+						return false;
+
+					return true;
+				}
+			}
 			LevelReference InternalLevelReference;
 			public LevelReference LevelReference
 			{
@@ -145,6 +163,100 @@ namespace AvalonUgh.Code
 				{
 					e();
 				}
+			}
+		}
+
+
+		[Script]
+		public class LobbyPort : Port
+		{
+			[Script]
+			public class ConstructorArguments
+			{
+				public int Zoom;
+				public int Width;
+				public int Height;
+			}
+
+			public readonly ModernMenu Menu;
+
+			public LobbyPort(ConstructorArguments args)
+			{
+				this.Zoom = DefaultZoom;
+
+				this.Width = args.Width;
+				this.Height = args.Height;
+
+				this.Menu = new ModernMenu(args.Zoom, args.Width, args.Height);
+
+				this.Menu.AttachContainerTo(this.Window.OverlayContainer);
+
+
+				this.WhenLoaded(
+					delegate
+					{
+						this.Menu.BringContainerToFront();
+					}
+				);
+			}
+		}
+
+
+		[Script]
+		public class EditorPort : Port
+		{
+			[Script]
+			public class ConstructorArguments
+			{
+				public KnownSelectors Selectors;
+				public BindingList<LevelReference> Levels;
+			}
+
+			public readonly EditorToolbar Toolbar;
+			public readonly LoadWindow LoadWindow;
+
+			public EditorPort(ConstructorArguments args)
+			{
+				this.Toolbar = new EditorToolbar(args.Selectors);
+				this.LoadWindow = new LoadWindow(args.Levels);
+				
+				this.Selectors = args.Selectors;
+
+
+				// serialize current level
+				this.Toolbar.LevelText.GotFocus +=
+					delegate
+					{
+						if (this.Level == null)
+							return;
+
+						this.Toolbar.LevelText.Text = this.Level.ToString();
+					};
+
+				this.Toolbar.EditorSelectorChanged +=
+					delegate
+					{
+						if (this.View == null)
+							return;
+
+						this.View.EditorSelector = this.Toolbar.EditorSelector;
+					};
+
+				this.Toolbar.LoadClicked +=
+					delegate
+					{
+						this.LoadWindow.BringContainerToFront();
+						this.LoadWindow.Show(this.LoadWindow.Visibility == Visibility.Hidden);
+					};
+
+				this.WhenLoaded(
+					delegate
+					{
+						this.View.EditorSelectorNextSize += () => this.Toolbar.EditorSelectorNextSize();
+						this.View.EditorSelectorPreviousSize += () => this.Toolbar.EditorSelectorPreviousSize();
+					}
+				);
+
 			}
 		}
 	}

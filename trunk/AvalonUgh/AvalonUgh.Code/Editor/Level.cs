@@ -150,6 +150,8 @@ namespace AvalonUgh.Code.Editor
 
 		public Level(string source, int Zoom, KnownSelectors Selectors)
 		{
+			if (Selectors == null)
+				throw new ArgumentNullException();
 
 
 			this.Physics = new Physics

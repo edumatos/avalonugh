@@ -16,6 +16,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code
 {
@@ -58,12 +59,12 @@ namespace AvalonUgh.Code
 		const int DefaultZoom = 2;
 
 
-		public Port EditorPort;
-		public Port LobbyPort;
+		public EditorPort Editor;
+		public LobbyPort Lobby;
 
-		public readonly ModernMenu Menu;
+		//public readonly ModernMenu Menu;
 
-		public readonly EditorToolbar EditorToolbar;
+		//public readonly EditorToolbar EditorToolbar;
 
 		[Script]
 		public class ConstructorArguments
@@ -164,55 +165,46 @@ namespace AvalonUgh.Code
 			#endregion
 
 
-			this.Menu = new ModernMenu(DefaultZoom, args.PortWidth, args.PortHeight);
-			this.Menu.PlayersChanged +=
-				delegate
-				{
-					Console.WriteLine("players: " + this.Menu.Players);
-				};
 
-			this.EditorToolbar = new EditorToolbar(this.Selectors);
-
-			EditorToolbar.DragContainer = this.Container;
-			EditorToolbar.Hide();
-			EditorToolbar.AttachContainerTo(this.Container);
-
-			var EditorToolbar_LoadLevel = new LoadWindow(this.Levels)
+			this.Editor = new EditorPort(
+									new EditorPort.ConstructorArguments
+									{
+										Selectors = this.Selectors,
+										Levels = this.Levels
+									})
 			{
-				DragContainer = this.Container,
-				Visibility = Visibility.Hidden
+
+				Zoom = DefaultZoom,
+
+				Padding = args.WindowPadding,
+				Width = args.PortWidth,
+				StatusbarHeight = 18,
+				Height = args.PortHeight,
+
+				PortIdentity = PortIdentity_Editor,
 			};
 
-			EditorToolbar_LoadLevel.AttachContainerTo(this);
-			EditorToolbar_LoadLevel.MoveToCenter(this.Container);
+		
+
+			this.Ports.Add(this.Editor);
+
+			this.Editor.Toolbar.DragContainer = this.Container;
+			this.Editor.Toolbar.Hide();
+			this.Editor.Toolbar.AttachContainerTo(this.Container);
+
+			this.Editor.LoadWindow.DragContainer = this.Container;
+			this.Editor.LoadWindow.Hide();
+			this.Editor.LoadWindow.AttachContainerTo(this);
+			this.Editor.LoadWindow.MoveToCenter(this.Container);
 
 			// move it to bottom center
-			EditorToolbar.MoveContainerTo(
-				(args.DefaultWidth - EditorToolbar.Width) / 2,
-				args.DefaultHeight - EditorToolbar.Padding * 3 - PrimitiveTile.Heigth * 4
+			this.Editor.Toolbar.MoveContainerTo(
+				(args.DefaultWidth - this.Editor.Toolbar.Width) / 2,
+				args.DefaultHeight - this.Editor.Toolbar.Padding * 3 - PrimitiveTile.Heigth * 4
 			);
 
-			EditorToolbar.EditorSelectorChanged +=
-				delegate
-				{
-					this.EditorPort.View.EditorSelector = EditorToolbar.EditorSelector;
-				};
-
-			EditorToolbar.LoadClicked +=
-					delegate
-					{
-						EditorToolbar_LoadLevel.BringContainerToFront();
-						EditorToolbar_LoadLevel.Show(EditorToolbar_LoadLevel.Visibility == Visibility.Hidden);
-
-					};
-
-			// serialize current level
-			EditorToolbar.LevelText.GotFocus +=
-				delegate
-				{
-					EditorToolbar.LevelText.Text = EditorPort.Level.ToString();
-				};
-
+	
+	
 			
 
 			var LevelIntro = new LevelIntroDialog
@@ -271,29 +263,25 @@ namespace AvalonUgh.Code
 
 	
 
-			this.LobbyPort = new Port
+			this.Lobby = new LobbyPort(
+				new LobbyPort.ConstructorArguments
+				{
+					Zoom = DefaultZoom,
+					Width = args.PortWidth,
+					Height = args.PortHeight
+				})
 			{
 				Padding = args.WindowPadding,
 				Selectors = this.Selectors,
 
-				Zoom = DefaultZoom,
-
-				Width = args.PortWidth,
-				Height = args.PortHeight,
-
 				PortIdentity = PortIdentity_Lobby,
-
-
 			};
 
-			Menu.AttachContainerTo(this.LobbyPort.Window.OverlayContainer);
-
-			this.LobbyPort.WhenLoaded(
+			this.Lobby.Menu.PlayersChanged +=
 				delegate
 				{
-					Menu.BringContainerToFront();
-				}
-			);
+					Console.WriteLine("players: " + this.Lobby.Menu.Players);
+				};
 
 			var Local0 =
 				new PlayerInfo
@@ -314,14 +302,14 @@ namespace AvalonUgh.Code
 					}
 				};
 
-			Menu.EnteringPasswordChanged +=
+			Lobby.Menu.EnteringPasswordChanged +=
 				delegate
 				{
-					Local0.Input.Keyboard.Disabled = Menu.EnteringPassword != null;
+					Local0.Input.Keyboard.Disabled = Lobby.Menu.EnteringPassword != null;
 				};
 			Action OpenEditor = null;
 
-			Menu.Editor +=
+			Lobby.Menu.Editor +=
 				delegate
 				{
 					OpenEditor();
@@ -425,26 +413,55 @@ namespace AvalonUgh.Code
 
 			this.LocalIdentity.Locals.Add(Local0);
 
+			this.Editor.Loaded +=
+				delegate
+				{
+					Local0.Actor.CurrentLevel = Editor.Level;
 
-			LobbyPort.Loaded +=
+					this.Editor.View.LocationTracker.Target = Local0;
+
+					if (this.Editor.Level.KnownCaves.Count == 0)
+					{
+						Local0.Actor.MoveTo(
+							(Editor.View.ContentActualWidth / 4) +
+							(Editor.View.ContentActualWidth / 2).Random(),
+							Editor.View.ContentActualHeight / 2);
+
+					}
+					else
+					{
+						var EntryPointCave = this.Editor.Level.KnownCaves.Random();
+
+						Local0.Actor.MoveTo(
+							EntryPointCave.X,
+							EntryPointCave.Y
+						);
+					}
+
+
+
+				};
+
+
+			Lobby.Loaded +=
 				delegate
 				{
 					Console.WriteLine("adding an actor to lobby");
 
 					Local0.Actor.MoveTo(
-						(LobbyPort.View.ContentActualWidth / 4) +
-						(LobbyPort.View.ContentActualWidth / 2).Random(),
-						LobbyPort.View.ContentActualHeight / 2);
+						(Lobby.View.ContentActualWidth / 4) +
+						(Lobby.View.ContentActualWidth / 2).Random(),
+						Lobby.View.ContentActualHeight / 2);
 
-					Local0.Actor.CurrentLevel = LobbyPort.Level;
+					Local0.Actor.CurrentLevel = Lobby.Level;
 
 				};
 
-			LobbyPort.LevelReference = new LevelReference(0);
+			Lobby.LevelReference = new LevelReference(0);
 
 			this.Players.Add(Local0);
 
-			this.Ports.Add(LobbyPort);
+			this.Ports.Add(Lobby);
 
 
 
@@ -483,28 +500,28 @@ namespace AvalonUgh.Code
 							// if all players quit the game
 							// we would be able to start another level
 							if (this.Ports.Any(k => k.PortIdentity == PortIdentity_Mission))
-								Menu.PlayText = "resume";
+								Lobby.Menu.PlayText = "resume";
 
-							Menu.Show();
+							Lobby.Menu.Show();
 
-							EditorToolbar.Hide();
-							EditorToolbar_LoadLevel.Hide();
+							this.Editor.Toolbar.Hide();
+							this.Editor.LoadWindow.Hide();
 
 							// re-entering lobby
 
 
-							Local0.Actor.CurrentLevel = LobbyPort.Level;
+							Local0.Actor.CurrentLevel = Lobby.Level;
 							Local0.Actor.MoveTo(
-								(LobbyPort.View.ContentActualWidth / 4) +
-								(LobbyPort.View.ContentActualWidth / 2).Random(),
-								LobbyPort.View.ContentActualHeight / 2);
+								(Lobby.View.ContentActualWidth / 4) +
+								(Lobby.View.ContentActualWidth / 2).Random(),
+								Lobby.View.ContentActualHeight / 2);
 
-							LobbyPort.Window.BringContainerToFront();
+							Lobby.Window.BringContainerToFront();
 
 						}
 
 
-						Menu.HandleKeyUp(key_args);
+						Lobby.Menu.HandleKeyUp(key_args);
 
 						if (key_args.Handled)
 							return;
@@ -530,25 +547,23 @@ namespace AvalonUgh.Code
 			this.Container.MouseLeftButtonDown +=
 				(sender, key_args) =>
 				{
-					Console.WriteLine("focusing...");
-
 					this.Container.Focus();
 				};
 
-			(1000 / 50).AtInterval(Think);
+			(1000 / 60).AtInterval(Think);
 
 			this.Levels.AddRange(
 				new KnownLevels().Levels
 			);
 
-			Menu.Play +=
+			Lobby.Menu.Play +=
 				delegate
 				{
 					var Resumeable = this.Ports.FirstOrDefault(k => k.PortIdentity == PortIdentity_Mission);
 
 					if (Resumeable != null)
 					{
-						Menu.Hide();
+						Lobby.Menu.Hide();
 
 						this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
 
@@ -565,7 +580,7 @@ namespace AvalonUgh.Code
 						return;
 					}
 
-					var NextLevel = this.Levels.FirstOrDefault(k => k.Code.ToLower() == Menu.Password.ToLower());
+					var NextLevel = this.Levels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
 
 					if (NextLevel == null)
 					{
@@ -629,23 +644,29 @@ namespace AvalonUgh.Code
 						{
 							Local0.Actor.CurrentLevel = NextLevelPort.Level;
 
-							Menu.Hide();
+							var StartPositionStone = NextLevelPort.Level.KnownStones.Random(k => k.Selector.PrimitiveTileCountX > 1 && k.Selector.PrimitiveTileCountY > 1);
+
+
+							Local0.Actor.CurrentVehicle =
+								new Vehicle(DefaultZoom).AddTo(NextLevelPort.Level.KnownVehicles);
+							Local0.Actor.CurrentVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
+
+							Lobby.Menu.Hide();
 
 							NextLevelPort.Show();
 
-							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
 
 							LevelIntro.AnimatedOpacity = 0;
 						}
 					);
 				};
 
-			EditorToolbar_LoadLevel.Click +=
+			this.Editor.LoadWindow.Click +=
 				NextLevelForEditor =>
 				{
-					EditorPort.LevelReference = NextLevelForEditor;
+					Editor.LevelReference = NextLevelForEditor;
 
-					EditorToolbar_LoadLevel.Hide();
+					this.Editor.LoadWindow.Hide();
 				};
 
 			OpenEditor =
@@ -655,81 +676,36 @@ namespace AvalonUgh.Code
 					this.LocalIdentity.HandleFutureFrame(
 						delegate
 						{
-							LobbyPort.Level.KnownActors.Remove(Local0.Actor);
+							Lobby.Level.KnownActors.Remove(Local0.Actor);
 
-							if (this.EditorPort == null)
+							if (this.Editor.LevelReference == null)
 							{
-								this.EditorPort = new Port
-								{
-									Selectors = this.Selectors,
-
-									Zoom = DefaultZoom,
-
-									Padding = args.WindowPadding,
-									Width = args.PortWidth,
-									StatusbarHeight = 18,
-									Height = args.PortHeight ,
-
-									PortIdentity = PortIdentity_Editor,
-								};
-
-								this.EditorPort.Loaded +=
-									delegate
-									{
-										Local0.Actor.CurrentLevel = EditorPort.Level;
-										
-										this.EditorPort.View.LocationTracker.Target = Local0;
-
-										if (this.EditorPort.Level.KnownCaves.Count == 0)
-										{
-											Local0.Actor.MoveTo(
-												(EditorPort.View.ContentActualWidth / 4) +
-												(EditorPort.View.ContentActualWidth / 2).Random(),
-												EditorPort.View.ContentActualHeight / 2);
-
-										}
-										else
-										{
-											var EntryPointCave = this.EditorPort.Level.KnownCaves.Random();
-
-											Local0.Actor.MoveTo(
-												EntryPointCave.X,
-												EntryPointCave.Y
-											);
-										}
+								
 
 
-										this.EditorPort.View.EditorSelectorNextSize += () => EditorToolbar.EditorSelectorNextSize();
-										this.EditorPort.View.EditorSelectorPreviousSize += () => EditorToolbar.EditorSelectorPreviousSize();
-
-									};
-
-								this.Ports.Add(this.EditorPort);
-
-
-								this.EditorPort.LevelReference = new LevelReference(0);
+								this.Editor.LevelReference = new LevelReference(0);
 							}
 							else
 							{
-								Local0.Actor.CurrentLevel = EditorPort.Level;
+								Local0.Actor.CurrentLevel = Editor.Level;
 								Local0.Actor.MoveTo(
-											(EditorPort.View.ContentActualWidth / 4) +
-											(EditorPort.View.ContentActualWidth / 2).Random(),
-											EditorPort.View.ContentActualHeight / 2);
+											(Editor.View.ContentActualWidth / 4) +
+											(Editor.View.ContentActualWidth / 2).Random(),
+											Editor.View.ContentActualHeight / 2);
 
 
 							}
 
 							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Editor);
 
-							this.EditorPort.BringContainerToFront();
-							this.EditorToolbar.BringContainerToFront();
+							this.Editor.BringContainerToFront();
+							this.Editor.Toolbar.BringContainerToFront();
 
 							// we are entering the editor
 							// if anyone is there
 							// then we need to sync
-							Menu.Hide();
-							EditorToolbar.Show();
+							Lobby.Menu.Hide();
+							this.Editor.Toolbar.Show();
 
 
 
