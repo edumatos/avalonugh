@@ -896,7 +896,13 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Apostrophe.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Comma.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_52.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_53.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_54.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_55.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_55.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_54.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_53.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_52.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_51.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_50.png" />
