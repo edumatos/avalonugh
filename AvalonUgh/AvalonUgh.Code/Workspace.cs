@@ -29,7 +29,6 @@ namespace AvalonUgh.Code
 
 		public Canvas Container { get; set; }
 
-		public Canvas Content { get; set; }
 
 		//public Canvas Overlay { get; set; }
 
@@ -69,6 +68,8 @@ namespace AvalonUgh.Code
 		[Script]
 		public class ConstructorArguments
 		{
+			public int WindowPadding;
+
 			public int PortWidth;
 			public int PortHeight;
 
@@ -80,38 +81,26 @@ namespace AvalonUgh.Code
 		{
 			this.Container = new Canvas
 			{
-				Background = Brushes.Black,
 				Width = args.DefaultWidth,
-				Height = args.DefaultHeight
+				Height = args.DefaultHeight,
+				Background = Brushes.DarkGray
 			};
 
-			this.Content = new Canvas
-			{
-				Width = args.DefaultWidth,
-				Height = args.DefaultHeight
-			}.AttachTo(this);
-
+		
 			this.Ports.ForEachNewOrExistingItem(
 				(k, index) =>
 				{
+
 					k.Window.MoveContainerTo(k.Window.Padding * index, k.Window.Padding * index);
 
 					k.Window.DragContainer = this.Container;
 
-					k.Window.DraggableArea.MouseLeftButtonDown +=
-						delegate
-						{
-							k.Window.BringContainerToFront();
-						};
+				
 				}
 			);
-			this.Ports.AttachTo(k => k.Window, this.Content);
+			this.Ports.AttachTo(k => k.Window, this.Container);
 
-			//this.Overlay = new Canvas
-			//{
-			//    Width = args.DefaultWidth,
-			//    Height = args.DefaultHeight
-			//}.AttachTo(this);
+	
 
 			this.Ports.ForEachNewOrExistingItem(
 				NewPort =>
@@ -171,13 +160,11 @@ namespace AvalonUgh.Code
 			this.Console.WriteLine("Avalon Ugh! Console ready.");
 			this.Console.AnimatedTop = -this.Console.Height;
 
-			this.Console.AttachContainerTo(this.Content);
+			this.Console.AttachContainerTo(this.Container);
 			#endregion
 
 
 			this.Menu = new ModernMenu(DefaultZoom, args.PortWidth, args.PortHeight);
-
-
 			this.Menu.PlayersChanged +=
 				delegate
 				{
@@ -188,7 +175,7 @@ namespace AvalonUgh.Code
 
 			EditorToolbar.DragContainer = this.Container;
 			EditorToolbar.Hide();
-			EditorToolbar.AttachContainerTo(this.Content);
+			EditorToolbar.AttachContainerTo(this.Container);
 
 			var EditorToolbar_LoadLevel = new LoadWindow(this.Levels)
 			{
@@ -197,7 +184,7 @@ namespace AvalonUgh.Code
 			};
 
 			EditorToolbar_LoadLevel.AttachContainerTo(this);
-			EditorToolbar_LoadLevel.MoveToCenter(this.Content);
+			EditorToolbar_LoadLevel.MoveToCenter(this.Container);
 
 			// move it to bottom center
 			EditorToolbar.MoveContainerTo(
@@ -214,6 +201,7 @@ namespace AvalonUgh.Code
 			EditorToolbar.LoadClicked +=
 					delegate
 					{
+						EditorToolbar_LoadLevel.BringContainerToFront();
 						EditorToolbar_LoadLevel.Show(EditorToolbar_LoadLevel.Visibility == Visibility.Hidden);
 
 					};
@@ -236,7 +224,7 @@ namespace AvalonUgh.Code
 				AnimatedOpacityContentMultiplier = 1
 			};
 
-			LevelIntro.AttachContainerTo(this.Content);
+			LevelIntro.AttachContainerTo(this.Container);
 
 
 			#region PauseDialog
@@ -253,7 +241,7 @@ namespace AvalonUgh.Code
 							you
 						",
 				AnimatedOpacity = 0
-			}.AttachContainerTo(this.Content);
+			}.AttachContainerTo(this.Container);
 
 
 
@@ -264,6 +252,7 @@ namespace AvalonUgh.Code
 
 					if (IsPaused)
 					{
+						PauseDialog.BringContainerToFront();
 						PauseDialog.Text = @"
 								   game was paused
 									 by
@@ -284,7 +273,7 @@ namespace AvalonUgh.Code
 
 			this.LobbyPort = new Port
 			{
-
+				Padding = args.WindowPadding,
 				Selectors = this.Selectors,
 
 				Zoom = DefaultZoom,
@@ -599,8 +588,7 @@ namespace AvalonUgh.Code
 					LevelIntro.LevelTitle = NextLevel.Text;
 					LevelIntro.LevelPassword = NextLevel.Code;
 
-					LevelIntro.AnimatedOpacity = 1;
-
+			
 					// fade in the level start menu
 					// create and load new port
 					// hide other ports
@@ -616,17 +604,23 @@ namespace AvalonUgh.Code
 
 							Zoom = DefaultZoom,
 
+							Padding = args.WindowPadding,
 							Width = args.PortWidth,
+							StatusbarHeight = 18,
 							Height = args.PortHeight - 18,
 
 							PortIdentity = PortIdentity_Mission,
 
 							LevelReference = NextLevel,
 
-							//Visible = false,
 						};
 
+					NextLevelPort.Hide();
+
 					this.Ports.Add(NextLevelPort);
+
+					LevelIntro.BringContainerToFront();
+					LevelIntro.AnimatedOpacity = 1;
 
 
 					this.LocalIdentity.HandleFutureFrame(
@@ -637,7 +631,7 @@ namespace AvalonUgh.Code
 
 							Menu.Hide();
 
-							//NextLevelPort.Visible = true;
+							NextLevelPort.Show();
 
 							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
 
@@ -671,8 +665,10 @@ namespace AvalonUgh.Code
 
 									Zoom = DefaultZoom,
 
+									Padding = args.WindowPadding,
 									Width = args.PortWidth,
-									Height = args.PortHeight - 18,
+									StatusbarHeight = 18,
+									Height = args.PortHeight ,
 
 									PortIdentity = PortIdentity_Editor,
 								};

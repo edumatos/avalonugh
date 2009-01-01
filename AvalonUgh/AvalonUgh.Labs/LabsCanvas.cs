@@ -39,6 +39,8 @@ namespace AvalonUgh.Labs.Shared
 			var w = new Workspace(
 				new Workspace.ConstructorArguments
 				{
+					WindowPadding = 4,
+
 					PortWidth = PortWidth,
 					PortHeight = PortHeight,
 
