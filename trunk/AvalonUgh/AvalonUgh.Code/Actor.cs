@@ -86,7 +86,6 @@ namespace AvalonUgh.Code
 
 		public bool CanBeHitByVehicle;
 
-		public Level Level { get; set; }
 
 		public double Density { get; set; }
 		public int Stability { get; set; }
@@ -132,14 +131,6 @@ namespace AvalonUgh.Code
 			}
 
 
-			if (Level == null)
-				return;
-
-			if (this.ToObstacle().Bottom < this.Level.WaterTop)
-			{
-				if (this.Animation == AnimationEnum.Panic)
-					this.Animation = AnimationEnum.Idle;
-			}
 		}
 
 		public Actor(int Zoom)

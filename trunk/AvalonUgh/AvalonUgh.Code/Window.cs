@@ -17,6 +17,8 @@ namespace AvalonUgh.Code
 	public class Window : ISupportsContainer
 	{
 		public Canvas Container { get; set; }
+		public Canvas ContentContainer { get; set; }
+		public Canvas OverlayContainer { get; set; }
 
 		public int Width { get; set; }
 		public int Height { get; set; }
@@ -24,6 +26,35 @@ namespace AvalonUgh.Code
 		public int Padding { get; set; }
 
 		public readonly Action Update;
+
+		public int ClientWidth
+		{
+			get
+			{
+				return this.Width - Padding * 2;
+			}
+			set
+			{
+				this.Width = value + Padding * 2;
+
+				this.Update();
+			}
+		}
+
+		public int ClientHeight
+		{
+			get
+			{
+				return this.Height - Padding * 2;
+			}
+			set
+			{
+				this.Height = value + Padding * 2;
+
+				this.Update();
+
+			}
+		}
 
 		public Window()
 		{
@@ -35,6 +66,8 @@ namespace AvalonUgh.Code
 			this.Container = new Canvas
 			{
 			};
+
+		
 
 			#region borders
 			var ThreeD_Top = new Rectangle
@@ -64,6 +97,10 @@ namespace AvalonUgh.Code
 			}.AttachTo(this.Container);
 			#endregion
 
+			this.ContentContainer = new Canvas().AttachTo(this.Container);
+			this.ContentContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
+
+		
 			Update =
 				delegate
 				{
@@ -71,6 +108,10 @@ namespace AvalonUgh.Code
 						Width,
 						Height
 					);
+
+					this.ContentContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
+					this.OverlayContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
+					this.OverlayContainer.ClipTo(0, 0, this.ClientWidth, this.ClientHeight);
 
 					ThreeD_Top.SizeTo(
 						Width,
@@ -107,6 +148,10 @@ namespace AvalonUgh.Code
 				Fill = Brushes.Black,
 				Opacity = 0
 			}.AttachTo(this).MoveTo(0, 0);
+
+			this.OverlayContainer = new Canvas().AttachTo(this.Container);
+			this.OverlayContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
+
 
 			Update();
 		}

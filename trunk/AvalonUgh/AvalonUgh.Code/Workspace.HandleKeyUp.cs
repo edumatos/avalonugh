@@ -37,6 +37,8 @@ namespace AvalonUgh.Code
 					Console.AnimatedTop = 0;
 				}
 
+				Console.BringContainerToFront();
+
 				// the console is on top
 				// of the game view
 				// and under the transparent touch overlay

@@ -36,12 +36,13 @@ namespace AvalonUgh.Code.Dialogs
 
 			this.TextBox = new TextBox
 			{
+				AcceptsReturn = true,
+				IsReadOnly = true,
+
 				FontFamily = new FontFamily("Courier New"),
 				Background = Brushes.Transparent,
 				BorderThickness = new Thickness(0),
 				Foreground = Brushes.Yellow,
-				AcceptsReturn = true,
-				IsReadOnly = true
 			}.AttachTo(this);
 
 			MaxLogQueueCount = 10;

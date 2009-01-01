@@ -19,7 +19,7 @@ using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Code
 {
-	partial class Workspace 
+	partial class Workspace
 	{
 		void Think()
 		{
@@ -46,11 +46,6 @@ namespace AvalonUgh.Code
 			if (this.Ports.Any(k => k.Level == null))
 				return;
 
-			//if (this.LocalIdentity.SyncFrame % 30 == 0)
-			//    if (View.IsShakerEnabled)
-			//        View.Level.AttributeWater.Value++;
-
-
 
 			//// we could pause the game here
 			foreach (var p in Players)
@@ -60,6 +55,10 @@ namespace AvalonUgh.Code
 
 			foreach (var p in this.Ports)
 			{
+				if (this.LocalIdentity.SyncFrame % 30 == 0)
+					if (p.Level.AttributeWaterRise.BooleanValue)
+						p.Level.AttributeWater.Value++;
+
 				// some animations need to be synced by frame
 				foreach (var dino in p.Level.KnownDinos)
 				{

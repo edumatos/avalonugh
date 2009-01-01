@@ -239,6 +239,8 @@ namespace AvalonUgh.Code.Dialogs
 
 			this.InputContent.Width = Width;
 			this.InputContent.Zoom = Zoom;
+
+			
 		}
 
 		public int PaddingTop

@@ -1,21 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using AvalonUgh.Assets.Shared;
+using AvalonUgh.Code.Dialogs;
+using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
-using System.Windows.Controls;
-using System.Windows.Media;
-using AvalonUgh.Code.Editor;
-using System.ComponentModel;
-using AvalonUgh.Code.Dialogs;
-using System.Windows.Input;
 using ScriptCoreLib.Shared.Avalon.Tween;
-using System.Windows;
 using ScriptCoreLib.Shared.Lambda;
-using AvalonUgh.Assets.Shared;
-using System.Windows.Shapes;
-using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Code
 {
@@ -31,7 +31,7 @@ namespace AvalonUgh.Code
 
 		public Canvas Content { get; set; }
 
-		public Canvas Overlay { get; set; }
+		//public Canvas Overlay { get; set; }
 
 		public readonly KnownSelectors Selectors = new KnownSelectors();
 		public readonly BindingList<LevelReference> Levels = new BindingList<LevelReference>();
@@ -66,41 +66,116 @@ namespace AvalonUgh.Code
 
 		public readonly EditorToolbar EditorToolbar;
 
-		public Workspace(int DefaultWidth, int DefaultHeight)
+		[Script]
+		public class ConstructorArguments
+		{
+			public int PortWidth;
+			public int PortHeight;
+
+			public int DefaultWidth;
+			public int DefaultHeight;
+		}
+
+		public Workspace(ConstructorArguments args)
 		{
 			this.Container = new Canvas
 			{
 				Background = Brushes.Black,
-				Width = DefaultWidth,
-				Height = DefaultHeight
+				Width = args.DefaultWidth,
+				Height = args.DefaultHeight
 			};
 
 			this.Content = new Canvas
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
+				Width = args.DefaultWidth,
+				Height = args.DefaultHeight
 			}.AttachTo(this);
 
-			this.Overlay = new Canvas
-			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
-			}.AttachTo(this);
+			this.Ports.ForEachNewOrExistingItem(
+				(k, index) =>
+				{
+					k.Window.MoveContainerTo(k.Window.Padding * index, k.Window.Padding * index);
 
+					k.Window.DragContainer = this.Container;
+
+					k.Window.DraggableArea.MouseLeftButtonDown +=
+						delegate
+						{
+							k.Window.BringContainerToFront();
+						};
+				}
+			);
+			this.Ports.AttachTo(k => k.Window, this.Content);
+
+			//this.Overlay = new Canvas
+			//{
+			//    Width = args.DefaultWidth,
+			//    Height = args.DefaultHeight
+			//}.AttachTo(this);
+
+			this.Ports.ForEachNewOrExistingItem(
+				NewPort =>
+				{
+					NewPort.WhenLoaded(
+						delegate
+						{
+							NewPort.Level.KnownTryoperus.ForEachNewOrExistingItem(
+								NewTryo =>
+								{
+									NewTryo.HandleFutureFrame = this.LocalIdentity.HandleFutureFrame;
+								}
+							);
+
+							NewPort.Level.Physics.CollisionAtVelocity +=
+								Velocity =>
+								{
+									var Volume = (Velocity / (NewPort.Level.Zoom * 3.0) + 0.3).Max(0).Min(1);
+
+
+									
+									if (Volume > 0)
+									{
+										var Sound = (Assets.Shared.KnownAssets.Path.Audio + "/bounce.mp3").ToSound();
+
+										Sound.SetVolume(Volume);
+										Sound.Start();
+									}
+								};
+
+							NewPort.Level.Physics.WaterCollisionAtVelocity +=
+								Velocity =>
+								{
+									var Volume = (Velocity / (NewPort.Level.Zoom * 7.0)).Max(0).Min(1);
+
+
+									if (Volume > 0)
+									{
+										var Sound = (Assets.Shared.KnownAssets.Path.Audio + "/water_slpash.mp3").ToSound();
+
+										Sound.SetVolume(Volume);
+										Sound.Start();
+									}
+
+
+								};
+						}
+					);
+				}
+			);
 
 
 			#region setting up our console
 			this.Console = new GameConsole();
 
-			this.Console.SizeTo(DefaultWidth, DefaultHeight / 2);
+			this.Console.SizeTo(args.DefaultWidth, args.DefaultHeight / 2);
 			this.Console.WriteLine("Avalon Ugh! Console ready.");
 			this.Console.AnimatedTop = -this.Console.Height;
 
-			this.Console.AttachContainerTo(this.Overlay);
+			this.Console.AttachContainerTo(this.Content);
 			#endregion
 
 
-			this.Menu = new ModernMenu(DefaultZoom, DefaultWidth, DefaultHeight);
+			this.Menu = new ModernMenu(DefaultZoom, args.PortWidth, args.PortHeight);
 
 
 			this.Menu.PlayersChanged +=
@@ -113,7 +188,7 @@ namespace AvalonUgh.Code
 
 			EditorToolbar.DragContainer = this.Container;
 			EditorToolbar.Hide();
-			EditorToolbar.AttachContainerTo(this.Overlay);
+			EditorToolbar.AttachContainerTo(this.Content);
 
 			var EditorToolbar_LoadLevel = new LoadWindow(this.Levels)
 			{
@@ -122,13 +197,12 @@ namespace AvalonUgh.Code
 			};
 
 			EditorToolbar_LoadLevel.AttachContainerTo(this);
-
-			EditorToolbar_LoadLevel.MoveToCenter(this.Overlay);
+			EditorToolbar_LoadLevel.MoveToCenter(this.Content);
 
 			// move it to bottom center
 			EditorToolbar.MoveContainerTo(
-				(DefaultWidth - EditorToolbar.Width) / 2,
-				DefaultHeight - EditorToolbar.Padding * 3 - PrimitiveTile.Heigth * 4
+				(args.DefaultWidth - EditorToolbar.Width) / 2,
+				args.DefaultHeight - EditorToolbar.Padding * 3 - PrimitiveTile.Heigth * 4
 			);
 
 			EditorToolbar.EditorSelectorChanged +=
@@ -151,25 +225,25 @@ namespace AvalonUgh.Code
 					EditorToolbar.LevelText.Text = EditorPort.Level.ToString();
 				};
 
-			Menu.AttachContainerTo(this.Overlay);
+			
 
 			var LevelIntro = new LevelIntroDialog
 			{
 				AnimatedOpacity = 0,
-				Width = DefaultWidth,
-				Height = DefaultHeight,
+				Width = args.DefaultWidth,
+				Height = args.DefaultHeight,
 				Zoom = DefaultZoom,
 				AnimatedOpacityContentMultiplier = 1
 			};
 
-			LevelIntro.AttachContainerTo(this.Overlay);
+			LevelIntro.AttachContainerTo(this.Content);
 
 
 			#region PauseDialog
 			var PauseDialog = new Dialog
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight,
+				Width = args.DefaultWidth,
+				Height = args.DefaultHeight,
 				Zoom = DefaultZoom,
 				BackgroundVisible = false,
 				VerticalAlignment = VerticalAlignment.Center,
@@ -179,7 +253,7 @@ namespace AvalonUgh.Code
 							you
 						",
 				AnimatedOpacity = 0
-			}.AttachContainerTo(this.Overlay);
+			}.AttachContainerTo(this.Content);
 
 
 
@@ -206,23 +280,31 @@ namespace AvalonUgh.Code
 
 			#endregion
 
+	
+
 			this.LobbyPort = new Port
 			{
-				Container = this.Content,
 
 				Selectors = this.Selectors,
 
 				Zoom = DefaultZoom,
 
-				Width = DefaultWidth,
-				Height = DefaultHeight,
+				Width = args.PortWidth,
+				Height = args.PortHeight,
 
 				PortIdentity = PortIdentity_Lobby,
 
 
 			};
 
+			Menu.AttachContainerTo(this.LobbyPort.Window.OverlayContainer);
 
+			this.LobbyPort.WhenLoaded(
+				delegate
+				{
+					Menu.BringContainerToFront();
+				}
+			);
 
 			var Local0 =
 				new PlayerInfo
@@ -256,6 +338,18 @@ namespace AvalonUgh.Code
 					OpenEditor();
 				};
 
+			// we need to play jumping sound
+			Local0.Actor.Jumping +=
+				delegate
+				{
+					(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
+				};
+
+			Local0.Actor.CurrentVehicleChanged +=
+				delegate
+				{
+					(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
+				};
 
 			Local0.Actor.WaterCollision +=
 				delegate
@@ -277,6 +371,19 @@ namespace AvalonUgh.Code
 					if (NearbyVehicle != null)
 					{
 						NearbyVehicle.CurrentDriver = Local0.Actor;
+					}
+				};
+
+			Local0.Actor.Drop +=
+				delegate
+				{
+					var CurrentVehicle = Local0.Actor.CurrentVehicle;
+
+					if (CurrentVehicle != null)
+					{
+						// can we drop a rock?
+
+						CurrentVehicle.CurrentWeapon = null;
 					}
 				};
 
@@ -355,7 +462,7 @@ namespace AvalonUgh.Code
 			this.Container.KeyUp += HandleKeyUp;
 
 			this.Container.KeyUp +=
-				(sender, args) =>
+				(sender, key_args) =>
 				{
 
 
@@ -365,9 +472,9 @@ namespace AvalonUgh.Code
 						// if the game is paused
 						// we cannot handle a future frame and thus we need to unpause momentarily
 
-						if (args.Key == Key.P)
+						if (key_args.Key == Key.P)
 						{
-							args.Handled = true;
+							key_args.Handled = true;
 							SetPause(false, "you");
 
 							return;
@@ -376,13 +483,13 @@ namespace AvalonUgh.Code
 					}
 					else
 					{
-						if (args.Key == Key.Escape)
+						if (key_args.Key == Key.Escape)
 						{
-							args.Handled = true;
+							key_args.Handled = true;
 
 							// if we are inside a mission, submission or editor this will bring us back
 
-							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Lobby);
+							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Lobby);
 
 							// if all players quit the game
 							// we would be able to start another level
@@ -403,17 +510,19 @@ namespace AvalonUgh.Code
 								(LobbyPort.View.ContentActualWidth / 2).Random(),
 								LobbyPort.View.ContentActualHeight / 2);
 
+							LobbyPort.Window.BringContainerToFront();
+
 						}
 
 
-						Menu.HandleKeyUp(args);
+						Menu.HandleKeyUp(key_args);
 
-						if (args.Handled)
+						if (key_args.Handled)
 							return;
 
 
 
-						if (args.Key == Key.P)
+						if (key_args.Key == Key.P)
 						{
 							SetPause(true, "you");
 						}
@@ -430,7 +539,7 @@ namespace AvalonUgh.Code
 
 			// at this time we should add a local player
 			this.Container.MouseLeftButtonDown +=
-				(sender, args) =>
+				(sender, key_args) =>
 				{
 					Console.WriteLine("focusing...");
 
@@ -503,20 +612,18 @@ namespace AvalonUgh.Code
 					var NextLevelPort =
 						new Port
 						{
-							Container = this.Content,
-
 							Selectors = this.Selectors,
 
 							Zoom = DefaultZoom,
 
-							Width = DefaultWidth,
-							Height = DefaultHeight - 18,
+							Width = args.PortWidth,
+							Height = args.PortHeight - 18,
 
 							PortIdentity = PortIdentity_Mission,
 
 							LevelReference = NextLevel,
 
-							Visible = false,
+							//Visible = false,
 						};
 
 					this.Ports.Add(NextLevelPort);
@@ -530,7 +637,9 @@ namespace AvalonUgh.Code
 
 							Menu.Hide();
 
-							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
+							//NextLevelPort.Visible = true;
+
+							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
 
 							LevelIntro.AnimatedOpacity = 0;
 						}
@@ -558,14 +667,12 @@ namespace AvalonUgh.Code
 							{
 								this.EditorPort = new Port
 								{
-									Container = this.Content,
-
 									Selectors = this.Selectors,
 
 									Zoom = DefaultZoom,
 
-									Width = DefaultWidth,
-									Height = DefaultHeight - 18,
+									Width = args.PortWidth,
+									Height = args.PortHeight - 18,
 
 									PortIdentity = PortIdentity_Editor,
 								};
@@ -617,9 +724,9 @@ namespace AvalonUgh.Code
 
 							}
 
-							this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Editor);
+							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Editor);
 
-
+							this.EditorPort.Window.BringContainerToFront();
 
 							// we are entering the editor
 							// if anyone is there
