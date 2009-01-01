@@ -76,7 +76,7 @@ namespace AvalonUgh.Code.Editor
 					this.Data = Data;
 				}
 			);
-				
+
 		}
 
 
@@ -134,6 +134,44 @@ namespace AvalonUgh.Code.Editor
 
 					e = r.ReadLine();
 				}
+			}
+		}
+
+		[Script]
+		public class SizeType
+		{
+			public int Width;
+			public int Height;
+
+			// this could have been just a tuple if it would be supported by c# 
+		}
+
+		public SizeType Size
+		{
+			get
+			{
+				var n = new SizeType();
+
+				if (this.Data == null)
+					return n;
+
+				using (var r = new StringReader(this.Data))
+				{
+					var e = r.ReadLine();
+
+					while (e != null)
+					{
+						if (!e.StartsWith(Level.Comment))
+						{
+							n.Width = n.Width.Max(e.Length);
+							n.Height++;
+						}
+
+						e = r.ReadLine();
+					}
+				}
+
+				return n;
 			}
 		}
 	}

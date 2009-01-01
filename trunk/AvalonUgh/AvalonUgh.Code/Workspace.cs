@@ -227,7 +227,11 @@ namespace AvalonUgh.Code
 			var Local0 =
 				new PlayerInfo
 				{
-					Actor = new Actor.man0(DefaultZoom),
+					Actor = new Actor.man0(DefaultZoom)
+					{
+						RespectPlatforms = true,
+						CanBeHitByVehicle = false,
+					},
 					Input = new PlayerInput
 					{
 						Keyboard = new KeyboardInput(

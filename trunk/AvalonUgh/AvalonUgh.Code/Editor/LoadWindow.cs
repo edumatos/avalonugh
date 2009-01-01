@@ -131,6 +131,7 @@ namespace AvalonUgh.Code.Editor
 							Info.Clear();
 							Info.AppendTextLine("Level " + value.Location.Embedded.AnimationFrame);
 							Info.AppendTextLine(value.Text);
+							Info.AppendTextLine("Size: " + value.Size.Width + "x" + value.Size.Height);
 						};
 
 					TouchOverlay.MouseLeave +=
