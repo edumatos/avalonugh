@@ -46,7 +46,7 @@ namespace AvalonUgh.Code
 			}
 
 
-			if (this.Menu.EnteringPassword == null)
+			if (this.Lobby.Menu.EnteringPassword == null)
 			{
 				// allow single frame step
 				if (args.Key == Key.PageUp)
@@ -63,18 +63,18 @@ namespace AvalonUgh.Code
 				if (args.Key == Key.Insert)
 				{
 					// more locals!
-					this.Menu.Players++;
+					this.Lobby.Menu.Players++;
 				}
 
 				if (args.Key == Key.Delete)
 				{
 					// less locals!
-					this.Menu.Players--;
+					this.Lobby.Menu.Players--;
 				}
 
 				if (this.Selectors.DefaultKeyShortcut.ContainsKey(args.Key))
 				{
-					this.EditorToolbar.SelectorType = this.Selectors.DefaultKeyShortcut[args.Key]();
+					this.Editor.Toolbar.SelectorType = this.Selectors.DefaultKeyShortcut[args.Key]();
 				}
 			}
 
