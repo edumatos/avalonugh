@@ -13,24 +13,30 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly LevelReference[] Levels;
 
+		public readonly LevelReference DefaultCaveLevel;
+
 		public KnownLevels()
 		{
 			var a = new List<LevelReference>();
 
 			a.AddRange(Enumerable.Range(0, 56).Select(i => new LevelReference(i)));
-			a.Add(new LevelReference(
-				new LevelReference.StorageLocation
-				{
-					Embedded = new NameFormat
+
+			this.DefaultCaveLevel =
+				new LevelReference(
+					new LevelReference.StorageLocation
 					{
-						Path = Assets.Shared.KnownAssets.Path.Levels,
-						Extension = "txt",
-						Name = "level",
-						Index = 1,
-						AnimationFrame = 9000
+						Embedded = new NameFormat
+						{
+							Path = Assets.Shared.KnownAssets.Path.Levels,
+							Extension = "txt",
+							Name = "level",
+							Index = 1,
+							AnimationFrame = 9000
+						}
 					}
-				}
-			));
+				);
+
+			a.Add(this.DefaultCaveLevel);
 
 			this.Levels = a.ToArray();
 		}
