@@ -159,8 +159,6 @@ namespace AvalonUgh.Code
 				{
 					if (g.ToObstacle().Intersects(ActorAsObstacle))
 					{
-						g.OrphanizeContainer();
-
 						this.Level.KnownGold.Remove(g);
 
 						actor.GoldStash.Add(g);

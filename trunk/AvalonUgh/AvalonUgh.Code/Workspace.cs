@@ -49,6 +49,7 @@ namespace AvalonUgh.Code
 		const int PortIdentity_Lobby = 1000;
 		const int PortIdentity_Editor = 2000;
 		const int PortIdentity_Mission = 3000;
+		const int PortIdentity_CaveMission = 4000;
 
 
 		public readonly BindingList<Port> Ports = new BindingList<Port>();
@@ -59,6 +60,7 @@ namespace AvalonUgh.Code
 		const int DefaultZoom = 2;
 
 
+		public Port CaveMission;
 		public EditorPort Editor;
 		public LobbyPort Lobby;
 
@@ -80,6 +82,8 @@ namespace AvalonUgh.Code
 
 		public Workspace(ConstructorArguments args)
 		{
+			var KnownLevels = new KnownLevels();
+
 			this.Container = new Canvas
 			{
 				Width = args.DefaultWidth,
@@ -165,6 +169,21 @@ namespace AvalonUgh.Code
 			#endregion
 
 
+			this.CaveMission = new Port()
+			{
+				Selectors = this.Selectors,
+
+				Zoom = DefaultZoom,
+
+				Padding = args.WindowPadding,
+				Width = args.PortWidth,
+				StatusbarHeight = 18,
+				Height = args.PortHeight,
+
+				PortIdentity = PortIdentity_CaveMission,
+			};
+
+			this.Ports.Add(this.CaveMission);
 
 			this.Editor = new EditorPort(
 									new EditorPort.ConstructorArguments
@@ -213,7 +232,9 @@ namespace AvalonUgh.Code
 				Width = args.DefaultWidth,
 				Height = args.DefaultHeight,
 				Zoom = DefaultZoom,
-				AnimatedOpacityContentMultiplier = 1
+				AnimatedOpacityContentMultiplier = 1,
+
+				
 			};
 
 			LevelIntro.AttachContainerTo(this.Container);
@@ -367,6 +388,8 @@ namespace AvalonUgh.Code
 			Local0.Actor.EnterCave +=
 				delegate
 				{
+				
+
 					var ManAsObstacle = Local0.Actor.ToObstacle();
 
 					// are we trying to enter a cave?
@@ -379,9 +402,48 @@ namespace AvalonUgh.Code
 
 						Console.WriteLine("entering a cave");
 
+						var CurrentPort = this.Ports.Single(k => k.Level == Local0.Actor.CurrentLevel);
+
+					
+
 						AIDirector.WalkActorToTheCaveAndEnter(Local0.Actor, NearbyCave,
 							delegate
 							{
+								if (CurrentPort.PortIdentity == PortIdentity_CaveMission)
+								{
+									Console.WriteLine("we should exit a submission now");
+									AIDirector.ActorExitCave(Local0.Actor);
+									return;
+								}
+
+								if (CurrentPort.PortIdentity == PortIdentity_Mission)
+								{
+									if (this.CaveMission.LevelReference == null)
+									{
+										this.CaveMission.LevelReference = KnownLevels.DefaultCaveLevel;
+									}
+
+									this.CaveMission.BringContainerToFront();
+
+									this.CaveMission.WhenLoaded(
+										delegate
+										{
+											AIDirector.ActorExitCaveFast(Local0.Actor);
+											Local0.Actor.CurrentLevel = this.CaveMission.Level;
+
+											var EntryPointCave = this.CaveMission.Level.KnownCaves.Random();
+
+											Local0.Actor.MoveTo(
+												EntryPointCave.X,
+												EntryPointCave.Y
+											);
+										}
+									);
+
+									Console.WriteLine("we should spawn a submission now");
+									return;
+								}
+
 								Console.WriteLine("inside a cave");
 
 								// should we load another level and enter that?
@@ -410,6 +472,21 @@ namespace AvalonUgh.Code
 						Local0.Actor.Animation = Actor.AnimationEnum.Talk;
 					}
 				};
+
+			// every actor could act differently on gold collected
+			Local0.Actor.GoldStash.ForEachNewItem(
+				gold =>
+				{
+					var CurrentPort = this.Ports.Single(k => k.Level == Local0.Actor.CurrentLevel);
+
+					(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
+
+					CurrentPort.View.ColorOverlay.Background = Brushes.Yellow;
+					CurrentPort.View.ColorOverlay.Opacity = 0.7;
+					CurrentPort.View.ColorOverlay.Show();
+					CurrentPort.View.ColorOverlay.FadeOut();
+				}
+			);
 
 			this.LocalIdentity.Locals.Add(Local0);
 
@@ -551,8 +628,9 @@ namespace AvalonUgh.Code
 
 			(1000 / 50).AtInterval(Think);
 
+
 			this.Levels.AddRange(
-				new KnownLevels().Levels
+				KnownLevels.Levels
 			);
 
 			Lobby.Menu.Play +=
