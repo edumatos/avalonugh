@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -14,7 +15,24 @@ namespace AvalonUgh.Code.Editor
 
 		public KnownLevels()
 		{
-			this.Levels = Enumerable.Range(0, 56).ToArray(i => new LevelReference(i));
+			var a = new List<LevelReference>();
+
+			a.AddRange(Enumerable.Range(0, 56).Select(i => new LevelReference(i)));
+			a.Add(new LevelReference(
+				new LevelReference.StorageLocation
+				{
+					Embedded = new NameFormat
+					{
+						Path = Assets.Shared.KnownAssets.Path.Levels,
+						Extension = "txt",
+						Name = "level",
+						Index = 1,
+						AnimationFrame = 9000
+					}
+				}
+			));
+
+			this.Levels = a.ToArray();
 		}
 	}
 }

@@ -1,0 +1,45 @@
+# generated map
+# text: Back at home
+# code: HOMEHOMEHOME
+# autoscroll: 1
+# water: 30
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+R--R--R--R-R-R-R--R-R-
+|  |  |  R-| R-|  | | 
+|  S-R|  | S-| |  S-S-
+RS-S--R-R-S| RR-S-| | 
+|| |  | S-S-S-| C-| | 
+|C-SS-RC-S| | R-| | S-
+# gold: 304
+# gold: 312
+# gold: 320
+F| || || || | R-P-PBBB
+# gold: 80
+# gold: 88
+# gold: 192
+# gold: 208
+# gold: 200
+# gold: 72
+P-BBBBP-P--P--| S-SS-S
+| S-S-| R-S-R-S-| || |
+S-| | SR-SS-| | | S| S
+| | | || || | | S-|| |
+RC-S-S-S--| P-S-| C-S-
+|| | | |  | | | S-| FS
+# tree: 176
+# gold: 72
+# gold: 80
+# gold: 240
+# gold: 248
+# gold: 256
+# gold: 152
+|P-BB| S-BBR--BBBBBP--
+# gold: 88
+R| S-BB| S-|  SS--SR-R
+|R-| R--S-R-RR-|  || |
+|| SR|  RS| || R-SR--|
+R-R-|R-R-|RR-R-| ||  R
+######################
