@@ -59,7 +59,7 @@ namespace AvalonUgh.Code
 
 		const int DefaultZoom = 2;
 
-
+		public Port PrimaryMission;
 		public Port CaveMission;
 		public EditorPort Editor;
 		public LobbyPort Lobby;
@@ -412,7 +412,11 @@ namespace AvalonUgh.Code
 								if (CurrentPort.PortIdentity == PortIdentity_CaveMission)
 								{
 									Console.WriteLine("we should exit a submission now");
-									AIDirector.ActorExitCave(Local0.Actor);
+									AIDirector.ActorExitCaveFast(Local0.Actor);
+
+									Local0.Actor.CurrentLevel = PrimaryMission.Level;
+									PrimaryMission.BringContainerToFront();
+
 									return;
 								}
 
@@ -428,6 +432,11 @@ namespace AvalonUgh.Code
 									this.CaveMission.WhenLoaded(
 										delegate
 										{
+											this.CaveMission.View.Flashlight.Visible = true;
+											this.CaveMission.View.Flashlight.Container.Opacity = 0.7;
+
+											this.CaveMission.View.LocationTracker.Target = Local0;
+
 											AIDirector.ActorExitCaveFast(Local0.Actor);
 											Local0.Actor.CurrentLevel = this.CaveMission.Level;
 
@@ -709,6 +718,8 @@ namespace AvalonUgh.Code
 							LevelReference = NextLevel,
 
 						};
+
+					PrimaryMission = NextLevelPort;
 
 					NextLevelPort.Hide();
 
