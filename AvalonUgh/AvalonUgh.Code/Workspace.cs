@@ -73,6 +73,14 @@ namespace AvalonUgh.Code
 
 		public Workspace(ConstructorArguments args)
 		{
+			var Music = new AudioLoop
+			{
+				Volume = 0.3,
+				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
+				Enabled = true,
+			};
+
+
 			var KnownLevels = new KnownLevels();
 
 			this.Container = new Canvas
@@ -82,25 +90,14 @@ namespace AvalonUgh.Code
 				Background = Brushes.DarkGray
 			};
 
-
-			this.Ports.ForEachNewOrExistingItem(
-				(k, index) =>
-				{
-
-					k.Window.MoveContainerTo(k.Window.Padding * index, k.Window.Padding * index);
-
-					k.Window.DragContainer = this.Container;
-
-
-				}
-			);
 			this.Ports.AttachTo(k => k.Window, this.Container);
-
-
-
 			this.Ports.ForEachNewOrExistingItem(
-				NewPort =>
+				(NewPort, index) =>
 				{
+					NewPort.Window.MoveContainerTo(NewPort.Window.Padding * index, NewPort.Window.Padding * index);
+
+					NewPort.Window.DragContainer = this.Container;
+
 					NewPort.WhenLoaded(
 						delegate
 						{
@@ -159,6 +156,28 @@ namespace AvalonUgh.Code
 			this.Console.AttachContainerTo(this.Container);
 			#endregion
 
+
+			this.SupportedKeyboardInputs = new[]
+			{
+				new KeyboardInput(
+					new KeyboardInput.Arguments.Arrows
+					{
+						InputControl = this.Container
+					}
+				),
+				new KeyboardInput(
+					new KeyboardInput.Arguments.WASD
+					{
+						InputControl = this.Container
+					}
+				),
+				new KeyboardInput(
+					new KeyboardInput.Arguments.IJKL
+					{
+						InputControl = this.Container
+					}
+				),
+			};
 
 			this.PrimaryMission =
 				new MissionPort(
@@ -236,13 +255,6 @@ namespace AvalonUgh.Code
 				args.DefaultHeight - this.Editor.Toolbar.Padding * 3 - PrimitiveTile.Heigth * 4
 			);
 
-
-
-
-
-
-
-
 			#region PauseDialog
 			var PauseDialog = new Dialog
 			{
@@ -261,7 +273,7 @@ namespace AvalonUgh.Code
 
 
 
-			Action<bool, string> SetPause =
+			this.Sync_SetPause =
 				(IsPaused, ByWhom) =>
 				{
 					this.LocalIdentity.SyncFramePaused = IsPaused;
@@ -275,17 +287,19 @@ namespace AvalonUgh.Code
 									" + ByWhom;
 
 						ActiveDialog = PauseDialog;
+
 					}
 					else
 					{
 						ActiveDialog = null;
 					}
+
+					this.SupportedKeyboardInputs.ForEach(k => k.Disabled = IsPaused);
+
 				};
 
 
 			#endregion
-
-
 
 			this.Lobby = new LobbyPort(
 				new LobbyPort.ConstructorArguments
@@ -301,11 +315,70 @@ namespace AvalonUgh.Code
 				PortIdentity = PortIdentity_Lobby,
 			};
 
+
+
+			this.Lobby.Menu.MaxPlayers = SupportedKeyboardInputs.Length;
+
+			// each actor in players moves on each sync frame
+			// players contain all locals and external players
+			this.LocalIdentity.Locals.AttachTo(this.Players);
+
+			this.Sync_LocalsIncrease =
+				delegate
+				{
+					var p = new PlayerInfo
+					{
+						Actor = new Actor.man0(DefaultZoom)
+						{
+							RespectPlatforms = true,
+							CanBeHitByVehicle = false,
+						},
+						Input = new PlayerInput
+						{
+							Keyboard = this.SupportedKeyboardInputs[this.LocalIdentity.Locals.Count],
+						}
+					};
+
+					this.LocalIdentity.Locals.Add(p);
+
+					if (this.CurrentPort != null)
+						if (this.CurrentPort.Level != null)
+						{
+							// where shall we spawn?
+							p.Actor.CurrentLevel = this.CurrentPort.Level;
+							p.Actor.MoveTo(
+								(this.CurrentPort.View.ContentActualWidth / 4) +
+								(this.CurrentPort.View.ContentActualWidth / 2).Random(),
+								this.CurrentPort.View.ContentActualHeight / 2);
+
+							this.CurrentPort.Players.Add(p);
+						}
+				};
+
+			this.Sync_LocalsDecrease =
+				delegate
+				{
+					var p = this.LocalIdentity.Locals.Last();
+
+					p.Input.Keyboard = null;
+					p.Actor.CurrentLevel = null;
+
+					this.LocalIdentity.Locals.Remove(p);
+				};
+
 			this.Lobby.Menu.PlayersChanged +=
 				delegate
 				{
-					Console.WriteLine("players: " + this.Lobby.Menu.Players);
+					var Players_add = (this.Lobby.Menu.Players - this.LocalIdentity.Locals.Count).Max(0);
+					var Players_remove = (this.LocalIdentity.Locals.Count - this.Lobby.Menu.Players).Max(0);
+
+					Console.WriteLine(new { Players_add, Players_remove, this.Lobby.Menu.Players }.ToString());
+
+					Players_remove.Times(this.Sync_LocalsDecrease);
+					Players_add.Times(this.Sync_LocalsIncrease);
 				};
+
+			this.Lobby.Menu.Players = 1;
 
 			var Local0 =
 				new PlayerInfo
@@ -315,28 +388,13 @@ namespace AvalonUgh.Code
 						RespectPlatforms = true,
 						CanBeHitByVehicle = false,
 					},
-					Input = new PlayerInput
-					{
-						Keyboard = new KeyboardInput(
-							new KeyboardInput.Arguments.Arrows
-							{
-								InputControl = this.Container
-							}
-						)
-					}
+	
 				};
 
 			Lobby.Menu.EnteringPasswordChanged +=
 				delegate
 				{
-					Local0.Input.Keyboard.Disabled = Lobby.Menu.EnteringPassword != null;
-				};
-			Action OpenEditor = null;
-
-			Lobby.Menu.Editor +=
-				delegate
-				{
-					OpenEditor();
+					this.SupportedKeyboardInputs.ForEach(k => k.Disabled = Lobby.Menu.EnteringPassword != null);
 				};
 
 			// we need to play jumping sound
@@ -453,10 +511,10 @@ namespace AvalonUgh.Code
 												delegate
 												{
 
-													this.CaveMission.View.Flashlight.Visible = true;
-													this.CaveMission.View.Flashlight.Container.Opacity = 0.7;
+													//this.CaveMission.View.Flashlight.Visible = true;
+													//this.CaveMission.View.Flashlight.Container.Opacity = 0.7;
 
-													this.CaveMission.View.LocationTracker.Target = Local0;
+													//this.CaveMission.View.LocationTracker.Target = Local0;
 
 
 													var EntryPointCave = this.CaveMission.Level.KnownCaves.AtModulus(
@@ -503,7 +561,13 @@ namespace AvalonUgh.Code
 					}
 					else
 					{
-						Local0.Actor.Animation = Actor.AnimationEnum.Talk;
+						if (Local0.Actor.Animation != Actor.AnimationEnum.Talk)
+						{
+							Local0.Actor.Animation = Actor.AnimationEnum.Talk;
+
+							(Assets.Shared.KnownAssets.Path.Audio + "/talk0_00.mp3").PlaySound();
+						}
+
 					}
 				};
 
@@ -522,136 +586,43 @@ namespace AvalonUgh.Code
 				}
 			);
 
-			this.LocalIdentity.Locals.Add(Local0);
+			//this.LocalIdentity.Locals.Add(Local0);
 
-			this.Editor.Loaded +=
+
+
+			//Lobby.Window.ColorOverlay.Opacity = 1;
+			Lobby.WhenLoaded(
 				delegate
 				{
-					Local0.Actor.CurrentLevel = Editor.Level;
+					// we should load lobby only once
 
-					this.Editor.View.LocationTracker.Target = Local0;
-
-					if (this.Editor.Level.KnownCaves.Count == 0)
+					foreach (var k in this.LocalIdentity.Locals)
 					{
-						Local0.Actor.MoveTo(
-							(Editor.View.ContentActualWidth / 4) +
-							(Editor.View.ContentActualWidth / 2).Random(),
-							Editor.View.ContentActualHeight / 2);
+						k.Actor.MoveTo(
+							(Lobby.View.ContentActualWidth / 4) +
+							(Lobby.View.ContentActualWidth / 2).Random(),
+							Lobby.View.ContentActualHeight / 2);
 
-					}
-					else
-					{
-						var EntryPointCave = this.Editor.Level.KnownCaves.Random();
-
-						Local0.Actor.MoveTo(
-							EntryPointCave.X,
-							EntryPointCave.Y
-						);
+						k.Actor.CurrentLevel = Lobby.Level;
 					}
 
+					//Lobby.Window.ColorOverlay.Opacity = 0;
+				}
+			);
 
+			
 
-				};
+			this.CurrentPort = this.Lobby;
 
-
-			Lobby.Loaded +=
-				delegate
-				{
-					Console.WriteLine("adding an actor to lobby");
-
-					Local0.Actor.MoveTo(
-						(Lobby.View.ContentActualWidth / 4) +
-						(Lobby.View.ContentActualWidth / 2).Random(),
-						Lobby.View.ContentActualHeight / 2);
-
-					Local0.Actor.CurrentLevel = Lobby.Level;
-
-				};
-
-			Lobby.LevelReference = new LevelReference(0);
-
-			this.Players.Add(Local0);
+			//this.Players.Add(Local0);
 
 			this.Ports.Add(Lobby);
 
 
 
-			this.Container.KeyUp += HandleKeyUp;
-
-			this.Container.KeyUp +=
-				(sender, key_args) =>
-				{
+			
 
 
-
-					if (this.LocalIdentity.SyncFramePaused)
-					{
-						// if the game is paused
-						// we cannot handle a future frame and thus we need to unpause momentarily
-
-						if (key_args.Key == Key.P)
-						{
-							key_args.Handled = true;
-							SetPause(false, "you");
-
-							return;
-						}
-
-					}
-					else
-					{
-						if (key_args.Key == Key.Escape)
-						{
-							key_args.Handled = true;
-
-							// if we are inside a mission, submission or editor this will bring us back
-
-							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Lobby);
-
-							// if all players quit the game
-							// we would be able to start another level
-							if (this.Ports.Any(k => k.PortIdentity == PortIdentity_Mission))
-								Lobby.Menu.PlayText = "resume";
-
-							this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
-								delegate
-								{
-									Lobby.Window.ColorOverlay.Opacity = 0;
-
-									this.Editor.Toolbar.Hide();
-									this.Editor.LoadWindow.Hide();
-
-									// re-entering lobby
-
-									Local0.Actor.CurrentLevel = Lobby.Level;
-									Local0.Actor.MoveTo(
-										(Lobby.View.ContentActualWidth / 4) +
-										(Lobby.View.ContentActualWidth / 2).Random(),
-										Lobby.View.ContentActualHeight / 2);
-
-									this.CurrentPort = this.Lobby;
-									Lobby.Window.BringContainerToFront();
-								}
-							);
-
-						}
-
-
-						Lobby.Menu.HandleKeyUp(key_args);
-
-						if (key_args.Handled)
-							return;
-
-
-
-						if (key_args.Key == Key.P)
-						{
-							SetPause(true, "you");
-						}
-					}
-
-
-				};
 
 
 
@@ -680,18 +651,10 @@ namespace AvalonUgh.Code
 							if (NextLevel2 == null)
 							{
 								// password does not match
-								NextLevel2 = this.Levels.FirstOrDefault(k => k.Code.ToLower() == "cavity");
+								NextLevel2 = KnownLevels.DefaultMissionLevel;
 							}
 
-							if (NextLevel2 == null)
-							{
-								Console.WriteLine("no next level...");
-								return;
-							}
-
-
-							//Menu.Hide();
-
+				
 							Console.WriteLine("loading level - " + NextLevel2.Text);
 
 							// fade in the level start menu
@@ -726,12 +689,21 @@ namespace AvalonUgh.Code
 											PrimaryMission.Window.ColorOverlay.SetOpacity(1,
 												delegate
 												{
-													Local0.Actor.CurrentLevel = PrimaryMission.Level;
+													//Local0.Actor.CurrentLevel = PrimaryMission.Level;
+													//var StartPositionStone = PrimaryMission.Level.KnownStones.Random(k => k.Selector.PrimitiveTileCountX > 1 && k.Selector.PrimitiveTileCountY > 1);
+													//Local0.Actor.CurrentVehicle = new Vehicle(DefaultZoom).AddTo(PrimaryMission.Level.KnownVehicles);
+													//Local0.Actor.CurrentVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
 
-													var StartPositionStone = PrimaryMission.Level.KnownStones.Random(k => k.Selector.PrimitiveTileCountX > 1 && k.Selector.PrimitiveTileCountY > 1);
+													// just jump randomly in
+													foreach (var k in this.LocalIdentity.Locals)
+													{
+														k.Actor.MoveTo(
+															(this.PrimaryMission.View.ContentActualWidth / 4) +
+															(this.PrimaryMission.View.ContentActualWidth / 2).Random(),
+															this.PrimaryMission.View.ContentActualHeight / 2);
 
-													Local0.Actor.CurrentVehicle = new Vehicle(DefaultZoom).AddTo(PrimaryMission.Level.KnownVehicles);
-													Local0.Actor.CurrentVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
+														k.Actor.CurrentLevel = this.PrimaryMission.Level;
+													}
 
 													PrimaryMission.Intro.Hide();
 													PrimaryMission.Window.ColorOverlay.Opacity = 0;
@@ -750,7 +722,7 @@ namespace AvalonUgh.Code
 
 
 
-			OpenEditor =
+			Lobby.Menu.Editor +=
 				delegate
 				{
 					this.Editor.Window.ColorOverlay.Opacity = 1;
@@ -763,13 +735,28 @@ namespace AvalonUgh.Code
 							this.Editor.Toolbar.BringContainerToFront();
 							this.Editor.Toolbar.Show();
 
-							this.Editor.LevelReference = new LevelReference(0);
+							if (this.Editor.LevelReference == null)
+								this.Editor.LevelReference = KnownLevels.DefaultLobbyLevel;
+
 							this.Editor.WhenLoaded(
 								delegate
 								{
-									this.Editor.Window.ColorOverlay.Opacity = 0;
+									// how shall locals enter the editor?
 
-									Local0.Actor.CurrentLevel = this.Editor.Level;
+									// just jump randomly in
+									this.Editor.Players.AddRange(this.LocalIdentity.Locals.ToArray());
+
+									//foreach (var k in this.LocalIdentity.Locals)
+									//{
+									//    k.Actor.MoveTo(
+									//        (this.Editor.View.ContentActualWidth / 4) +
+									//        (this.Editor.View.ContentActualWidth / 2).Random(),
+									//        this.Editor.View.ContentActualHeight / 2);
+
+									//    k.Actor.CurrentLevel = this.Editor.Level;
+									//}
+
+									this.Editor.Window.ColorOverlay.Opacity = 0;
 								}
 							);
 						}
@@ -779,11 +766,16 @@ namespace AvalonUgh.Code
 				};
 
 
-			this.EnableKeyboardFocus();
+			
+			(1000 / DefaultFramerate).AtInterval(Think);
 
-			(1000 / 50).AtInterval(Think);
+			this.EnableKeyboardFocus();
+			this.Container.KeyUp += HandleKeyUp;
+
+			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
 		}
 
+		public const int DefaultFramerate = 55;
 
 		Dialog InternalActiveDialog;
 		public Dialog ActiveDialog

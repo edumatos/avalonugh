@@ -588,7 +588,11 @@ namespace AvalonUgh.Code
 					this.InternalCurrentLevel.KnownActors.Add(this);
 				}
 
+				if (this.CurrentLevelChanged != null)
+					this.CurrentLevelChanged();
+
 			}
 		}
+		public event Action CurrentLevelChanged;
 	}
 }

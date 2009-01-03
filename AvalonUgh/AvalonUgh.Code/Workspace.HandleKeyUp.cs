@@ -21,6 +21,8 @@ namespace AvalonUgh.Code
 {
 	partial class Workspace
 	{
+		public readonly KeyboardInput[] SupportedKeyboardInputs;
+
 		void EnableKeyboardFocus()
 		{
 			// we are going for the keyboard input
@@ -35,6 +37,20 @@ namespace AvalonUgh.Code
 				{
 					this.Container.Focus();
 				};
+		}
+
+		public static bool IsUnpauseKey(Key k)
+		{
+			if (k == Key.P)
+				return true;
+			if (k == Key.Enter)
+				return true;
+			if (k == Key.Space)
+				return true;
+			if (k == Key.Escape)
+				return true;
+
+			return false;
 		}
 
 		void HandleKeyUp(object sender, KeyEventArgs args)
@@ -61,36 +77,104 @@ namespace AvalonUgh.Code
 				// when the view is in editor mode
 			}
 
-
-			if (this.Lobby.Menu.EnteringPassword == null)
+			if (this.LocalIdentity.SyncFramePaused)
 			{
-				// allow single frame step
-				if (args.Key == Key.PageUp)
+				// if the game is paused
+				// we cannot handle a future frame and thus we need to unpause momentarily
+
+				if (IsUnpauseKey(args.Key))
 				{
-					this.LocalIdentity.SyncFramePausedSkip = true;
+					args.Handled = true;
+					this.Sync_SetPause(false, "you");
 				}
 
-				// instant pause
-				if (args.Key == Key.PageDown)
-				{
-					this.LocalIdentity.SyncFramePaused = !this.LocalIdentity.SyncFramePaused;
-				}
 
-				if (args.Key == Key.Insert)
-				{
-					// more locals!
-					this.Lobby.Menu.Players++;
-				}
+				return;
+			}
 
-				if (args.Key == Key.Delete)
-				{
-					// less locals!
-					this.Lobby.Menu.Players--;
-				}
+			this.Lobby.Menu.HandleKeyUp(args);
 
-				if (this.Selectors.DefaultKeyShortcut.ContainsKey(args.Key))
+			if (args.Handled)
+				return;
+
+			if (this.Lobby.Menu.EnteringPassword != null)
+				return;
+
+
+
+			if (args.Key == Key.P)
+			{
+				this.Sync_SetPause(true, "you");
+			}
+
+			// allow single frame step
+			if (args.Key == Key.PageUp)
+			{
+				this.LocalIdentity.SyncFramePausedSkip = true;
+			}
+
+			// instant pause
+			if (args.Key == Key.PageDown)
+			{
+				this.LocalIdentity.SyncFramePaused = !this.LocalIdentity.SyncFramePaused;
+			}
+
+			if (args.Key == Key.Insert)
+			{
+				// more locals!
+				this.Lobby.Menu.Players++;
+			}
+
+			if (args.Key == Key.Delete)
+			{
+				// less locals!
+				this.Lobby.Menu.Players--;
+			}
+
+			if (this.Selectors.DefaultKeyShortcut.ContainsKey(args.Key))
+			{
+				this.Editor.Toolbar.SelectorType = this.Selectors.DefaultKeyShortcut[args.Key]();
+			}
+
+			if (args.Key == Key.Escape)
+			{
+				args.Handled = true;
+
+				// if we are inside a mission, submission or editor this will bring us back
+
+				//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Lobby);
+
+				// if all players quit the game
+				// we would be able to start another level
+				if (this.CurrentPort != this.Lobby)
 				{
-					this.Editor.Toolbar.SelectorType = this.Selectors.DefaultKeyShortcut[args.Key]();
+					// looks like we bailed an active game, it will continue until someone is in there
+					if (this.PrimaryMission.Level != null)
+						this.Lobby.Menu.PlayText = "resume";
+
+					this.Lobby.Window.ColorOverlay.Opacity = 1;
+					this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
+						delegate
+						{
+							// entering lobby
+							
+							// just jump randomly in
+							foreach (var k in this.LocalIdentity.Locals)
+							{
+								k.Actor.MoveTo(
+									(this.Lobby.View.ContentActualWidth / 4) +
+									(this.Lobby.View.ContentActualWidth / 2).Random(),
+									this.Lobby.View.ContentActualHeight / 2);
+
+								k.Actor.CurrentLevel = this.Lobby.Level;
+							}
+
+
+							this.CurrentPort = this.Lobby;
+							this.Lobby.Window.BringContainerToFront();
+							this.Lobby.Window.ColorOverlay.Opacity = 0;
+						}
+					);
 				}
 			}
 
