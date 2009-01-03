@@ -26,7 +26,7 @@ namespace AvalonUgh.Code.Editor
 
 			a.Add(this.DefaultLobbyLevel);
 			a.Add(this.DefaultMissionLevel);
-			a.AddRange(Enumerable.Range(2, 56).Select(i => new LevelReference(i)));
+			a.AddRange(Enumerable.Range(2, 58).Select(i => new LevelReference(i)));
 
 			this.DefaultCaveLevel =
 				new LevelReference(
