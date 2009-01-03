@@ -904,7 +904,11 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\talk0_00.mp3" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_56.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_57.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_58.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_59.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_59.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_58.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_57.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_56.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_55.png" />
