@@ -94,13 +94,17 @@ namespace AvalonUgh.Code
 			this.Ports.ForEachNewOrExistingItem(
 				(NewPort, index) =>
 				{
+					Console.WriteLine("port added " + new { NewPort.Width, NewPort.Height, NewPort.StatusbarHeight });
+
 					NewPort.Window.MoveContainerTo(NewPort.Window.Padding * index, NewPort.Window.Padding * index);
 
 					NewPort.Window.DragContainer = this.Container;
 
-					NewPort.WhenLoaded(
+					NewPort.Loaded +=
 						delegate
 						{
+							Console.WriteLine("port loaded " + new { NewPort.Width, NewPort.Height, NewPort.StatusbarHeight });
+					
 							NewPort.Level.KnownTryoperus.ForEachNewOrExistingItem(
 								NewTryo =>
 								{
@@ -140,8 +144,8 @@ namespace AvalonUgh.Code
 
 
 								};
-						}
-					);
+						};
+					
 				}
 			);
 
@@ -183,6 +187,7 @@ namespace AvalonUgh.Code
 				new MissionPort(
 					new MissionPort.ConstructorArguments
 					{
+						Padding = args.WindowPadding,
 						Width = args.PortWidth,
 						Height = args.PortHeight,
 						Zoom = DefaultZoom,
@@ -190,7 +195,7 @@ namespace AvalonUgh.Code
 				{
 					Selectors = this.Selectors,
 
-					Padding = args.WindowPadding,
+					
 
 
 
@@ -219,18 +224,18 @@ namespace AvalonUgh.Code
 			this.Ports.Add(this.CaveMission);
 
 			this.Editor = new EditorPort(
-									new EditorPort.ConstructorArguments
-									{
-										Selectors = this.Selectors,
-										Levels = this.Levels
-									})
+				new EditorPort.ConstructorArguments
+				{
+					Selectors = this.Selectors,
+					Levels = this.Levels
+				})
 			{
 
 				Zoom = DefaultZoom,
 
 				Padding = args.WindowPadding,
 				Width = args.PortWidth,
-				StatusbarHeight = 18,
+				
 				Height = args.PortHeight,
 
 				PortIdentity = PortIdentity_Editor,
@@ -304,18 +309,19 @@ namespace AvalonUgh.Code
 			this.Lobby = new LobbyPort(
 				new LobbyPort.ConstructorArguments
 				{
+					Padding = args.WindowPadding,
 					Zoom = DefaultZoom,
 					Width = args.PortWidth,
 					Height = args.PortHeight
 				})
 			{
-				Padding = args.WindowPadding,
+				
 				Selectors = this.Selectors,
 
 				PortIdentity = PortIdentity_Lobby,
 			};
 
-
+			this.Ports.Add(Lobby);
 
 			this.Lobby.Menu.MaxPlayers = SupportedKeyboardInputs.Length;
 
@@ -378,8 +384,15 @@ namespace AvalonUgh.Code
 					Players_add.Times(this.Sync_LocalsIncrease);
 				};
 
+			Lobby.Menu.EnteringPasswordChanged +=
+				delegate
+				{
+					this.SupportedKeyboardInputs.ForEach(k => k.Disabled = Lobby.Menu.EnteringPassword != null);
+				};
+
 			this.Lobby.Menu.Players = 1;
 
+			#region local0
 			var Local0 =
 				new PlayerInfo
 				{
@@ -391,11 +404,7 @@ namespace AvalonUgh.Code
 	
 				};
 
-			Lobby.Menu.EnteringPasswordChanged +=
-				delegate
-				{
-					this.SupportedKeyboardInputs.ForEach(k => k.Disabled = Lobby.Menu.EnteringPassword != null);
-				};
+	
 
 			// we need to play jumping sound
 			Local0.Actor.Jumping +=
@@ -586,6 +595,8 @@ namespace AvalonUgh.Code
 				}
 			);
 
+			#endregion
+
 			//this.LocalIdentity.Locals.Add(Local0);
 
 
@@ -594,6 +605,8 @@ namespace AvalonUgh.Code
 			Lobby.WhenLoaded(
 				delegate
 				{
+					Console.WriteLine("lobby loaded");
+
 					// we should load lobby only once
 
 					foreach (var k in this.LocalIdentity.Locals)
@@ -616,7 +629,7 @@ namespace AvalonUgh.Code
 
 			//this.Players.Add(Local0);
 
-			this.Ports.Add(Lobby);
+			
 
 
 
@@ -689,22 +702,7 @@ namespace AvalonUgh.Code
 											PrimaryMission.Window.ColorOverlay.SetOpacity(1,
 												delegate
 												{
-													//Local0.Actor.CurrentLevel = PrimaryMission.Level;
-													//var StartPositionStone = PrimaryMission.Level.KnownStones.Random(k => k.Selector.PrimitiveTileCountX > 1 && k.Selector.PrimitiveTileCountY > 1);
-													//Local0.Actor.CurrentVehicle = new Vehicle(DefaultZoom).AddTo(PrimaryMission.Level.KnownVehicles);
-													//Local0.Actor.CurrentVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
-
-													// just jump randomly in
-													foreach (var k in this.LocalIdentity.Locals)
-													{
-														k.Actor.MoveTo(
-															(this.PrimaryMission.View.ContentActualWidth / 4) +
-															(this.PrimaryMission.View.ContentActualWidth / 2).Random(),
-															this.PrimaryMission.View.ContentActualHeight / 2);
-
-														k.Actor.CurrentLevel = this.PrimaryMission.Level;
-													}
-
+													PrimaryMission.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 													PrimaryMission.Intro.Hide();
 													PrimaryMission.Window.ColorOverlay.Opacity = 0;
 												}
@@ -744,18 +742,8 @@ namespace AvalonUgh.Code
 									// how shall locals enter the editor?
 
 									// just jump randomly in
+
 									this.Editor.Players.AddRange(this.LocalIdentity.Locals.ToArray());
-
-									//foreach (var k in this.LocalIdentity.Locals)
-									//{
-									//    k.Actor.MoveTo(
-									//        (this.Editor.View.ContentActualWidth / 4) +
-									//        (this.Editor.View.ContentActualWidth / 2).Random(),
-									//        this.Editor.View.ContentActualHeight / 2);
-
-									//    k.Actor.CurrentLevel = this.Editor.Level;
-									//}
-
 									this.Editor.Window.ColorOverlay.Opacity = 0;
 								}
 							);

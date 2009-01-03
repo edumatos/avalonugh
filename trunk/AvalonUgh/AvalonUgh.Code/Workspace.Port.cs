@@ -16,6 +16,7 @@ using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
 using System.Windows.Shapes;
 using AvalonUgh.Code.Input;
+using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code
 {
@@ -151,6 +152,7 @@ namespace AvalonUgh.Code
 
 							this.Level = new Level(Data, this.Zoom, this.Selectors);
 
+
 							this.View = new View(Width, Height - StatusbarHeight, this.Level);
 							this.View.Show(this.InternalVisible);
 							this.View.AttachContainerTo(this.Window.ContentContainer);
@@ -176,6 +178,9 @@ namespace AvalonUgh.Code
 
 							if (this.Loaded != null)
 								this.Loaded();
+
+							while (WhenLoadedQueue.Count > 0)
+								WhenLoadedQueue.Dequeue()();
 
 						};
 
@@ -210,21 +215,13 @@ namespace AvalonUgh.Code
 
 			public event Action Loaded;
 
+			readonly Queue<Action> WhenLoadedQueue = new Queue<Action>();
+
 			public void WhenLoaded(Action e)
 			{
 				if (Level == null)
 				{
-					Action handler = null;
-
-					handler =
-						delegate
-						{
-							this.Loaded -= handler;
-
-							e();
-						};
-
-					this.Loaded += handler;
+					WhenLoadedQueue.Enqueue(e);
 				}
 				else
 				{
@@ -240,6 +237,7 @@ namespace AvalonUgh.Code
 			[Script]
 			public class ConstructorArguments
 			{
+				public int Padding;
 				public int Zoom;
 				public int Width;
 				public int Height;
@@ -249,6 +247,8 @@ namespace AvalonUgh.Code
 
 			public LobbyPort(ConstructorArguments args)
 			{
+				this.Padding = args.Padding;
+
 				this.Zoom = DefaultZoom;
 
 				this.Width = args.Width;
@@ -288,7 +288,7 @@ namespace AvalonUgh.Code
 				this.LoadWindow = new LoadWindow(args.Levels);
 
 				this.Selectors = args.Selectors;
-
+				this.StatusbarHeight = 18;
 
 				// serialize current level
 				this.Toolbar.LevelText.GotFocus +=
@@ -316,13 +316,12 @@ namespace AvalonUgh.Code
 						this.LoadWindow.Show(this.LoadWindow.Visibility == Visibility.Hidden);
 					};
 
-				this.WhenLoaded(
+				this.Loaded +=
 					delegate
 					{
 						this.View.EditorSelectorNextSize += () => this.Toolbar.EditorSelectorNextSize();
 						this.View.EditorSelectorPreviousSize += () => this.Toolbar.EditorSelectorPreviousSize();
-					}
-				);
+					};
 
 				Action<PlayerInfo> AttachPlayerToLevel =
 					k =>
@@ -389,6 +388,7 @@ namespace AvalonUgh.Code
 			[Script]
 			public class ConstructorArguments
 			{
+				public int Padding;
 				public int Width;
 				public int Height;
 				public int Zoom;
@@ -396,6 +396,7 @@ namespace AvalonUgh.Code
 
 			public MissionPort(ConstructorArguments args)
 			{
+				this.Padding = args.Padding;
 				this.Zoom = args.Zoom;
 				this.StatusbarHeight = 18;
 
@@ -434,6 +435,26 @@ namespace AvalonUgh.Code
 						this.Intro.BringContainerToFront();
 					}
 				);
+
+
+				this.PlayerJoined +=
+					k =>
+					{
+						k.Actor.CurrentLevel = this.Level;
+
+					
+						var StartVehicle = this.Level.KnownVehicles.FirstOrDefault(i => i.CurrentDriver == null);
+
+						if (StartVehicle == null)
+						{
+							var StartPositionStone = this.Level.KnownStones.Random(i => i.Selector.PrimitiveTileCountX > 1 && i.Selector.PrimitiveTileCountY > 1);
+
+							StartVehicle = new Vehicle(this.Level.Zoom).AddTo(this.Level.KnownVehicles);
+							StartVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
+						}
+
+						k.Actor.CurrentVehicle = StartVehicle;
+					};
 			}
 		}
 	}

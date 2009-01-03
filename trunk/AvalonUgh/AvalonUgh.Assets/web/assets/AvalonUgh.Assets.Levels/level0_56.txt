@@ -1,0 +1,35 @@
+# generated map
+# text: Greetings from Alfred
+# code: VANITY
+# autoscroll: 0
+# water: 42
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+      S-  S-S-  S     
+ S-SC-| S-| | S-|C-SS-
+ |  | | | | | |  | || 
+# sign: 264;2
+# sign: 56;1
+ | P-P-S-S-S-S| P--S| 
+ S-| | | | | S-S|  || 
+ | SS-S--| | | S-S-S- 
+ | || |  | C-| | | |  
+S-S-| SS- S| SSS-S-|  
+# sign: 152;3
+| | | || P--P||| | |  
+S-| S--| |  S--| | S--
+| S-|  S-S-S|  S-S-|  
+| | C-S| | S-S-| | C- 
+| | |  | | | | | | |  
+# tree: 32
+# sign: 280;5
+# sign: 104;4
+# rock: 288
+P-P-P-P-S| | | PBBPP--
+| | S-| S-SS-SR-SS-|  
+ R--| SR--|| || || SR-
+ |  | ||  S| R-RS| || 
+           | |        
+######################

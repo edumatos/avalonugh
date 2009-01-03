@@ -20,7 +20,7 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
 
-		const int ItemsPerRow = 8;
+		const int ItemsPerRow = 10;
 
 		public event Action<LevelReference> Click;
 

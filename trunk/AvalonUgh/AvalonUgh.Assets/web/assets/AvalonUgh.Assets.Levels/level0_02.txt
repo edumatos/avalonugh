@@ -1,4 +1,4 @@
-# text: Introducing bird!
+# text: Introducing bird
 # code: FIRSTCOMMUNION
 # autoscroll: 0
 # water: 21
