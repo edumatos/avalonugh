@@ -21,6 +21,22 @@ namespace AvalonUgh.Code
 {
 	partial class Workspace
 	{
+		void EnableKeyboardFocus()
+		{
+			// we are going for the keyboard input
+			// we want to enable the tilde console feature
+			this.Container.FocusVisualStyle = null;
+			this.Container.Focusable = true;
+			this.Container.Focus();
+
+			// at this time we should add a local player
+			this.Container.MouseLeftButtonDown +=
+				(sender, key_args) =>
+				{
+					this.Container.Focus();
+				};
+		}
+
 		void HandleKeyUp(object sender, KeyEventArgs args)
 		{
 			// oem7 will trigger the console

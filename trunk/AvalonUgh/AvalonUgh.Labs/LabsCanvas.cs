@@ -29,7 +29,7 @@ namespace AvalonUgh.Labs.Shared
 
 #if DEBUG
 		public const int WindowPadding = 4;
-		public const int DefaultWidth = 800;
+		public const int DefaultWidth = 900;
 		public const int DefaultHeight = 600;
 #else
 		public const int WindowPadding = 0;

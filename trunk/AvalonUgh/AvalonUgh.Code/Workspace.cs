@@ -59,15 +59,6 @@ namespace AvalonUgh.Code
 
 		const int DefaultZoom = 2;
 
-		public Port PrimaryMission;
-		public Port CaveMission;
-		public EditorPort Editor;
-		public LobbyPort Lobby;
-
-		//public readonly ModernMenu Menu;
-
-		//public readonly EditorToolbar EditorToolbar;
-
 		[Script]
 		public class ConstructorArguments
 		{
@@ -91,7 +82,7 @@ namespace AvalonUgh.Code
 				Background = Brushes.DarkGray
 			};
 
-		
+
 			this.Ports.ForEachNewOrExistingItem(
 				(k, index) =>
 				{
@@ -100,12 +91,12 @@ namespace AvalonUgh.Code
 
 					k.Window.DragContainer = this.Container;
 
-				
+
 				}
 			);
 			this.Ports.AttachTo(k => k.Window, this.Container);
 
-	
+
 
 			this.Ports.ForEachNewOrExistingItem(
 				NewPort =>
@@ -126,7 +117,7 @@ namespace AvalonUgh.Code
 									var Volume = (Velocity / (NewPort.Level.Zoom * 3.0) + 0.3).Max(0).Min(1);
 
 
-									
+
 									if (Volume > 0)
 									{
 										var Sound = (Assets.Shared.KnownAssets.Path.Audio + "/bounce.mp3").ToSound();
@@ -169,6 +160,29 @@ namespace AvalonUgh.Code
 			#endregion
 
 
+			this.PrimaryMission =
+				new MissionPort(
+					new MissionPort.ConstructorArguments
+					{
+						Width = args.PortWidth,
+						Height = args.PortHeight,
+						Zoom = DefaultZoom,
+					})
+				{
+					Selectors = this.Selectors,
+
+					Padding = args.WindowPadding,
+
+
+
+					PortIdentity = PortIdentity_Mission,
+
+
+				};
+
+			this.Ports.Add(PrimaryMission);
+
+
 			this.CaveMission = new Port()
 			{
 				Selectors = this.Selectors,
@@ -203,7 +217,7 @@ namespace AvalonUgh.Code
 				PortIdentity = PortIdentity_Editor,
 			};
 
-		
+
 
 			this.Ports.Add(this.Editor);
 
@@ -222,22 +236,11 @@ namespace AvalonUgh.Code
 				args.DefaultHeight - this.Editor.Toolbar.Padding * 3 - PrimitiveTile.Heigth * 4
 			);
 
-	
-	
-			
 
-			var LevelIntro = new LevelIntroDialog
-			{
-				AnimatedOpacity = 0,
-				Width = args.DefaultWidth,
-				Height = args.DefaultHeight,
-				Zoom = DefaultZoom,
-				AnimatedOpacityContentMultiplier = 1,
 
-				
-			};
 
-			LevelIntro.AttachContainerTo(this.Container);
+
+
 
 
 			#region PauseDialog
@@ -282,7 +285,7 @@ namespace AvalonUgh.Code
 
 			#endregion
 
-	
+
 
 			this.Lobby = new LobbyPort(
 				new LobbyPort.ConstructorArguments
@@ -388,7 +391,7 @@ namespace AvalonUgh.Code
 			Local0.Actor.EnterCave +=
 				delegate
 				{
-				
+
 
 					var ManAsObstacle = Local0.Actor.ToObstacle();
 
@@ -402,54 +405,76 @@ namespace AvalonUgh.Code
 
 						Console.WriteLine("entering a cave");
 
-						var CurrentPort = this.Ports.Single(k => k.Level == Local0.Actor.CurrentLevel);
-
-					
-
 						AIDirector.WalkActorToTheCaveAndEnter(Local0.Actor, NearbyCave,
 							delegate
 							{
 								if (CurrentPort.PortIdentity == PortIdentity_CaveMission)
 								{
-									Console.WriteLine("we should exit a submission now");
-									AIDirector.ActorExitCaveFast(Local0.Actor);
+									this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
+									this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
+										delegate
+										{
 
-									Local0.Actor.CurrentLevel = PrimaryMission.Level;
-									PrimaryMission.BringContainerToFront();
+											this.PrimaryMission.BringContainerToFront();
+											this.CurrentPort = this.PrimaryMission;
+
+											var EntryPointCave = this.PrimaryMission.Level.KnownCaves.AtModulus(
+												Local0.Actor.CurrentLevel.KnownCaves.IndexOf(NearbyCave)
+											);
+
+											AIDirector.ActorExitCaveFast(Local0.Actor);
+											Local0.Actor.CurrentLevel = this.PrimaryMission.Level;
+											AIDirector.ActorExitAnyCave(Local0.Actor, EntryPointCave);
+
+
+											this.PrimaryMission.Window.ColorOverlay.Opacity = 0;
+
+										}
+									);
 
 									return;
 								}
 
 								if (CurrentPort.PortIdentity == PortIdentity_Mission)
 								{
-									if (this.CaveMission.LevelReference == null)
-									{
-										this.CaveMission.LevelReference = KnownLevels.DefaultCaveLevel;
-									}
-
-									this.CaveMission.BringContainerToFront();
-
-									this.CaveMission.WhenLoaded(
+									this.CaveMission.Window.ColorOverlay.Opacity = 1;
+									this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
 										delegate
 										{
-											this.CaveMission.View.Flashlight.Visible = true;
-											this.CaveMission.View.Flashlight.Container.Opacity = 0.7;
+											this.CaveMission.BringContainerToFront();
+											this.CurrentPort = this.CaveMission;
 
-											this.CaveMission.View.LocationTracker.Target = Local0;
+											if (this.CaveMission.LevelReference == null)
+											{
+												this.CaveMission.LevelReference = KnownLevels.DefaultCaveLevel;
+											}
 
-											AIDirector.ActorExitCaveFast(Local0.Actor);
-											Local0.Actor.CurrentLevel = this.CaveMission.Level;
+											this.CaveMission.WhenLoaded(
+												delegate
+												{
 
-											var EntryPointCave = this.CaveMission.Level.KnownCaves.Random();
+													this.CaveMission.View.Flashlight.Visible = true;
+													this.CaveMission.View.Flashlight.Container.Opacity = 0.7;
 
-											Local0.Actor.MoveTo(
-												EntryPointCave.X,
-												EntryPointCave.Y
+													this.CaveMission.View.LocationTracker.Target = Local0;
+
+
+													var EntryPointCave = this.CaveMission.Level.KnownCaves.AtModulus(
+														Local0.Actor.CurrentLevel.KnownCaves.IndexOf(NearbyCave)
+													);
+
+													AIDirector.ActorExitCaveFast(Local0.Actor);
+													Local0.Actor.CurrentLevel = this.CaveMission.Level;
+													AIDirector.ActorExitAnyCave(Local0.Actor, EntryPointCave);
+
+													this.CaveMission.Window.ColorOverlay.Opacity = 0;
+
+												}
 											);
+
+											Console.WriteLine("we should spawn a submission now");
 										}
 									);
-
-									Console.WriteLine("we should spawn a submission now");
 									return;
 								}
 
@@ -588,20 +613,26 @@ namespace AvalonUgh.Code
 							if (this.Ports.Any(k => k.PortIdentity == PortIdentity_Mission))
 								Lobby.Menu.PlayText = "resume";
 
-							Lobby.Menu.Show();
+							this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
+								delegate
+								{
+									Lobby.Window.ColorOverlay.Opacity = 0;
 
-							this.Editor.Toolbar.Hide();
-							this.Editor.LoadWindow.Hide();
+									this.Editor.Toolbar.Hide();
+									this.Editor.LoadWindow.Hide();
 
-							// re-entering lobby
+									// re-entering lobby
 
-							Local0.Actor.CurrentLevel = Lobby.Level;
-							Local0.Actor.MoveTo(
-								(Lobby.View.ContentActualWidth / 4) +
-								(Lobby.View.ContentActualWidth / 2).Random(),
-								Lobby.View.ContentActualHeight / 2);
+									Local0.Actor.CurrentLevel = Lobby.Level;
+									Local0.Actor.MoveTo(
+										(Lobby.View.ContentActualWidth / 4) +
+										(Lobby.View.ContentActualWidth / 2).Random(),
+										Lobby.View.ContentActualHeight / 2);
 
-							Lobby.Window.BringContainerToFront();
+									this.CurrentPort = this.Lobby;
+									Lobby.Window.BringContainerToFront();
+								}
+							);
 
 						}
 
@@ -622,20 +653,8 @@ namespace AvalonUgh.Code
 
 				};
 
-			// we are going for the keyboard input
-			// we want to enable the tilde console feature
-			this.Container.FocusVisualStyle = null;
-			this.Container.Focusable = true;
-			this.Container.Focus();
 
-			// at this time we should add a local player
-			this.Container.MouseLeftButtonDown +=
-				(sender, key_args) =>
-				{
-					this.Container.Focus();
-				};
 
-			(1000 / 50).AtInterval(Think);
 
 
 			this.Levels.AddRange(
@@ -645,165 +664,124 @@ namespace AvalonUgh.Code
 			Lobby.Menu.Play +=
 				delegate
 				{
-					var Resumeable = this.Ports.FirstOrDefault(k => k.PortIdentity == PortIdentity_Mission);
-
-					if (Resumeable != null)
-					{
-						Lobby.Menu.Hide();
-
-						//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Mission);
-
-
-						Local0.Actor.CurrentLevel = Resumeable.Level;
-
-						Resumeable.BringContainerToFront();
-
-						Console.WriteLine("resume...");
-
-						return;
-					}
-
-					if (this.Levels.Any(k => k.Data == null))
-					{
-						Console.WriteLine("loading...");
-						return;
-					}
-
-					var NextLevel = this.Levels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
-
-					if (NextLevel == null)
-					{
-						// password does not match
-						NextLevel = this.Levels.FirstOrDefault(k => k.Code.ToLower() == "cavity");
-					}
-
-					if (NextLevel == null)
-					{
-						Console.WriteLine("no next level...");
-						return;
-					}
-
-
-					//Menu.Hide();
-
-					Console.WriteLine("loading level - " + NextLevel.Text);
-
-					LevelIntro.LevelNumber = NextLevel.Location.Embedded.AnimationFrame;
-					LevelIntro.LevelTitle = NextLevel.Text;
-					LevelIntro.LevelPassword = NextLevel.Code;
-
-			
-					// fade in the level start menu
-					// create and load new port
-					// hide other ports
-					// fade out
-
-					// if we are in multyplayer
-					// we need to do this in sync
-
-					var NextLevelPort =
-						new Port
-						{
-							Selectors = this.Selectors,
-
-							Zoom = DefaultZoom,
-
-							Padding = args.WindowPadding,
-							Width = args.PortWidth,
-							StatusbarHeight = 18,
-							Height = args.PortHeight,
-
-							PortIdentity = PortIdentity_Mission,
-
-							LevelReference = NextLevel,
-
-						};
-
-					PrimaryMission = NextLevelPort;
-
-					NextLevelPort.Hide();
-
-					this.Ports.Add(NextLevelPort);
-
-					LevelIntro.BringContainerToFront();
-					LevelIntro.AnimatedOpacity = 1;
-
-
-					this.LocalIdentity.HandleFutureFrame(
-						100,
+					// fade this to black
+					// switch the ports
+					// fade in the intro
+					// load
+					// fade to black
+					// fade to view
+					this.Lobby.Window.ColorOverlay.Element.BringToFront();
+					this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
+					this.Lobby.Window.ColorOverlay.SetOpacity(1,
 						delegate
 						{
-							Local0.Actor.CurrentLevel = NextLevelPort.Level;
+							var NextLevel2 = this.Levels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
 
-							var StartPositionStone = NextLevelPort.Level.KnownStones.Random(k => k.Selector.PrimitiveTileCountX > 1 && k.Selector.PrimitiveTileCountY > 1);
+							if (NextLevel2 == null)
+							{
+								// password does not match
+								NextLevel2 = this.Levels.FirstOrDefault(k => k.Code.ToLower() == "cavity");
+							}
+
+							if (NextLevel2 == null)
+							{
+								Console.WriteLine("no next level...");
+								return;
+							}
 
 
-							Local0.Actor.CurrentVehicle =
-								new Vehicle(DefaultZoom).AddTo(NextLevelPort.Level.KnownVehicles);
-							Local0.Actor.CurrentVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
+							//Menu.Hide();
 
-							Lobby.Menu.Hide();
+							Console.WriteLine("loading level - " + NextLevel2.Text);
 
-							NextLevelPort.Show();
+							// fade in the level start menu
+							// create and load new port
+							// hide other ports
+							// fade out
+
+							// if we are in multyplayer
+							// we need to do this in sync
 
 
-							LevelIntro.AnimatedOpacity = 0;
+							//PrimaryMission.LevelReference = NextLevel;
+							PrimaryMission.Intro.LevelNumber = NextLevel2.Location.Embedded.AnimationFrame;
+							PrimaryMission.Intro.LevelTitle = NextLevel2.Text;
+							PrimaryMission.Intro.LevelPassword = NextLevel2.Code;
+
+							PrimaryMission.Intro.Show();
+							PrimaryMission.Fail.Hide();
+
+							this.CurrentPort = this.PrimaryMission;
+
+							PrimaryMission.BringContainerToFront();
+							PrimaryMission.Window.ColorOverlay.SetOpacity(0,
+								delegate
+								{
+									if (PrimaryMission.LevelReference == null)
+										PrimaryMission.LevelReference = NextLevel2;
+
+									PrimaryMission.WhenLoaded(
+										delegate
+										{
+											PrimaryMission.Window.ColorOverlay.SetOpacity(1,
+												delegate
+												{
+													Local0.Actor.CurrentLevel = PrimaryMission.Level;
+
+													var StartPositionStone = PrimaryMission.Level.KnownStones.Random(k => k.Selector.PrimitiveTileCountX > 1 && k.Selector.PrimitiveTileCountY > 1);
+
+													Local0.Actor.CurrentVehicle = new Vehicle(DefaultZoom).AddTo(PrimaryMission.Level.KnownVehicles);
+													Local0.Actor.CurrentVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
+
+													PrimaryMission.Intro.Hide();
+													PrimaryMission.Window.ColorOverlay.Opacity = 0;
+												}
+											);
+										}
+									);
+								}
+							);
 						}
 					);
+
+
+
 				};
 
-			this.Editor.LoadWindow.Click +=
-				NextLevelForEditor =>
-				{
-					Editor.LevelReference = NextLevelForEditor;
 
-					this.Editor.LoadWindow.Hide();
-				};
 
 			OpenEditor =
 				delegate
 				{
-
-					this.LocalIdentity.HandleFutureFrame(
+					this.Editor.Window.ColorOverlay.Opacity = 1;
+					this.Lobby.Window.ColorOverlay.SetOpacity(1,
 						delegate
 						{
-							Lobby.Level.KnownActors.Remove(Local0.Actor);
-
-							if (this.Editor.LevelReference == null)
-							{
-								
-
-
-								this.Editor.LevelReference = new LevelReference(0);
-							}
-							else
-							{
-								Local0.Actor.CurrentLevel = Editor.Level;
-								Local0.Actor.MoveTo(
-											(Editor.View.ContentActualWidth / 4) +
-											(Editor.View.ContentActualWidth / 2).Random(),
-											Editor.View.ContentActualHeight / 2);
-
-
-							}
-
-							//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Editor);
+							this.CurrentPort = this.Editor;
 
 							this.Editor.BringContainerToFront();
 							this.Editor.Toolbar.BringContainerToFront();
-
-							// we are entering the editor
-							// if anyone is there
-							// then we need to sync
-							Lobby.Menu.Hide();
 							this.Editor.Toolbar.Show();
 
+							this.Editor.LevelReference = new LevelReference(0);
+							this.Editor.WhenLoaded(
+								delegate
+								{
+									this.Editor.Window.ColorOverlay.Opacity = 0;
 
-
+									Local0.Actor.CurrentLevel = this.Editor.Level;
+								}
+							);
 						}
 					);
+
+
 				};
 
+
+			this.EnableKeyboardFocus();
+
+			(1000 / 50).AtInterval(Think);
 		}
 
 
