@@ -339,9 +339,8 @@ namespace AvalonUgh.Code
 			).AttachContainerTo(this.WaterContainer);
 
 			var CurrentSnow = new Snow(
-				this.ContentExtendedWidth,
-				this.ContentExtendedHeight,
-				this.Level.Zoom
+				this
+				
 			).AttachContainerTo(this.SnowContainer);
 
 			if (!Level.AttributeSnow.BooleanValue)

@@ -1,0 +1,35 @@
+# generated map
+# text: Two birds but easy to fly
+# code: REFLECTIONS
+# autoscroll: 0
+# water: 28
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background: 
+######################
+ SSS-S-         S-    
+ ||| | S-S-S-SS-| SS- 
+ S-| S-| | | || | ||  
+ | C-| | | SS-| SS-|  
+ | | | | SS-| SS-| |  
+# sign: 104;2
+# rock: 128
+ P--PP---|| | || S--S-
+ |  SS-S-S| SS-| |  | 
+ R-S-| | S-S-| SS-C-| 
+ | | | | | | | || | | 
+# sign: 280;3
+ S-| | SSS-SS-BBBBP-- 
+ SS-S--||| || S-S-|   
+ || |  S-| S| | S--R--
+ S| SS-| SS-| | |  |  
+ C-S|| | || S-S-C-R|  
+ | |S| |  | | | | FR--
+# tree: 128
+# sign: 152;1
+# sign: 248;4
+ P--P-P--PBS-BPP--R|  
+ |  | |  S-| S-|  |R--
+         | | |     |  
+######################

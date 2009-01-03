@@ -1,0 +1,36 @@
+# generated map
+# text: What a rainy day
+# code: RAWWAR
+# autoscroll: 0
+# water: 28
+# water-rise: 0
+# wind: 1
+# snow: 1
+# background: 
+######################
+    S-  S-  S-S-R--   
+S-S-| S-| S-| | |  R--
+| | C-| | | SS-S-R-|  
+| | | | S | || | | R- 
+# sign: 152;1
+ S-P-BBBBBBP-| | S-|  
+ | | S-S-S-| | | SS-- 
+ | S-| | | S-SS-S-|   
+ S-| SSS-| | || | C-S-
+ C-| ||| S-S--| | | F 
+# sign: 280;2
+ | | S | | |  | BBBP--
+# sign: 104;3
+# rock: 128
+ P-BBBBBB| S-S-S-S-|  
+ | SSS-S-| | | | SS-R-
+ S-||| | S-| S-S-|| | 
+ | S-| S-| C-| | S| R-
+ | | S-| S | | | S-SS-
+# tree: 128
+# sign: 168;4
+# tryo: 96
+ | | P-BBBBBBBBP-| || 
+ SR--| S--SS-S-| R--| 
+ ||    |  ||     |  | 
+######################
