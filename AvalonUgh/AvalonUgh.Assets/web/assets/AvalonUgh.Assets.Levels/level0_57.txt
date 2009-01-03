@@ -1,0 +1,36 @@
+# generated map
+# text: Tower of babel
+# code: FOURHORSEMEN
+# autoscroll: 0
+# water: 64
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+ S--S-S  S-S-         
+ |  | |C-| | R-C-SS-- 
+ S-S|  | | S-R-|  |   
+# sign: 104;0
+# sign: 280;5
+ | |P-P-P-S| | P---S- 
+ | S-RR--S-| SR--SSS- 
+S--S-S|  | S-||  |||  
+|  | C-R-| | S-R-S-|  
+SS-| | | | S-| | | |  
+# sign: 72;4
+|| BBBB| C-| | S-| S- 
+S| S-S-R-|  S--| C-|  
+# sign: 184;3
+ C-| | R-BBB|  | | |  
+# tree: 320
+# sign: 248;2
+ | | S | SS-S-SP-P-P- 
+# sign: 104;1
+# rock: 80
+P---P--R-|| | S-R| RS-
+ S-S-R-| S| | | SR-S- 
+ | | | R--| S-| || |  
+ | S-SR|  S-| S--R-|  
+ S-| |R-R-R-| |  | S- 
+ | |  | | | |      |  
+######################

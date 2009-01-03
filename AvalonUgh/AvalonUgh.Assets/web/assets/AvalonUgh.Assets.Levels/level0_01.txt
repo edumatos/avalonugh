@@ -1,5 +1,5 @@
 # generated map
-# text: Introducing bird
+# text: Introducing platforms
 # code: CAVITY
 # autoscroll: 0
 # water: 32

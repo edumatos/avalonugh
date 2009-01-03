@@ -10,7 +10,6 @@ using System.Windows.Shapes;
 using AvalonUgh.Code;
 using AvalonUgh.Code.Dialogs;
 using AvalonUgh.Code.Input;
-using AvalonUgh.Game.Shared;
 using AvalonUgh.NetworkCode.Shared;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
@@ -20,7 +19,7 @@ using System.ComponentModel;
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
 
-	using TargetCanvas = AvalonUgh.Game.Shared.GameCanvas;
+	using TargetCanvas = Workspace;
 	using AvalonUgh.Code.Editor;
 
 	[Script]

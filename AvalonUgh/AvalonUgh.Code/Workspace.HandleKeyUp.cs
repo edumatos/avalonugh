@@ -171,6 +171,8 @@ namespace AvalonUgh.Code
 
 
 							this.CurrentPort = this.Lobby;
+							this.CurrentPort.Players.AddRange(this.LocalIdentity.Locals.ToArray());
+
 							this.Lobby.Window.BringContainerToFront();
 							this.Lobby.Window.ColorOverlay.Opacity = 0;
 						}
