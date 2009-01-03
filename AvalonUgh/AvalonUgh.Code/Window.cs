@@ -20,6 +20,9 @@ namespace AvalonUgh.Code
 		public Canvas ContentContainer { get; set; }
 		public Canvas OverlayContainer { get; set; }
 
+		public readonly AnimatedOpacity<Rectangle> ColorOverlay;
+
+
 		public int Width { get; set; }
 		public int Height { get; set; }
 		public int BorderWidth { get; set; }
@@ -113,6 +116,8 @@ namespace AvalonUgh.Code
 
 					this.ContentContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
 					this.OverlayContainer.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
+					this.ColorOverlay.Element.SizeTo(this.ClientWidth, this.ClientHeight).MoveTo(this.Padding, this.Padding);
+
 					this.OverlayContainer.ClipTo(0, 0, this.ClientWidth, this.ClientHeight);
 
 					ThreeD_Top.SizeTo(
@@ -159,6 +164,14 @@ namespace AvalonUgh.Code
 				};
 
 			this.OverlayContainer = new Canvas().AttachTo(this.Container);
+
+			this.ColorOverlay = new Rectangle
+			{
+				Fill = Brushes.Black,
+				Opacity = 0
+			}.AttachTo(this.Container).ToAnimatedOpacity();
+
+			this.ColorOverlay.Opacity = 0;
 
 			InternalPadding = BorderWidth + 4;
 

@@ -21,15 +21,28 @@ namespace AvalonUgh.Code
 {
 	partial class Workspace
 	{
+		public Port CurrentPort;
+
+		public MissionPort PrimaryMission;
+		public Port CaveMission;
+		public EditorPort Editor;
+		public LobbyPort Lobby;
+
 		[Script]
 		public class Port : ISupportsContainer
 		{
 			public readonly Window Window = new Window();
 
+
 			public Port()
 			{
 				this.Window.ContentContainer.Background = Brushes.Black;
+
+
+		
 			}
+
+
 
 			public Canvas Container
 			{
@@ -48,8 +61,24 @@ namespace AvalonUgh.Code
 
 			public int Padding { get { return this.Window.Padding; } set { this.Window.Padding = value; } }
 
-			public int Width { get { return this.Window.ClientWidth; } set { this.Window.ClientWidth = value; } }
-			public int Height { get { return this.Window.ClientHeight; } set { this.Window.ClientHeight = value; } }
+			public int Width
+			{
+				get { return this.Window.ClientWidth; }
+				set
+				{
+					this.Window.ClientWidth = value;
+					this.Window.ColorOverlay.Element.Width = value;
+				}
+			}
+			public int Height
+			{
+				get { return this.Window.ClientHeight; }
+				set
+				{
+					this.Window.ClientHeight = value;
+					this.Window.ColorOverlay.Element.Height = value;
+				}
+			}
 
 			public int Zoom;
 
@@ -68,6 +97,9 @@ namespace AvalonUgh.Code
 					return true;
 				}
 			}
+
+
+
 			LevelReference InternalLevelReference;
 			public LevelReference LevelReference
 			{
@@ -101,6 +133,7 @@ namespace AvalonUgh.Code
 							this.View.Show(this.InternalVisible);
 							this.View.AttachContainerTo(this.Window.ContentContainer);
 
+
 							// we are doing some advanced layering now
 							var TouchContainerForViewContent = new Canvas
 							{
@@ -117,7 +150,7 @@ namespace AvalonUgh.Code
 							View.MoveContentTo();
 							View.TouchOverlay.Orphanize().AttachTo(TouchContainerForViewContent);
 
-							
+
 
 							if (this.Loaded != null)
 								this.Loaded();
@@ -219,7 +252,7 @@ namespace AvalonUgh.Code
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
 				this.LoadWindow = new LoadWindow(args.Levels);
-				
+
 				this.Selectors = args.Selectors;
 
 
@@ -257,6 +290,85 @@ namespace AvalonUgh.Code
 					}
 				);
 
+				this.LoadWindow.Click +=
+					NextLevelForEditor =>
+					{
+						this.LoadWindow.Hide();
+
+						this.Window.ColorOverlay.SetOpacity(1,
+							delegate
+							{
+								this.LevelReference = NextLevelForEditor;
+
+								this.WhenLoaded(
+									delegate
+									{
+										this.Window.ColorOverlay.Opacity = 0;
+									}
+								);
+							}
+						);
+
+					};
+
+			}
+		}
+
+
+		[Script]
+		public class MissionPort : Port
+		{
+			public readonly LevelIntroDialog Intro;
+			public readonly Dialog Fail;
+
+			[Script]
+			public class ConstructorArguments
+			{
+				public int Width;
+				public int Height;
+				public int Zoom;
+			}
+
+			public MissionPort(ConstructorArguments args)
+			{
+				this.Zoom = args.Zoom;
+
+				this.Width = args.Width;
+				this.StatusbarHeight = 18;
+				this.Height = args.Height;
+
+
+				this.Intro = new LevelIntroDialog
+				{
+					Width = args.Width,
+					Height = args.Height,
+					Zoom = args.Zoom,
+				};
+
+				this.Intro.AttachContainerTo(this.Window.OverlayContainer);
+
+				this.Fail = new Dialog
+				{
+					Width = args.Width,
+					Height = args.Height,
+					Zoom = args.Zoom,
+					BackgroundVisible = false,
+					VerticalAlignment = VerticalAlignment.Center,
+					Text = @"
+				   bad luck
+				  you failed
+				"
+				};
+
+				this.Fail.AttachContainerTo(this.Window.OverlayContainer);
+				
+
+				this.WhenLoaded(
+					delegate
+					{
+						this.Intro.BringContainerToFront();
+					}
+				);
 			}
 		}
 	}
