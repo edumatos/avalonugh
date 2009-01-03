@@ -59,7 +59,10 @@ namespace AvalonUgh.Code
 					this.AIInputEnabled = false;
 
 					this.MoveTo(v.X, v.Y - this.ToObstacle().Height / 2);
-					this.BringContainerToFront();
+
+					if (this.CurrentLevel != null)
+						this.BringContainerToFront();
+
 					this.Show();
 
 					if (v.CurrentDriver != null)

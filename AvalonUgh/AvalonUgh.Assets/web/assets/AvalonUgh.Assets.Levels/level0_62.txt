@@ -1,0 +1,37 @@
+# generated map
+# text: Unknown destination
+# code: ALPHASUNSET
+# autoscroll: 0
+# water: 20
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+      S-      S-      
+ SS-S-| C-S-C-| SS-S- 
+ || | S | | |  S|| |  
+# sign: 120;2
+# sign: 232;2
+# rock: 80
+S-| BBP-P-| P-BBB| |  
+# tree: 176
+ SS-S-S-| P-| S--| S- 
+ || | | S-| C-|  S-SS-
+S-| | | | | |  S-| || 
+# sign: 232;3
+| | | S-C-R-P---S-S-| 
+ S-R-- S| | S-S-| | S-
+# sign: 104;4
+ | |  BBP-R-C-| | SS- 
+S--S-S-S| | | S | ||  
+# sign: 248;5
+|  | | |S-| P-P-BBS|  
+S-SS-S--| R-| S-SS-S- 
+| || |  | | SS| || |  
+ R-| SC-S-R-|C-S-| |  
+ | |  | FR-R-| | | R- 
+# sign: 88;0
+# sign: 248;0
+ R-P---P-| | P-P---|  
+ | |   | | | | |      
+######################

@@ -1,0 +1,36 @@
+# generated map
+# text: Dino and the bird
+# code: ARINGINGINTHEIREARS
+# autoscroll: 0
+# water: 20
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+         S-SS-        
+ S-S-SS-S| || C-SS-S- 
+ | | || ||  | | || S- 
+# sign: 184;1
+ | SS-| S-SP-P-P-| |  
+ S-|| C-| S-RR-RS| SS-
+ |  | | | | S| S--S-| 
+# tree: 48
+# sign: 56;2
+P-P-P-PP-SSS-R-|  | | 
+SSS-| SS-||| | S-S-S- 
+||| S-|| S-| | | | |  
+# dino: 312
+SS| | S--| C-R-| SP-P-
+||| | |  | | | SSS-S| 
+# sign: 168;3
+# rock: 160
+ S-PP-P-P--PPR-||| S- 
+ | S-S| |  S-| S-| |  
+S-S| C-S-R-SS-S| S-S- 
+|  | | | | || || S-|  
+# sign: 40;4
+ PP-PP-P-R-S| S- | |  
+# sign: 264;5
+ S| SS-| | || P-PBBBP 
+    ||                
+######################

@@ -1,0 +1,37 @@
+# generated map
+# text: Dinos deep dungeon
+# code: THEGOLDENAGE
+# autoscroll: 0
+# water: 20
+# water-rise: 0
+# snow: 0
+# background: 
+######################
+ SS-  S-  S           
+ || C-| S-|S--S-S-SC- 
+ S| | | |  |  | |  |  
+# sign: 296;0
+# sign: 168;1
+# rock: 224
+ P-P--P-BBBBBP-S| P-- 
+ | |  | S--S-| |S-|   
+ R-SS-S-|  | R-SS-R-- 
+ C-|| | SS-| | || |   
+ |  | | || | R-S| R-R 
+# sign: 56;1
+ P--PS-S-| SR--S--S-S 
+ |  S| | S-||  |  | | 
+# dino: 312
+ S-S-| | | C-R-SS-P-- 
+ | S-S-- | | | || R-S-
+# tree: 160
+# sign: 136;3
+ | | |  P---P| S| | | 
+ | | SS-S-S-S-S-| S-| 
+S-C-S|| S-| | | S-SC- 
+FF| | | | | S-| |  |  
+# sign: 296;5
+# sign: 88;4
+ P-P-PP-| | | S-| P-- 
+ | |        | | | |   
+######################
