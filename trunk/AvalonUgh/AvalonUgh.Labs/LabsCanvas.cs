@@ -24,6 +24,8 @@ namespace AvalonUgh.Labs.Shared
 	[Script]
 	public class LabsCanvas : Canvas
 	{
+		public const int DefaultFramerate = Workspace.DefaultFramerate;
+
 		public const int PortWidth = 640;
 		public const int PortHeight = 400;
 

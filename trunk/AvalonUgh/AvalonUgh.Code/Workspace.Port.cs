@@ -33,13 +33,35 @@ namespace AvalonUgh.Code
 		{
 			public readonly Window Window = new Window();
 
+			public readonly BindingList<PlayerInfo> Players = new BindingList<PlayerInfo>();
+
+			public event Action<PlayerInfo> PlayerJoined;
 
 			public Port()
 			{
 				this.Window.ContentContainer.Background = Brushes.Black;
 
+				this.Players.ForEachNewOrExistingItem(
+					k =>
+					{
+						if (PlayerJoined != null)
+							PlayerJoined(k);
 
-		
+						Action DetectDeparture = null;
+
+						DetectDeparture =
+							delegate
+							{
+								if (k.Actor.CurrentLevel != this.Level)
+								{
+									k.Actor.CurrentLevelChanged -= DetectDeparture;
+									this.Players.Remove(k);
+								}
+							};
+
+						k.Actor.CurrentLevelChanged += DetectDeparture;
+					}
+				);
 			}
 
 
@@ -190,9 +212,21 @@ namespace AvalonUgh.Code
 
 			public void WhenLoaded(Action e)
 			{
-				Loaded += e;
+				if (Level == null)
+				{
+					Action handler = null;
 
-				if (Level != null)
+					handler =
+						delegate
+						{
+							this.Loaded -= handler;
+
+							e();
+						};
+
+					this.Loaded += handler;
+				}
+				else
 				{
 					e();
 				}
@@ -290,6 +324,29 @@ namespace AvalonUgh.Code
 					}
 				);
 
+				Action<PlayerInfo> AttachPlayerToLevel =
+					k =>
+					{
+						var c = this.Level.KnownCaves.FirstOrDefault();
+
+						if (c == null)
+						{
+							k.Actor.MoveTo(
+								(this.View.ContentActualWidth / 4) +
+								(this.View.ContentActualWidth / 2).Random(),
+								this.View.ContentActualHeight / 2);
+						}
+						else
+						{
+							k.Actor.MoveTo(c.X, c.Y);
+						}
+
+
+						k.Actor.CurrentLevel = this.Level;
+					};
+
+				this.PlayerJoined += AttachPlayerToLevel;
+
 				this.LoadWindow.Click +=
 					NextLevelForEditor =>
 					{
@@ -303,6 +360,14 @@ namespace AvalonUgh.Code
 								this.WhenLoaded(
 									delegate
 									{
+										// we need to bring back all the players!
+
+										// just jump randomly in
+										foreach (var k in this.Players)
+										{
+											AttachPlayerToLevel(k);
+										}
+
 										this.Window.ColorOverlay.Opacity = 0;
 									}
 								);
@@ -332,9 +397,9 @@ namespace AvalonUgh.Code
 			public MissionPort(ConstructorArguments args)
 			{
 				this.Zoom = args.Zoom;
+				this.StatusbarHeight = 18;
 
 				this.Width = args.Width;
-				this.StatusbarHeight = 18;
 				this.Height = args.Height;
 
 
@@ -361,7 +426,7 @@ namespace AvalonUgh.Code
 				};
 
 				this.Fail.AttachContainerTo(this.Window.OverlayContainer);
-				
+
 
 				this.WhenLoaded(
 					delegate

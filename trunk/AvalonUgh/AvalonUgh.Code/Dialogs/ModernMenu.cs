@@ -86,7 +86,6 @@ namespace AvalonUgh.Code.Dialogs
 			this.Height = Height;
 
 			this.DifficultyLevel = 1;
-			this.Players = 1;
 
 			this.Container = new Canvas
 			{
