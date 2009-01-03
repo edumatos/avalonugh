@@ -59,6 +59,7 @@ namespace AvalonUgh.Code.Editor
 					
 					new DemolishSelector(),
 					WaterLevel,
+					new SnowSelector(),
 					new BackgroundSelector(),
 
 					new Sprites.GoldSelector(),

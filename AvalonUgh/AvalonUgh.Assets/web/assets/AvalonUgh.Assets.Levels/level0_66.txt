@@ -1,0 +1,37 @@
+# generated map
+# text: To be on the tree
+# code: CHURCHOFNORETURN
+# autoscroll: 0
+# water: 28
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background: 
+######################
+   S--SS--S-  S-R--R--
+ C-|  ||  | S-| |  |  
+ | S S--C-| | | |  R--
+# sign: 72;0
+P--BB|  | | TS-S-R-|  
+# sign: 168;1
+|  S-S-SP-BBT| | S-|  
+SS-| | || S-TS-| | S--
+|| S-| T| TTT| S-| |  
+S| | S-TTTTC-| | SSC- 
+ C-| | TTR | S-| | |  
+# sign: 296;2
+# sign: 168;3
+# rock: 224
+ |  S--TR|BBBBBS-BBP--
+# sign: 56;4
+P--B|  TTTS-TS-| S-|  
+|  SSS-S-T| T| | | SR-
+ S-||| | TTTTS-S-| S--
+ | C-| | S-TS| | C-|  
+ | | | | S T|| | | S- 
+# sign: 168;0
+# sign: 248;5
+ | P-BBP-BBTBBBBBP-|  
+S--| S-| S-TS--S-| |  
+|    |   |  |  |   |  
+######################

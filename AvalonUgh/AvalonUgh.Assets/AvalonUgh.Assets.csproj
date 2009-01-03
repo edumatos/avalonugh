@@ -909,7 +909,16 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_60.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_61.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_62.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_63.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_64.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_65.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_66.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_66.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_65.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_64.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_63.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\btn_snow.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_62.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_61.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_60.png" />

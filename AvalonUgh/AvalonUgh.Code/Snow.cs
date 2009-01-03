@@ -43,18 +43,20 @@ namespace AvalonUgh.Code
 
 		public readonly DispatcherTimer Timer;
 
-		public Snow(int DefaultWidth, int DefaultHeight, int DefaultZoom)
+		public Snow(View view)
 		{
+
+
 			this.Container = new Canvas
 			{
-				Width = DefaultWidth,
-				Height = DefaultHeight
+				Width = view.ContentExtendedWidth,
+				Height = view.ContentExtendedHeight
 			};
 
-			var SnowFlake_Size = 128 * DefaultZoom;
+			var SnowFlake_Size = 128 * view.Level.Zoom;
 
-			var CountX = Convert.ToInt32(DefaultWidth / SnowFlake_Size) + 2;
-			var CountY = Convert.ToInt32(DefaultHeight / SnowFlake_Size) + 2;
+			var CountX = Convert.ToInt32(view.ContentExtendedWidth / SnowFlake_Size) + 2;
+			var CountY = Convert.ToInt32(view.ContentExtendedHeight / SnowFlake_Size) + 2;
 
 			var Name = new NameFormat
 			{
@@ -79,7 +81,10 @@ namespace AvalonUgh.Code
 				{
 					{
 						var y = (c * 2) % SnowFlake_Size;
-						var x = SnowFlake_Size - y;
+						var x = 0;
+
+						if (view.Level.AttributeWind.Value < 0) x = SnowFlake_Size - y;
+						else if (view.Level.AttributeWind.Value > 0) x = y;
 
 						Frames0.ForEach(
 							k => k.Image.MoveTo(x + k.offsetx, y + k.offsety)
@@ -88,7 +93,10 @@ namespace AvalonUgh.Code
 
 					{
 						var y = (c * 3) % SnowFlake_Size;
-						var x = SnowFlake_Size - y;
+						var x = 0;
+
+						if (view.Level.AttributeWind.Value < 0) x = SnowFlake_Size - y;
+						else if (view.Level.AttributeWind.Value > 0) x = y;
 
 						Frames1.ForEach(
 							k => k.Image.MoveTo(x + k.offsetx, y + k.offsety)

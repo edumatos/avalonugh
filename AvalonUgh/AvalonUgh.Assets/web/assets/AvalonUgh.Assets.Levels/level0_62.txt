@@ -4,7 +4,8 @@
 # autoscroll: 0
 # water: 20
 # water-rise: 0
-# snow: 0
+# wind: -1
+# snow: 1
 # background: 
 ######################
       S-      S-      

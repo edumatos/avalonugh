@@ -1,0 +1,36 @@
+# generated map
+# text: Dungeon divers
+# code: SPILTBLOOD
+# autoscroll: 0
+# water: 21
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background: 
+######################
+ S-     S-  S--S-S    
+ | C-S--| S-|  | |C-R-
+R--| |  S | SS-|  | | 
+# sign: 280;2
+# sign: 152;1
+|  P--P--P| || SP---| 
+S-R|  |  R-S-| R--R-- 
+| SS-S-S-| RS| |  |   
+| || | S--R-S-S|  S-S-
+ S-| | |  | | |R-S--| 
+ | R-C-S-SR-S--| |  | 
+ S-| | |  | |  RC-SSS 
+# tree: 128
+# sign: 152;3
+ | R-P-P--| SS-||  |S-
+# sign: 296;4
+ | | | |  R-|| |P--P| 
+S-S--| SS-| S| R|  S- 
+| |  S-|| S-|S-R-R-|  
+ S-C-| S| | S--| | |  
+ | | |  | | |  | S-S--
+# sign: 120;5
+# rock: 144
+ | P-BBBBP-S--S-S| |  
+   |     | |  | ||    
+######################

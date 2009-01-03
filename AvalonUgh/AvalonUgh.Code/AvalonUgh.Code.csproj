@@ -134,6 +134,7 @@
     <Compile Include="AIDirector.cs" />
     <Compile Include="AnimationDictionary.cs" />
     <Compile Include="AudioLoop.cs" />
+    <Compile Include="Editor\SnowSelector.cs" />
     <Compile Include="Workspace.Sync.cs" />
     <Compile Include="Snow.cs" />
     <Compile Include="Workspace.Port.cs" />
