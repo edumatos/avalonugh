@@ -71,13 +71,15 @@ namespace AvalonUgh.Code
 			public int DefaultHeight;
 		}
 
+		readonly AudioLoop Music;
+
 		public Workspace(ConstructorArguments args)
 		{
-			var Music = new AudioLoop
+			this.Music = new AudioLoop
 			{
 				Volume = 0.3,
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
-				Enabled = true,
+				//Enabled = true,
 			};
 
 
@@ -104,7 +106,7 @@ namespace AvalonUgh.Code
 						delegate
 						{
 							Console.WriteLine("port loaded " + new { NewPort.Width, NewPort.Height, NewPort.StatusbarHeight });
-					
+
 							NewPort.Level.KnownTryoperus.ForEachNewOrExistingItem(
 								NewTryo =>
 								{
@@ -145,7 +147,7 @@ namespace AvalonUgh.Code
 
 								};
 						};
-					
+
 				}
 			);
 
@@ -195,7 +197,7 @@ namespace AvalonUgh.Code
 				{
 					Selectors = this.Selectors,
 
-					
+
 
 
 
@@ -235,7 +237,7 @@ namespace AvalonUgh.Code
 
 				Padding = args.WindowPadding,
 				Width = args.PortWidth,
-				
+
 				Height = args.PortHeight,
 
 				PortIdentity = PortIdentity_Editor,
@@ -315,7 +317,7 @@ namespace AvalonUgh.Code
 					Height = args.PortHeight
 				})
 			{
-				
+
 				Selectors = this.Selectors,
 
 				PortIdentity = PortIdentity_Lobby,
@@ -343,58 +345,142 @@ namespace AvalonUgh.Code
 					NewPlayer.Actor.MoveTo(64, 64);
 				}
 			);
-
-			this.Sync_LocalsIncrease =
-				delegate
+			this.Players.ForEachItemDeleted(
+				DeletedPlayer =>
 				{
-					var p = new PlayerInfo
+					DeletedPlayer.Actor.CurrentLevel = null;
+				}
+			);
+
+			#region Sync_TeleportTo local implementation
+			this.Sync_TeleportTo =
+				(BindingList<PlayerInfo> a, int port, int local, double x, double y, double vx, double vy) =>
+				{
+					var p = a.SingleOrDefault(k => k.IdentityLocal == local);
+
+					if (p == null)
 					{
-						Identity = LocalIdentity,
-						Input = new PlayerInput
+						p = new PlayerInfo
 						{
-							Keyboard = this.SupportedKeyboardInputs[this.LocalIdentity.Locals.Count],
-						}
-					};
+							Identity = LocalIdentity,
+							Input = new PlayerInput
+							{
+								
+							}
+						};
 
-					this.LocalIdentity.Locals.Add(p);
+						if (a == this.LocalIdentity.Locals)
+							p.Input.Keyboard = this.SupportedKeyboardInputs[local];
+						else
+							p.Input.Keyboard = new KeyboardInput(new KeyboardInput.Arguments.Arrows());
 
-					if (this.CurrentPort != null)
-						if (this.CurrentPort.Level != null)
-						{
-							// where shall we spawn?
-							//p.Actor.CurrentLevel = this.CurrentPort.Level;
-							//p.Actor.MoveTo(
-							//    (this.CurrentPort.View.ContentActualWidth / 4) +
-							//    (this.CurrentPort.View.ContentActualWidth / 2).Random(),
-							//    this.CurrentPort.View.ContentActualHeight / 2);
 
-							this.CurrentPort.Players.Add(p);
-						}
+					}
 
-					
+					a.Add(p);
+
+					p.IdentityLocal = local;
+
+					var CurrentPort = this.Ports.Single(k => k.PortIdentity == port);
+
+					p.Actor.CurrentLevel = CurrentPort.Level;
+					p.Actor.MoveTo(x, y);
+					p.Actor.VelocityX = vx;
+					p.Actor.VelocityY = vy;
+				};
+			#endregion
+
+			this.Sync_RemoveLocalPlayer =
+				(BindingList<PlayerInfo> a, int local) =>
+				{
+					var p = a.SingleOrDefault(k => k.IdentityLocal == local);
+
+					if (p != null)
+					{
+						p.Input.Keyboard = null;
+						
+
+						a.Remove(p);
+					}
 				};
 
-			this.Sync_LocalsDecrease =
+			Action Sync_LocalsIncrease = null;
+			Action Sync_LocalsDecrease = null;
+
+			var Interactive_Players = 0;
+
+
+			Sync_LocalsDecrease =
 				delegate
 				{
-					var p = this.LocalIdentity.Locals.Last();
+					Interactive_Players--;
+					this.Sync_RemoveLocalPlayer(this.LocalIdentity.Locals, this.LocalIdentity.Locals.Last().IdentityLocal);
 
-					p.Input.Keyboard = null;
-					p.Actor.CurrentLevel = null;
-
-					this.LocalIdentity.Locals.Remove(p);
 				};
+
+			Sync_LocalsIncrease =
+				delegate
+				{
+					Interactive_Players++;
+
+					if (this.CurrentPort == this.Lobby)
+					{
+						var EntryPoint = this.Lobby.GetRandomEntrypoint((x, y) => new { x, y });
+
+						// this function call may need to be synchronized in time
+						// in network mode
+						this.Sync_TeleportTo(
+							this.LocalIdentity.Locals,
+							this.CurrentPort.PortIdentity,
+							this.LocalIdentity.Locals.Count,
+							EntryPoint.x,
+							EntryPoint.y,
+							0,
+							0
+						);
+					}
+
+					//else
+					//{
+					//    var p = new PlayerInfo
+					//    {
+					//        Identity = LocalIdentity,
+					//        Input = new PlayerInput
+					//        {
+					//            Keyboard = this.SupportedKeyboardInputs[this.LocalIdentity.Locals.Count],
+					//        }
+					//    };
+
+					//    this.LocalIdentity.Locals.Add(p);
+
+					//    if (this.CurrentPort != null)
+					//        if (this.CurrentPort.Level != null)
+					//        {
+					//            // where shall we spawn?
+					//            //p.Actor.CurrentLevel = this.CurrentPort.Level;
+					//            //p.Actor.MoveTo(
+					//            //    (this.CurrentPort.View.ContentActualWidth / 4) +
+					//            //    (this.CurrentPort.View.ContentActualWidth / 2).Random(),
+					//            //    this.CurrentPort.View.ContentActualHeight / 2);
+
+					//            this.CurrentPort.Players.Add(p);
+					//        }
+
+					//}
+
+				};
+
 
 			this.Lobby.Menu.PlayersChanged +=
 				delegate
 				{
-					var Players_add = (this.Lobby.Menu.Players - this.LocalIdentity.Locals.Count).Max(0);
-					var Players_remove = (this.LocalIdentity.Locals.Count - this.Lobby.Menu.Players).Max(0);
+					var Players_add = (this.Lobby.Menu.Players - Interactive_Players).Max(0);
+					var Players_remove = (Interactive_Players - this.Lobby.Menu.Players).Max(0);
 
-					Console.WriteLine(new { Players_add, Players_remove, this.Lobby.Menu.Players }.ToString());
+					Console.WriteLine(new { Players_add, Players_remove, Interactive_Players, this.Lobby.Menu.Players }.ToString());
 
-					Players_remove.Times(this.Sync_LocalsDecrease);
-					Players_add.Times(this.Sync_LocalsIncrease);
+					Players_remove.Times(Sync_LocalsDecrease);
+					Players_add.Times(Sync_LocalsIncrease);
 				};
 
 			Lobby.Menu.EnteringPasswordChanged +=
@@ -414,10 +500,10 @@ namespace AvalonUgh.Code
 						RespectPlatforms = true,
 						CanBeHitByVehicle = false,
 					},
-	
+
 				};
 
-	
+
 
 			// we need to play jumping sound
 			Local0.Actor.Jumping +=
@@ -638,17 +724,17 @@ namespace AvalonUgh.Code
 				}
 			);
 
-			
+
 
 			this.CurrentPort = this.Lobby;
 
 			//this.Players.Add(Local0);
 
-			
 
 
 
-			
+
+
 
 
 
@@ -682,7 +768,7 @@ namespace AvalonUgh.Code
 								NextLevel2 = KnownLevels.DefaultMissionLevel;
 							}
 
-				
+
 							Console.WriteLine("loading level - " + NextLevel2.Text);
 
 							// fade in the level start menu
@@ -769,7 +855,7 @@ namespace AvalonUgh.Code
 				};
 
 
-			
+
 			(1000 / DefaultFramerate).AtInterval(Think);
 
 			this.EnableKeyboardFocus();
