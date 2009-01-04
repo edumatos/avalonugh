@@ -329,16 +329,27 @@ namespace AvalonUgh.Code
 			// players contain all locals and external players
 			this.LocalIdentity.Locals.AttachTo(this.Players);
 
+			this.Players.ForEachNewOrExistingItem(
+				NewPlayer =>
+				{
+					// here we create an actor for remote and local players
+
+					NewPlayer.Actor = new Actor.man0(DefaultZoom)
+					{
+						RespectPlatforms = true,
+						CanBeHitByVehicle = false,
+					};
+
+					NewPlayer.Actor.MoveTo(64, 64);
+				}
+			);
+
 			this.Sync_LocalsIncrease =
 				delegate
 				{
 					var p = new PlayerInfo
 					{
-						Actor = new Actor.man0(DefaultZoom)
-						{
-							RespectPlatforms = true,
-							CanBeHitByVehicle = false,
-						},
+						Identity = LocalIdentity,
 						Input = new PlayerInput
 						{
 							Keyboard = this.SupportedKeyboardInputs[this.LocalIdentity.Locals.Count],
@@ -351,14 +362,16 @@ namespace AvalonUgh.Code
 						if (this.CurrentPort.Level != null)
 						{
 							// where shall we spawn?
-							p.Actor.CurrentLevel = this.CurrentPort.Level;
-							p.Actor.MoveTo(
-								(this.CurrentPort.View.ContentActualWidth / 4) +
-								(this.CurrentPort.View.ContentActualWidth / 2).Random(),
-								this.CurrentPort.View.ContentActualHeight / 2);
+							//p.Actor.CurrentLevel = this.CurrentPort.Level;
+							//p.Actor.MoveTo(
+							//    (this.CurrentPort.View.ContentActualWidth / 4) +
+							//    (this.CurrentPort.View.ContentActualWidth / 2).Random(),
+							//    this.CurrentPort.View.ContentActualHeight / 2);
 
 							this.CurrentPort.Players.Add(p);
 						}
+
+					
 				};
 
 			this.Sync_LocalsDecrease =
@@ -390,7 +403,7 @@ namespace AvalonUgh.Code
 					this.SupportedKeyboardInputs.ForEach(k => k.Disabled = Lobby.Menu.EnteringPassword != null);
 				};
 
-			this.Lobby.Menu.Players = 1;
+			//this.Lobby.Menu.Players = 1;
 
 			#region local0
 			var Local0 =
@@ -609,15 +622,17 @@ namespace AvalonUgh.Code
 
 					// we should load lobby only once
 
-					foreach (var k in this.LocalIdentity.Locals)
-					{
-						k.Actor.MoveTo(
-							(Lobby.View.ContentActualWidth / 4) +
-							(Lobby.View.ContentActualWidth / 2).Random(),
-							Lobby.View.ContentActualHeight / 2);
+					this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
-						k.Actor.CurrentLevel = Lobby.Level;
-					}
+					//foreach (var k in this.LocalIdentity.Locals)
+					//{
+					//    k.Actor.MoveTo(
+					//        (Lobby.View.ContentActualWidth / 4) +
+					//        (Lobby.View.ContentActualWidth / 2).Random(),
+					//        Lobby.View.ContentActualHeight / 2);
+
+					//    k.Actor.CurrentLevel = Lobby.Level;
+					//}
 
 					//Lobby.Window.ColorOverlay.Opacity = 0;
 				}

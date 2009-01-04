@@ -265,6 +265,17 @@ namespace AvalonUgh.Code
 						this.Menu.BringContainerToFront();
 					}
 				);
+
+				this.PlayerJoined +=
+					NewPlayer =>
+					{
+						NewPlayer.Actor.MoveTo(
+								(this.View.ContentActualWidth / 4) +
+								(this.View.ContentActualWidth / 2).Random(),
+								this.View.ContentActualHeight / 2);
+
+						NewPlayer.Actor.CurrentLevel = this.Level;
+					};
 			}
 		}
 

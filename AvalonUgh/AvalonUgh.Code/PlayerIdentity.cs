@@ -51,16 +51,18 @@ namespace AvalonUgh.Code
 
 		public override string ToString()
 		{
-			return new { Number, Name }.ToString();
+			return new { Number, Name, SyncFrame }.ToString();
 		}
 
 		public PlayerInfo this[int IdentityLocal]
 		{
 			get
 			{
-				return this.Locals.Single(k => k.IdentityLocal == IdentityLocal);
+				return this.Locals.SingleOrDefault(k => k.IdentityLocal == IdentityLocal);
 			}
 		}
+
+
 
 		public int HandleFutureFrame(Action handler)
 		{
@@ -69,9 +71,14 @@ namespace AvalonUgh.Code
 
 		public int HandleFutureFrame(int offset, Action handler)
 		{
+			return HandleFutureFrame(offset, handler, null);
+		}
+
+		public int HandleFutureFrame(int offset, Action handler, Action desync)
+		{
 			int FutureFrame = this.SyncFrame + this.SyncFrameWindow + offset;
 
-			HandleFrame(FutureFrame, handler);
+			HandleFrame(FutureFrame, handler, desync);
 
 			return FutureFrame;
 		}

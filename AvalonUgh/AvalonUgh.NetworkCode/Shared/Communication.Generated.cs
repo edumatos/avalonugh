@@ -213,31 +213,31 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void TeleportTo(int local, double x, double y, double vx, double vy)
+            public void TeleportTo(int frame, int local, int port, double x, double y, double vx, double vy)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.TeleportTo, args = new object[] { local, x, y, vx, vy } });
+                    Send(new SendArguments { i = Messages.TeleportTo, args = new object[] { frame, local, port, x, y, vx, vy } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.TeleportTo(local, x, y, vx, vy);
+                        Target__.TeleportTo(frame, local, port, x, y, vx, vy);
                     }
                 }
             }
-            public void UserTeleportTo(int user, int local, double x, double y, double vx, double vy)
+            public void UserTeleportTo(int user, int frame, int local, int port, double x, double y, double vx, double vy)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserTeleportTo, args = new object[] { user, local, x, y, vx, vy } });
+                    Send(new SendArguments { i = Messages.UserTeleportTo, args = new object[] { user, frame, local, port, x, y, vx, vy } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserTeleportTo(user, local, x, y, vx, vy);
+                        Target__.UserTeleportTo(user, frame, local, port, x, y, vx, vy);
                     }
                 }
             }
@@ -649,7 +649,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 }
                 public void UserTeleportTo(TeleportToArguments e)
                 {
-                    Target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                    Target.UserTeleportTo(this.user, e.frame, e.local, e.port, e.x, e.y, e.vx, e.vy);
                 }
                 public void UserVehicle_TeleportTo(Vehicle_TeleportToArguments e)
                 {
@@ -721,13 +721,13 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserKeyStateChanged(this.user, e.local, e.frame, e.sequence, e.key, e.state);
                 }
-                public void UserTeleportTo(int local, double x, double y, double vx, double vy)
+                public void UserTeleportTo(int frame, int local, int port, double x, double y, double vx, double vy)
                 {
-                    this.Target.UserTeleportTo(this.user, local, x, y, vx, vy);
+                    this.Target.UserTeleportTo(this.user, frame, local, port, x, y, vx, vy);
                 }
                 public void UserTeleportTo(UserTeleportToArguments e)
                 {
-                    this.Target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                    this.Target.UserTeleportTo(this.user, e.frame, e.local, e.port, e.x, e.y, e.vx, e.vy);
                 }
                 public void UserVehicle_TeleportTo(int index, double x, double y, double vx, double vy)
                 {
@@ -882,7 +882,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserTeleportTo(this.user, e.local, e.x, e.y, e.vx, e.vy);
+                    _target.UserTeleportTo(this.user, e.frame, e.local, e.port, e.x, e.y, e.vx, e.vy);
                 }
                 public void UserVehicle_TeleportTo(UserVehicle_TeleportToArguments e)
                 {
@@ -1070,7 +1070,9 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class TeleportToArguments
             {
+                public int frame;
                 public int local;
+                public int port;
                 public double x;
                 public double y;
                 public double vx;
@@ -1078,7 +1080,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ local = ").Append(this.local).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", local = ").Append(this.local).Append(", port = ").Append(this.port).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1088,7 +1090,9 @@ namespace AvalonUgh.NetworkCode.Shared
             [CompilerGenerated]
             public sealed partial class UserTeleportToArguments : WithUserArguments
             {
+                public int frame;
                 public int local;
+                public int port;
                 public double x;
                 public double y;
                 public double vx;
@@ -1096,7 +1100,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", local = ").Append(this.local).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", local = ").Append(this.local).Append(", port = ").Append(this.port).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1444,8 +1448,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserHello, e => { UserHello(new UserHelloArguments { user = e.GetInt32(0), name = e.GetString(1), frame = e.GetInt32(2) }); } },
                             { Messages.KeyStateChanged, e => { KeyStateChanged(new KeyStateChangedArguments { local = e.GetInt32(0), frame = e.GetInt32(1), sequence = e.GetInt32(2), key = e.GetInt32(3), state = e.GetInt32(4) }); } },
                             { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), local = e.GetInt32(1), frame = e.GetInt32(2), sequence = e.GetInt32(3), key = e.GetInt32(4), state = e.GetInt32(5) }); } },
-                            { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { local = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
-                            { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), local = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
+                            { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { frame = e.GetInt32(0), local = e.GetInt32(1), port = e.GetInt32(2), x = e.GetDouble(3), y = e.GetDouble(4), vx = e.GetDouble(5), vy = e.GetDouble(6) }); } },
+                            { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), frame = e.GetInt32(1), local = e.GetInt32(2), port = e.GetInt32(3), x = e.GetDouble(4), y = e.GetDouble(5), vx = e.GetDouble(6), vy = e.GetDouble(7) }); } },
                             { Messages.Vehicle_TeleportTo, e => { Vehicle_TeleportTo(new Vehicle_TeleportToArguments { index = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
                             { Messages.UserVehicle_TeleportTo, e => { UserVehicle_TeleportTo(new UserVehicle_TeleportToArguments { user = e.GetInt32(0), index = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
                             { Messages.LocalPlayers_Increase, e => { LocalPlayers_Increase(new LocalPlayers_IncreaseArguments { frame = e.GetInt32(0) }); } },
@@ -1623,18 +1627,18 @@ namespace AvalonUgh.NetworkCode.Shared
             }
 
             public event Action<RemoteEvents.TeleportToArguments> TeleportTo;
-            void IMessages.TeleportTo(int local, double x, double y, double vx, double vy)
+            void IMessages.TeleportTo(int frame, int local, int port, double x, double y, double vx, double vy)
             {
                 if(TeleportTo == null) return;
-                var v = new RemoteEvents.TeleportToArguments { local = local, x = x, y = y, vx = vx, vy = vy };
+                var v = new RemoteEvents.TeleportToArguments { frame = frame, local = local, port = port, x = x, y = y, vx = vx, vy = vy };
                 this.VirtualLatency(() => this.TeleportTo(v));
             }
 
             public event Action<RemoteEvents.UserTeleportToArguments> UserTeleportTo;
-            void IMessages.UserTeleportTo(int user, int local, double x, double y, double vx, double vy)
+            void IMessages.UserTeleportTo(int user, int frame, int local, int port, double x, double y, double vx, double vy)
             {
                 if(UserTeleportTo == null) return;
-                var v = new RemoteEvents.UserTeleportToArguments { user = user, local = local, x = x, y = y, vx = vx, vy = vy };
+                var v = new RemoteEvents.UserTeleportToArguments { user = user, frame = frame, local = local, port = port, x = x, y = y, vx = vx, vy = vy };
                 this.VirtualLatency(() => this.UserTeleportTo(v));
             }
 
@@ -1819,4 +1823,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 27.12.2008 20:11:58
+// 4.01.2009 13:44:23
