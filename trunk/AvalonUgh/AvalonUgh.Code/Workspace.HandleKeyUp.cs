@@ -77,6 +77,26 @@ namespace AvalonUgh.Code
 				// when the view is in editor mode
 			}
 
+			// allow single frame step
+			if (args.Key == Key.PageUp)
+			{
+				if (this.LocalIdentity.SyncFramePaused)
+					this.LocalIdentity.SyncFramePausedSkip = true;
+				else
+					this.LocalIdentity.SyncFramePaused = true;
+
+				this.Console.WriteLine(this.LocalIdentity);
+			}
+
+			// instant pause
+			if (args.Key == Key.PageDown)
+			{
+				this.LocalIdentity.SyncFramePaused = !this.LocalIdentity.SyncFramePaused;
+
+				this.Console.WriteLine(this.LocalIdentity);
+			}
+
+
 			if (this.LocalIdentity.SyncFramePaused)
 			{
 				// if the game is paused
@@ -107,18 +127,7 @@ namespace AvalonUgh.Code
 				this.Sync_SetPause(true, "you");
 			}
 
-			// allow single frame step
-			if (args.Key == Key.PageUp)
-			{
-				this.LocalIdentity.SyncFramePausedSkip = true;
-			}
-
-			// instant pause
-			if (args.Key == Key.PageDown)
-			{
-				this.LocalIdentity.SyncFramePaused = !this.LocalIdentity.SyncFramePaused;
-			}
-
+		
 			if (args.Key == Key.Insert)
 			{
 				// more locals!
@@ -157,7 +166,7 @@ namespace AvalonUgh.Code
 						delegate
 						{
 							// entering lobby
-							
+
 							// just jump randomly in
 							foreach (var k in this.LocalIdentity.Locals)
 							{

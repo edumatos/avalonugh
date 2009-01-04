@@ -19,7 +19,6 @@ using System.ComponentModel;
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
 
-	using TargetCanvas = Workspace;
 	using AvalonUgh.Code.Editor;
 
 	[Script]
@@ -34,13 +33,24 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		// http://trac.bookofhook.com/bookofhook/trac.cgi/wiki/Quake3Networking
 		// http://trac.bookofhook.com/bookofhook/trac.cgi/wiki/IntroductionToMultiplayerGameProgramming
 
-		public const int DefaultWidth = TargetCanvas.DefaultWidth;
-		public const int DefaultHeight = TargetCanvas.DefaultHeight;
-		public const int Zoom = TargetCanvas.Zoom;
+		public const int DefaultFramerate = Workspace.DefaultFramerate;
+
+		public const int PortWidth = 640;
+		public const int PortHeight = 400;
+
+#if DEBUG
+		public const int WindowPadding = 4;
+		public const int DefaultWidth = 700;
+		public const int DefaultHeight = 500;
+#else
+		public const int WindowPadding = 0;
+		public const int DefaultWidth = PortWidth;
+		public const int DefaultHeight = PortHeight;
+#endif
 
 		public Canvas Container { get; set; }
 
-		public TargetCanvas Content;
+		public Workspace Content;
 
 		public NetworkClient()
 		{
@@ -82,23 +92,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.CoPlayers.ForEachNewItem(
 				c =>
 				{
-					c.Locals.ForEachNewItem(
-						p =>
-						{
-							this.Content.Players.Add(p);
-
-							// at this point we should add listeners to events specific to
-							// this remote local
-
-							//this.Content.Console.WriteLine("attaching to remote local events " + p);
-
-
-
-						}
-					);
-
-					c.Locals.ForEachItemDeleted(p => this.Content.Players.Remove(p));
-
+					c.Locals.AttachTo(this.Content.Players);
 
 				}
 			);
@@ -116,7 +110,19 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 			#endregion
 
-			Content = new TargetCanvas().AttachTo(this);
+			Content = new Workspace(
+				new Workspace.ConstructorArguments
+				{
+					WindowPadding = WindowPadding,
+
+					PortWidth = PortWidth,
+					PortHeight = PortHeight,
+
+					DefaultWidth = DefaultWidth,
+					DefaultHeight = DefaultHeight
+				}
+			).AttachContainerTo(this);
+
 			Content.Console.WriteLine("InitializeEvents");
 
 			this.Events.Server_Hello +=
@@ -153,18 +159,34 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						new PlayerIdentity { Name = e.name, Number = e.user }
 					);
 
+					// this event happens at a later timepoint
+					// if someone joins after us
 					// there is some catching up to do
 					// like we need to tell it about our locals
 
-					foreach (var p in this.Content.LocalIdentity.Locals)
+					foreach (var Local in this.Content.LocalIdentity.Locals)
 					{
-						this.Messages.UserLocalPlayers_Increase(e.user, 0);
+						//this.Messages.UserLocalPlayers_Increase(e.user, 0);
+						//this.Messages.UserTeleportTo(e.user,
+						//    p.IdentityLocal,
+						//    p.Actor.X,
+						//    p.Actor.Y,
+						//    p.Actor.VelocityX,
+						//    p.Actor.VelocityY
+						//);
+
 						this.Messages.UserTeleportTo(e.user,
-							p.IdentityLocal,
-							p.Actor.X,
-							p.Actor.Y,
-							p.Actor.VelocityX,
-							p.Actor.VelocityY
+							0,
+
+							Local.IdentityLocal,
+
+							// which port are our local players in?
+							this.Content.CurrentPort.PortIdentity,
+
+							Local.Actor.X,
+							Local.Actor.Y,
+							Local.Actor.VelocityX,
+							Local.Actor.VelocityY
 						);
 					}
 
@@ -218,36 +240,38 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 
 
-			(1000).AtInterval(
-				delegate
-				{
-					// we are on our own
-					if (this.CoPlayers.Count == 0)
-						return;
+			//(1000).AtInterval(
+			//    delegate
+			//    {
+			//        // we are on our own
+			//        if (this.CoPlayers.Count == 0)
+			//            return;
 
-					var AvgSyncFrame = this.CoPlayers.Average(k => k.SyncFrame);
-					var AvgSyncFrameLatency = this.CoPlayers.Average(k => k.SyncFrameLatency);
-					var AvgSyncFrameDelta = AvgSyncFrame - this.Content.LocalIdentity.SyncFrame;
+			//        var AvgSyncFrame = this.CoPlayers.Average(k => k.SyncFrame);
+			//        var AvgSyncFrameLatency = this.CoPlayers.Average(k => k.SyncFrameLatency);
+			//        var AvgSyncFrameDelta = AvgSyncFrame - this.Content.LocalIdentity.SyncFrame;
 
-					this.Content.Console.WriteLine(
-							new
-							{
-								avgframe = AvgSyncFrame,
-								frame = this.Content.LocalIdentity.SyncFrame,
-								framerate = this.Content.LocalIdentity.SyncFrameRate,
-								avglag = AvgSyncFrameLatency,
-								delta = AvgSyncFrameDelta
-							}
-						);
-				}
-			);
+			//        this.Content.Console.WriteLine(
+			//                new
+			//                {
+			//                    avgframe = AvgSyncFrame,
+			//                    frame = this.Content.LocalIdentity.SyncFrame,
+			//                    framerate = this.Content.LocalIdentity.SyncFrameRate,
+			//                    avglag = AvgSyncFrameLatency,
+			//                    delta = AvgSyncFrameDelta
+			//                }
+			//            );
+			//    }
+			//);
 
+			#region broadcast current frame
 			this.Content.LocalIdentity.SyncFrameChanged +=
 				delegate
 				{
 					this.Messages.SyncFrame(
 						this.Content.LocalIdentity.SyncFrame,
-						this.Content.LocalIdentity.SyncFrameRate
+						0
+						//this.Content.LocalIdentity.SyncFrameRate
 					);
 				};
 
@@ -274,13 +298,14 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					}
 
 					c.SyncFrame = e.frame;
-					c.SyncFrameRate = e.framerate;
+					//c.SyncFrameRate = e.framerate;
 
 					this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 
 					// lets send the same data back to calculate lag
-					this.Messages.UserSyncFrameEcho(e.user, e.frame, e.framerate);
+					this.Messages.UserSyncFrameEcho(e.user, e.frame, 0);
 				};
+			#endregion
 
 
 
@@ -317,17 +342,56 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							this.Content.Console.WriteLine("UserKeyStateChanged desync " + e);
 						}
 					);
-
-
-
 				};
 
 			this.Events.UserTeleportTo +=
 				e =>
 				{
-					var p = this[e][e.local];
+					var c = this[e.user];
+					var p = c[e.local];
+
+					if (p == null)
+					{
+
+						p = new PlayerInfo
+						{
+							Identity = c,
+							
+							
+
+							// remote users get a dummy remoted input with the same keys
+							Input =
+								new PlayerInput
+								{
+									Keyboard = new KeyboardInput(
+										new KeyboardInput.Arguments.Arrows
+										{
+											// there wont be any device to listen to tho
+										}
+									)
+								}
+
+						};
+
+						c.Locals.Add(p);
+
+						// we need to remeber how this remote object is identified
+						p.IdentityLocal = e.local;
+
+						Content.Console.WriteLine("added new remote player " + p);
+
+					}
 
 					Content.Console.WriteLine("UserTeleportTo " + e + " - " + p);
+
+					// in which port we should be at?
+					var CurrentPort = this.Content.Ports.SingleOrDefault(k => k.PortIdentity == e.port);
+
+					// to be safe lets only change ports if we are on none of them
+					if (p.Actor.CurrentLevel == null)
+					{
+						CurrentPort.Players.Add(p);
+					}
 
 					if (p.Actor.CurrentVehicle == null)
 					{
@@ -343,67 +407,78 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					}
 				};
 
-			this.Events.UserVehicle_TeleportTo +=
-				e =>
-				{
-					Content.Console.WriteLine("UserVehicle_TeleportTo " + e);
+			//this.Events.UserVehicle_TeleportTo +=
+			//    e =>
+			//    {
+			//        Content.Console.WriteLine("UserVehicle_TeleportTo " + e);
 
-					var v = this.Content.View.Level.KnownVehicles.Where(k => k.CurrentDriver == null).AtModulus(e.index);
+			//        var v = this.Content.View.Level.KnownVehicles.Where(k => k.CurrentDriver == null).AtModulus(e.index);
 
-					v.MoveTo(e.x, e.y);
-					v.VelocityX = e.vx;
-					v.VelocityY = e.vy;
-				};
-
-
-			#region sync Locals
-			this.Events.UserLocalPlayers_Decrease +=
-				e =>
-				{
-					var c = this[e];
-
-					Content.Console.WriteLine("UserLocalPlayers_Decrease " + e + " " + c);
-
-					c.Locals.Remove(c.Locals.Last());
-				};
-
-			this.Events.UserLocalPlayers_Increase +=
-				e =>
-				{
-					var c = this[e];
-
-					Content.Console.WriteLine("UserLocalPlayers_Increase " + e + " " + c);
-
-					var p = new PlayerInfo
-					{
-						Identity = c,
-						// remote users get a dummy remoted input with the same keys
-						Input =
-							new PlayerInput
-							{
-								Keyboard = new KeyboardInput(
-									new KeyboardInput.Arguments.Arrows
-									{
-										// there wont be any device to listen to tho
-									}
-								),
-								Touch = null
-							}
-
-					};
-
-					c.Locals.Add(p);
+			//        v.MoveTo(e.x, e.y);
+			//        v.VelocityX = e.vx;
+			//        v.VelocityY = e.vy;
+			//    };
 
 
-				};
+			//#region sync Locals
+			//this.Events.UserLocalPlayers_Decrease +=
+			//    e =>
+			//    {
+			//        var c = this[e];
+
+			//        Content.Console.WriteLine("UserLocalPlayers_Decrease " + e + " " + c);
+
+			//        c.Locals.Remove(c.Locals.Last());
+			//    };
+
+			//this.Events.UserLocalPlayers_Increase +=
+			//    e =>
+			//    {
+			//        var c = this[e];
+
+			//        Content.Console.WriteLine("UserLocalPlayers_Increase " + e + " " + c);
+
+			//        var p = new PlayerInfo
+			//        {
+			//            Identity = c,
+			//            // remote users get a dummy remoted input with the same keys
+			//            Input =
+			//                new PlayerInput
+			//                {
+			//                    Keyboard = new KeyboardInput(
+			//                        new KeyboardInput.Arguments.Arrows
+			//                        {
+			//                            // there wont be any device to listen to tho
+			//                        }
+			//                    ),
+			//                    Touch = null
+			//                }
+
+			//        };
+
+			//        c.Locals.Add(p);
 
 
-		
+			//    };
+
+
+
 			this.Content.LocalIdentity.Locals.ForEachNewOrExistingItem(
 				Local =>
 				{
-					this.Messages.LocalPlayers_Increase(0);
-					this.Messages.TeleportTo(Local.IdentityLocal,
+					this.Content.Console.WriteLine("letting others know about this new local player: " + Local);
+
+					// our local should be created insude a correct port
+
+					//this.Messages.LocalPlayers_Increase(0);
+					this.Messages.TeleportTo(
+						0,
+
+						Local.IdentityLocal,
+
+						// which port are our local players in?
+						this.Content.CurrentPort.PortIdentity,
+
 						Local.Actor.X,
 						Local.Actor.Y,
 						Local.Actor.VelocityX,
@@ -421,9 +496,9 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Action<Key, bool> Local_KeyStateChanged =
 						(key, state) =>
 						{
-							var FutureFrame = this.Content.LocalIdentity.SyncFrame + this.Content.LocalIdentity.SyncFrameWindow;
+							//var FutureFrame = this.Content.LocalIdentity.SyncFrame + this.Content.LocalIdentity.SyncFrameWindow;
 
-							this.Content.LocalIdentity.HandleFrame(FutureFrame,
+							var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(0,
 								delegate
 								{
 									LatencyKeyboard.KeyState[
@@ -462,6 +537,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							if (DeletedLocal != Local)
 								return;
 
+							/// we should delete our copies on the net too...
+
 							this.Content.Console.WriteLine("event remove KeyStateChanged " + Local);
 							ConnectedKeyboard.KeyStateChanged -= Local_KeyStateChanged;
 
@@ -474,91 +551,91 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				}
 			);
 
-			this.Content.LocalIdentity.Locals.ForEachItemDeleted(
-				Local => this.Messages.LocalPlayers_Decrease(0)
-			);
+			//this.Content.LocalIdentity.Locals.ForEachItemDeleted(
+			//    Local => this.Messages.LocalPlayers_Decrease(0)
+			//);
 
-			#endregion
+			//#endregion
 
-			#region EditorSelectorApplied
+			//#region EditorSelectorApplied
 
-			this.Content.View.EditorSelectorDisabled = true;
+			//this.Content.View.EditorSelectorDisabled = true;
 
-			this.Content.View.EditorSelectorApplied +=
-				(Selector, Position) =>
-				{
-					var FutureFrame = this.Content.LocalIdentity.SyncFrame + this.Content.LocalIdentity.SyncFrameWindow;
+			//this.Content.View.EditorSelectorApplied +=
+			//    (Selector, Position) =>
+			//    {
+			//        var FutureFrame = this.Content.LocalIdentity.SyncFrame + this.Content.LocalIdentity.SyncFrameWindow;
 
-					this.Content.LocalIdentity.HandleFrame(FutureFrame,
-						delegate
-						{
-							Selector.CreateTo(this.Content.View.Level, Position);
-						}
-					);
+			//        this.Content.LocalIdentity.HandleFrame(FutureFrame,
+			//            delegate
+			//            {
+			//                Selector.CreateTo(this.Content.View.Level, Position);
+			//            }
+			//        );
 
-					var Index = KnownSelectors.Index.Of(Selector, this.Content.Selectors);
+			//        var Index = KnownSelectors.Index.Of(Selector, this.Content.Selectors);
 
-					// unknown selector
-					if (Index.Type == -1)
-						return;
+			//        // unknown selector
+			//        if (Index.Type == -1)
+			//            return;
 
-					this.Messages.EditorSelector(FutureFrame, Index.Type, Index.Size, Position.ContentX, Position.ContentY);
-				};
+			//        this.Messages.EditorSelector(FutureFrame, Index.Type, Index.Size, Position.ContentX, Position.ContentY);
+			//    };
 
-			this.Events.UserEditorSelector +=
-				e =>
-				{
-					Content.Console.WriteLine("UserEditorSelector " + e);
+			//this.Events.UserEditorSelector +=
+			//    e =>
+			//    {
+			//        Content.Console.WriteLine("UserEditorSelector " + e);
 
-					this.Content.LocalIdentity.HandleFrame(
-						e.frame,
-						delegate
-						{
-							var Selector = this.Content.Selectors.Types[e.type].Sizes[e.size];
-							var Position = new View.SelectorPosition { ContentX = e.x, ContentY = e.y };
+			//        this.Content.LocalIdentity.HandleFrame(
+			//            e.frame,
+			//            delegate
+			//            {
+			//                var Selector = this.Content.Selectors.Types[e.type].Sizes[e.size];
+			//                var Position = new View.SelectorPosition { ContentX = e.x, ContentY = e.y };
 
-							Selector.CreateTo(this.Content.View.Level, Position);
-						},
-						delegate
-						{
-							this.Content.Console.WriteLine("error: desync!");
-						}
-					);
-				};
-			#endregion
+			//                Selector.CreateTo(this.Content.View.Level, Position);
+			//            },
+			//            delegate
+			//            {
+			//                this.Content.Console.WriteLine("error: desync!");
+			//            }
+			//        );
+			//    };
+			//#endregion
 
-			#region SetShakerEnabled
-			// we are overriding default behaviour
-			// as we need to act upon events in the future
-			this.Content.SetShakerEnabled =
-				value =>
-				{
-					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
-						delegate
-						{
-							this.Content.View.IsShakerEnabled = value;
-						}
-					);
+			//#region SetShakerEnabled
+			//// we are overriding default behaviour
+			//// as we need to act upon events in the future
+			//this.Content.SetShakerEnabled =
+			//    value =>
+			//    {
+			//        var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+			//            delegate
+			//            {
+			//                this.Content.View.IsShakerEnabled = value;
+			//            }
+			//        );
 
-					this.Messages.SetShakerEnabled(FutureFrame, Convert.ToInt32(value));
-				};
+			//        this.Messages.SetShakerEnabled(FutureFrame, Convert.ToInt32(value));
+			//    };
 
-			this.Events.UserSetShakerEnabled +=
-				e =>
-				{
-					this.Content.LocalIdentity.HandleFrame(e.frame,
-						delegate
-						{
-							this.Content.View.IsShakerEnabled = Convert.ToBoolean(e.value);
-						}
-					);
-				};
-			#endregion
+			//this.Events.UserSetShakerEnabled +=
+			//    e =>
+			//    {
+			//        this.Content.LocalIdentity.HandleFrame(e.frame,
+			//            delegate
+			//            {
+			//                this.Content.View.IsShakerEnabled = Convert.ToBoolean(e.value);
+			//            }
+			//        );
+			//    };
+			//#endregion
 
 
 			#region pause
-			var SetPause = this.Content.SetPause;
-			this.Content.SetPause =
+			var SetPause = this.Content.Sync_SetPause;
+			this.Content.Sync_SetPause =
 				(IsPaused, ByWhom) =>
 				{
 					if (IsPaused)
@@ -602,25 +679,25 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			#endregion
 
 
-			var LoadEmbeddedLevel = this.Content.LoadEmbeddedLevel;
-			this.Content.LoadEmbeddedLevel =
-				LevelNumber =>
-				{
-					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
-						delegate
-						{
-							LoadEmbeddedLevel(LevelNumber);
-						}
-					);
+			//var LoadEmbeddedLevel = this.Content.LoadEmbeddedLevel;
+			//this.Content.LoadEmbeddedLevel =
+			//    LevelNumber =>
+			//    {
+			//        var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+			//            delegate
+			//            {
+			//                LoadEmbeddedLevel(LevelNumber);
+			//            }
+			//        );
 
-					this.Messages.LoadEmbeddedLevel(FutureFrame, LevelNumber);
-				};
+			//        this.Messages.LoadEmbeddedLevel(FutureFrame, LevelNumber);
+			//    };
 
-			this.Events.UserLoadEmbeddedLevel +=
-				e =>
-				{
-					LoadEmbeddedLevel(e.level);
-				};
+			//this.Events.UserLoadEmbeddedLevel +=
+			//    e =>
+			//    {
+			//        LoadEmbeddedLevel(e.level);
+			//    };
 
 		}
 
