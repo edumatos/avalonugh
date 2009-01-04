@@ -100,6 +100,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.CoPlayers.ForEachItemDeleted(
 				c =>
 				{
+					// if coplayers leave at different times it will cause desync
 					this.Content.Console.WriteLine("removing all locals for " + c);
 
 
@@ -166,14 +167,14 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 					foreach (var Local in this.Content.LocalIdentity.Locals)
 					{
-						//this.Messages.UserLocalPlayers_Increase(e.user, 0);
-						//this.Messages.UserTeleportTo(e.user,
-						//    p.IdentityLocal,
-						//    p.Actor.X,
-						//    p.Actor.Y,
-						//    p.Actor.VelocityX,
-						//    p.Actor.VelocityY
-						//);
+						// !!! this will cause desync, !!!
+						// we should pause the new joiner until
+						// we have told him where all of our items are
+
+						// !!! we need to run out of frames
+						// enter a wait for this new joiner
+						// send our positions
+						// and resume...
 
 						this.Messages.UserTeleportTo(e.user,
 							0,
@@ -344,147 +345,82 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					);
 				};
 
+			#region networked Sync_TeleportTo
+			// save the local implementation
+			var Sync_TeleportTo = this.Content.Sync_TeleportTo;
+
 			this.Events.UserTeleportTo +=
 				e =>
 				{
 					var c = this[e.user];
-					var p = c[e.local];
 
-					if (p == null)
-					{
-
-						p = new PlayerInfo
+					this.Content.LocalIdentity.HandleFrame(e.frame,
+						delegate
 						{
-							Identity = c,
-							
-							
-
-							// remote users get a dummy remoted input with the same keys
-							Input =
-								new PlayerInput
-								{
-									Keyboard = new KeyboardInput(
-										new KeyboardInput.Arguments.Arrows
-										{
-											// there wont be any device to listen to tho
-										}
-									)
-								}
-
-						};
-
-						c.Locals.Add(p);
-
-						// we need to remeber how this remote object is identified
-						p.IdentityLocal = e.local;
-
-						Content.Console.WriteLine("added new remote player " + p);
-
-					}
-
-					Content.Console.WriteLine("UserTeleportTo " + e + " - " + p);
-
-					// in which port we should be at?
-					var CurrentPort = this.Content.Ports.SingleOrDefault(k => k.PortIdentity == e.port);
-
-					// to be safe lets only change ports if we are on none of them
-					if (p.Actor.CurrentLevel == null)
-					{
-						CurrentPort.Players.Add(p);
-					}
-
-					if (p.Actor.CurrentVehicle == null)
-					{
-						p.Actor.MoveTo(e.x, e.y);
-						p.Actor.VelocityX = e.vx;
-						p.Actor.VelocityY = e.vy;
-					}
-					else
-					{
-						p.Actor.CurrentVehicle.MoveTo(e.x, e.y);
-						p.Actor.CurrentVehicle.VelocityX = e.vx;
-						p.Actor.CurrentVehicle.VelocityY = e.vy;
-					}
+							Sync_TeleportTo(c.Locals, e.port, e.local, e.x, e.y, e.vx, e.vy);
+						},
+						delegate
+						{
+							this.Content.Console.WriteLine("UserTeleportTo desync " + e);
+						}
+					);
 				};
 
-			//this.Events.UserVehicle_TeleportTo +=
-			//    e =>
-			//    {
-			//        Content.Console.WriteLine("UserVehicle_TeleportTo " + e);
+			this.Content.Sync_TeleportTo =
+				(BindingList<PlayerInfo> a, int port, int local, double x, double y, double vx, double vy) =>
+				{
+					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+						delegate
+						{
+							// do a local teleport in the future
+							Sync_TeleportTo(a, port, local, x, y, vx, vy);
+						}
+					);
 
-			//        var v = this.Content.View.Level.KnownVehicles.Where(k => k.CurrentDriver == null).AtModulus(e.index);
+					this.Messages.TeleportTo(FutureFrame, local, port, x, y, vx, vy);
+				};
 
-			//        v.MoveTo(e.x, e.y);
-			//        v.VelocityX = e.vx;
-			//        v.VelocityY = e.vy;
-			//    };
+			#endregion
 
+			#region Sync_RemoveLocalPlayer
+			var Sync_RemoveLocalPlayer = this.Content.Sync_RemoveLocalPlayer;
 
-			//#region sync Locals
-			//this.Events.UserLocalPlayers_Decrease +=
-			//    e =>
-			//    {
-			//        var c = this[e];
+			this.Events.UserRemoveLocalPlayer +=
+				e =>
+				{
+					var c = this[e.user];
 
-			//        Content.Console.WriteLine("UserLocalPlayers_Decrease " + e + " " + c);
+					this.Content.LocalIdentity.HandleFrame(e.frame,
+						delegate
+						{
+							Sync_RemoveLocalPlayer(c.Locals, e.local);
+						},
+						delegate
+						{
+							this.Content.Console.WriteLine("UserRemoveLocalPlayer desync " + e);
+						}
+					);
+				};
 
-			//        c.Locals.Remove(c.Locals.Last());
-			//    };
+			this.Content.Sync_RemoveLocalPlayer =
+				(BindingList<PlayerInfo> a, int local) =>
+				{
+					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+						delegate
+						{
+							// do a local teleport in the future
+							Sync_RemoveLocalPlayer(a, local);
+						}
+					);
 
-			//this.Events.UserLocalPlayers_Increase +=
-			//    e =>
-			//    {
-			//        var c = this[e];
-
-			//        Content.Console.WriteLine("UserLocalPlayers_Increase " + e + " " + c);
-
-			//        var p = new PlayerInfo
-			//        {
-			//            Identity = c,
-			//            // remote users get a dummy remoted input with the same keys
-			//            Input =
-			//                new PlayerInput
-			//                {
-			//                    Keyboard = new KeyboardInput(
-			//                        new KeyboardInput.Arguments.Arrows
-			//                        {
-			//                            // there wont be any device to listen to tho
-			//                        }
-			//                    ),
-			//                    Touch = null
-			//                }
-
-			//        };
-
-			//        c.Locals.Add(p);
-
-
-			//    };
-
+					this.Messages.RemoveLocalPlayer(FutureFrame, local);
+				};
+			#endregion
 
 
 			this.Content.LocalIdentity.Locals.ForEachNewOrExistingItem(
 				Local =>
 				{
-					this.Content.Console.WriteLine("letting others know about this new local player: " + Local);
-
-					// our local should be created insude a correct port
-
-					//this.Messages.LocalPlayers_Increase(0);
-					this.Messages.TeleportTo(
-						0,
-
-						Local.IdentityLocal,
-
-						// which port are our local players in?
-						this.Content.CurrentPort.PortIdentity,
-
-						Local.Actor.X,
-						Local.Actor.Y,
-						Local.Actor.VelocityX,
-						Local.Actor.VelocityY
-					);
-
 					// ... while member apply this rule
 
 					var ConnectedKeyboard = Local.Input.Keyboard;
@@ -546,6 +482,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 							// we should not listen to that event anymore
 							Dispose();
+
+
 						}
 					);
 				}

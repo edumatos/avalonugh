@@ -277,6 +277,16 @@ namespace AvalonUgh.Code
 						NewPlayer.Actor.CurrentLevel = this.Level;
 					};
 			}
+
+			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)
+			{
+				return CreateTuple(
+					(this.View.ContentActualWidth / 4) +
+					(this.View.ContentActualWidth / 2).Random(),
+					(this.View.ContentActualHeight / 2)
+				);
+			}
+
 		}
 
 

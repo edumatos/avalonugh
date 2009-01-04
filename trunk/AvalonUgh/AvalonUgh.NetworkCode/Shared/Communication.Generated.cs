@@ -28,12 +28,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserKeyStateChanged,
             TeleportTo,
             UserTeleportTo,
-            Vehicle_TeleportTo,
-            UserVehicle_TeleportTo,
-            LocalPlayers_Increase,
-            UserLocalPlayers_Increase,
-            LocalPlayers_Decrease,
-            UserLocalPlayers_Decrease,
+            RemoveLocalPlayer,
+            UserRemoveLocalPlayer,
             EditorSelector,
             UserEditorSelector,
             SyncFrame,
@@ -74,12 +70,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserKeyStateChangedArguments> UserKeyStateChanged;
             event Action<RemoteEvents.TeleportToArguments> TeleportTo;
             event Action<RemoteEvents.UserTeleportToArguments> UserTeleportTo;
-            event Action<RemoteEvents.Vehicle_TeleportToArguments> Vehicle_TeleportTo;
-            event Action<RemoteEvents.UserVehicle_TeleportToArguments> UserVehicle_TeleportTo;
-            event Action<RemoteEvents.LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
-            event Action<RemoteEvents.UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
-            event Action<RemoteEvents.LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
-            event Action<RemoteEvents.UserLocalPlayers_DecreaseArguments> UserLocalPlayers_Decrease;
+            event Action<RemoteEvents.RemoveLocalPlayerArguments> RemoveLocalPlayer;
+            event Action<RemoteEvents.UserRemoveLocalPlayerArguments> UserRemoveLocalPlayer;
             event Action<RemoteEvents.EditorSelectorArguments> EditorSelector;
             event Action<RemoteEvents.UserEditorSelectorArguments> UserEditorSelector;
             event Action<RemoteEvents.SyncFrameArguments> SyncFrame;
@@ -241,87 +233,31 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void Vehicle_TeleportTo(int index, double x, double y, double vx, double vy)
+            public void RemoveLocalPlayer(int frame, int local)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.Vehicle_TeleportTo, args = new object[] { index, x, y, vx, vy } });
+                    Send(new SendArguments { i = Messages.RemoveLocalPlayer, args = new object[] { frame, local } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.Vehicle_TeleportTo(index, x, y, vx, vy);
+                        Target__.RemoveLocalPlayer(frame, local);
                     }
                 }
             }
-            public void UserVehicle_TeleportTo(int user, int index, double x, double y, double vx, double vy)
+            public void UserRemoveLocalPlayer(int user, int frame, int local)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserVehicle_TeleportTo, args = new object[] { user, index, x, y, vx, vy } });
+                    Send(new SendArguments { i = Messages.UserRemoveLocalPlayer, args = new object[] { user, frame, local } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserVehicle_TeleportTo(user, index, x, y, vx, vy);
-                    }
-                }
-            }
-            public void LocalPlayers_Increase(int frame)
-            {
-                if (this.Send != null)
-                {
-                    Send(new SendArguments { i = Messages.LocalPlayers_Increase, args = new object[] { frame } });
-                }
-                if (this.VirtualTargets != null)
-                {
-                    foreach (var Target__ in this.VirtualTargets())
-                    {
-                        Target__.LocalPlayers_Increase(frame);
-                    }
-                }
-            }
-            public void UserLocalPlayers_Increase(int user, int frame)
-            {
-                if (this.Send != null)
-                {
-                    Send(new SendArguments { i = Messages.UserLocalPlayers_Increase, args = new object[] { user, frame } });
-                }
-                if (this.VirtualTargets != null)
-                {
-                    foreach (var Target__ in this.VirtualTargets())
-                    {
-                        Target__.UserLocalPlayers_Increase(user, frame);
-                    }
-                }
-            }
-            public void LocalPlayers_Decrease(int frame)
-            {
-                if (this.Send != null)
-                {
-                    Send(new SendArguments { i = Messages.LocalPlayers_Decrease, args = new object[] { frame } });
-                }
-                if (this.VirtualTargets != null)
-                {
-                    foreach (var Target__ in this.VirtualTargets())
-                    {
-                        Target__.LocalPlayers_Decrease(frame);
-                    }
-                }
-            }
-            public void UserLocalPlayers_Decrease(int user, int frame)
-            {
-                if (this.Send != null)
-                {
-                    Send(new SendArguments { i = Messages.UserLocalPlayers_Decrease, args = new object[] { user, frame } });
-                }
-                if (this.VirtualTargets != null)
-                {
-                    foreach (var Target__ in this.VirtualTargets())
-                    {
-                        Target__.UserLocalPlayers_Decrease(user, frame);
+                        Target__.UserRemoveLocalPlayer(user, frame, local);
                     }
                 }
             }
@@ -606,9 +542,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.Hello += this.UserHello;
                     value.KeyStateChanged += this.UserKeyStateChanged;
                     value.TeleportTo += this.UserTeleportTo;
-                    value.Vehicle_TeleportTo += this.UserVehicle_TeleportTo;
-                    value.LocalPlayers_Increase += this.UserLocalPlayers_Increase;
-                    value.LocalPlayers_Decrease += this.UserLocalPlayers_Decrease;
+                    value.RemoveLocalPlayer += this.UserRemoveLocalPlayer;
                     value.EditorSelector += this.UserEditorSelector;
                     value.SyncFrame += this.UserSyncFrame;
                     value.SyncFrameEcho += this.UserSyncFrameEcho;
@@ -624,9 +558,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.Hello -= this.UserHello;
                     value.KeyStateChanged -= this.UserKeyStateChanged;
                     value.TeleportTo -= this.UserTeleportTo;
-                    value.Vehicle_TeleportTo -= this.UserVehicle_TeleportTo;
-                    value.LocalPlayers_Increase -= this.UserLocalPlayers_Increase;
-                    value.LocalPlayers_Decrease -= this.UserLocalPlayers_Decrease;
+                    value.RemoveLocalPlayer -= this.UserRemoveLocalPlayer;
                     value.EditorSelector -= this.UserEditorSelector;
                     value.SyncFrame -= this.UserSyncFrame;
                     value.SyncFrameEcho -= this.UserSyncFrameEcho;
@@ -651,17 +583,9 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     Target.UserTeleportTo(this.user, e.frame, e.local, e.port, e.x, e.y, e.vx, e.vy);
                 }
-                public void UserVehicle_TeleportTo(Vehicle_TeleportToArguments e)
+                public void UserRemoveLocalPlayer(RemoveLocalPlayerArguments e)
                 {
-                    Target.UserVehicle_TeleportTo(this.user, e.index, e.x, e.y, e.vx, e.vy);
-                }
-                public void UserLocalPlayers_Increase(LocalPlayers_IncreaseArguments e)
-                {
-                    Target.UserLocalPlayers_Increase(this.user, e.frame);
-                }
-                public void UserLocalPlayers_Decrease(LocalPlayers_DecreaseArguments e)
-                {
-                    Target.UserLocalPlayers_Decrease(this.user, e.frame);
+                    Target.UserRemoveLocalPlayer(this.user, e.frame, e.local);
                 }
                 public void UserEditorSelector(EditorSelectorArguments e)
                 {
@@ -729,29 +653,13 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserTeleportTo(this.user, e.frame, e.local, e.port, e.x, e.y, e.vx, e.vy);
                 }
-                public void UserVehicle_TeleportTo(int index, double x, double y, double vx, double vy)
+                public void UserRemoveLocalPlayer(int frame, int local)
                 {
-                    this.Target.UserVehicle_TeleportTo(this.user, index, x, y, vx, vy);
+                    this.Target.UserRemoveLocalPlayer(this.user, frame, local);
                 }
-                public void UserVehicle_TeleportTo(UserVehicle_TeleportToArguments e)
+                public void UserRemoveLocalPlayer(UserRemoveLocalPlayerArguments e)
                 {
-                    this.Target.UserVehicle_TeleportTo(this.user, e.index, e.x, e.y, e.vx, e.vy);
-                }
-                public void UserLocalPlayers_Increase(int frame)
-                {
-                    this.Target.UserLocalPlayers_Increase(this.user, frame);
-                }
-                public void UserLocalPlayers_Increase(UserLocalPlayers_IncreaseArguments e)
-                {
-                    this.Target.UserLocalPlayers_Increase(this.user, e.frame);
-                }
-                public void UserLocalPlayers_Decrease(int frame)
-                {
-                    this.Target.UserLocalPlayers_Decrease(this.user, frame);
-                }
-                public void UserLocalPlayers_Decrease(UserLocalPlayers_DecreaseArguments e)
-                {
-                    this.Target.UserLocalPlayers_Decrease(this.user, e.frame);
+                    this.Target.UserRemoveLocalPlayer(this.user, e.frame, e.local);
                 }
                 public void UserEditorSelector(int frame, int type, int size, int x, int y)
                 {
@@ -833,9 +741,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserHello += this.UserHello;
                     value.UserKeyStateChanged += this.UserKeyStateChanged;
                     value.UserTeleportTo += this.UserTeleportTo;
-                    value.UserVehicle_TeleportTo += this.UserVehicle_TeleportTo;
-                    value.UserLocalPlayers_Increase += this.UserLocalPlayers_Increase;
-                    value.UserLocalPlayers_Decrease += this.UserLocalPlayers_Decrease;
+                    value.UserRemoveLocalPlayer += this.UserRemoveLocalPlayer;
                     value.UserEditorSelector += this.UserEditorSelector;
                     value.UserSyncFrame += this.UserSyncFrame;
                     value.UserSyncFrameEcho += this.UserSyncFrameEcho;
@@ -851,9 +757,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserHello -= this.UserHello;
                     value.UserKeyStateChanged -= this.UserKeyStateChanged;
                     value.UserTeleportTo -= this.UserTeleportTo;
-                    value.UserVehicle_TeleportTo -= this.UserVehicle_TeleportTo;
-                    value.UserLocalPlayers_Increase -= this.UserLocalPlayers_Increase;
-                    value.UserLocalPlayers_Decrease -= this.UserLocalPlayers_Decrease;
+                    value.UserRemoveLocalPlayer -= this.UserRemoveLocalPlayer;
                     value.UserEditorSelector -= this.UserEditorSelector;
                     value.UserSyncFrame -= this.UserSyncFrame;
                     value.UserSyncFrameEcho -= this.UserSyncFrameEcho;
@@ -884,23 +788,11 @@ namespace AvalonUgh.NetworkCode.Shared
                     if (_target == null) return;
                     _target.UserTeleportTo(this.user, e.frame, e.local, e.port, e.x, e.y, e.vx, e.vy);
                 }
-                public void UserVehicle_TeleportTo(UserVehicle_TeleportToArguments e)
+                public void UserRemoveLocalPlayer(UserRemoveLocalPlayerArguments e)
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserVehicle_TeleportTo(this.user, e.index, e.x, e.y, e.vx, e.vy);
-                }
-                public void UserLocalPlayers_Increase(UserLocalPlayers_IncreaseArguments e)
-                {
-                    var _target = this.Target(e.user);
-                    if (_target == null) return;
-                    _target.UserLocalPlayers_Increase(this.user, e.frame);
-                }
-                public void UserLocalPlayers_Decrease(UserLocalPlayers_DecreaseArguments e)
-                {
-                    var _target = this.Target(e.user);
-                    if (_target == null) return;
-                    _target.UserLocalPlayers_Decrease(this.user, e.frame);
+                    _target.UserRemoveLocalPlayer(this.user, e.frame, e.local);
                 }
                 public void UserEditorSelector(UserEditorSelectorArguments e)
                 {
@@ -1105,98 +997,36 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserTeleportToArguments> UserTeleportTo;
-            #region Vehicle_TeleportToArguments
+            #region RemoveLocalPlayerArguments
             [Script]
             [CompilerGenerated]
-            public sealed partial class Vehicle_TeleportToArguments
-            {
-                public int index;
-                public double x;
-                public double y;
-                public double vx;
-                public double vy;
-                [DebuggerHidden]
-                public override string ToString()
-                {
-                    return new StringBuilder().Append("{ index = ").Append(this.index).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
-                }
-            }
-            #endregion
-            public event Action<Vehicle_TeleportToArguments> Vehicle_TeleportTo;
-            #region UserVehicle_TeleportToArguments
-            [Script]
-            [CompilerGenerated]
-            public sealed partial class UserVehicle_TeleportToArguments : WithUserArguments
-            {
-                public int index;
-                public double x;
-                public double y;
-                public double vx;
-                public double vy;
-                [DebuggerHidden]
-                public override string ToString()
-                {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", index = ").Append(this.index).Append(", x = ").Append(this.x).Append(", y = ").Append(this.y).Append(", vx = ").Append(this.vx).Append(", vy = ").Append(this.vy).Append(" }").ToString();
-                }
-            }
-            #endregion
-            public event Action<UserVehicle_TeleportToArguments> UserVehicle_TeleportTo;
-            #region LocalPlayers_IncreaseArguments
-            [Script]
-            [CompilerGenerated]
-            public sealed partial class LocalPlayers_IncreaseArguments
+            public sealed partial class RemoveLocalPlayerArguments
             {
                 public int frame;
+                public int local;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(" }").ToString();
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", local = ").Append(this.local).Append(" }").ToString();
                 }
             }
             #endregion
-            public event Action<LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
-            #region UserLocalPlayers_IncreaseArguments
+            public event Action<RemoveLocalPlayerArguments> RemoveLocalPlayer;
+            #region UserRemoveLocalPlayerArguments
             [Script]
             [CompilerGenerated]
-            public sealed partial class UserLocalPlayers_IncreaseArguments : WithUserArguments
+            public sealed partial class UserRemoveLocalPlayerArguments : WithUserArguments
             {
                 public int frame;
+                public int local;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", local = ").Append(this.local).Append(" }").ToString();
                 }
             }
             #endregion
-            public event Action<UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
-            #region LocalPlayers_DecreaseArguments
-            [Script]
-            [CompilerGenerated]
-            public sealed partial class LocalPlayers_DecreaseArguments
-            {
-                public int frame;
-                [DebuggerHidden]
-                public override string ToString()
-                {
-                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(" }").ToString();
-                }
-            }
-            #endregion
-            public event Action<LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
-            #region UserLocalPlayers_DecreaseArguments
-            [Script]
-            [CompilerGenerated]
-            public sealed partial class UserLocalPlayers_DecreaseArguments : WithUserArguments
-            {
-                public int frame;
-                [DebuggerHidden]
-                public override string ToString()
-                {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(" }").ToString();
-                }
-            }
-            #endregion
-            public event Action<UserLocalPlayers_DecreaseArguments> UserLocalPlayers_Decrease;
+            public event Action<UserRemoveLocalPlayerArguments> UserRemoveLocalPlayer;
             #region EditorSelectorArguments
             [Script]
             [CompilerGenerated]
@@ -1450,12 +1280,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserKeyStateChanged, e => { UserKeyStateChanged(new UserKeyStateChangedArguments { user = e.GetInt32(0), local = e.GetInt32(1), frame = e.GetInt32(2), sequence = e.GetInt32(3), key = e.GetInt32(4), state = e.GetInt32(5) }); } },
                             { Messages.TeleportTo, e => { TeleportTo(new TeleportToArguments { frame = e.GetInt32(0), local = e.GetInt32(1), port = e.GetInt32(2), x = e.GetDouble(3), y = e.GetDouble(4), vx = e.GetDouble(5), vy = e.GetDouble(6) }); } },
                             { Messages.UserTeleportTo, e => { UserTeleportTo(new UserTeleportToArguments { user = e.GetInt32(0), frame = e.GetInt32(1), local = e.GetInt32(2), port = e.GetInt32(3), x = e.GetDouble(4), y = e.GetDouble(5), vx = e.GetDouble(6), vy = e.GetDouble(7) }); } },
-                            { Messages.Vehicle_TeleportTo, e => { Vehicle_TeleportTo(new Vehicle_TeleportToArguments { index = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2), vx = e.GetDouble(3), vy = e.GetDouble(4) }); } },
-                            { Messages.UserVehicle_TeleportTo, e => { UserVehicle_TeleportTo(new UserVehicle_TeleportToArguments { user = e.GetInt32(0), index = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3), vx = e.GetDouble(4), vy = e.GetDouble(5) }); } },
-                            { Messages.LocalPlayers_Increase, e => { LocalPlayers_Increase(new LocalPlayers_IncreaseArguments { frame = e.GetInt32(0) }); } },
-                            { Messages.UserLocalPlayers_Increase, e => { UserLocalPlayers_Increase(new UserLocalPlayers_IncreaseArguments { user = e.GetInt32(0), frame = e.GetInt32(1) }); } },
-                            { Messages.LocalPlayers_Decrease, e => { LocalPlayers_Decrease(new LocalPlayers_DecreaseArguments { frame = e.GetInt32(0) }); } },
-                            { Messages.UserLocalPlayers_Decrease, e => { UserLocalPlayers_Decrease(new UserLocalPlayers_DecreaseArguments { user = e.GetInt32(0), frame = e.GetInt32(1) }); } },
+                            { Messages.RemoveLocalPlayer, e => { RemoveLocalPlayer(new RemoveLocalPlayerArguments { frame = e.GetInt32(0), local = e.GetInt32(1) }); } },
+                            { Messages.UserRemoveLocalPlayer, e => { UserRemoveLocalPlayer(new UserRemoveLocalPlayerArguments { user = e.GetInt32(0), frame = e.GetInt32(1), local = e.GetInt32(2) }); } },
                             { Messages.EditorSelector, e => { EditorSelector(new EditorSelectorArguments { frame = e.GetInt32(0), type = e.GetInt32(1), size = e.GetInt32(2), x = e.GetInt32(3), y = e.GetInt32(4) }); } },
                             { Messages.UserEditorSelector, e => { UserEditorSelector(new UserEditorSelectorArguments { user = e.GetInt32(0), frame = e.GetInt32(1), type = e.GetInt32(2), size = e.GetInt32(3), x = e.GetInt32(4), y = e.GetInt32(5) }); } },
                             { Messages.SyncFrame, e => { SyncFrame(new SyncFrameArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1) }); } },
@@ -1485,12 +1311,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserKeyStateChanged, e => UserKeyStateChanged },
                             { Messages.TeleportTo, e => TeleportTo },
                             { Messages.UserTeleportTo, e => UserTeleportTo },
-                            { Messages.Vehicle_TeleportTo, e => Vehicle_TeleportTo },
-                            { Messages.UserVehicle_TeleportTo, e => UserVehicle_TeleportTo },
-                            { Messages.LocalPlayers_Increase, e => LocalPlayers_Increase },
-                            { Messages.UserLocalPlayers_Increase, e => UserLocalPlayers_Increase },
-                            { Messages.LocalPlayers_Decrease, e => LocalPlayers_Decrease },
-                            { Messages.UserLocalPlayers_Decrease, e => UserLocalPlayers_Decrease },
+                            { Messages.RemoveLocalPlayer, e => RemoveLocalPlayer },
+                            { Messages.UserRemoveLocalPlayer, e => UserRemoveLocalPlayer },
                             { Messages.EditorSelector, e => EditorSelector },
                             { Messages.UserEditorSelector, e => UserEditorSelector },
                             { Messages.SyncFrame, e => SyncFrame },
@@ -1642,52 +1464,20 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserTeleportTo(v));
             }
 
-            public event Action<RemoteEvents.Vehicle_TeleportToArguments> Vehicle_TeleportTo;
-            void IMessages.Vehicle_TeleportTo(int index, double x, double y, double vx, double vy)
+            public event Action<RemoteEvents.RemoveLocalPlayerArguments> RemoveLocalPlayer;
+            void IMessages.RemoveLocalPlayer(int frame, int local)
             {
-                if(Vehicle_TeleportTo == null) return;
-                var v = new RemoteEvents.Vehicle_TeleportToArguments { index = index, x = x, y = y, vx = vx, vy = vy };
-                this.VirtualLatency(() => this.Vehicle_TeleportTo(v));
+                if(RemoveLocalPlayer == null) return;
+                var v = new RemoteEvents.RemoveLocalPlayerArguments { frame = frame, local = local };
+                this.VirtualLatency(() => this.RemoveLocalPlayer(v));
             }
 
-            public event Action<RemoteEvents.UserVehicle_TeleportToArguments> UserVehicle_TeleportTo;
-            void IMessages.UserVehicle_TeleportTo(int user, int index, double x, double y, double vx, double vy)
+            public event Action<RemoteEvents.UserRemoveLocalPlayerArguments> UserRemoveLocalPlayer;
+            void IMessages.UserRemoveLocalPlayer(int user, int frame, int local)
             {
-                if(UserVehicle_TeleportTo == null) return;
-                var v = new RemoteEvents.UserVehicle_TeleportToArguments { user = user, index = index, x = x, y = y, vx = vx, vy = vy };
-                this.VirtualLatency(() => this.UserVehicle_TeleportTo(v));
-            }
-
-            public event Action<RemoteEvents.LocalPlayers_IncreaseArguments> LocalPlayers_Increase;
-            void IMessages.LocalPlayers_Increase(int frame)
-            {
-                if(LocalPlayers_Increase == null) return;
-                var v = new RemoteEvents.LocalPlayers_IncreaseArguments { frame = frame };
-                this.VirtualLatency(() => this.LocalPlayers_Increase(v));
-            }
-
-            public event Action<RemoteEvents.UserLocalPlayers_IncreaseArguments> UserLocalPlayers_Increase;
-            void IMessages.UserLocalPlayers_Increase(int user, int frame)
-            {
-                if(UserLocalPlayers_Increase == null) return;
-                var v = new RemoteEvents.UserLocalPlayers_IncreaseArguments { user = user, frame = frame };
-                this.VirtualLatency(() => this.UserLocalPlayers_Increase(v));
-            }
-
-            public event Action<RemoteEvents.LocalPlayers_DecreaseArguments> LocalPlayers_Decrease;
-            void IMessages.LocalPlayers_Decrease(int frame)
-            {
-                if(LocalPlayers_Decrease == null) return;
-                var v = new RemoteEvents.LocalPlayers_DecreaseArguments { frame = frame };
-                this.VirtualLatency(() => this.LocalPlayers_Decrease(v));
-            }
-
-            public event Action<RemoteEvents.UserLocalPlayers_DecreaseArguments> UserLocalPlayers_Decrease;
-            void IMessages.UserLocalPlayers_Decrease(int user, int frame)
-            {
-                if(UserLocalPlayers_Decrease == null) return;
-                var v = new RemoteEvents.UserLocalPlayers_DecreaseArguments { user = user, frame = frame };
-                this.VirtualLatency(() => this.UserLocalPlayers_Decrease(v));
+                if(UserRemoveLocalPlayer == null) return;
+                var v = new RemoteEvents.UserRemoveLocalPlayerArguments { user = user, frame = frame, local = local };
+                this.VirtualLatency(() => this.UserRemoveLocalPlayer(v));
             }
 
             public event Action<RemoteEvents.EditorSelectorArguments> EditorSelector;
@@ -1823,4 +1613,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 4.01.2009 13:44:23
+// 4.01.2009 15:53:19

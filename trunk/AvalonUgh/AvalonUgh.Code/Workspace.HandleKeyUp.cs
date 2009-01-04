@@ -55,6 +55,9 @@ namespace AvalonUgh.Code
 
 		void HandleKeyUp(object sender, KeyEventArgs args)
 		{
+
+
+
 			// oem7 will trigger the console
 			if (args.Key == Key.Oem7)
 			{
@@ -121,13 +124,17 @@ namespace AvalonUgh.Code
 				return;
 
 
+			if (args.Key == Key.M)
+			{
+				this.Music.Enabled = !this.Music.Enabled;
+			}
 
 			if (args.Key == Key.P)
 			{
 				this.Sync_SetPause(true, "you");
 			}
 
-		
+
 			if (args.Key == Key.Insert)
 			{
 				// more locals!

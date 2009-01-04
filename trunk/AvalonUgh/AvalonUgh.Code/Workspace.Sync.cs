@@ -27,7 +27,13 @@ namespace AvalonUgh.Code
 		public Action<bool, string> Sync_SetPause;
 
 
-		public Action Sync_LocalsIncrease;
-		public Action Sync_LocalsDecrease;
+		[Script]
+		public delegate void DelegateTeleportTo(BindingList<PlayerInfo> a, int port, int local, double x, double y, double vx, double vy);
+		public DelegateTeleportTo Sync_TeleportTo;
+
+		[Script]
+		public delegate void DelegateRemoveLocalPlayer(BindingList<PlayerInfo> a, int local);
+		public DelegateRemoveLocalPlayer Sync_RemoveLocalPlayer;
+
 	}
 }

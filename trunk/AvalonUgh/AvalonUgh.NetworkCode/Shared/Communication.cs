@@ -25,16 +25,12 @@ namespace AvalonUgh.NetworkCode.Shared
 			void TeleportTo(int frame, int local, int port, double x, double y, double vx, double vy);
 			void UserTeleportTo(int user, int frame, int local, int port, double x, double y, double vx, double vy);
 
-			void Vehicle_TeleportTo(int index, double x, double y, double vx, double vy);
-			void UserVehicle_TeleportTo(int user, int index, double x, double y, double vx, double vy);
+	
 
+			void RemoveLocalPlayer(int frame, int local);
+			void UserRemoveLocalPlayer(int user, int frame, int local);
 
-			void LocalPlayers_Increase(int frame);
-			void UserLocalPlayers_Increase(int user, int frame);
-
-			void LocalPlayers_Decrease(int frame);
-			void UserLocalPlayers_Decrease(int user, int frame);
-
+	
 			void EditorSelector(int frame, int type, int size, int x, int y);
 			void UserEditorSelector(int user, int frame, int type, int size, int x, int y);
 
