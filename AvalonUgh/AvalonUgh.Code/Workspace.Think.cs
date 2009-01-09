@@ -1,26 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using AvalonUgh.Assets.Shared;
+using AvalonUgh.Code.Dialogs;
+using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
-using System.Windows.Controls;
-using System.Windows.Media;
-using AvalonUgh.Code.Editor;
-using System.ComponentModel;
-using AvalonUgh.Code.Dialogs;
-using System.Windows.Input;
 using ScriptCoreLib.Shared.Avalon.Tween;
-using System.Windows;
 using ScriptCoreLib.Shared.Lambda;
-using AvalonUgh.Assets.Shared;
-using System.Windows.Shapes;
-using AvalonUgh.Code.Input;
 
 namespace AvalonUgh.Code
 {
 	partial class Workspace
 	{
+		//public const int DefaultFramerate = 55;
+		public const int DefaultFramerate = 10;
+
+		void StartThinking()
+		{
+			var StatusText = new TextBox
+			{
+				Width = 300,
+				Height = 24,
+				Foreground = Brushes.Yellow,
+				Background = Brushes.Transparent,
+				BorderThickness = new Thickness(0),
+				FontFamily = new FontFamily("Courier New"),
+				IsReadOnly = true
+			};
+
+			var Status = new Window
+			{
+				ClientWidth = Convert.ToInt32(StatusText.Width),
+				ClientHeight = Convert.ToInt32(StatusText.Height),
+
+				DragContainer = this.Container
+			};
+
+
+
+			StatusText.AttachTo(Status.ContentContainer).MoveTo(Status.Padding, Status.Padding);
+			Status.AttachContainerTo(this);
+
+			(1000 / DefaultFramerate).AtInterval(
+				delegate
+				{
+					StatusText.Text = new { 
+						Frame = this.LocalIdentity.SyncFrame, 
+						Paused = this.LocalIdentity.SyncFramePaused,
+						Limit = this.LocalIdentity.SyncFrameLimit
+					}.ToString();
+					Think();
+				}
+			);
+		}
+
 		void Think()
 		{
 			if (this.LocalIdentity.SyncFramePaused)

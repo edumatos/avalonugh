@@ -27,13 +27,13 @@ namespace AvalonUgh.NetworkCode.Server
 		false)]
 	[GameSetup.String(
 		"password",
-		"Password",
-		"Password",
+		"Level Password",
+		"Level Password",
 		"")]
 	[GameSetup.Integer(
 		"players",
-		"Players",
-		"Players",
+		"Local Players",
+		"Local Players",
 		0, 3, 
 		0)]
 	[Script]
