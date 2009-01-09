@@ -40,12 +40,13 @@ namespace AvalonUgh.Code.Dialogs
 				IsReadOnly = true,
 
 				FontFamily = new FontFamily("Courier New"),
+				FontSize = 10,
 				Background = Brushes.Transparent,
 				BorderThickness = new Thickness(0),
 				Foreground = Brushes.Yellow,
 			}.AttachTo(this);
 
-			MaxLogQueueCount = 10;
+			
 		}
 
 		Queue<string> LogQueue = new Queue<string>();
@@ -59,13 +60,40 @@ namespace AvalonUgh.Code.Dialogs
 			this.Container.SizeTo(w, h);
 			this.Shade.SizeTo(w, h);
 			this.TextBox.SizeTo(w, h);
+
+			MaxLogQueueCount = Convert.ToInt32(h / 11) - 1;
 		}
 
 		public int MaxLogQueueCount { get; set; }
 
 		int Counter = 0;
 
+		bool TopicSeparatorEnabled;
+		Action TopicSeparatorInterrupt;
 		public void WriteLine(string Text)
+		{
+			if (TopicSeparatorInterrupt != null)
+				TopicSeparatorInterrupt();
+
+			if (TopicSeparatorEnabled)
+			{
+				InternalWriteLine("---");
+				TopicSeparatorEnabled = false;
+			}
+
+			InternalWriteLine(Text);
+
+			TopicSeparatorInterrupt = 3000.AtDelay(
+				delegate
+				{
+					TopicSeparatorEnabled = true;
+					TopicSeparatorInterrupt = null;
+				}
+			).Stop;
+
+		}
+
+		void InternalWriteLine(string Text)
 		{
 			Counter = (Counter + 1) % 1000;
 
@@ -97,6 +125,7 @@ namespace AvalonUgh.Code.Dialogs
 		int _AnimatedTop;
 		Action<int, int> _AnimatedPositionApply;
 
+		public event Action AnimatedTopChanged;
 		public int AnimatedTop
 		{
 			get
@@ -110,6 +139,9 @@ namespace AvalonUgh.Code.Dialogs
 
 				_AnimatedTop = value;
 				_AnimatedPositionApply(0, value);
+
+				if (this.AnimatedTopChanged != null)
+					this.AnimatedTopChanged();
 			}
 		}
 

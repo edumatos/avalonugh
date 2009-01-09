@@ -63,6 +63,8 @@ namespace AvalonUgh.Code
 			{
 				args.Handled = true;
 
+				Console.BringContainerToFront();
+
 				if (Console.AnimatedTop == 0)
 				{
 					Console.AnimatedTop = -Console.Height;
@@ -72,7 +74,7 @@ namespace AvalonUgh.Code
 					Console.AnimatedTop = 0;
 				}
 
-				Console.BringContainerToFront();
+				
 
 				// the console is on top
 				// of the game view

@@ -20,6 +20,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 {
 
 	using AvalonUgh.Code.Editor;
+	using System.Diagnostics;
 
 	[Script]
 	public class NetworkClient : VirtualClient, ISupportsContainer
@@ -120,11 +121,15 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					PortHeight = PortHeight,
 
 					DefaultWidth = DefaultWidth,
-					DefaultHeight = DefaultHeight
+					DefaultHeight = DefaultHeight,
+
+					Paused = true
 				}
 			).AttachContainerTo(this);
 
 			Content.Console.WriteLine("InitializeEvents");
+
+			var Server_Hello_UserSynced = new BindingList<PlayerIdentity>();
 
 			this.Events.Server_Hello +=
 				e =>
@@ -138,17 +143,38 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					// we have joined the server
 					// now we need to sync up the frames
 					// if we are alone in the server we do not sync yet
-					if (e.others > 0)
+					if (e.others == 0)
 					{
-						// lets pause first
-						//this.Content.LocalIdentity.SyncFramePaused = true;
+						// we do not have to sync to others
+						this.Content.LocalIdentity.SyncFramePaused = false;
+					}
+					else
+					{
+						Server_Hello_UserSynced.ForEachNewItem(
+							delegate 
+							{
+								if (Server_Hello_UserSynced.Count == e.others)
+								{
+									// we know everybody now
+									var NextSyncFrame = Server_Hello_UserSynced.Min(k => k.SyncFrame);
+
+									this.Content.Console.WriteLine("synced and ready to unpause from frame " + NextSyncFrame);
+									this.Content.LocalIdentity.SyncFrame = NextSyncFrame;
+
+									// unpause
+									this.Content.LocalIdentity.SyncFramePaused = false;
+								}
+							}
+						);
 					}
 				};
 
+
+			#region Server_UserJoined
 			this.Events.Server_UserJoined +=
 				e =>
 				{
-					Content.Console.WriteLine("Server_UserJoined " + e);
+					//Content.Console.WriteLine("Server_UserJoined " + new { e, this.Content.LocalIdentity.SyncFrame });
 
 					this.Messages.UserHello(
 						e.user,
@@ -156,48 +182,133 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						this.Content.LocalIdentity.SyncFrame
 					);
 
+					var LowestSyncFrame = this.Content.LocalIdentity.SyncFrame;
+
+					if (this.CoPlayers.Any())
+						LowestSyncFrame = this.CoPlayers.Min(k => k.SyncFrame) - this.Content.LocalIdentity.SyncFrameWindow;
+
 					this.CoPlayers.Add(
-						new PlayerIdentity { Name = e.name, Number = e.user }
+						new PlayerIdentity
+						{
+							Name = e.name,
+							Number = e.user,
+							// that new client is paused
+							// we need to run out of frames in order to pause correctly
+							SyncFrame = LowestSyncFrame
+						}
 					);
 
-					// this event happens at a later timepoint
-					// if someone joins after us
-					// there is some catching up to do
-					// like we need to tell it about our locals
 
-					foreach (var Local in this.Content.LocalIdentity.Locals)
-					{
-						// !!! this will cause desync, !!!
-						// we should pause the new joiner until
-						// we have told him where all of our items are
-
-						// !!! we need to run out of frames
-						// enter a wait for this new joiner
-						// send our positions
-						// and resume...
-
-						this.Messages.UserTeleportTo(e.user,
-							0,
-
-							Local.IdentityLocal,
-
-							// which port are our local players in?
-							this.Content.CurrentPort.PortIdentity,
-
-							Local.Actor.X,
-							Local.Actor.Y,
-							Local.Actor.VelocityX,
-							Local.Actor.VelocityY
-						);
-					}
 
 					// the new player needs to be synced
 					// lets pause for now to figure out how to do that
 
-					//this.Content.LocalIdentity.SyncFramePaused = true;
+					var NextSyncFrameLimit = this.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+					// we can only increase the limiter
+					this.Content.LocalIdentity.SyncFrameLimit = this.Content.LocalIdentity.SyncFrameLimit.Max(NextSyncFrameLimit);
+
+
+					if (this.Content.LocalIdentity.SyncFrame == this.Content.LocalIdentity.SyncFrameLimit)
+					{
+						Content.Console.WriteLine("will sync to new joined client at frame " + this.Content.LocalIdentity.SyncFrame);
+					}
+					else
+					{
+						Content.Console.WriteLine("new client joined at frame " + this.Content.LocalIdentity.SyncFrame);
+						Content.Console.WriteLine("will sync to that client at future frame " + this.Content.LocalIdentity.SyncFrameLimit);
+
+					}
+
+					this.Content.LocalIdentity.HandleFrame(
+						this.Content.LocalIdentity.SyncFrameLimit,
+						delegate
+						{
+							// this event happens at a later timepoint
+							// if someone joins after us
+							// there is some catching up to do
+							// like we need to tell it about our locals
+
+							foreach (var Local in this.Content.LocalIdentity.Locals)
+							{
+								// we should pause the new joiner until
+								// we have told him where all of our items are
+
+								// !!! we need to run out of frames
+								// enter a wait for this new joiner
+								// send our positions
+								// and resume...
+
+								this.Messages.UserTeleportTo(e.user,
+									this.Content.LocalIdentity.SyncFrame,
+
+									Local.IdentityLocal,
+
+									// which port are our local players in?
+									this.Content.CurrentPort.PortIdentity,
+
+									Local.Actor.X,
+									Local.Actor.Y,
+									Local.Actor.VelocityX,
+									Local.Actor.VelocityY
+								);
+
+								// we need to sync user inputs too
+								foreach (var k in Local.Input.Keyboard.KeyState)
+								{
+									this.Messages.UserKeyStateChanged(
+										e.user,
+										Local.IdentityLocal,
+										this.Content.LocalIdentity.SyncFrame,
+										(int)Local.Input.Keyboard.ToDefaultTranslation(k.Key),
+										Convert.ToInt32(k.Value)
+									);
+								}
+							}
+
+							this.Messages.UserSynced(
+								e.user,
+								this.Content.LocalIdentity.SyncFrame
+							);
+
+							this.Content.Console.WriteLine("syncing to new client done at frame " +
+								this.Content.LocalIdentity.SyncFrame + " with limiter " +
+								this.Content.LocalIdentity.SyncFrameLimit);
+
+
+
+						}
+					);
+				};
+			#endregion
+
+			this.Events.UserHello +=
+				e =>
+				{
+					Content.Console.WriteLine("UserHello " + e);
+
+					this.CoPlayers.Add(
+						new PlayerIdentity
+						{
+							Name = e.name,
+							Number = e.user,
+							SyncFrame = e.frame
+						}
+					);
+
+					if (!this.Content.LocalIdentity.SyncFramePaused)
+					{
+						this.Content.Console.WriteLine("error: got UserHello while unpaused");
+					}
+
 				};
 
+			this.Events.UserSynced +=
+				e =>
+				{
+					var c = this[e.user];
 
+					Server_Hello_UserSynced.Add(c);
+				};
 
 			this.Events.Server_UserLeft +=
 				e =>
@@ -218,26 +329,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					}
 					else
 					{
-						this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+						this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 					}
-				};
-
-			this.Events.UserHello +=
-				e =>
-				{
-					Content.Console.WriteLine("UserHello " + e);
-
-					this.CoPlayers.Add(
-						new PlayerIdentity
-						{
-							Name = e.name,
-							Number = e.user,
-							SyncFrame = e.frame
-						}
-					);
-
-					this.Content.LocalIdentity.SyncFrame = this.Content.LocalIdentity.SyncFrame.Max(e.frame);
-					this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 				};
 
 
@@ -272,7 +365,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					this.Messages.SyncFrame(
 						this.Content.LocalIdentity.SyncFrame,
 						0
-						//this.Content.LocalIdentity.SyncFrameRate
 					);
 				};
 
@@ -299,9 +391,13 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					}
 
 					c.SyncFrame = e.frame;
-					//c.SyncFrameRate = e.framerate;
 
-					this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Max(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+
+					// if we are paused we will not try to recalculate our new limit
+					var NextSyncFrameLimit = this.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+					// we can only increase the limiter
+					this.Content.LocalIdentity.SyncFrameLimit = this.Content.LocalIdentity.SyncFrameLimit.Max(NextSyncFrameLimit);
+
 
 					// lets send the same data back to calculate lag
 					this.Messages.UserSyncFrameEcho(e.user, e.frame, 0);
@@ -313,29 +409,21 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Events.UserKeyStateChanged +=
 				e =>
 				{
-					var p = this[e][e.local];
-
-					this.Content.Console.WriteLine("UserKeyStateChanged " + e);
-
-
-					// if the remote frame is less than here
-					// then we are in the future
-					// otherwise they are in the future
-					var key = p.Input.Keyboard.FromDefaultTranslation((Key)e.key);
-					var state = Convert.ToBoolean(e.state);
-
-					if (p.KeyState_Sequence > 0)
-					{
-						if (p.KeyState_Sequence + 1 != e.sequence)
-							this.Content.Console.WriteLine("error: KeyState_Sequence " + new { p.KeyState_Sequence, e.sequence });
-					}
-
-					p.KeyState_Sequence = e.sequence;
-
+					var c = this[e.user];
 
 					this.Content.LocalIdentity.HandleFrame(e.frame,
 						delegate
 						{
+							var p = c[e.local];
+
+							// if the remote frame is less than here
+							// then we are in the future
+							// otherwise they are in the future
+							var key = p.Input.Keyboard.FromDefaultTranslation((Key)e.key);
+							var state = Convert.ToBoolean(e.state);
+
+
+
 							p.Input.Keyboard.KeyState[key] = state;
 						},
 						delegate
@@ -449,12 +537,10 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 								}
 							);
 
-							Local.KeyState_Sequence++;
 
 							this.Messages.KeyStateChanged(
 								Local.IdentityLocal,
 								FutureFrame,
-								Local.KeyState_Sequence,
 								(int)ConnectedKeyboard.ToDefaultTranslation(key),
 								Convert.ToInt32(state)
 							);

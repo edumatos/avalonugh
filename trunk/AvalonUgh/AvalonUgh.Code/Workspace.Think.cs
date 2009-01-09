@@ -22,18 +22,19 @@ namespace AvalonUgh.Code
 	partial class Workspace
 	{
 		//public const int DefaultFramerate = 55;
-		public const int DefaultFramerate = 10;
+		public const int DefaultFramerate = 60;
 
 		void StartThinking()
 		{
 			var StatusText = new TextBox
 			{
-				Width = 300,
+				Width = 400,
 				Height = 24,
 				Foreground = Brushes.Yellow,
 				Background = Brushes.Transparent,
 				BorderThickness = new Thickness(0),
 				FontFamily = new FontFamily("Courier New"),
+				FontSize = 10,
 				IsReadOnly = true
 			};
 
@@ -45,7 +46,11 @@ namespace AvalonUgh.Code
 				DragContainer = this.Container
 			};
 
-
+			this.Console.AnimatedTopChanged +=
+				delegate
+				{
+					Status.BringContainerToFront();
+				};
 
 			StatusText.AttachTo(Status.ContentContainer).MoveTo(Status.Padding, Status.Padding);
 			Status.AttachContainerTo(this);

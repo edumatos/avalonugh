@@ -120,7 +120,7 @@
 call build.bat $(ProjectName) $(TargetFileName)  $(ConfigurationName)
 popd
 </PostBuildEvent>
-    <PreBuildEvent>robocopy ..\..\..\AvalonUgh.Game\$(OutDir)\ . /MIR
-exit 0</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
 </Project>

@@ -70,12 +70,16 @@ namespace AvalonUgh.Code
 
 			public int DefaultWidth;
 			public int DefaultHeight;
+
+			public bool Paused;
 		}
 
 		readonly AudioLoop Music;
 
 		public Workspace(ConstructorArguments args)
 		{
+			this.LocalIdentity.SyncFramePaused = args.Paused;
+
 			this.Music = new AudioLoop
 			{
 				Volume = 0.3,
