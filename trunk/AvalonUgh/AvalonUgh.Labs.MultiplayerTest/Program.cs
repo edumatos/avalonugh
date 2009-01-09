@@ -171,7 +171,8 @@ namespace AvalonUgh.Labs.MultiplayerTest
 			);
 			#endregion
 
-			Nonoba.DevelopmentServer.Server.StartWithDebugging(100);
+			//Nonoba.DevelopmentServer.Server.StartWithDebugging(100);
+			global::Nonoba.DevelopmentServer.Server.StartWithDebugging(100);
 		}
 	}
 }

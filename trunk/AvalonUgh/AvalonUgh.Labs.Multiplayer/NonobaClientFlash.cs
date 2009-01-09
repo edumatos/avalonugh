@@ -81,7 +81,7 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 			// assets from current assembly
 			Handlers.Add(e => ByFileName(e));
 
-			AvalonUgh.Game.ActionScript.KnownEmbeddedAssets.RegisterTo(Handlers);
+			//AvalonUgh.Game.ActionScript.KnownEmbeddedAssets.RegisterTo(Handlers);
 			AvalonUgh.Assets.ActionScript.KnownEmbeddedAssets.RegisterTo(Handlers);
 
 			//// assets from referenced assemblies
