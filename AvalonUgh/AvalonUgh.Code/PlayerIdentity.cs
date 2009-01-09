@@ -11,6 +11,12 @@ namespace AvalonUgh.Code
 	[Script]
 	public class PlayerIdentity
 	{
+		//public int SyncFrameWindow = 5;
+
+		// should be larger for laggy networks
+		public int SyncFrameWindow = 4;
+
+
 		public int Number;
 
 		public string Name;
@@ -21,15 +27,34 @@ namespace AvalonUgh.Code
 		public int SyncFrameRate;
 		public bool SyncFramePaused;
 		public bool SyncFramePausedSkip;
+
+
+		public event Action SyncFrameLimitChanged;
+		int InternalSyncFrameLimit;
+		public int SyncFrameLimit
+		{
+			get
+			{
+				return InternalSyncFrameLimit;
+			}
+			set
+			{
+				if (value != 0)
+					if (value < InternalSyncFrameLimit)
+						throw new Exception("SyncFrameLimit can only be reset or increased");
+
+				InternalSyncFrameLimit = value;
+
+				if (SyncFrameLimitChanged != null)
+					SyncFrameLimitChanged();
+			}
+		}
+
+	
+
+		#region SyncFrame
 		public event Action SyncFrameChanged;
 		int InternalSyncFrame;
-		public int SyncFrameLimit;
-		
-		//public int SyncFrameWindow = 5;
-
-		// should be larger for laggy networks
-		public int SyncFrameWindow = 8;
-
 		public int SyncFrame
 		{
 			get
@@ -43,6 +68,7 @@ namespace AvalonUgh.Code
 					SyncFrameChanged();
 			}
 		}
+		#endregion
 
 		public PlayerIdentity()
 		{

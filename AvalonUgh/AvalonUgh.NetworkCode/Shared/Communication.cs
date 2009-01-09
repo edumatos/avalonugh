@@ -16,21 +16,21 @@ namespace AvalonUgh.NetworkCode.Shared
 			void Server_UserLeft(int user, string name);
 
 
-			void Hello(string name, int frame);
 			void UserHello(int user, string name, int frame);
+			void UserSynced(int user, int frame);
 
-			void KeyStateChanged(int local, int frame, int sequence, int key, int state);
-			void UserKeyStateChanged(int user, int local, int frame, int sequence, int key, int state);
+			void KeyStateChanged(int local, int frame, int key, int state);
+			void UserKeyStateChanged(int user, int local, int frame, int key, int state);
 
 			void TeleportTo(int frame, int local, int port, double x, double y, double vx, double vy);
 			void UserTeleportTo(int user, int frame, int local, int port, double x, double y, double vx, double vy);
 
-	
+
 
 			void RemoveLocalPlayer(int frame, int local);
 			void UserRemoveLocalPlayer(int user, int frame, int local);
 
-	
+
 			void EditorSelector(int frame, int type, int size, int x, int y);
 			void UserEditorSelector(int user, int frame, int type, int size, int x, int y);
 
@@ -41,9 +41,7 @@ namespace AvalonUgh.NetworkCode.Shared
 			void UserSyncFrameEcho(int user, int frame, int framerate);
 
 
-			void SetShakerEnabled(int frame, int value);
-			void UserSetShakerEnabled(int user, int frame, int value);
-
+		
 			void SetPaused(int frame);
 			void UserSetPaused(int user, int frame);
 

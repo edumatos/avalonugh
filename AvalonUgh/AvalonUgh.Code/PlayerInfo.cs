@@ -30,7 +30,6 @@ namespace AvalonUgh.Code
 		public int IdentityLocal;
 
 
-		public int KeyState_Sequence;
 
 		public override string ToString()
 		{
