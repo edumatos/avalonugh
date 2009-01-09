@@ -94,10 +94,6 @@
       <Project>{CF35C94E-9437-4918-A478-4213A63D1630}</Project>
       <Name>AvalonUgh.Assets</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AvalonUgh.Game\AvalonUgh.Game.csproj">
-      <Project>{14BD631C-56EA-4B34-AFB0-6B833DCD7D20}</Project>
-      <Name>AvalonUgh.Game</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AvalonUgh.NetworkCode\AvalonUgh.NetworkCode.csproj">
       <Project>{B699417E-5E3E-4406-AEE0-8900637D61D0}</Project>
       <Name>AvalonUgh.NetworkCode</Name>

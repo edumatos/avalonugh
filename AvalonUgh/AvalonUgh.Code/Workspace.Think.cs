@@ -61,7 +61,7 @@ namespace AvalonUgh.Code
 					StatusText.Text = new { 
 						Frame = this.LocalIdentity.SyncFrame, 
 						Paused = this.LocalIdentity.SyncFramePaused,
-						Limit = this.LocalIdentity.SyncFrameLimit
+						Limit = this.LocalIdentity.SyncFrameLimit,
 					}.ToString();
 					Think();
 				}

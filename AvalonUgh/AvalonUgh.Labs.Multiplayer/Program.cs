@@ -21,7 +21,7 @@ namespace AvalonUgh.Labs.Multiplayer
 		// nonoba client flash
 		// desktop inmemory multiplayer
 
-		public const int Lag = 10;
+		public const int Lag = 70;
 		//public const int Lag = 50;
 
 		[STAThread]
