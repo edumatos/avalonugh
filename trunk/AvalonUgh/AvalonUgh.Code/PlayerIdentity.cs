@@ -24,7 +24,12 @@ namespace AvalonUgh.Code
 		public event Action SyncFrameChanged;
 		int InternalSyncFrame;
 		public int SyncFrameLimit;
-		public int SyncFrameWindow = 5;
+		
+		//public int SyncFrameWindow = 5;
+
+		// should be larger for laggy networks
+		public int SyncFrameWindow = 8;
+
 		public int SyncFrame
 		{
 			get

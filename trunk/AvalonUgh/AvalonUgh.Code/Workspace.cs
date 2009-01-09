@@ -23,6 +23,7 @@ namespace AvalonUgh.Code
 	[Script]
 	public partial class Workspace : ISupportsContainer
 	{
+
 		// workspace contains
 		// multiple views to multiple concurrent
 		// levels
@@ -365,7 +366,7 @@ namespace AvalonUgh.Code
 							Identity = LocalIdentity,
 							Input = new PlayerInput
 							{
-								
+
 							}
 						};
 
@@ -398,7 +399,7 @@ namespace AvalonUgh.Code
 					if (p != null)
 					{
 						p.Input.Keyboard = null;
-						
+
 
 						a.Remove(p);
 					}
@@ -856,15 +857,16 @@ namespace AvalonUgh.Code
 
 
 
-			(1000 / DefaultFramerate).AtInterval(Think);
+
 
 			this.EnableKeyboardFocus();
 			this.Container.KeyUp += HandleKeyUp;
 
 			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
+			this.StartThinking();
 		}
 
-		public const int DefaultFramerate = 55;
+
 
 		Dialog InternalActiveDialog;
 		public Dialog ActiveDialog
