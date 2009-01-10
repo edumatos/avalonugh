@@ -197,7 +197,7 @@ namespace AvalonUgh.Code.Editor
 
 			ButtonLoad.AddTo(Buttons);
 
-			new Button(
+			var ButtonSave = new Button(
 				new Image
 				{
 					Width = 16,
@@ -211,8 +211,18 @@ namespace AvalonUgh.Code.Editor
 						Extension = "png"
 					}
 				}
-			).AddTo(Buttons);
+			);
 
+			ButtonSave.Click +=
+				delegate
+				{
+
+					if (SaveClicked != null)
+						SaveClicked();
+				};
+
+
+			ButtonSave.AddTo(Buttons);
 
 			CreateButtons(ButtonsWidth);
 

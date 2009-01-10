@@ -27,10 +27,13 @@ namespace AvalonUgh.Code
 
 		void StartThinking()
 		{
+			var ClientWidth = 400;
+			var ClientHeight = 24;
+
 			var StatusText = new TextBox
 			{
-				Width = 400,
-				Height = 24,
+				Width = ClientWidth,
+				Height = ClientHeight,
 				Foreground = Brushes.Yellow,
 				Background = Brushes.Transparent,
 				BorderThickness = new Thickness(0),
@@ -41,8 +44,8 @@ namespace AvalonUgh.Code
 
 			var Status = new Window
 			{
-				ClientWidth = Convert.ToInt32(StatusText.Width),
-				ClientHeight = Convert.ToInt32(StatusText.Height),
+				ClientWidth = ClientWidth,
+				ClientHeight = ClientHeight,
 
 				DragContainer = this.Container
 			};
