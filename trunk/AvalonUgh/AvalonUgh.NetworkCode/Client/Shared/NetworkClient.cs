@@ -53,6 +53,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 		public Workspace Content;
 
+		/// <summary>
+		/// state:String - Defines the state of the request using the values of the NonobaAPI's Public Constants
+		/// success:Boolean - If true, the user bought the item.
+		/// </summary>
+		public Action<string, Action<string, bool>> ShowShop;
+
 		public NetworkClient()
 		{
 			this.Container = new Canvas
@@ -134,6 +140,23 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Paused = true
 				}
 			).AttachContainerTo(this);
+
+			Content.Console.WriteLine("binding to shop menu item");
+
+			Content.Lobby.Menu.Shop +=
+				delegate
+				{
+					Content.Console.WriteLine("invoking shop");
+
+					if (this.ShowShop != null)
+						this.ShowShop("saveten",
+							delegate
+							{
+								// and reaction to the shop activity
+								Content.Console.WriteLine("invoking shop done");
+							}
+						);
+				};
 
 			Content.Console.WriteLine("InitializeEvents");
 

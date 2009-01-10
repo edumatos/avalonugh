@@ -21,6 +21,7 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 
 		public NonobaClient()
 		{
+			
 			this.Container.InvokeWhenStageIsReady(
 				Initialize
 			);
@@ -41,6 +42,9 @@ namespace AvalonUgh.NetworkCode.Client.ActionScript
 
 		private void Initialize(Stage stage)
 		{
+			this.ShowShop = (item, handler) => NonobaExtensions.ShowShop(stage, item, handler);
+
+
 			var c = NonobaAPI.MakeMultiplayer(stage
 				//, "192.168.3.102"
 				//, "192.168.1.119"

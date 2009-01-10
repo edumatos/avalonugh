@@ -26,6 +26,7 @@ namespace AvalonUgh.Code.Dialogs
 
 		public readonly Rectangle Background;
 
+		public event Action Shop;
 		public event Action Play;
 		public event Action Editor;
 
@@ -167,6 +168,28 @@ namespace AvalonUgh.Code.Dialogs
 
 			Options_3.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_3_Y);
 
+
+
+			var Options_Shop_Y = Options_Y - Convert.ToInt32((PrimitiveFont.Heigth * Zoom + 4) * 2.5);
+			var Options_Shop = new DialogTextBox
+			{
+				Width = Width,
+				Zoom = Zoom,
+				TextAlignment = TextAlignment.Center,
+				Text = "shop",
+				Visibility = Visibility.Hidden
+			}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_Shop_Y);
+
+			Options_Shop.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_Shop_Y);
+
+			Options_Shop.Click +=
+				delegate
+				{
+					if (this.Shop != null)
+						this.Shop();
+				};
+
+
 			var Options_5_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -1;
 			this.Options_5 = new DialogTextBox
 			{
@@ -248,7 +271,7 @@ namespace AvalonUgh.Code.Dialogs
 				};
 
 
-			var Options_6_Y =Convert.ToInt32(  Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -4);
+			var Options_6_Y = Convert.ToInt32(Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -4);
 			var Options_6 = new DialogTextBox
 			{
 				Width = Width,
@@ -303,7 +326,7 @@ namespace AvalonUgh.Code.Dialogs
 							}
 						).Stop;
 
-						
+
 					}
 
 					if (EnteringPasswordChanged != null)
@@ -311,7 +334,7 @@ namespace AvalonUgh.Code.Dialogs
 				};
 
 			Options_3.Click += Options_3_Click;
-				
+
 
 			Options_Click =
 				delegate
@@ -323,6 +346,7 @@ namespace AvalonUgh.Code.Dialogs
 						AnimatedBackgroundOpacity = 0.5;
 						Options_1.Visibility = Visibility.Hidden;
 						Options_3.Visibility = Visibility.Visible;
+						Options_Shop.Visibility = Visibility.Visible;
 						Options_2.Visibility = Visibility.Visible;
 						Options_4.Visibility = Visibility.Visible;
 					}
@@ -331,6 +355,7 @@ namespace AvalonUgh.Code.Dialogs
 						AnimatedBackgroundOpacity = 0;
 						Options_1.Visibility = Visibility.Visible;
 						Options_3.Visibility = Visibility.Hidden;
+						Options_Shop.Visibility = Visibility.Hidden;
 						Options_2.Visibility = Visibility.Hidden;
 						Options_4.Visibility = Visibility.Hidden;
 					}

@@ -94,10 +94,20 @@ namespace AvalonUgh.Code
 						this.Window.ColorOverlay.Opacity = 0;
 
 
-						this.Arrows.ToArray().AttachContainerTo(this.View.ContentInfoOverlay);
+						this.Arrows.ForEach(k => k.OrphanizeContainer().AttachContainerTo(this.View.ContentInfoOverlay));
+
 					};
 
-				this.Arrows.AttachTo(k => this.View != null, () => this.View.ContentInfoOverlay);
+
+				this.Arrows.AttachTo(
+					delegate
+					{
+						if (this.View == null)
+							return null;
+
+						return this.View.ContentInfoOverlay;
+					}
+				);
 
 
 			}
