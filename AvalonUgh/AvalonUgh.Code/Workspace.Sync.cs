@@ -35,5 +35,12 @@ namespace AvalonUgh.Code
 		public delegate void DelegateRemoveLocalPlayer(BindingList<PlayerInfo> a, int local);
 		public DelegateRemoveLocalPlayer Sync_RemoveLocalPlayer;
 
+		[Script]
+		public delegate void DelegateLoadLevel(int port, int level, string custom);
+		public DelegateLoadLevel Sync_LoadLevel;
+
+		[Script]
+		public delegate void DelegateEditorSelector(int port, int type, int size, int x, int y);
+		public DelegateEditorSelector Sync_EditorSelector;
 	}
 }

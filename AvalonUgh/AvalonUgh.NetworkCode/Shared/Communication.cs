@@ -31,8 +31,8 @@ namespace AvalonUgh.NetworkCode.Shared
 			void UserRemoveLocalPlayer(int user, int frame, int local);
 
 
-			void EditorSelector(int frame, int type, int size, int x, int y);
-			void UserEditorSelector(int user, int frame, int type, int size, int x, int y);
+			void EditorSelector(int frame, int port, int type, int size, int x, int y);
+			void UserEditorSelector(int user, int frame, int port, int type, int size, int x, int y);
 
 			void SyncFrame(int frame, int framerate);
 			void UserSyncFrame(int user, int frame, int framerate);
@@ -48,11 +48,8 @@ namespace AvalonUgh.NetworkCode.Shared
 			void ClearPaused();
 			void UserClearPaused(int user);
 
-			void LoadEmbeddedLevel(int frame, int level);
-			void UserLoadEmbeddedLevel(int user, int frame, int level);
-
-			void LoadCustomLevel(int frame, string data);
-			void UserLoadCustomLevel(int user, int frame, string data);
+			void LoadLevel(int frame, int port, int level, string custom);
+			void UserLoadLevel(int user, int port, int frame, int level, string custom);
 
 		}
 

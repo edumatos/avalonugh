@@ -74,7 +74,7 @@ namespace AvalonUgh.Code
 					Console.AnimatedTop = 0;
 				}
 
-				
+
 
 				// the console is on top
 				// of the game view
@@ -136,6 +136,11 @@ namespace AvalonUgh.Code
 				this.Sync_SetPause(true, "you");
 			}
 
+			if (args.Key == Key.N)
+			{
+				this.Ports.Select(k => k.Window.ColorOverlay).Where(k => k.Opacity == 1).ForEach(k => k.Opacity = 0.5);
+
+			}
 
 			if (args.Key == Key.Insert)
 			{
