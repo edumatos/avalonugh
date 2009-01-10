@@ -276,20 +276,37 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 							if (EgoIsPrimate)
 							{
-								this.Content.Console.WriteLine("as a primate, I will send map data to the new player");
 
 								if (this.Content.Editor.LevelReference != null)
 								{
 									// yay, we are in the editor
 									// are we the only one?
 
-									this.Messages.UserLoadLevel(
-										e.user,
-										this.Content.Editor.PortIdentity,
-										this.Content.LocalIdentity.SyncFrame,
-										this.Content.Editor.LevelReference.Location.Embedded.AnimationFrame,
-										""
-									);
+									if (this.Content.Editor.Level.IsDirty)
+									{
+										this.Content.Console.WriteLine("as a primate, I will send custom map to the new player");
+
+										this.Messages.UserLoadLevel(
+											e.user,
+											this.Content.Editor.PortIdentity,
+											this.Content.LocalIdentity.SyncFrame,
+											-1,
+											this.Content.Editor.Level.ToString()
+										);
+
+									}
+									else
+									{
+										this.Content.Console.WriteLine("as a primate, I will send map reference to the new player");
+
+										this.Messages.UserLoadLevel(
+											e.user,
+											this.Content.Editor.PortIdentity,
+											this.Content.LocalIdentity.SyncFrame,
+											this.Content.Editor.LevelReference.Location.Embedded.AnimationFrame,
+											""
+										);
+									}
 								}
 							}
 

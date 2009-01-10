@@ -49,7 +49,13 @@ namespace AvalonUgh.Code.Editor
 		{
 			this.Location = Location;
 
-			var PreviewSource = Location.Embedded.Clone();
+
+			NameFormat PreviewSource = null;
+
+			if (Location.Embedded == null)
+				PreviewSource = ((StorageLocation)0).Embedded;
+			else
+				PreviewSource = Location.Embedded.Clone();
 
 			PreviewSource.Extension = "png";
 
@@ -70,12 +76,14 @@ namespace AvalonUgh.Code.Editor
 				Height = 30,
 			};
 
-			Location.Embedded.ToString().ToStringAsset(
-				Data =>
-				{
-					this.Data = Data;
-				}
-			);
+			// the level might not be embedded nor saved yet
+			if (Location.Embedded != null)
+				Location.Embedded.ToString().ToStringAsset(
+					Data =>
+					{
+						this.Data = Data;
+					}
+				);
 
 		}
 

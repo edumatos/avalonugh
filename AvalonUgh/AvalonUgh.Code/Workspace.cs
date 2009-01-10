@@ -340,6 +340,17 @@ namespace AvalonUgh.Code
 				PortIdentity = PortIdentity_Lobby,
 			};
 
+			// add some "branding"
+
+			new Image
+			{
+				Stretch = Stretch.Fill,
+				Source = (Assets.Shared.KnownAssets.Path.Assets + "/jsc.png").ToSource(),
+				Width = 96,
+				Height = 96
+			}.MoveTo(args.PortWidth - 96, args.PortHeight - 96).AttachTo(this.Lobby.Window.OverlayContainer);
+
+
 			this.Ports.Add(Lobby);
 
 			this.Lobby.Menu.MaxPlayers = SupportedKeyboardInputs.Length;
@@ -410,7 +421,25 @@ namespace AvalonUgh.Code
 
 					Console.WriteLine("loading level " + level + " for port " + port + " at frame " + this.LocalIdentity.SyncFrame);
 
-					CurrentPort.LevelReference = this.Levels.Single(k => k.Location.Embedded.AnimationFrame == level);
+					if (level == -1)
+					{
+						// will load custom level instead
+
+						// we have just recieved a new level - we might want to save
+						// it into our store
+						// we need to take a hash of it tho
+
+						CurrentPort.LevelReference =
+							new LevelReference(new LevelReference.StorageLocation { Cookie = "editorlevel" })
+							{
+								Data = custom
+							};
+
+					}
+					else
+					{
+						CurrentPort.LevelReference = this.Levels.Single(k => k.Location.Embedded.AnimationFrame == level);
+					}
 
 				};
 
