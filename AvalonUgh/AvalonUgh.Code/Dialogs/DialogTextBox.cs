@@ -41,6 +41,7 @@ namespace AvalonUgh.Code.Dialogs
 		int _Zoom = 1;
 		public int Zoom { get { return _Zoom; } set { _Zoom = value; Update(); } }
 
+		public bool AutoSize;
 
 		int _Width;
 		public int Width
@@ -131,7 +132,7 @@ namespace AvalonUgh.Code.Dialogs
 
 
 			var a = new List<string>();
-			
+
 			var w = 0;
 
 			using (var s = new StringReader(this.Text))
@@ -153,6 +154,7 @@ namespace AvalonUgh.Code.Dialogs
 
 			this.Container.Height = _Height;
 
+			var _Width = 0.0;
 			var y = 0.0;
 
 			foreach (var n in a)
@@ -192,7 +194,7 @@ namespace AvalonUgh.Code.Dialogs
 							nLength--;
 
 						if (this.TextAlignment == TextAlignment.Center)
-							px += (this.Width - nLength  * (PrimitiveFont.Width + 1) * Zoom) / 2;
+							px += (this.Width - nLength * (PrimitiveFont.Width + 1) * Zoom) / 2;
 
 						var py = y * PrimitiveFont.Heigth * Zoom;
 
@@ -207,6 +209,7 @@ namespace AvalonUgh.Code.Dialogs
 							py
 						).AddTo(this.Chars);
 
+						_Width = _Width.Max(px + PrimitiveFont.Width * Zoom);
 						x++;
 					}
 
@@ -214,8 +217,11 @@ namespace AvalonUgh.Code.Dialogs
 				}
 			}
 
-			this._Height = Convert.ToInt32( PrimitiveFont.Heigth * Zoom * y);
+			this._Height = Convert.ToInt32(PrimitiveFont.Heigth * Zoom * y);
 			// render em
+
+			if (this.AutoSize)
+				this._Width = Convert.ToInt32(_Width);
 
 			this.TouchOverlay.SizeTo(_Width, _Height);
 		}

@@ -455,6 +455,22 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					);
 				};
 
+			this.Content.Sync_LoadLevelHint =
+				(int port) =>
+				{
+					this.Messages.LoadLevelHint(port);
+				};
+
+			this.Events.UserLoadLevelHint +=
+				e =>
+				{
+					if (this.Content.CurrentPort.PortIdentity == e.port)
+						this.Content.CurrentPort.Window.ColorOverlay.Opacity = 1;
+					else
+						this.Content.BackgroundLoading.Show();
+				};
+
+
 			#region Sync_LoadLevel
 			var Sync_LoadLevel = this.Content.Sync_LoadLevel;
 

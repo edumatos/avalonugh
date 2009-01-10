@@ -73,6 +73,8 @@ namespace AvalonUgh.Code
 					{
 						this.View.EditorSelectorNextSize += () => this.Toolbar.EditorSelectorNextSize();
 						this.View.EditorSelectorPreviousSize += () => this.Toolbar.EditorSelectorPreviousSize();
+
+						this.Window.ColorOverlay.Opacity = 0;
 					};
 
 
@@ -88,7 +90,13 @@ namespace AvalonUgh.Code
 			Lobby.Menu.Editor +=
 				 delegate
 				 {
-					 // maybe send others a pre loading message too?
+					 if (this.Editor.LevelReference == null)
+					 {
+						 // maybe send others a pre loading message too?
+
+						 if (this.Sync_LoadLevelHint != null)
+							 this.Sync_LoadLevelHint(this.Editor.PortIdentity);
+					 }
 
 					 this.Editor.Window.ColorOverlay.Opacity = 1;
 					 this.Lobby.Window.ColorOverlay.SetOpacity(1,
@@ -154,6 +162,9 @@ namespace AvalonUgh.Code
 					this.Editor.LoadWindow.Hide();
 
 					// send early warning
+					if (this.Sync_LoadLevelHint != null)
+						this.Sync_LoadLevelHint(this.Editor.PortIdentity);
+
 					this.Editor.Window.ColorOverlay.SetOpacity(1,
 						delegate
 						{
@@ -163,8 +174,6 @@ namespace AvalonUgh.Code
 								delegate
 								{
 									// we need to bring back all the players!
-
-									this.Editor.Window.ColorOverlay.Opacity = 0;
 								}
 							);
 

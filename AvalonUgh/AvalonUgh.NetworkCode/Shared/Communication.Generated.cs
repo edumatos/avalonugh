@@ -42,6 +42,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserClearPaused,
             LoadLevel,
             UserLoadLevel,
+            LoadLevelHint,
+            UserLoadLevelHint,
         }
         #endregion
 
@@ -80,6 +82,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserClearPausedArguments> UserClearPaused;
             event Action<RemoteEvents.LoadLevelArguments> LoadLevel;
             event Action<RemoteEvents.UserLoadLevelArguments> UserLoadLevel;
+            event Action<RemoteEvents.LoadLevelHintArguments> LoadLevelHint;
+            event Action<RemoteEvents.UserLoadLevelHintArguments> UserLoadLevelHint;
         }
         #endregion
 
@@ -421,6 +425,34 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void LoadLevelHint(int port)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.LoadLevelHint, args = new object[] { port } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.LoadLevelHint(port);
+                    }
+                }
+            }
+            public void UserLoadLevelHint(int user, int port)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserLoadLevelHint, args = new object[] { user, port } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserLoadLevelHint(user, port);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -484,6 +516,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.SetPaused += this.UserSetPaused;
                     value.ClearPaused += this.UserClearPaused;
                     value.LoadLevel += this.UserLoadLevel;
+                    value.LoadLevelHint += this.UserLoadLevelHint;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -497,6 +530,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.SetPaused -= this.UserSetPaused;
                     value.ClearPaused -= this.UserClearPaused;
                     value.LoadLevel -= this.UserLoadLevel;
+                    value.LoadLevelHint -= this.UserLoadLevelHint;
                 }
                 #endregion
 
@@ -536,6 +570,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserLoadLevel(LoadLevelArguments e)
                 {
                     Target.UserLoadLevel(this.user, e.port, e.frame, e.level, e.custom);
+                }
+                public void UserLoadLevelHint(LoadLevelHintArguments e)
+                {
+                    Target.UserLoadLevelHint(this.user, e.port);
                 }
                 #endregion
             }
@@ -635,6 +673,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserLoadLevel(this.user, e.port, e.frame, e.level, e.custom);
                 }
+                public void UserLoadLevelHint(int port)
+                {
+                    this.Target.UserLoadLevelHint(this.user, port);
+                }
+                public void UserLoadLevelHint(UserLoadLevelHintArguments e)
+                {
+                    this.Target.UserLoadLevelHint(this.user, e.port);
+                }
                 #endregion
             }
             #endregion
@@ -659,6 +705,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserSetPaused += this.UserSetPaused;
                     value.UserClearPaused += this.UserClearPaused;
                     value.UserLoadLevel += this.UserLoadLevel;
+                    value.UserLoadLevelHint += this.UserLoadLevelHint;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -674,6 +721,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserSetPaused -= this.UserSetPaused;
                     value.UserClearPaused -= this.UserClearPaused;
                     value.UserLoadLevel -= this.UserLoadLevel;
+                    value.UserLoadLevelHint -= this.UserLoadLevelHint;
                 }
                 #endregion
 
@@ -743,6 +791,12 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserLoadLevel(this.user, e.port, e.frame, e.level, e.custom);
+                }
+                public void UserLoadLevelHint(UserLoadLevelHintArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserLoadLevelHint(this.user, e.port);
                 }
                 #endregion
             }
@@ -1112,6 +1166,34 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserLoadLevelArguments> UserLoadLevel;
+            #region LoadLevelHintArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class LoadLevelHintArguments
+            {
+                public int port;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ port = ").Append(this.port).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<LoadLevelHintArguments> LoadLevelHint;
+            #region UserLoadLevelHintArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserLoadLevelHintArguments : WithUserArguments
+            {
+                public int port;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", port = ").Append(this.port).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserLoadLevelHintArguments> UserLoadLevelHint;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -1139,6 +1221,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserClearPaused, e => { UserClearPaused(new UserClearPausedArguments { user = e.GetInt32(0) }); } },
                             { Messages.LoadLevel, e => { LoadLevel(new LoadLevelArguments { frame = e.GetInt32(0), port = e.GetInt32(1), level = e.GetInt32(2), custom = e.GetString(3) }); } },
                             { Messages.UserLoadLevel, e => { UserLoadLevel(new UserLoadLevelArguments { user = e.GetInt32(0), port = e.GetInt32(1), frame = e.GetInt32(2), level = e.GetInt32(3), custom = e.GetString(4) }); } },
+                            { Messages.LoadLevelHint, e => { LoadLevelHint(new LoadLevelHintArguments { port = e.GetInt32(0) }); } },
+                            { Messages.UserLoadLevelHint, e => { UserLoadLevelHint(new UserLoadLevelHintArguments { user = e.GetInt32(0), port = e.GetInt32(1) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -1166,6 +1250,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserClearPaused, e => UserClearPaused },
                             { Messages.LoadLevel, e => LoadLevel },
                             { Messages.UserLoadLevel, e => UserLoadLevel },
+                            { Messages.LoadLevelHint, e => LoadLevelHint },
+                            { Messages.UserLoadLevelHint, e => UserLoadLevelHint },
                         }
                 ;
             }
@@ -1413,9 +1499,25 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserLoadLevel(v));
             }
 
+            public event Action<RemoteEvents.LoadLevelHintArguments> LoadLevelHint;
+            void IMessages.LoadLevelHint(int port)
+            {
+                if(LoadLevelHint == null) return;
+                var v = new RemoteEvents.LoadLevelHintArguments { port = port };
+                this.VirtualLatency(() => this.LoadLevelHint(v));
+            }
+
+            public event Action<RemoteEvents.UserLoadLevelHintArguments> UserLoadLevelHint;
+            void IMessages.UserLoadLevelHint(int user, int port)
+            {
+                if(UserLoadLevelHint == null) return;
+                var v = new RemoteEvents.UserLoadLevelHintArguments { user = user, port = port };
+                this.VirtualLatency(() => this.UserLoadLevelHint(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 10.01.2009 11:02:47
+// 10.01.2009 12:59:31
