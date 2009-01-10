@@ -139,7 +139,7 @@ namespace AvalonUgh.Code
 							 if (this.Editor.LevelReference == null)
 							 {
 								 this.Sync_LoadLevel(
-									 this.Editor.PortIdentity, 0, null
+									 this.Editor.PortIdentity, 0, ""
 								 );
 							 }
 						 }
@@ -169,7 +169,7 @@ namespace AvalonUgh.Code
 							);
 
 							this.Sync_LoadLevel(
-								this.Editor.PortIdentity, NextLevelForEditor.Location.Embedded.AnimationFrame, null
+								this.Editor.PortIdentity, NextLevelForEditor.Location.Embedded.AnimationFrame, ""
 							);
 						}
 					);

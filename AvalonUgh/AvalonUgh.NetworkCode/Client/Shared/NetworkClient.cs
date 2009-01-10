@@ -288,7 +288,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 										this.Content.Editor.PortIdentity,
 										this.Content.LocalIdentity.SyncFrame,
 										this.Content.Editor.LevelReference.Location.Embedded.AnimationFrame,
-										null
+										""
 									);
 								}
 							}
@@ -473,6 +473,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 			#endregion
 
+			#region Sync_EditorSelector
 			var Sync_EditorSelector = this.Content.Sync_EditorSelector;
 
 			this.Content.Sync_EditorSelector =
@@ -505,6 +506,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						}
 					);
 				};
+			#endregion
+
 
 			#region networked Sync_TeleportTo
 			// save the local implementation
