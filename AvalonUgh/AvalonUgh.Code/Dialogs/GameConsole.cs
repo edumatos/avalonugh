@@ -61,7 +61,9 @@ namespace AvalonUgh.Code.Dialogs
 			this.Shade.SizeTo(w, h);
 			this.TextBox.SizeTo(w, h);
 
-			MaxLogQueueCount = Convert.ToInt32(h / 11) - 1;
+			MaxLogQueueCount = Convert.ToInt32(h / 12) ;
+
+			WriteLine(new { MaxLogQueueCount, h });
 		}
 
 		public int MaxLogQueueCount { get; set; }
