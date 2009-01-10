@@ -138,6 +138,7 @@
     <Compile Include="AIDirector.cs" />
     <Compile Include="AnimationDictionary.cs" />
     <Compile Include="AudioLoop.cs" />
+    <Compile Include="Window.Button.cs" />
     <Compile Include="Editor\SaveWindow.cs" />
     <Compile Include="Workspace.Editor.cs" />
     <Compile Include="Editor\SnowSelector.cs" />
