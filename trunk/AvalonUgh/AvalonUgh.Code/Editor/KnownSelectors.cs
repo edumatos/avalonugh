@@ -18,6 +18,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly Sprites.TryoperusSelector Tryoperus = new Sprites.TryoperusSelector();
 		public readonly Sprites.RockSelector Rock = new Sprites.RockSelector();
+		public readonly Sprites.VehicleSelector Vehicle = new Sprites.VehicleSelector();
 		public readonly Sprites.SignSelector Sign = new Sprites.SignSelector();
 		public readonly Sprites.DinoSelector Dino = new Sprites.DinoSelector();
 		public readonly Sprites.TreeSelector Tree = new Sprites.TreeSelector();
@@ -43,7 +44,7 @@ namespace AvalonUgh.Code.Editor
 					
 				
 					Rock,
-					new Sprites.VehicleSelector(),
+					Vehicle,
 					Sign,
 					Dino,
 					Tryoperus,

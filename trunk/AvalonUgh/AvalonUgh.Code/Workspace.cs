@@ -17,12 +17,11 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Sprites;
-using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code
 {
 	[Script]
-	public partial class Workspace : ISupportsContainer
+	public partial class Workspace : ISupportsContainer, IDisposable
 	{
 
 		// workspace contains
@@ -382,17 +381,52 @@ namespace AvalonUgh.Code
 					NewPlayer.Actor.GoldStash.ForEachNewItem(
 						gold =>
 						{
-							//var CurrentPort = this.Ports.Single(k => k.Level == Local0.Actor.CurrentLevel);
-
+							// play the sound only if it is in the same port
 							(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
 
-							//CurrentPort.View.ColorOverlay.Background = Brushes.Yellow;
-							//CurrentPort.View.ColorOverlay.Opacity = 0.7;
-							//CurrentPort.View.ColorOverlay.Show();
-							//CurrentPort.View.ColorOverlay.FadeOut();
+							// the yellow flash shall be displayed for local players only
 						}
 					);
 
+
+
+					NewPlayer.Actor.CurrentVehicleChanged +=
+						delegate
+						{
+							(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
+						};
+
+
+
+					NewPlayer.Actor.EnterVehicle +=
+						delegate
+						{
+							// exiting a vehicle is easy
+							// entering is a bit harder
+							// as we need to find it and reserve its use for us
+
+							var ManAsObstacle = NewPlayer.Actor.ToObstacle();
+
+							var NearbyVehicle = NewPlayer.Actor.CurrentLevel.KnownVehicles.Where(k => k.CurrentDriver == null).FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+
+							if (NearbyVehicle != null)
+							{
+								NearbyVehicle.CurrentDriver = NewPlayer.Actor;
+							}
+						};
+
+					NewPlayer.Actor.Drop +=
+						delegate
+						{
+							var CurrentVehicle = NewPlayer.Actor.CurrentVehicle;
+
+							if (CurrentVehicle != null)
+							{
+								// can we drop a rock?
+
+								CurrentVehicle.CurrentWeapon = null;
+							}
+						};
 
 					NewPlayer.Actor.MoveTo(64, 64);
 				}
@@ -470,6 +504,9 @@ namespace AvalonUgh.Code
 							p.Input.Keyboard = new KeyboardInput(new KeyboardInput.Arguments.Arrows());
 
 						a.Add(p);
+
+						this.Console.WriteLine("created new player via teleport " + new { p.Identity, p.IdentityLocal });
+
 					}
 
 
@@ -555,9 +592,21 @@ namespace AvalonUgh.Code
 							0
 						);
 					}
+					else if (this.CurrentPort == this.Editor)
+					{
+						var t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y });
 
+						this.Sync_TeleportTo(
+							this.LocalIdentity.Locals,
+							this.CurrentPort.PortIdentity,
+							this.LocalIdentity.Locals.Count,
+							t.x,
+							t.y,
+							0,
+							0
+						);
 
-
+					}
 				};
 
 
@@ -595,44 +644,6 @@ namespace AvalonUgh.Code
 
 
 
-
-			Local0.Actor.CurrentVehicleChanged +=
-				delegate
-				{
-					(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
-				};
-
-
-
-			Local0.Actor.EnterVehicle +=
-				delegate
-				{
-					// exiting a vehicle is easy
-					// entering is a bit harder
-					// as we need to find it and reserve its use for us
-
-					var ManAsObstacle = Local0.Actor.ToObstacle();
-
-					var NearbyVehicle = Local0.Actor.CurrentLevel.KnownVehicles.Where(k => k.CurrentDriver == null).FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
-
-					if (NearbyVehicle != null)
-					{
-						NearbyVehicle.CurrentDriver = Local0.Actor;
-					}
-				};
-
-			Local0.Actor.Drop +=
-				delegate
-				{
-					var CurrentVehicle = Local0.Actor.CurrentVehicle;
-
-					if (CurrentVehicle != null)
-					{
-						// can we drop a rock?
-
-						CurrentVehicle.CurrentWeapon = null;
-					}
-				};
 
 			Local0.Actor.EnterCave +=
 				delegate
@@ -905,5 +916,14 @@ namespace AvalonUgh.Code
 					InternalActiveDialog.AnimatedOpacity = 0.5;
 			}
 		}
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			this.ThinkTimer.Stop();
+		}
+
+		#endregion
 	}
 }

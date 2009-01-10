@@ -175,6 +175,7 @@ namespace AvalonUgh.Code.Editor
 			var Create = new
 			{
 				tryo = (Attribute.Int32)Sprites.Tryoperus.SpecificNameFormat.Alias,
+				Vehicle = (Attribute.Int32)Sprites.VehicleSelector.Alias,
 				Rock = (Attribute.Int32)Sprites.Rock.SpecificNameFormat.Alias,
 				Dino = (Attribute.Int32)"dino",
 				Tree = (Attribute.Int32)"tree",
@@ -199,6 +200,18 @@ namespace AvalonUgh.Code.Editor
 				x =>
 				{
 					Selectors.Tryoperus.Size_2x2.CreateTo(this,
+						new View.SelectorPosition
+						{
+							ContentX = x - PrimitiveTile.Width,
+							ContentY = (this.TileRowsProcessed - 2) * PrimitiveTile.Heigth
+						}
+					);
+				};
+
+			Create.Vehicle.Assigned +=
+				x =>
+				{
+					Selectors.Vehicle.Size_2x2.CreateTo(this,
 						new View.SelectorPosition
 						{
 							ContentX = x - PrimitiveTile.Width,
@@ -264,6 +277,7 @@ namespace AvalonUgh.Code.Editor
 				Create.Dino,
 				Create.Gold,
 				Create.Rock,
+				Create.Vehicle,
 				Create.Sign,
 				Create.Tree,
 				Create.tryo,

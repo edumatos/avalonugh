@@ -41,12 +41,15 @@ namespace AvalonUgh.Code
 
 		[Script]
 		public delegate void DelegateLoadLevelHint(int port);
-		public DelegateLoadLevelHint Sync_LoadLevelHint;
+		public DelegateLoadLevelHint Sync_RemoteOnly_LoadLevelHint;
 
 		[Script]
 		public delegate void DelegateEditorSelector(int port, int type, int size, int x, int y);
 		public DelegateEditorSelector Sync_EditorSelector;
 
 
+		[Script]
+		public delegate void DelegateMouseMove(int port, double x, double y);
+		public DelegateMouseMove Sync_RemoteOnly_MouseMove;
 	}
 }

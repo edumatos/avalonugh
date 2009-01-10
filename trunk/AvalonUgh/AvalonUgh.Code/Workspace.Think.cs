@@ -16,6 +16,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Threading;
 
 namespace AvalonUgh.Code
 {
@@ -58,7 +59,7 @@ namespace AvalonUgh.Code
 
 			Status.AttachContainerTo(this);
 
-			(1000 / DefaultFramerate).AtInterval(
+			ThinkTimer = (1000 / DefaultFramerate).AtInterval(
 				delegate
 				{
 					StatusText.Text = new { 
@@ -70,6 +71,8 @@ namespace AvalonUgh.Code
 				}
 			);
 		}
+
+		DispatcherTimer ThinkTimer;
 
 		void Think()
 		{

@@ -119,6 +119,8 @@ namespace AvalonUgh.Labs.Multiplayer
 								{
 
 								};
+
+							c.Content.Dispose();
 						};
 				}
 			).ToWindow().ShowDialog();

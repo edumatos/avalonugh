@@ -53,6 +53,9 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			void LoadLevelHint(int port);
 			void UserLoadLevelHint(int user, int port);
+
+			void MouseMove(int port, double x, double y);
+			void UserMouseMove(int user, int port, double x, double y);
 		}
 
 
