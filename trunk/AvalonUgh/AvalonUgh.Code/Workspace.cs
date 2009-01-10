@@ -95,6 +95,11 @@ namespace AvalonUgh.Code
 
 			var KnownLevels = new KnownLevels();
 
+			this.Levels.AddRange(
+				KnownLevels.Levels
+			);
+
+
 			this.Container = new Canvas
 			{
 				Width = args.DefaultWidth,
@@ -115,6 +120,15 @@ namespace AvalonUgh.Code
 					NewPort.Loaded +=
 						delegate
 						{
+							NewPort.View.EditorSelectorApplied +=
+								(Selector, Position) =>
+								{
+									if (Selector.Width == 0)
+										return;
+
+									(Assets.Shared.KnownAssets.Path.Audio + "/place_tile.mp3").PlaySound();
+								};
+
 							Console.WriteLine("port loaded " + new { NewPort.Width, NewPort.Height, NewPort.StatusbarHeight });
 
 							this.BackgroundLoading.Hide();
@@ -270,7 +284,7 @@ namespace AvalonUgh.Code
 
 			this.Ports.Add(this.Editor);
 
-	
+
 
 			#region PauseDialog
 			var PauseDialog = new Dialog
@@ -335,13 +349,6 @@ namespace AvalonUgh.Code
 
 			// add some "branding"
 
-			new Image
-			{
-				Stretch = Stretch.Fill,
-				Source = (Assets.Shared.KnownAssets.Path.Assets + "/jsc.png").ToSource(),
-				Width = 96,
-				Height = 96
-			}.MoveTo(args.PortWidth - 96, args.PortHeight - 96).AttachTo(this.Lobby.Window.OverlayContainer);
 
 
 			this.Ports.Add(Lobby);
@@ -389,6 +396,17 @@ namespace AvalonUgh.Code
 						};
 
 
+					NewPlayer.Actor.EnterCave +=
+						delegate
+						{
+							if (NewPlayer.Actor.VelocityX == 0)
+								if (NewPlayer.Actor.Animation != Actor.AnimationEnum.Talk)
+								{
+									NewPlayer.Actor.Animation = Actor.AnimationEnum.Talk;
+
+									(Assets.Shared.KnownAssets.Path.Audio + "/talk0_00.mp3").PlaySound();
+								}
+						};
 
 					NewPlayer.Actor.EnterVehicle +=
 						delegate
@@ -614,11 +632,6 @@ namespace AvalonUgh.Code
 					Players_add.Times(Sync_LocalsIncrease);
 				};
 
-			Lobby.Menu.EnteringPasswordChanged +=
-				delegate
-				{
-					this.SupportedKeyboardInputs.ForEach(k => k.Disabled = Lobby.Menu.EnteringPassword != null);
-				};
 
 			//this.Lobby.Menu.Players = 1;
 
@@ -750,26 +763,13 @@ namespace AvalonUgh.Code
 
 						return;
 					}
-					else
-					{
-						if (Local0.Actor.Animation != Actor.AnimationEnum.Talk)
-						{
-							Local0.Actor.Animation = Actor.AnimationEnum.Talk;
 
-							(Assets.Shared.KnownAssets.Path.Audio + "/talk0_00.mp3").PlaySound();
-						}
-
-					}
 				};
 
 
 			#endregion
 
-			//this.LocalIdentity.Locals.Add(Local0);
 
-
-
-			//Lobby.Window.ColorOverlay.Opacity = 1;
 			Lobby.WhenLoaded(
 				delegate
 				{
@@ -788,10 +788,6 @@ namespace AvalonUgh.Code
 
 
 			this.CurrentPort = this.Lobby;
-
-			this.Levels.AddRange(
-				KnownLevels.Levels
-			);
 
 			Lobby.Menu.Play +=
 				delegate
@@ -881,7 +877,7 @@ namespace AvalonUgh.Code
 			BackgroundLoading.MoveContainerTo(0, args.DefaultHeight - BackgroundLoading.Height);
 
 			this.EnableKeyboardFocus();
-			this.Container.KeyUp += HandleKeyUp;
+
 
 			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
 			this.StartThinking();

@@ -55,7 +55,7 @@ namespace AvalonUgh.Code
 			public EditorPort(ConstructorArguments args)
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
-				
+
 				this.SaveWindow = new SaveWindow();
 
 				this.LoadWindow = new LoadWindow(args.Levels);
@@ -125,21 +125,17 @@ namespace AvalonUgh.Code
 
 			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)
 			{
-				if (this.Level != null)
-				{
-					if (this.Level.KnownCaves.Any())
-					{
-						var c = this.Level.KnownCaves.Random();
+				if (this.Level == null)
+					throw new Exception("Level has to be loaded before you can teleport into it");
 
-						return CreateTuple(c.X, c.Y);
-					}
+				if (this.Level.KnownCaves.Any())
+				{
+					var c = this.Level.KnownCaves.Random();
+
+					return CreateTuple(c.X, c.Y);
 				}
 
-				return CreateTuple(
-					(this.View.ContentActualWidth / 4) +
-					(this.View.ContentActualWidth / 2).Random(),
-					(this.View.ContentActualHeight / 2)
-				);
+				return CreateTuple(100, 100);
 			}
 		}
 
@@ -214,15 +210,14 @@ namespace AvalonUgh.Code
 									 // how shall locals enter the editor?
 									 // just jump randomly in
 
-									 foreach (var k in from p in this.LocalIdentity.Locals
-													   let t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y })
-													   select new { p, t.x, t.y }
-													   )
+									 foreach (var p in this.LocalIdentity.Locals)
 									 {
+										 var t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y });
+
 										 this.Sync_TeleportTo(
 											 this.LocalIdentity.Locals,
 											 this.Editor.PortIdentity,
-											 k.p.IdentityLocal, k.x, k.y, 0, 0
+											 p.IdentityLocal, t.x, t.y, 0, 0
 										 );
 									 }
 
@@ -256,6 +251,7 @@ namespace AvalonUgh.Code
 				};
 
 
+			#region LoadWindow
 			this.Editor.LoadWindow.Click +=
 				NextLevelForEditor =>
 				{
@@ -278,15 +274,14 @@ namespace AvalonUgh.Code
 								{
 									// we need to bring back all the players!
 
-									foreach (var k in from p in this.LocalIdentity.Locals
-													  let t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y })
-													  select new { p, t.x, t.y }
-												  )
+									foreach (var p in this.LocalIdentity.Locals)
 									{
+										var t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y });
+
 										this.Sync_TeleportTo(
 											this.LocalIdentity.Locals,
 											this.Editor.PortIdentity,
-											k.p.IdentityLocal, k.x, k.y, 0, 0
+											p.IdentityLocal, t.x, t.y, 0, 0
 										);
 									}
 
@@ -300,6 +295,8 @@ namespace AvalonUgh.Code
 					);
 
 				};
+			#endregion
+
 		}
 
 

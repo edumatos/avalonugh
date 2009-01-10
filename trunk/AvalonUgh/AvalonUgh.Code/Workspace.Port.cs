@@ -288,6 +288,15 @@ namespace AvalonUgh.Code
 
 						NewPlayer.Actor.CurrentLevel = this.Level;
 					};
+
+				new Image
+				{
+					Stretch = Stretch.Fill,
+					Source = (Assets.Shared.KnownAssets.Path.Assets + "/jsc.png").ToSource(),
+					Width = 96,
+					Height = 96
+				}.MoveTo(args.Width - 96, args.Height - 96).AttachTo(this.Window.OverlayContainer);
+
 			}
 
 			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)

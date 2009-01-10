@@ -14,7 +14,7 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Window : ISupportsContainer
+	public partial class Window : ISupportsContainer
 	{
 		public Canvas Container { get; set; }
 		public Canvas ContentContainer { get; set; }

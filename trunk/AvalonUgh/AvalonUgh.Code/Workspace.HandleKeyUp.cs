@@ -23,6 +23,7 @@ namespace AvalonUgh.Code
 	{
 		public readonly KeyboardInput[] SupportedKeyboardInputs;
 
+
 		void EnableKeyboardFocus()
 		{
 			// we are going for the keyboard input
@@ -31,12 +32,51 @@ namespace AvalonUgh.Code
 			this.Container.Focusable = true;
 			this.Container.Focus();
 
+			
 			// at this time we should add a local player
 			this.Container.MouseLeftButtonDown +=
 				(sender, key_args) =>
 				{
+					if (HandleKeyUpDisabled)
+						return;
+
 					this.Container.Focus();
 				};
+
+			Action<UIElement> TextBoxDisableHandleKeyUp =
+				e =>
+				{
+					e.GotFocus +=
+						delegate
+						{
+							HandleKeyUpDisabled = true;
+							this.SupportedKeyboardInputs.ForEach(k => k.Disabled = true);
+						};
+
+					e.LostFocus +=
+						delegate
+						{
+							HandleKeyUpDisabled = false;
+							this.SupportedKeyboardInputs.ForEach(k => k.Disabled = false);
+						};
+				};
+
+			TextBoxDisableHandleKeyUp.AsParamsAction()(
+				this.Editor.SaveWindow.PropertyText.Value,
+				this.Editor.SaveWindow.PropertyCode.Value,
+				this.Editor.SaveWindow.PropertyNextLevelCode.Value,
+				this.Editor.Toolbar.LevelText
+			);
+
+		
+
+			this.Lobby.Menu.EnteringPasswordChanged +=
+				delegate
+				{
+					this.SupportedKeyboardInputs.ForEach(k => k.Disabled = Lobby.Menu.EnteringPassword != null);
+				};
+
+			this.Container.KeyUp += HandleKeyUp;
 		}
 
 		public static bool IsUnpauseKey(Key k)
@@ -53,10 +93,12 @@ namespace AvalonUgh.Code
 			return false;
 		}
 
+		bool HandleKeyUpDisabled;
+
 		void HandleKeyUp(object sender, KeyEventArgs args)
 		{
-
-
+			if (HandleKeyUpDisabled)
+				return;
 
 			// oem7 will trigger the console
 			if (args.Key == Key.Oem7)

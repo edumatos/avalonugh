@@ -75,14 +75,19 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly BindingList<Property> Items = new BindingList<Property>();
 
+		public readonly Property PropertyText = new Property { KeyText = "Text", ValueText = "Look what I made!" };
+		public readonly Property PropertyCode = new Property { KeyText = "Code", ValueText = "" };
+		public readonly Property PropertyNextLevelCode = new Property { KeyText = "Next Level Code", ValueText = "" };
+
+
 		public SaveWindow()
 		{
 			this.ClientWidth = 300 + Padding;
 			this.ClientHeight = 200;
 
-			Items.Add(new Property { KeyText = "Text", ValueText = "Look what I made!" });
-			Items.Add(new Property { KeyText = "Code", ValueText = "" });
-			Items.Add(new Property { KeyText = "Next Level Code", ValueText = "" });
+			Items.Add(PropertyText);
+			Items.Add(PropertyCode);
+			Items.Add(PropertyNextLevelCode);
 
 			Items.ForEachNewOrExistingItem(
 				(p, i) =>
@@ -92,83 +97,29 @@ namespace AvalonUgh.Code.Editor
 				}
 			);
 
-			var SaveButton = new Window
-			{
-				Padding = 1,
-				ClientWidth = 100,
-				ClientHeight = 24
-			};
+		
 
-			var SaveButtonImage = new Image
-			{
-				Width = 16,
-				Height = 16,
-				Stretch = Stretch.Fill,
-				Source = new NameFormat
+			var XSaveButton = new Window.Button(
+				new Image
 				{
-					Path = Assets.Shared.KnownAssets.Path.Assets,
-					Index = -1,
-					Name = "btn_save",
-					Extension = "png"
-				}
-			};
-
-			SaveButtonImage.MoveTo(4, 4).AttachTo(SaveButton.ContentContainer);
-
-			var SaveButtonText = new TextBox
+					Width = 16,
+					Height = 16,
+					Stretch = Stretch.Fill,
+					Source = new NameFormat
+					{
+						Path = Assets.Shared.KnownAssets.Path.Assets,
+						Index = -1,
+						Name = "btn_save",
+						Extension = "png"
+					}
+				})
 			{
-				BorderThickness = new Thickness(0),
-				Background = Brushes.Transparent,
-				Width = SaveButton.ClientWidth - SaveButton.ClientHeight - 1,
-				Height = SaveButton.ClientHeight - 4,
 				Text = "Save"
 			};
 
-			SaveButtonText.MoveTo(24, 2).AttachTo(SaveButton.ContentContainer);
+			XSaveButton.AttachContainerTo(this.OverlayContainer);
+			XSaveButton.MoveContainerTo(this.ClientWidth - XSaveButton.Width, this.ClientHeight - XSaveButton.Height);
 
-			SaveButton.AttachContainerTo(this.OverlayContainer);
-			SaveButton.MoveContainerTo(this.ClientWidth - SaveButton.Width, this.ClientHeight - SaveButton.Height);
-
-			SaveButton.ColorOverlay.Element.Show();
-			SaveButton.ColorOverlay.Element.Cursor = Cursors.Hand;
-
-			SaveButton.ColorOverlay.Element.MouseLeave +=
-				delegate
-				{
-					SaveButtonText.MoveTo(24, 2);
-					SaveButtonImage.MoveTo(4, 4);
-
-					SaveButton.ThreeD_Left.Fill = Brushes.LightGreen;
-					SaveButton.ThreeD_Top.Fill = Brushes.LightGreen;
-
-					SaveButtonText.Foreground = Brushes.Black;
-				};
-
-			SaveButton.ColorOverlay.Element.MouseEnter +=
-				delegate
-				{
-
-					SaveButtonText.Foreground = Brushes.Yellow;
-				};
-
-			SaveButton.ColorOverlay.Element.MouseLeftButtonDown +=
-				delegate
-				{
-					SaveButtonText.MoveTo(24 + 1, 2 + 1);
-					SaveButtonImage.MoveTo(5, 5);
-					SaveButton.ThreeD_Left.Fill = Brushes.DarkGreen;
-					SaveButton.ThreeD_Top.Fill = Brushes.DarkGreen;
-				};
-
-			SaveButton.ColorOverlay.Element.MouseLeftButtonUp +=
-				delegate
-				{
-					SaveButtonText.MoveTo(24, 2);
-					SaveButtonImage.MoveTo(4, 4);
-
-					SaveButton.ThreeD_Left.Fill = Brushes.LightGreen;
-					SaveButton.ThreeD_Top.Fill = Brushes.LightGreen;
-				};
 
 			// text
 			// code
