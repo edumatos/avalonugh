@@ -34,6 +34,7 @@ namespace AvalonUgh.Code
 
 			public readonly EditorToolbar Toolbar;
 			public readonly LoadWindow LoadWindow;
+			public readonly SaveWindow SaveWindow;
 
 			[Script]
 			public class Arrow : ArrowCursorControl
@@ -54,6 +55,9 @@ namespace AvalonUgh.Code
 			public EditorPort(ConstructorArguments args)
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
+				
+				this.SaveWindow = new SaveWindow();
+
 				this.LoadWindow = new LoadWindow(args.Levels);
 
 				this.Selectors = args.Selectors;
@@ -83,6 +87,13 @@ namespace AvalonUgh.Code
 					{
 						this.LoadWindow.BringContainerToFront();
 						this.LoadWindow.Show(this.LoadWindow.Visibility == Visibility.Hidden);
+					};
+
+				this.Toolbar.SaveClicked +=
+					delegate
+					{
+						this.SaveWindow.BringContainerToFront();
+						this.SaveWindow.Show(this.SaveWindow.Visibility == Visibility.Hidden);
 					};
 
 				this.Loaded +=
@@ -135,6 +146,26 @@ namespace AvalonUgh.Code
 
 		private void InitializeMenuEditorButton()
 		{
+			this.Editor.Toolbar.DragContainer = this.Container;
+			this.Editor.Toolbar.Hide();
+			this.Editor.Toolbar.AttachContainerTo(this.Container);
+
+			this.Editor.LoadWindow.DragContainer = this.Container;
+			this.Editor.LoadWindow.Hide();
+			this.Editor.LoadWindow.AttachContainerTo(this);
+			this.Editor.LoadWindow.MoveToCenter(this.Container);
+
+			this.Editor.SaveWindow.DragContainer = this.Container;
+			this.Editor.SaveWindow.Hide();
+			this.Editor.SaveWindow.AttachContainerTo(this);
+			this.Editor.SaveWindow.MoveToCenter(this.Container);
+
+			// move it to bottom center
+			this.Editor.Toolbar.MoveContainerTo(
+				(this.Arguments.DefaultWidth - this.Editor.Toolbar.Width) / 2,
+				this.Arguments.DefaultHeight - this.Editor.Toolbar.Padding * 3 - PrimitiveTile.Heigth * 4
+			);
+
 			Lobby.Menu.Editor +=
 				 delegate
 				 {

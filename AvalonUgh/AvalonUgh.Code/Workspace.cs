@@ -74,10 +74,15 @@ namespace AvalonUgh.Code
 			public bool Paused;
 		}
 
+		public readonly ConstructorArguments Arguments;
+
 		readonly AudioLoop Music;
+
 
 		public Workspace(ConstructorArguments args)
 		{
+			this.Arguments = args;
+
 			this.LocalIdentity.SyncFramePaused = args.Paused;
 
 			this.Music = new AudioLoop
@@ -265,20 +270,7 @@ namespace AvalonUgh.Code
 
 			this.Ports.Add(this.Editor);
 
-			this.Editor.Toolbar.DragContainer = this.Container;
-			this.Editor.Toolbar.Hide();
-			this.Editor.Toolbar.AttachContainerTo(this.Container);
-
-			this.Editor.LoadWindow.DragContainer = this.Container;
-			this.Editor.LoadWindow.Hide();
-			this.Editor.LoadWindow.AttachContainerTo(this);
-			this.Editor.LoadWindow.MoveToCenter(this.Container);
-
-			// move it to bottom center
-			this.Editor.Toolbar.MoveContainerTo(
-				(args.DefaultWidth - this.Editor.Toolbar.Width) / 2,
-				args.DefaultHeight - this.Editor.Toolbar.Padding * 3 - PrimitiveTile.Heigth * 4
-			);
+	
 
 			#region PauseDialog
 			var PauseDialog = new Dialog

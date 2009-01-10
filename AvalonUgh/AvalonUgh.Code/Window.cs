@@ -62,6 +62,12 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public readonly Rectangle ThreeD_Top;
+		public readonly Rectangle ThreeD_Left;
+		public readonly Rectangle ThreeD_Bottom;
+		public readonly Rectangle ThreeD_Right;
+
+
 		public Window()
 		{
 			Width = 360;
@@ -76,22 +82,22 @@ namespace AvalonUgh.Code
 		
 
 			#region borders
-			var ThreeD_Top = new Rectangle
+			this.ThreeD_Top = new Rectangle
 			{
 				Fill = Brushes.LightGreen,
 			}.AttachTo(this.Container);
 
-			var ThreeD_Left = new Rectangle
+			this.ThreeD_Left = new Rectangle
 			{
 				Fill = Brushes.LightGreen,
 			}.AttachTo(this.Container);
 
-			var ThreeD_Right = new Rectangle
+			this.ThreeD_Right = new Rectangle
 			{
 				Fill = Brushes.DarkGreen,
 			}.AttachTo(this.Container);
 
-			var ThreeD_Bottom = new Rectangle
+			this.ThreeD_Bottom = new Rectangle
 			{
 				Fill = Brushes.DarkGreen,
 			}.AttachTo(this.Container);
@@ -163,12 +169,16 @@ namespace AvalonUgh.Code
 					this.Container.BringToFront();
 				};
 
-			this.OverlayContainer = new Canvas().AttachTo(this.Container);
+			this.OverlayContainer = new Canvas
+			{
+				
+			}.AttachTo(this.Container);
 
 			this.ColorOverlay = new Rectangle
 			{
 				Fill = Brushes.Black,
-				Opacity = 0
+				Opacity = 0,
+				Visibility = Visibility.Hidden,
 			}.AttachTo(this.Container).ToAnimatedOpacity();
 
 			//this.ColorOverlay.Opacity = 0;
