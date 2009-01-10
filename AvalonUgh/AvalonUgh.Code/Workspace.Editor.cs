@@ -16,6 +16,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
+using ScriptCoreLib.Shared.Avalon.Cursors;
 
 namespace AvalonUgh.Code
 {
@@ -33,6 +34,22 @@ namespace AvalonUgh.Code
 
 			public readonly EditorToolbar Toolbar;
 			public readonly LoadWindow LoadWindow;
+
+			[Script]
+			public class Arrow : ArrowCursorControl
+			{
+				public PlayerIdentity Identity;
+
+				public Action<double, double> AnimatedMoveTo;
+
+				public Arrow()
+				{
+					this.AnimatedMoveTo = NumericEmitter.OfDouble((x, y) => this.MoveContainerTo(Convert.ToInt32(x), Convert.ToInt32(y)));
+				}
+			}
+
+			public readonly BindingList<Arrow> Arrows = new BindingList<Arrow>();
+
 
 			public EditorPort(ConstructorArguments args)
 			{
@@ -75,12 +92,33 @@ namespace AvalonUgh.Code
 						this.View.EditorSelectorPreviousSize += () => this.Toolbar.EditorSelectorPreviousSize();
 
 						this.Window.ColorOverlay.Opacity = 0;
+
+
+						this.Arrows.ToArray().AttachContainerTo(this.View.ContentInfoOverlay);
 					};
 
+				this.Arrows.AttachTo(k => this.View != null, () => this.View.ContentInfoOverlay);
 
 
+			}
 
+			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)
+			{
+				if (this.Level != null)
+				{
+					if (this.Level.KnownCaves.Any())
+					{
+						var c = this.Level.KnownCaves.Random();
 
+						return CreateTuple(c.X, c.Y);
+					}
+				}
+
+				return CreateTuple(
+					(this.View.ContentActualWidth / 4) +
+					(this.View.ContentActualWidth / 2).Random(),
+					(this.View.ContentActualHeight / 2)
+				);
 			}
 		}
 
@@ -94,8 +132,8 @@ namespace AvalonUgh.Code
 					 {
 						 // maybe send others a pre loading message too?
 
-						 if (this.Sync_LoadLevelHint != null)
-							 this.Sync_LoadLevelHint(this.Editor.PortIdentity);
+						 if (this.Sync_RemoteOnly_LoadLevelHint != null)
+							 this.Sync_RemoteOnly_LoadLevelHint(this.Editor.PortIdentity);
 					 }
 
 					 this.Editor.Window.ColorOverlay.Opacity = 1;
@@ -121,7 +159,7 @@ namespace AvalonUgh.Code
 							 this.Editor.WhenLoaded(
 								 delegate
 								 {
-								
+
 									 //this.Editor.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
 
@@ -135,12 +173,19 @@ namespace AvalonUgh.Code
 									 // how shall locals enter the editor?
 									 // just jump randomly in
 
-									 this.LocalIdentity.Locals.ForEach(
-										k => this.Sync_TeleportTo(
-											this.LocalIdentity.Locals, 
-											this.Editor.PortIdentity, 
-											k.IdentityLocal, 100, 100, 0, 0)
-									 );
+									 foreach (var k in from p in this.LocalIdentity.Locals
+													   let t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y })
+													   select new { p, t.x, t.y }
+													   )
+									 {
+										 this.Sync_TeleportTo(
+											 this.LocalIdentity.Locals,
+											 this.Editor.PortIdentity,
+											 k.p.IdentityLocal, k.x, k.y, 0, 0
+										 );
+									 }
+
+
 								 }
 							 );
 
@@ -156,24 +201,54 @@ namespace AvalonUgh.Code
 
 				 };
 
+			this.Editor.Loaded +=
+				delegate
+				{
+					this.Editor.View.TouchOverlay.MouseMove +=
+						(_sender, _args) =>
+						{
+							var p = _args.GetPosition(this.Editor.View.TouchOverlay);
+
+							if (this.Sync_RemoteOnly_MouseMove != null)
+								this.Sync_RemoteOnly_MouseMove(this.Editor.PortIdentity, p.X, p.Y);
+						};
+				};
+
+
 			this.Editor.LoadWindow.Click +=
 				NextLevelForEditor =>
 				{
 					this.Editor.LoadWindow.Hide();
 
 					// send early warning
-					if (this.Sync_LoadLevelHint != null)
-						this.Sync_LoadLevelHint(this.Editor.PortIdentity);
+					if (this.Sync_RemoteOnly_LoadLevelHint != null)
+						this.Sync_RemoteOnly_LoadLevelHint(this.Editor.PortIdentity);
 
 					this.Editor.Window.ColorOverlay.SetOpacity(1,
 						delegate
 						{
-							//this.LevelReference = NextLevelForEditor;
+							// remove all locals from all ports
+							this.LocalIdentity.Locals.ForEach(
+								k => this.Sync_TeleportTo(this.LocalIdentity.Locals, 0, k.IdentityLocal, 0, 0, 0, 0)
+							);
 
 							this.Editor.WhenLoadedQueue.Enqueue(
 								delegate
 								{
 									// we need to bring back all the players!
+
+									foreach (var k in from p in this.LocalIdentity.Locals
+													  let t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y })
+													  select new { p, t.x, t.y }
+												  )
+									{
+										this.Sync_TeleportTo(
+											this.LocalIdentity.Locals,
+											this.Editor.PortIdentity,
+											k.p.IdentityLocal, k.x, k.y, 0, 0
+										);
+									}
+
 								}
 							);
 

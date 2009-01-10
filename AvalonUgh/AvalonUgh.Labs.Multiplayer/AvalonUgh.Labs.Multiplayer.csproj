@@ -50,6 +50,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\util\jsc\bin\ScriptCoreLib.Avalon.dll</HintPath>
     </Reference>
+    <Reference Include="ScriptCoreLib.Avalon.Cursors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Avalon.Cursors.dll</HintPath>
+    </Reference>
     <Reference Include="ScriptCoreLib.Mochi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Mochi.dll</HintPath>
@@ -93,6 +97,10 @@
     <ProjectReference Include="..\AvalonUgh.Assets\AvalonUgh.Assets.csproj">
       <Project>{CF35C94E-9437-4918-A478-4213A63D1630}</Project>
       <Name>AvalonUgh.Assets</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AvalonUgh.Code\AvalonUgh.Code.csproj">
+      <Project>{2A209E86-A4B0-4A3D-BD22-24A62E212893}</Project>
+      <Name>AvalonUgh.Code</Name>
     </ProjectReference>
     <ProjectReference Include="..\AvalonUgh.NetworkCode\AvalonUgh.NetworkCode.csproj">
       <Project>{B699417E-5E3E-4406-AEE0-8900637D61D0}</Project>

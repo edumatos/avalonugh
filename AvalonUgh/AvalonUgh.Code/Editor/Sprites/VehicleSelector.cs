@@ -13,13 +13,18 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class VehicleSelector : SelectorBase
 	{
+		public const string Alias = "vehicle";
+
+		public readonly SelectorSize_2x2 Size_2x2 = new SelectorSize_2x2();
+
+
 		public VehicleSelector()
 		{
 			this.ToolbarImage =
 				new NameFormat
 				{
 					Path = Assets.Shared.KnownAssets.Path.Sprites,
-					Name = "vehicle",
+					Name = VehicleSelector.Alias,
 					Index = 1,
 					AnimationFrame = 4,
 					Width = 2,
@@ -32,7 +37,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 	
 			this.Sizes = new[]
 			{
-				new Size_2x2()
+				Size_2x2
 			};
 		}
 
@@ -40,9 +45,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 	
 
 		[Script]
-		public class Size_2x2 : SpriteSelector
+		public class SelectorSize_2x2 : SpriteSelector
 		{
-			public Size_2x2()
+			public SelectorSize_2x2()
 			{
 				Width = PrimitiveTile.Width * 2;
 				Height = PrimitiveTile.Heigth * 2;

@@ -914,6 +914,8 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_65.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_66.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\jsc_white.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\jsc_blue.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\jsc.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_66.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_65.png" />

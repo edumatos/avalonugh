@@ -455,7 +455,47 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					);
 				};
 
-			this.Content.Sync_LoadLevelHint =
+			#region UserMouseMove
+			this.Content.Sync_RemoteOnly_MouseMove =
+				(int port, double x, double y) =>
+				{
+					this.Messages.MouseMove(port, x, y);
+				};
+
+			this.Events.UserMouseMove +=
+				e =>
+				{
+					var c = this[e];
+
+					// e.port could be used to select a specific editor window
+					// for now we ignore it
+
+					var a = this.Content.Editor.Arrows.SingleOrDefault(k => k.Identity == c);
+
+					if (a == null)
+					{
+						a = new Workspace.EditorPort.Arrow
+						{
+							Identity = c
+						};
+
+						this.Content.Editor.Arrows.Add(a);
+
+						this.CoPlayers.ForEachItemDeleted(
+							DeletedIdentity =>
+							{
+								if (DeletedIdentity == c)
+									this.Content.Editor.Arrows.Remove(a);
+							}
+						);
+					}
+
+					a.AnimatedMoveTo(e.x, e.y);
+				};
+			#endregion
+
+			#region UserLoadLevelHint
+			this.Content.Sync_RemoteOnly_LoadLevelHint =
 				(int port) =>
 				{
 					this.Messages.LoadLevelHint(port);
@@ -469,6 +509,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					else
 						this.Content.BackgroundLoading.Show();
 				};
+			#endregion
 
 
 			#region Sync_LoadLevel

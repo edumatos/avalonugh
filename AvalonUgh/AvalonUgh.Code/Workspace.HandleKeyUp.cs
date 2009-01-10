@@ -181,16 +181,10 @@ namespace AvalonUgh.Code
 						{
 							// entering lobby
 
-							// just jump randomly in
-							foreach (var k in this.LocalIdentity.Locals)
-							{
-								k.Actor.MoveTo(
-									(this.Lobby.View.ContentActualWidth / 4) +
-									(this.Lobby.View.ContentActualWidth / 2).Random(),
-									this.Lobby.View.ContentActualHeight / 2);
-
-								k.Actor.CurrentLevel = this.Lobby.Level;
-							}
+							// remove all locals from all ports
+							this.LocalIdentity.Locals.ForEach(
+								k => this.Sync_TeleportTo(this.LocalIdentity.Locals, 0, k.IdentityLocal, 0, 0, 0, 0)
+							);
 
 
 							this.CurrentPort = this.Lobby;
