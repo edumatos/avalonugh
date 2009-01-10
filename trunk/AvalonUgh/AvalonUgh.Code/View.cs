@@ -90,6 +90,7 @@ namespace AvalonUgh.Code
 
 		public const int MaxShakeSize = 4;
 
+	
 
 		public View(int width, int height, Level level)
 		{

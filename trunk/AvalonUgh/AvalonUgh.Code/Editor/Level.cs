@@ -439,8 +439,36 @@ namespace AvalonUgh.Code.Editor
 			#endregion
 
 
+			Action<IBindingList> DetectModifications =
+				e =>
+				{
+					e.ListChanged +=
+						delegate
+						{
+							this.IsDirty = true;
+						};
+				};
+
+			DetectModifications.AsParamsAction()(
+				this.KnownBridges,
+				this.KnownCaves,
+				this.KnownDinos,
+				this.KnownFences,
+				this.KnownGold,
+				this.KnownPlatforms,
+				this.KnownRidges,
+				this.KnownRidgeTrees,
+				this.KnownRocks,
+				this.KnownSigns,
+				this.KnownStones,
+				this.KnownTrees,
+				this.KnownTryoperus,
+				this.KnownVehicles
+			);
+			
 		}
 
+		public bool IsDirty;
 
 		[Script]
 		public class ZoomedBorderType

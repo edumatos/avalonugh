@@ -231,6 +231,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
+		// this needs to be removed
 		public int Direction = -1;
 
 		public bool CanWalkIntoDirection(int Direction)
