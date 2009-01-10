@@ -40,7 +40,13 @@ namespace AvalonUgh.Code
 		public DelegateLoadLevel Sync_LoadLevel;
 
 		[Script]
+		public delegate void DelegateLoadLevelHint(int port);
+		public DelegateLoadLevelHint Sync_LoadLevelHint;
+
+		[Script]
 		public delegate void DelegateEditorSelector(int port, int type, int size, int x, int y);
 		public DelegateEditorSelector Sync_EditorSelector;
+
+
 	}
 }

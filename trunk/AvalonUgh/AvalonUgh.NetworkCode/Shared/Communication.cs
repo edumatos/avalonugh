@@ -51,6 +51,8 @@ namespace AvalonUgh.NetworkCode.Shared
 			void LoadLevel(int frame, int port, int level, string custom);
 			void UserLoadLevel(int user, int port, int frame, int level, string custom);
 
+			void LoadLevelHint(int port);
+			void UserLoadLevelHint(int user, int port);
 		}
 
 

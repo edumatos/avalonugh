@@ -113,6 +113,8 @@ namespace AvalonUgh.Code
 						{
 							Console.WriteLine("port loaded " + new { NewPort.Width, NewPort.Height, NewPort.StatusbarHeight });
 
+							this.BackgroundLoading.Hide();
+
 							NewPort.Level.KnownTryoperus.ForEachNewOrExistingItem(
 								NewTryo =>
 								{
@@ -866,8 +868,14 @@ namespace AvalonUgh.Code
 			InitializeMenuEditorButton();
 
 
+			BackgroundLoading = new DialogTextBox
+			{
+				Zoom = 2,
+				Text = "loading...",
+				Visibility = Visibility.Hidden
+			}.AttachContainerTo(this);
 
-
+			BackgroundLoading.MoveContainerTo(0, args.DefaultHeight - BackgroundLoading.Height);
 
 			this.EnableKeyboardFocus();
 			this.Container.KeyUp += HandleKeyUp;
@@ -876,7 +884,7 @@ namespace AvalonUgh.Code
 			this.StartThinking();
 		}
 
-
+		public readonly DialogTextBox BackgroundLoading;
 
 
 		Dialog InternalActiveDialog;
