@@ -53,6 +53,9 @@ namespace AvalonUgh.Code
 				};
 
 			StatusText.AttachTo(Status.ContentContainer).MoveTo(Status.Padding, Status.Padding);
+
+			Status.DraggableArea.BringToFront();
+
 			Status.AttachContainerTo(this);
 
 			(1000 / DefaultFramerate).AtInterval(

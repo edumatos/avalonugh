@@ -84,6 +84,14 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 		public BindingList<PlayerIdentity> CoPlayers;
 
+		public IEnumerable<PlayerIdentity> AllPlayers
+		{
+			get
+			{
+				return CoPlayers.ConcatSingle(this.Content.LocalIdentity);
+			}
+		}
+
 		public void InitializeEvents()
 		{
 			#region CoPlayers
@@ -151,7 +159,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					else
 					{
 						Server_Hello_UserSynced.ForEachNewItem(
-							delegate 
+							delegate
 							{
 								if (Server_Hello_UserSynced.Count == e.others)
 								{
@@ -175,6 +183,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				e =>
 				{
 					//Content.Console.WriteLine("Server_UserJoined " + new { e, this.Content.LocalIdentity.SyncFrame });
+					var EgoIsPrimate = this.AllPlayers.Min(k => k.Number) == this.Content.LocalIdentity.Number;
 
 					this.Messages.UserHello(
 						e.user,
@@ -265,6 +274,25 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 								}
 							}
 
+							if (EgoIsPrimate)
+							{
+								this.Content.Console.WriteLine("as a primate, I will send map data to the new player");
+
+								if (this.Content.Editor.LevelReference != null)
+								{
+									// yay, we are in the editor
+									// are we the only one?
+
+									this.Messages.UserLoadLevel(
+										e.user,
+										this.Content.Editor.PortIdentity,
+										this.Content.LocalIdentity.SyncFrame,
+										this.Content.Editor.LevelReference.Location.Embedded.AnimationFrame,
+										null
+									);
+								}
+							}
+
 							this.Messages.UserSynced(
 								e.user,
 								this.Content.LocalIdentity.SyncFrame
@@ -334,29 +362,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 
 
-			//(1000).AtInterval(
-			//    delegate
-			//    {
-			//        // we are on our own
-			//        if (this.CoPlayers.Count == 0)
-			//            return;
-
-			//        var AvgSyncFrame = this.CoPlayers.Average(k => k.SyncFrame);
-			//        var AvgSyncFrameLatency = this.CoPlayers.Average(k => k.SyncFrameLatency);
-			//        var AvgSyncFrameDelta = AvgSyncFrame - this.Content.LocalIdentity.SyncFrame;
-
-			//        this.Content.Console.WriteLine(
-			//                new
-			//                {
-			//                    avgframe = AvgSyncFrame,
-			//                    frame = this.Content.LocalIdentity.SyncFrame,
-			//                    framerate = this.Content.LocalIdentity.SyncFrameRate,
-			//                    avglag = AvgSyncFrameLatency,
-			//                    delta = AvgSyncFrameDelta
-			//                }
-			//            );
-			//    }
-			//);
 
 			#region broadcast current frame
 			this.Content.LocalIdentity.SyncFrameChanged +=
@@ -429,6 +434,74 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						delegate
 						{
 							this.Content.Console.WriteLine("UserKeyStateChanged desync " + e);
+						}
+					);
+				};
+
+			#region Sync_LoadLevel
+			var Sync_LoadLevel = this.Content.Sync_LoadLevel;
+
+			this.Events.UserLoadLevel +=
+				e =>
+				{
+					var c = this[e.user];
+
+					this.Content.LocalIdentity.HandleFrame(e.frame,
+						delegate
+						{
+							Sync_LoadLevel(e.port, e.level, e.custom);
+						},
+						delegate
+						{
+							this.Content.Console.WriteLine("UserTeleportTo desync " + e);
+						}
+					);
+				};
+
+			this.Content.Sync_LoadLevel =
+				(int port, int level, string custom) =>
+				{
+					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+						delegate
+						{
+							// do a local teleport in the future
+							Sync_LoadLevel(port, level, custom);
+						}
+					);
+
+					this.Messages.LoadLevel(FutureFrame, port, level, custom);
+				};
+			#endregion
+
+			var Sync_EditorSelector = this.Content.Sync_EditorSelector;
+
+			this.Content.Sync_EditorSelector =
+				(int port, int type, int size, int x, int y) =>
+				{
+					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+						delegate
+						{
+							// do a local teleport in the future
+							Sync_EditorSelector(port, type, size, x, y);
+						}
+					);
+
+					this.Messages.EditorSelector(FutureFrame, port, type, size, x, y);
+				};
+
+			this.Events.UserEditorSelector +=
+				e =>
+				{
+					var c = this[e.user];
+
+					this.Content.LocalIdentity.HandleFrame(e.frame,
+						delegate
+						{
+							Sync_EditorSelector(e.port, e.type, e.size, e.x, e.y);
+						},
+						delegate
+						{
+							this.Content.Console.WriteLine("UserEditorSelector desync " + e);
 						}
 					);
 				};
@@ -628,33 +701,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			//    };
 			//#endregion
 
-			//#region SetShakerEnabled
-			//// we are overriding default behaviour
-			//// as we need to act upon events in the future
-			//this.Content.SetShakerEnabled =
-			//    value =>
-			//    {
-			//        var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
-			//            delegate
-			//            {
-			//                this.Content.View.IsShakerEnabled = value;
-			//            }
-			//        );
 
-			//        this.Messages.SetShakerEnabled(FutureFrame, Convert.ToInt32(value));
-			//    };
-
-			//this.Events.UserSetShakerEnabled +=
-			//    e =>
-			//    {
-			//        this.Content.LocalIdentity.HandleFrame(e.frame,
-			//            delegate
-			//            {
-			//                this.Content.View.IsShakerEnabled = Convert.ToBoolean(e.value);
-			//            }
-			//        );
-			//    };
-			//#endregion
 
 
 			#region pause
@@ -703,25 +750,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			#endregion
 
 
-			//var LoadEmbeddedLevel = this.Content.LoadEmbeddedLevel;
-			//this.Content.LoadEmbeddedLevel =
-			//    LevelNumber =>
-			//    {
-			//        var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
-			//            delegate
-			//            {
-			//                LoadEmbeddedLevel(LevelNumber);
-			//            }
-			//        );
-
-			//        this.Messages.LoadEmbeddedLevel(FutureFrame, LevelNumber);
-			//    };
-
-			//this.Events.UserLoadEmbeddedLevel +=
-			//    e =>
-			//    {
-			//        LoadEmbeddedLevel(e.level);
-			//    };
 
 		}
 

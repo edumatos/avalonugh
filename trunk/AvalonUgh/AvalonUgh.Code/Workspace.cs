@@ -17,6 +17,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code
 {
@@ -150,6 +151,17 @@ namespace AvalonUgh.Code
 									}
 
 
+								};
+
+							// we will be rerouting this action over network
+							NewPort.View.EditorSelectorDisabled = true;
+
+							NewPort.View.EditorSelectorApplied +=
+								(Selector, Position) =>
+								{
+									var Index = KnownSelectors.Index.Of(Selector, this.Selectors);
+
+									this.Sync_EditorSelector(NewPort.PortIdentity, Index.Type, Index.Size, Position.ContentX, Position.ContentY);
 								};
 						};
 
@@ -347,6 +359,28 @@ namespace AvalonUgh.Code
 						CanBeHitByVehicle = false,
 					};
 
+					NewPlayer.Actor.Jumping +=
+						delegate
+						{
+							(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
+						};
+
+					// every actor could act differently on gold collected
+					NewPlayer.Actor.GoldStash.ForEachNewItem(
+						gold =>
+						{
+							//var CurrentPort = this.Ports.Single(k => k.Level == Local0.Actor.CurrentLevel);
+
+							(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
+
+							//CurrentPort.View.ColorOverlay.Background = Brushes.Yellow;
+							//CurrentPort.View.ColorOverlay.Opacity = 0.7;
+							//CurrentPort.View.ColorOverlay.Show();
+							//CurrentPort.View.ColorOverlay.FadeOut();
+						}
+					);
+
+
 					NewPlayer.Actor.MoveTo(64, 64);
 				}
 			);
@@ -356,6 +390,29 @@ namespace AvalonUgh.Code
 					DeletedPlayer.Actor.CurrentLevel = null;
 				}
 			);
+
+
+			this.Sync_EditorSelector =
+				(int port, int type, int size, int x, int y) =>
+				{
+					var CurrentPort = this.Ports.SingleOrDefault(k => k.PortIdentity == port);
+
+					var Selector = this.Selectors.Types[type].Sizes[size];
+					var Position = new View.SelectorPosition { ContentX = x, ContentY = y };
+
+					Selector.CreateTo(CurrentPort.Level, Position);
+				};
+
+			this.Sync_LoadLevel =
+				(int port, int level, string custom) =>
+				{
+					var CurrentPort = this.Ports.SingleOrDefault(k => k.PortIdentity == port);
+
+					Console.WriteLine("loading level " + level + " for port " + port + " at frame " + this.LocalIdentity.SyncFrame);
+
+					CurrentPort.LevelReference = this.Levels.Single(k => k.Location.Embedded.AnimationFrame == level);
+
+				};
 
 			#region Sync_TeleportTo local implementation
 			this.Sync_TeleportTo =
@@ -375,23 +432,46 @@ namespace AvalonUgh.Code
 						};
 
 						if (a == this.LocalIdentity.Locals)
+						{
 							p.Input.Keyboard = this.SupportedKeyboardInputs[local];
+						}
 						else
 							p.Input.Keyboard = new KeyboardInput(new KeyboardInput.Arguments.Arrows());
 
-
+						a.Add(p);
 					}
 
-					a.Add(p);
+
 
 					p.IdentityLocal = local;
 
-					var CurrentPort = this.Ports.Single(k => k.PortIdentity == port);
+					var CurrentPort = this.Ports.SingleOrDefault(k => k.PortIdentity == port);
 
-					p.Actor.CurrentLevel = CurrentPort.Level;
+					if (CurrentPort == null)
+						p.Actor.CurrentLevel = null;
+					else
+						p.Actor.CurrentLevel = CurrentPort.Level;
+
 					p.Actor.MoveTo(x, y);
 					p.Actor.VelocityX = vx;
 					p.Actor.VelocityY = vy;
+
+					if (a == this.LocalIdentity.Locals)
+					{
+						// every actor could act differently on gold collected
+						p.Actor.GoldStash.ForEachNewItem(
+							gold =>
+							{
+								var _CurrentPort = this.Ports.Single(k => k.Level == p.Actor.CurrentLevel);
+
+								_CurrentPort.View.ColorOverlay.Background = Brushes.Yellow;
+								_CurrentPort.View.ColorOverlay.Opacity = 0.7;
+								_CurrentPort.View.ColorOverlay.Show();
+								_CurrentPort.View.ColorOverlay.FadeOut();
+							}
+						);
+
+					}
 				};
 			#endregion
 
@@ -445,33 +525,7 @@ namespace AvalonUgh.Code
 						);
 					}
 
-					//else
-					//{
-					//    var p = new PlayerInfo
-					//    {
-					//        Identity = LocalIdentity,
-					//        Input = new PlayerInput
-					//        {
-					//            Keyboard = this.SupportedKeyboardInputs[this.LocalIdentity.Locals.Count],
-					//        }
-					//    };
 
-					//    this.LocalIdentity.Locals.Add(p);
-
-					//    if (this.CurrentPort != null)
-					//        if (this.CurrentPort.Level != null)
-					//        {
-					//            // where shall we spawn?
-					//            //p.Actor.CurrentLevel = this.CurrentPort.Level;
-					//            //p.Actor.MoveTo(
-					//            //    (this.CurrentPort.View.ContentActualWidth / 4) +
-					//            //    (this.CurrentPort.View.ContentActualWidth / 2).Random(),
-					//            //    this.CurrentPort.View.ContentActualHeight / 2);
-
-					//            this.CurrentPort.Players.Add(p);
-					//        }
-
-					//}
 
 				};
 
@@ -510,12 +564,6 @@ namespace AvalonUgh.Code
 
 
 
-			// we need to play jumping sound
-			Local0.Actor.Jumping +=
-				delegate
-				{
-					(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
-				};
 
 			Local0.Actor.CurrentVehicleChanged +=
 				delegate
@@ -523,11 +571,7 @@ namespace AvalonUgh.Code
 					(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
 				};
 
-			Local0.Actor.WaterCollision +=
-				delegate
-				{
-					Console.WriteLine("yay, water!");
-				};
+
 
 			Local0.Actor.EnterVehicle +=
 				delegate
@@ -684,20 +728,6 @@ namespace AvalonUgh.Code
 					}
 				};
 
-			// every actor could act differently on gold collected
-			Local0.Actor.GoldStash.ForEachNewItem(
-				gold =>
-				{
-					var CurrentPort = this.Ports.Single(k => k.Level == Local0.Actor.CurrentLevel);
-
-					(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
-
-					CurrentPort.View.ColorOverlay.Background = Brushes.Yellow;
-					CurrentPort.View.ColorOverlay.Opacity = 0.7;
-					CurrentPort.View.ColorOverlay.Show();
-					CurrentPort.View.ColorOverlay.FadeOut();
-				}
-			);
 
 			#endregion
 
@@ -715,37 +745,15 @@ namespace AvalonUgh.Code
 
 					this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
-					//foreach (var k in this.LocalIdentity.Locals)
-					//{
-					//    k.Actor.MoveTo(
-					//        (Lobby.View.ContentActualWidth / 4) +
-					//        (Lobby.View.ContentActualWidth / 2).Random(),
-					//        Lobby.View.ContentActualHeight / 2);
 
-					//    k.Actor.CurrentLevel = Lobby.Level;
-					//}
+					Lobby.Window.ColorOverlay.Opacity = 0;
 
-					//Lobby.Window.ColorOverlay.Opacity = 0;
 				}
 			);
 
 
 
 			this.CurrentPort = this.Lobby;
-
-			//this.Players.Add(Local0);
-
-
-
-
-
-
-
-
-
-
-
-
 
 			this.Levels.AddRange(
 				KnownLevels.Levels
@@ -826,38 +834,7 @@ namespace AvalonUgh.Code
 
 
 
-			Lobby.Menu.Editor +=
-				delegate
-				{
-					this.Editor.Window.ColorOverlay.Opacity = 1;
-					this.Lobby.Window.ColorOverlay.SetOpacity(1,
-						delegate
-						{
-							this.CurrentPort = this.Editor;
-
-							this.Editor.BringContainerToFront();
-							this.Editor.Toolbar.BringContainerToFront();
-							this.Editor.Toolbar.Show();
-
-							if (this.Editor.LevelReference == null)
-								this.Editor.LevelReference = KnownLevels.DefaultLobbyLevel;
-
-							this.Editor.WhenLoaded(
-								delegate
-								{
-									// how shall locals enter the editor?
-
-									// just jump randomly in
-
-									this.Editor.Players.AddRange(this.LocalIdentity.Locals.ToArray());
-									this.Editor.Window.ColorOverlay.Opacity = 0;
-								}
-							);
-						}
-					);
-
-
-				};
+			InitializeMenuEditorButton();
 
 
 
@@ -869,6 +846,7 @@ namespace AvalonUgh.Code
 			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
 			this.StartThinking();
 		}
+
 
 
 

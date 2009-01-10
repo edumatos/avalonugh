@@ -171,7 +171,7 @@ namespace AvalonUgh.Code
 				Opacity = 0
 			}.AttachTo(this.Container).ToAnimatedOpacity();
 
-			this.ColorOverlay.Opacity = 0;
+			//this.ColorOverlay.Opacity = 0;
 
 			InternalPadding = BorderWidth + 4;
 

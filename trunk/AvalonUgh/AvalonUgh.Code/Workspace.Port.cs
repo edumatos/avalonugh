@@ -34,6 +34,9 @@ namespace AvalonUgh.Code
 		{
 			public readonly Window Window = new Window();
 
+			public readonly List<PlayerInfo> TeleportedPlayers = new List<PlayerInfo>();
+
+
 			public readonly BindingList<PlayerInfo> Players = new BindingList<PlayerInfo>();
 
 			public event Action<PlayerInfo> PlayerJoined;
@@ -41,6 +44,7 @@ namespace AvalonUgh.Code
 			public Port()
 			{
 				this.Window.ContentContainer.Background = Brushes.Black;
+				this.Window.ColorOverlay.Opacity = 1;
 
 				this.Players.ForEachNewOrExistingItem(
 					k =>
@@ -111,6 +115,7 @@ namespace AvalonUgh.Code
 			{
 				get
 				{
+
 					if (this.LevelReference == null)
 						return false;
 
@@ -120,7 +125,6 @@ namespace AvalonUgh.Code
 					return true;
 				}
 			}
-
 
 
 			LevelReference InternalLevelReference;
@@ -151,7 +155,7 @@ namespace AvalonUgh.Code
 								throw new Exception("InternalLevelReference");
 
 							this.Level = new Level(Data, this.Zoom, this.Selectors);
-
+							this.WhenLoadedDelay = false;
 
 							this.View = new View(Width, Height - StatusbarHeight, this.Level);
 							this.View.Show(this.InternalVisible);
@@ -215,18 +219,26 @@ namespace AvalonUgh.Code
 
 			public event Action Loaded;
 
-			readonly Queue<Action> WhenLoadedQueue = new Queue<Action>();
+			public readonly Queue<Action> WhenLoadedQueue = new Queue<Action>();
+
+			public bool WhenLoadedDelay;
+
 
 			public void WhenLoaded(Action e)
 			{
+				if (WhenLoadedDelay)
+				{
+					WhenLoadedQueue.Enqueue(e);
+					return;
+				}
+
 				if (Level == null)
 				{
 					WhenLoadedQueue.Enqueue(e);
+					return;
 				}
-				else
-				{
-					e();
-				}
+
+				e();
 			}
 		}
 
@@ -269,10 +281,10 @@ namespace AvalonUgh.Code
 				this.PlayerJoined +=
 					NewPlayer =>
 					{
-						NewPlayer.Actor.MoveTo(
-								(this.View.ContentActualWidth / 4) +
-								(this.View.ContentActualWidth / 2).Random(),
-								this.View.ContentActualHeight / 2);
+						//NewPlayer.Actor.MoveTo(
+						//        (this.View.ContentActualWidth / 4) +
+						//        (this.View.ContentActualWidth / 2).Random(),
+						//        this.View.ContentActualHeight / 2);
 
 						NewPlayer.Actor.CurrentLevel = this.Level;
 					};
@@ -290,114 +302,6 @@ namespace AvalonUgh.Code
 		}
 
 
-		[Script]
-		public class EditorPort : Port
-		{
-			[Script]
-			public class ConstructorArguments
-			{
-				public KnownSelectors Selectors;
-				public BindingList<LevelReference> Levels;
-			}
-
-			public readonly EditorToolbar Toolbar;
-			public readonly LoadWindow LoadWindow;
-
-			public EditorPort(ConstructorArguments args)
-			{
-				this.Toolbar = new EditorToolbar(args.Selectors);
-				this.LoadWindow = new LoadWindow(args.Levels);
-
-				this.Selectors = args.Selectors;
-				this.StatusbarHeight = 18;
-
-				// serialize current level
-				this.Toolbar.LevelText.GotFocus +=
-					delegate
-					{
-						if (this.Level == null)
-							return;
-
-						this.Toolbar.LevelText.Text = this.Level.ToString();
-					};
-
-				this.Toolbar.EditorSelectorChanged +=
-					delegate
-					{
-						if (this.View == null)
-							return;
-
-						this.View.EditorSelector = this.Toolbar.EditorSelector;
-					};
-
-				this.Toolbar.LoadClicked +=
-					delegate
-					{
-						this.LoadWindow.BringContainerToFront();
-						this.LoadWindow.Show(this.LoadWindow.Visibility == Visibility.Hidden);
-					};
-
-				this.Loaded +=
-					delegate
-					{
-						this.View.EditorSelectorNextSize += () => this.Toolbar.EditorSelectorNextSize();
-						this.View.EditorSelectorPreviousSize += () => this.Toolbar.EditorSelectorPreviousSize();
-					};
-
-				Action<PlayerInfo> AttachPlayerToLevel =
-					k =>
-					{
-						var c = this.Level.KnownCaves.FirstOrDefault();
-
-						if (c == null)
-						{
-							k.Actor.MoveTo(
-								(this.View.ContentActualWidth / 4) +
-								(this.View.ContentActualWidth / 2).Random(),
-								this.View.ContentActualHeight / 2);
-						}
-						else
-						{
-							k.Actor.MoveTo(c.X, c.Y);
-						}
-
-
-						k.Actor.CurrentLevel = this.Level;
-					};
-
-				this.PlayerJoined += AttachPlayerToLevel;
-
-				this.LoadWindow.Click +=
-					NextLevelForEditor =>
-					{
-						this.LoadWindow.Hide();
-
-						this.Window.ColorOverlay.SetOpacity(1,
-							delegate
-							{
-								this.LevelReference = NextLevelForEditor;
-
-								this.WhenLoaded(
-									delegate
-									{
-										// we need to bring back all the players!
-
-										// just jump randomly in
-										foreach (var k in this.Players)
-										{
-											AttachPlayerToLevel(k);
-										}
-
-										this.Window.ColorOverlay.Opacity = 0;
-									}
-								);
-							}
-						);
-
-					};
-
-			}
-		}
 
 
 		[Script]
@@ -458,24 +362,24 @@ namespace AvalonUgh.Code
 				);
 
 
-				this.PlayerJoined +=
-					k =>
-					{
-						k.Actor.CurrentLevel = this.Level;
+				//this.PlayerJoined +=
+				//    k =>
+				//    {
+				//        k.Actor.CurrentLevel = this.Level;
 
-					
-						var StartVehicle = this.Level.KnownVehicles.FirstOrDefault(i => i.CurrentDriver == null);
 
-						if (StartVehicle == null)
-						{
-							var StartPositionStone = this.Level.KnownStones.Random(i => i.Selector.PrimitiveTileCountX > 1 && i.Selector.PrimitiveTileCountY > 1);
+				//        var StartVehicle = this.Level.KnownVehicles.FirstOrDefault(i => i.CurrentDriver == null);
 
-							StartVehicle = new Vehicle(this.Level.Zoom).AddTo(this.Level.KnownVehicles);
-							StartVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
-						}
+				//        if (StartVehicle == null)
+				//        {
+				//            var StartPositionStone = this.Level.KnownStones.Random(i => i.Selector.PrimitiveTileCountX > 1 && i.Selector.PrimitiveTileCountY > 1);
 
-						k.Actor.CurrentVehicle = StartVehicle;
-					};
+				//            StartVehicle = new Vehicle(this.Level.Zoom).AddTo(this.Level.KnownVehicles);
+				//            StartVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
+				//        }
+
+				//        k.Actor.CurrentVehicle = StartVehicle;
+				//    };
 			}
 		}
 	}
