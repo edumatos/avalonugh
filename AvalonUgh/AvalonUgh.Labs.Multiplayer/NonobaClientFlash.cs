@@ -18,7 +18,7 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 	/// </summary>
 	[Script, ScriptApplicationEntryPoint(Width = TargetCanvas.DefaultWidth, Height = TargetCanvas.DefaultHeight)]
 	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight)]
-	public class NonobaClientFlash : Sprite
+	public partial class NonobaClientFlash : Sprite
 	{
 		public string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
 

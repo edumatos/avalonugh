@@ -17,6 +17,7 @@ using AvalonUgh.Assets.Shared;
 using System.Windows.Shapes;
 using AvalonUgh.Code.Input;
 using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Promotion;
 
 namespace AvalonUgh.Code
 {
@@ -270,11 +271,33 @@ namespace AvalonUgh.Code
 
 				this.Menu.AttachContainerTo(this.Window.OverlayContainer);
 
+				var SocialLinks = new GameSocialLinks(this.Window.OverlayContainer)
+				{
+					new GameSocialLinks.Button { 
+						Source = (Assets.Shared.KnownAssets.Path.Assets + "/plus_google.png").ToSource(),
+						Width = 62,
+						Height = 17,
+						Hyperlink = new Uri(Info.GoogleGadget.AddLink)
+					},
+					new GameSocialLinks.Button { 
+						Source = (Assets.Shared.KnownAssets.Path.Assets + "/su.png").ToSource(),
+						Width = 16,
+						Height = 16,
+						Hyperlink = new Uri( "http://www.stumbleupon.com/submit?url=" + Info.Nonoba.URL)
+					}
+				};
+
 
 				this.WhenLoaded(
 					delegate
 					{
 						this.Menu.BringContainerToFront();
+
+						foreach (var v in SocialLinks)
+						{
+							v.Image.BringToFront();
+							v.Overlay.BringToFront();
+						}
 					}
 				);
 
@@ -297,6 +320,10 @@ namespace AvalonUgh.Code
 					Height = 96
 				}.MoveTo(args.Width - 96, args.Height - 96).AttachTo(this.Window.OverlayContainer);
 
+
+
+
+			
 			}
 
 			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)

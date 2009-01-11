@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Info.Flickr.cs" />
+    <Compile Include="Info.GoogleGadget.cs" />
     <Compile Include="Info.MochiAds.cs" />
     <Compile Include="Info.Nonoba.cs" />
     <Compile Include="Info.cs" />
@@ -52,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="instructions.txt" />
+    <Content Include="Preloader.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

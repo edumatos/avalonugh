@@ -133,11 +133,16 @@
       <Project>{CF35C94E-9437-4918-A478-4213A63D1630}</Project>
       <Name>AvalonUgh.Assets</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AvalonUgh.Promotion\AvalonUgh.Promotion.csproj">
+      <Project>{3B971BB0-A45D-47BB-A1B5-383F08426F09}</Project>
+      <Name>AvalonUgh.Promotion</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIDirector.cs" />
     <Compile Include="AnimationDictionary.cs" />
     <Compile Include="AudioLoop.cs" />
+    <Compile Include="GameSocialLinks.cs" />
     <Compile Include="Window.Button.cs" />
     <Compile Include="Editor\SaveWindow.cs" />
     <Compile Include="Workspace.Editor.cs" />

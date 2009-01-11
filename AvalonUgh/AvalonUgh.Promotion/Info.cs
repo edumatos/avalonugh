@@ -19,5 +19,12 @@ namespace AvalonUgh.Promotion
 
 		public const string Resolution = "800x400";
 
+
+
+		public const string EMail = "dadeval@gmail.com";
+
+		public const string Author = "Arvo Sulakatko";
+
+		public const string Blog = "http://zproxy.wordpress.com/";
 	}
 }
