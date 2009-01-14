@@ -783,66 +783,19 @@ namespace AvalonUgh.Code
 
 					Lobby.Window.ColorOverlay.Opacity = 0;
 
-					var MiniMap = new Window
+					var mini = new MiniLevelWindow
 					{
 						DragContainer = this.Container,
-						ClientWidth = this.Lobby.Level.Map.Width * DefaultZoom,
-						ClientHeight = this.Lobby.Level.Map.Height * DefaultZoom,
-					}.AttachContainerTo(this);
+						LevelReference = Lobby.LevelReference
+					};
 
-					MiniMap.ContentContainer.Background = Brushes.Black;
-					MiniMap.DraggableArea.BringToFront();
+					mini.AttachContainerTo(this);
 
-					this.Lobby.Level.Map.ForEach(
-						k =>
+					this.Console.AnimatedTopChanged +=
+						delegate
 						{
-							var Tile = new ASCIITileSizeInfo(k);
-
-							if (Tile.Value == RidgeSelector.Identifier)
-							{
-								new Rectangle
-								{
-									Width = Tile.Width * DefaultZoom,
-									Height = Tile.Height * DefaultZoom,
-									Fill = Brushes.Brown
-								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
-
-							}
-
-							if (Tile.Value == StoneSelector.Identifier)
-							{
-								new Rectangle
-								{
-									Width = Tile.Width * DefaultZoom,
-									Height = Tile.Height * DefaultZoom,
-									Fill = Brushes.Gray
-								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
-
-							}
-
-							if (Tile.Value == BridgeSelector.Identifier)
-							{
-								new Rectangle
-								{
-									Width = Tile.Width * DefaultZoom,
-									Height = Tile.Height * DefaultZoom,
-									Fill = Brushes.Yellow
-								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
-
-							}
-
-							if (Tile.Value == PlatformSelector.Identifier)
-							{
-								new Rectangle
-								{
-									Width = Tile.Width * DefaultZoom,
-									Height = Tile.Height * DefaultZoom,
-									Fill = Brushes.Yellow
-								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
-
-							}
-						}
-					);
+							mini.BringContainerToFront();
+						};
 				}
 			);
 
