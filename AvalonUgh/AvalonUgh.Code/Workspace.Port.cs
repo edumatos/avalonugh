@@ -301,16 +301,16 @@ namespace AvalonUgh.Code
 					}
 				);
 
-				this.PlayerJoined +=
-					NewPlayer =>
-					{
-						//NewPlayer.Actor.MoveTo(
-						//        (this.View.ContentActualWidth / 4) +
-						//        (this.View.ContentActualWidth / 2).Random(),
-						//        this.View.ContentActualHeight / 2);
+				//this.PlayerJoined +=
+				//    NewPlayer =>
+				//    {
+				//        //NewPlayer.Actor.MoveTo(
+				//        //        (this.View.ContentActualWidth / 4) +
+				//        //        (this.View.ContentActualWidth / 2).Random(),
+				//        //        this.View.ContentActualHeight / 2);
 
-						NewPlayer.Actor.CurrentLevel = this.Level;
-					};
+				//        NewPlayer.Actor.CurrentLevel = this.Level;
+				//    };
 
 				new Image
 				{
