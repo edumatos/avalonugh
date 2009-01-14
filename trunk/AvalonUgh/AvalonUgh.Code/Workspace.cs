@@ -17,6 +17,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Code.Editor.Tiles;
 
 namespace AvalonUgh.Code
 {
@@ -782,6 +783,66 @@ namespace AvalonUgh.Code
 
 					Lobby.Window.ColorOverlay.Opacity = 0;
 
+					var MiniMap = new Window
+					{
+						DragContainer = this.Container,
+						ClientWidth = this.Lobby.Level.Map.Width * DefaultZoom,
+						ClientHeight = this.Lobby.Level.Map.Height * DefaultZoom,
+					}.AttachContainerTo(this);
+
+					MiniMap.ContentContainer.Background = Brushes.Black;
+					MiniMap.DraggableArea.BringToFront();
+
+					this.Lobby.Level.Map.ForEach(
+						k =>
+						{
+							var Tile = new ASCIITileSizeInfo(k);
+
+							if (Tile.Value == RidgeSelector.Identifier)
+							{
+								new Rectangle
+								{
+									Width = Tile.Width * DefaultZoom,
+									Height = Tile.Height * DefaultZoom,
+									Fill = Brushes.Brown
+								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
+
+							}
+
+							if (Tile.Value == StoneSelector.Identifier)
+							{
+								new Rectangle
+								{
+									Width = Tile.Width * DefaultZoom,
+									Height = Tile.Height * DefaultZoom,
+									Fill = Brushes.Gray
+								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
+
+							}
+
+							if (Tile.Value == BridgeSelector.Identifier)
+							{
+								new Rectangle
+								{
+									Width = Tile.Width * DefaultZoom,
+									Height = Tile.Height * DefaultZoom,
+									Fill = Brushes.Yellow
+								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
+
+							}
+
+							if (Tile.Value == PlatformSelector.Identifier)
+							{
+								new Rectangle
+								{
+									Width = Tile.Width * DefaultZoom,
+									Height = Tile.Height * DefaultZoom,
+									Fill = Brushes.Yellow
+								}.MoveTo(k.X * DefaultZoom, k.Y * DefaultZoom).AttachTo(MiniMap.ContentContainer);
+
+							}
+						}
+					);
 				}
 			);
 
