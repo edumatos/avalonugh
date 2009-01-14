@@ -87,6 +87,19 @@ namespace AvalonUgh.Code.Editor
 
 		}
 
+		public ASCIIImage Map
+		{
+			get
+			{
+				return new ASCIIImage(
+					new ASCIIImage.ConstructorArguments
+					{
+						value = this.Data,
+						IsComment = e => e.StartsWith(Level.Comment)
+					}
+				);
+			}
+		}
 
 		public string Code
 		{
@@ -107,6 +120,18 @@ namespace AvalonUgh.Code.Editor
 				var value = "";
 
 				ApplyAttribute("text", k => value = k);
+
+				return value;
+			}
+		}
+
+		public string Background
+		{
+			get
+			{
+				var value = "";
+
+				ApplyAttribute("background", k => value = k);
 
 				return value;
 			}

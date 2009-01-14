@@ -142,6 +142,7 @@
     <Compile Include="AIDirector.cs" />
     <Compile Include="AnimationDictionary.cs" />
     <Compile Include="AudioLoop.cs" />
+    <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="GameSocialLinks.cs" />
     <Compile Include="Window.Button.cs" />
     <Compile Include="Editor\SaveWindow.cs" />
