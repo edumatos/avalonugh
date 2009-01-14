@@ -87,21 +87,35 @@ namespace AvalonUgh.Code
 						Action<double, int> CreateWater =
 							(WaterOpacity, WaterIndex) =>
 							{
-								new Image
+								try
 								{
-									Source = (Assets.Shared.KnownAssets.Path.Assets + "/water" + index + ".png").ToSource(),
-									Stretch = Stretch.Fill,
-									Width = e.DefaultWidth,
-									Height = 1 * e.Zoom,
-									Opacity = WaterOpacity
-								}.AttachTo(frame).MoveTo(0, WaterIndex * e.Zoom);
+									new Image
+									{
+										Source = (Assets.Shared.KnownAssets.Path.Assets + "/water" + index + ".png").ToSource(),
+										Stretch = Stretch.Fill,
+										Width = e.DefaultWidth,
+										Height = 1 * e.Zoom,
+										Opacity = WaterOpacity
+									}.AttachTo(frame).MoveTo(0, WaterIndex * e.Zoom);
+								}
+								catch
+								{
+									throw new Exception("CreateWater");
+								}
 							};
 
-						CreateWater.FixLastParamToIndex()(
-							1,
-							0.5,
-							0.2
-						);
+						try
+						{
+							CreateWater.FixLastParamToIndex()(
+								1,
+								0.5,
+								0.2
+							);
+						}
+						catch
+						{
+							throw new Exception("CreateWater.FixLastParamToIndex");
+						}
 
 
 
