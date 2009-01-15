@@ -9,6 +9,7 @@ using System.Linq;
 using AvalonUgh.Assets.Avalon;
 using System.Windows.Controls;
 using System.Windows;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -17,8 +18,16 @@ namespace AvalonUgh.Code.Editor
 	{
 		readonly List<FrameworkElement> Items = new List<FrameworkElement>();
 
+		public readonly Canvas ExtendedContentContainer;
+
 		public MiniLevelWindow()
 		{
+			this.ExtendedContentContainer = new Canvas
+			{
+				Width = ClientWidth,
+				Height = ClientHeight
+			}.AttachTo(this.ContentContainer);
+
 			this.DraggableArea.BringToFront();
 
 		}
@@ -38,15 +47,32 @@ namespace AvalonUgh.Code.Editor
 			}
 		}
 
+		[Script]
+		public class SmallTileInfo
+		{
+			public const int Width = 8;
+			public const int Height = 6;
+		}
+
 		void UpdateContent()
 		{
+			const int VisibleTilesX = 20;
+			const int VisibleTilesY = 16;
+
 			Items.ToArray().Orphanize();
 			Items.Clear();
 
 			var Size = this.LevelReference.Size;
 
-			this.ClientWidth = Size.Width * 4;
-			this.ClientHeight = Size.Height * 3;
+			this.ClientWidth = VisibleTilesX * SmallTileInfo.Width;
+			this.ClientHeight = VisibleTilesY * SmallTileInfo.Height;
+
+			this.ExtendedContentContainer.SizeTo(
+				Size.Width * SmallTileInfo.Width,
+				Size.Height * SmallTileInfo.Height
+			);
+
+			this.ContentContainer.ClipToBounds = true;
 
 			var Map = this.InternalLevelReference.Map;
 
@@ -61,11 +87,16 @@ namespace AvalonUgh.Code.Editor
 				new Image
 				{
 					Stretch = Stretch.Fill,
-					Width = Size.Width * 4,
-					Height = Size.Height * 3,
+					Width = this.ClientWidth,
+					Height = this.ClientHeight,
 					Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/" + Background + ".png").ToSource()
 				}.AttachTo(this.ContentContainer).AddTo(Items);
 			}
+
+			this.ExtendedContentContainer.BringToFront().MoveTo(
+				(SmallTileInfo.Width * (VisibleTilesX - Size.Width) / 2),
+				(SmallTileInfo.Height * (VisibleTilesY - Size.Height) / 2)
+			);
 
 			Map.ForEach(
 				k =>
@@ -73,31 +104,38 @@ namespace AvalonUgh.Code.Editor
 					if (string.IsNullOrEmpty(k.Value))
 						return;
 
-					var Tile = new ASCIITileSizeInfo(k);
-					var TileColor = default(SolidColorBrush);
-
 					var TileSelector = Selectors.TileTypes.FirstOrDefault(i => i.GetIdentifier() == k.Value);
-
-
 					if (TileSelector != null)
 					{
+						var Tile = new ASCIITileSizeInfo(k);
+
+
 						var i = TileSelector.ToolbarImage.ToImage();
 
-						i.Width = Tile.Width * 4;
-						i.Height = Tile.Height * 3;
+						i.Width = Tile.Width * SmallTileInfo.Width;
+						i.Height = Tile.Height * SmallTileInfo.Height;
 
-						i.MoveTo(k.X * 4, k.Y * 3).AttachTo(this.ContentContainer).AddTo(Items);
+						i.MoveTo(
+							(k.X) * SmallTileInfo.Width,
+							(k.Y) * SmallTileInfo.Height
+						).AttachTo(this.ExtendedContentContainer).AddTo(Items);
 
 					}
-					else if (TileColor != null)
-						new Rectangle
-						{
-							Fill = TileColor,
-							Width = Tile.Width * 4,
-							Height = Tile.Height * 3,
-						}.MoveTo(k.X * 4, k.Y * 3).AttachTo(this.ContentContainer).AddTo(Items);
+
 				}
 			);
+
+			var h = this.InternalLevelReference.Water;
+			var h2 = h * SmallTileInfo.Height / PrimitiveTile.Heigth;
+
+			new Rectangle
+			{
+				Fill = Brushes.DarkCyan,
+				Opacity = 0.4
+			}.SizeTo(
+				Size.Width * SmallTileInfo.Width,
+				Size.Height * SmallTileInfo.Height
+			).MoveTo(0, Size.Height * SmallTileInfo.Height - h2).AttachTo(this.ExtendedContentContainer).AddTo(Items);
 
 
 		}

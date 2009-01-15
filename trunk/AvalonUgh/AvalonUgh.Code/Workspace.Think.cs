@@ -1,22 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using AvalonUgh.Assets.Shared;
-using AvalonUgh.Code.Dialogs;
-using AvalonUgh.Code.Editor;
-using AvalonUgh.Code.Input;
-using ScriptCoreLib;
-using ScriptCoreLib.Shared.Avalon.Extensions;
-using ScriptCoreLib.Shared.Avalon.Tween;
-using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Threading;
+using ScriptCoreLib.Shared.Avalon.Extensions;
 
 namespace AvalonUgh.Code
 {
@@ -69,6 +56,7 @@ namespace AvalonUgh.Code
 						Frame = this.LocalIdentity.SyncFrame, 
 						Paused = this.LocalIdentity.SyncFramePaused,
 						Limit = this.LocalIdentity.SyncFrameLimit,
+						Z = 1
 					}.ToString();
 					Think();
 				}
