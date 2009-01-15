@@ -118,6 +118,7 @@ namespace AvalonUgh.Code.Editor
 						LevelReference = value
 					};
 
+					Preview.DraggableArea.Cursor = Cursors.Hand;
 					Preview.BackgroundContainer.Hide();
 
 					var x = index % VisibleColumns * (Preview.SmallTileInfo.ClientWidth  + Padding);
