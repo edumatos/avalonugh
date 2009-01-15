@@ -29,6 +29,23 @@ namespace AvalonUgh.Code.Editor
 			public int Padding = 4;
 			public int Width = 4;
 			public int Height = 3;
+
+			public int ClientWidth
+			{
+				get
+				{
+					return this.Width * VisibleTilesX;
+				}
+			}
+
+
+			public int ClientHeight
+			{
+				get
+				{
+					return this.Height * VisibleTilesY;
+				}
+			}
 		}
 
 
@@ -45,7 +62,7 @@ namespace AvalonUgh.Code.Editor
 				args = new ConstructorArgumentsInfo();
 
 			this.SmallTileInfo = args;
-			this.Padding = Padding;
+			this.Padding = args.Padding;
 
 			this.ExtendedContentContainer = new Canvas
 			{

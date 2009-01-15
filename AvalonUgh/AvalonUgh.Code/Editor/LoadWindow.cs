@@ -17,7 +17,8 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
 
-		const int ItemsPerRow = 6;
+		const int VisibleColumns = 6;
+		const int VisibleRows = 4;
 
 		public event Action<LevelReference> Click;
 
@@ -42,9 +43,17 @@ namespace AvalonUgh.Code.Editor
 				);
 			}
 
+			var PreviewArguments =
+				new MiniLevelWindow.ConstructorArgumentsInfo
+				{
+					Padding = 0,
+					Width = 4,
+					Height = 3
+				};
 
-			this.Width = Padding + (48 + Padding) * ItemsPerRow;
-			this.Height = Padding + 100 + Padding + (30 + Padding) * 5;
+
+			this.Width = Padding + (PreviewArguments.ClientWidth + Padding) * VisibleColumns;
+			this.Height = Padding + 100 + Padding + (PreviewArguments.ClientHeight + Padding) * VisibleRows;
 
 			const string DefaultText = "Select a level below!";
 
@@ -62,11 +71,11 @@ namespace AvalonUgh.Code.Editor
 
 			this.DraggableArea.BringToFront();
 
-			var PreviewContainer_Height = (30 + Padding) * 5 - Padding;
+			var PreviewContainer_Height = (PreviewArguments.ClientHeight + Padding) * VisibleRows - Padding;
 			var PreviewContainer = new Canvas
 			{
 				//Background = Brushes.Blue,
-				Width = (48 + Padding) * ItemsPerRow - Padding,
+				Width = (PreviewArguments.ClientWidth + Padding) * VisibleColumns - Padding,
 				Height = PreviewContainer_Height,
 				ClipToBounds = true,
 			}.AttachTo(this).MoveTo(
@@ -78,7 +87,7 @@ namespace AvalonUgh.Code.Editor
 			var PreviewArea = new Canvas
 			{
 				//Background = Brushes.Red,
-				Width = (48 + Padding) * ItemsPerRow - Padding,
+				Width = (PreviewArguments.ClientWidth + Padding) * VisibleColumns - Padding,
 			}.AttachTo(PreviewContainer);
 
 			var PreviewArea_Move = NumericEmitter.OfDouble(
@@ -104,21 +113,15 @@ namespace AvalonUgh.Code.Editor
 				{
 					value.Preview.MoveTo(Padding, Padding);
 
-					var Preview = new MiniLevelWindow(
-						new MiniLevelWindow.ConstructorArgumentsInfo
-						{
-							Padding = 0,
-							Width = 4,
-							Height = 3
-						}
-					)
+					var Preview = new MiniLevelWindow(PreviewArguments)
 					{
 						LevelReference = value
 					};
 
+					Preview.BackgroundContainer.Hide();
 
-					var x = index % ItemsPerRow * (Preview.SmallTileInfo.VisibleTilesX * Preview.SmallTileInfo.Width  + Padding);
-					var y = Convert.ToInt32(index / ItemsPerRow) * (Preview.SmallTileInfo.VisibleTilesY * Preview.SmallTileInfo.Height + Padding);
+					var x = index % VisibleColumns * (Preview.SmallTileInfo.ClientWidth  + Padding);
+					var y = Convert.ToInt32(index / VisibleColumns) * (Preview.SmallTileInfo.ClientHeight + Padding);
 
 					value.SmallPreview.AttachTo(PreviewArea).MoveTo(
 						x, y
@@ -129,17 +132,7 @@ namespace AvalonUgh.Code.Editor
 						Convert.ToInt32(x), Convert.ToInt32(y)
 					);
 
-
-					var TouchOverlay = new Rectangle
-					{
-						Width = value.SmallPreview.Width,
-						Height = value.SmallPreview.Height,
-						Fill = Brushes.Black,
-						Opacity = 0,
-						Cursor = Cursors.Hand
-					}.AttachTo(PreviewArea).MoveTo(x, y);
-
-					TouchOverlay.MouseEnter +=
+					Preview.DraggableArea.MouseEnter +=
 						delegate
 						{
 							value.Preview.AttachTo(this);
@@ -150,21 +143,21 @@ namespace AvalonUgh.Code.Editor
 							Info.AppendTextLine("Size: " + value.Size.Width + "x" + value.Size.Height);
 						};
 
-					TouchOverlay.MouseLeave +=
+					Preview.DraggableArea.MouseLeave +=
 						delegate
 						{
 							value.Preview.Orphanize();
 							Info.Text = DefaultText;
 						};
 
-					TouchOverlay.MouseLeftButtonUp +=
+					Preview.DraggableArea.MouseLeftButtonUp +=
 						delegate
 						{
 							if (Click != null)
 								Click(value);
 						};
 
-					PreviewArea.Height = (30 + Padding) * (Convert.ToInt32(index / ItemsPerRow) + 1) - Padding;
+					PreviewArea.Height = (PreviewArguments.ClientHeight + Padding) * (Convert.ToInt32(index / VisibleColumns) + 1) - Padding;
 				}
 			);
 
