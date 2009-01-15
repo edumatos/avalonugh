@@ -84,8 +84,20 @@ namespace AvalonUgh.Code
 				this.Toolbar.SaveClicked +=
 					delegate
 					{
-						this.SaveWindow.BringContainerToFront();
-						this.SaveWindow.Show(this.SaveWindow.Visibility == Visibility.Hidden);
+						if (this.SaveWindow.Visibility == Visibility.Hidden)
+						{
+							this.SaveWindow.BringContainerToFront();
+							this.SaveWindow.Show();
+							this.SaveWindow.Preview.LevelReference = new LevelReference
+							{
+								Data = this.Level.ToString()
+							};
+						}
+						else
+						{
+							this.SaveWindow.Hide();
+						}
+
 					};
 
 				this.Loaded +=
