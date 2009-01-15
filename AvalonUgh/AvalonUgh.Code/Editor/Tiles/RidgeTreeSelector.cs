@@ -16,6 +16,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 	{
 		public const string Identifier = "T";
 
+		public override string GetIdentifier()
+		{
+			return Identifier;
+		}
+
 		public readonly View.SelectorInfo
 			Size_1x1 = new SelectorSize_1x1(),
 			//Size_2x1 = new Size_Generic(2, 1, 1),

@@ -16,6 +16,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 	{
 		public const string Identifier = "C";
 
+		public override string GetIdentifier()
+		{
+			return Identifier;
+		}
+
 		public CaveSelector()
 		{
 			this.ToolbarImage =

@@ -191,6 +191,7 @@ namespace AvalonUgh.Code
 
 									 //this.Editor.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
+									 this.MiniLevel.BringContainerToFront();
 
 									 this.Editor.BringContainerToFront();
 									 this.Editor.Toolbar.BringContainerToFront();

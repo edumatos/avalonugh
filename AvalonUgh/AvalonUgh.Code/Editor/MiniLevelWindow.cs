@@ -8,13 +8,14 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Linq;
 using AvalonUgh.Assets.Avalon;
 using System.Windows.Controls;
+using System.Windows;
 
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
 	public class MiniLevelWindow : Window
 	{
-		readonly List<Rectangle> Items = new List<Rectangle>();
+		readonly List<FrameworkElement> Items = new List<FrameworkElement>();
 
 		public MiniLevelWindow()
 		{
@@ -31,6 +32,7 @@ namespace AvalonUgh.Code.Editor
 			}
 			set
 			{
+
 				InternalLevelReference = value;
 				UpdateContent();
 			}
@@ -38,6 +40,9 @@ namespace AvalonUgh.Code.Editor
 
 		void UpdateContent()
 		{
+			Items.ToArray().Orphanize();
+			Items.Clear();
+
 			var Size = this.LevelReference.Size;
 
 			this.ClientWidth = Size.Width * 4;
@@ -59,45 +64,29 @@ namespace AvalonUgh.Code.Editor
 					Width = Size.Width * 4,
 					Height = Size.Height * 3,
 					Source = (Assets.Shared.KnownAssets.Path.Backgrounds + "/" + Background + ".png").ToSource()
-				}.AttachTo(this.ContentContainer);
+				}.AttachTo(this.ContentContainer).AddTo(Items);
 			}
 
 			Map.ForEach(
 				k =>
 				{
+					if (string.IsNullOrEmpty(k.Value))
+						return;
+
 					var Tile = new ASCIITileSizeInfo(k);
 					var TileColor = default(SolidColorBrush);
-					var TileImage = default(NameFormat);
 
-					if (Tile.Value == RidgeSelector.Identifier)
+					var TileSelector = Selectors.Types.FirstOrDefault(i => i.GetIdentifier() == k.Value);
+
+
+					if (TileSelector != null)
 					{
-						TileImage = Selectors.Ridge.ToolbarImage;
-					}
-
-					if (Tile.Value == StoneSelector.Identifier)
-					{
-						TileImage = Selectors.Stone.ToolbarImage;
-					}
-
-					if (Tile.Value == BridgeSelector.Identifier)
-					{
-						TileImage = Selectors.Bridge.ToolbarImage;
-					}
-
-					if (Tile.Value == PlatformSelector.Identifier)
-					{
-						TileImage = Selectors.Platform.ToolbarImage;
-
-					}
-
-					if (TileImage != null)
-					{
-						var i = TileImage.ToImage();
+						var i = TileSelector.ToolbarImage.ToImage();
 
 						i.Width = Tile.Width * 4;
 						i.Height = Tile.Height * 3;
 
-						i.MoveTo(k.X * 4, k.Y * 3).AttachTo(this.ContentContainer);
+						i.MoveTo(k.X * 4, k.Y * 3).AttachTo(this.ContentContainer).AddTo(Items);
 
 					}
 					else if (TileColor != null)
@@ -106,7 +95,7 @@ namespace AvalonUgh.Code.Editor
 							Fill = TileColor,
 							Width = Tile.Width * 4,
 							Height = Tile.Height * 3,
-						}.MoveTo(k.X * 4, k.Y * 3).AttachTo(this.ContentContainer);
+						}.MoveTo(k.X * 4, k.Y * 3).AttachTo(this.ContentContainer).AddTo(Items);
 				}
 			);
 

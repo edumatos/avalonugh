@@ -280,8 +280,15 @@ namespace AvalonUgh.Code
 
 				PortIdentity = PortIdentity_Editor,
 			};
+		
+			this.Editor.Loaded +=
+				delegate
+				{
+					// each time this a map in the editor is loaded we will update minimap
 
-
+					this.MiniLevel.LevelReference = this.Editor.LevelReference;
+					this.MiniLevel.BringContainerToFront();
+				};
 
 			this.Ports.Add(this.Editor);
 
@@ -783,18 +790,18 @@ namespace AvalonUgh.Code
 
 					Lobby.Window.ColorOverlay.Opacity = 0;
 
-					var mini = new MiniLevelWindow
+					this.MiniLevel = new MiniLevelWindow
 					{
 						DragContainer = this.Container,
 						LevelReference = Lobby.LevelReference
 					};
 
-					mini.AttachContainerTo(this);
+					this.MiniLevel.AttachContainerTo(this);
 
 					this.Console.AnimatedTopChanged +=
 						delegate
 						{
-							mini.BringContainerToFront();
+							this.MiniLevel.BringContainerToFront();
 						};
 				}
 			);
@@ -927,5 +934,7 @@ namespace AvalonUgh.Code
 		}
 
 		#endregion
+
+		MiniLevelWindow MiniLevel;
 	}
 }
