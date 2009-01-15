@@ -189,16 +189,8 @@ namespace AvalonUgh.Code
 
 						};
 
-					if (value.Data == null)
-					{
-						InternalLevelReference.Location.Embedded.ToString().ToStringAsset(
-							ApplyData
-						);
-					}
-					else
-					{
-						ApplyData(value.Data);
-					}
+					value.DataFuture.Continue(ApplyData);
+
 				}
 			}
 

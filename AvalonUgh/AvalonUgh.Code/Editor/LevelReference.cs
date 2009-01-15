@@ -43,7 +43,8 @@ namespace AvalonUgh.Code.Editor
 		public readonly Image Preview;
 		public readonly Image SmallPreview;
 
-		public string Data;
+		public string Data { get { return DataFuture.Value; } set { DataFuture.Value = value; } }
+		public readonly Future<string> DataFuture = new Future<string>();
 
 		public LevelReference(StorageLocation Location)
 		{
@@ -81,7 +82,7 @@ namespace AvalonUgh.Code.Editor
 				Location.Embedded.ToString().ToStringAsset(
 					Data =>
 					{
-						this.Data = Data;
+						this.DataFuture.Value = Data;
 					}
 				);
 
