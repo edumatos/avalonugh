@@ -95,6 +95,7 @@ namespace AvalonUgh.Code.Editor
 					}
 				);
 
+
 		}
 
 		public ASCIIImage Map
