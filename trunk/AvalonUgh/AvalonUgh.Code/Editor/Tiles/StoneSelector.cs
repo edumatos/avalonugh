@@ -16,6 +16,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public const string ImageName = "stone";
 		public const string Identifier = "S";
 
+		public override string GetIdentifier()
+		{
+			return Identifier;
+		}
+
 
 		public readonly View.SelectorInfo Size_1x1 = new Size_Generic(1, 1, 1);
 		public readonly View.SelectorInfo Size_1x2 = new Size_Generic(1, 2, 1);

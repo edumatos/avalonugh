@@ -34,6 +34,9 @@ namespace AvalonUgh.Code
 
 		public ASCIIImage(ConstructorArguments e)
 		{
+			if (e.value == null)
+				throw new ArgumentNullException("ASCIIImage.ConstructorArguments.value");
+
 			var s = new StringReader(e.value);
 
 			var lines = new List<string>();

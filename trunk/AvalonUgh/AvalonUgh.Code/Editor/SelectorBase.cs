@@ -20,5 +20,10 @@ namespace AvalonUgh.Code.Editor
 		{
 			this.Sizes = new View.SelectorInfo[0];
 		}
+
+		public virtual string GetIdentifier()
+		{
+			return "";
+		}
 	}
 }
