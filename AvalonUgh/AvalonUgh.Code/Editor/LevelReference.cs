@@ -138,6 +138,19 @@ namespace AvalonUgh.Code.Editor
 			}
 		}
 
+		public int Water
+		{
+			get
+			{
+				var value = 0;
+
+				ApplyAttribute("water", k => value = int.Parse(k));
+
+				return value;
+			}
+		}
+
+
 		public void ApplyAttribute(string AttributeKey, Action<string> handler)
 		{
 			if (this.Data == null)
