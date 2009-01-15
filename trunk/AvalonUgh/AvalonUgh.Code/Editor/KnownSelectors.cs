@@ -12,6 +12,7 @@ namespace AvalonUgh.Code.Editor
 	public class KnownSelectors
 	{
 		public readonly SelectorBase[] Types;
+		public readonly TileSelectorBase[] TileTypes;
 
 		public readonly ArrowSelector Arrow = new ArrowSelector();
 		public readonly WaterLevelSelector WaterLevel = new WaterLevelSelector();
@@ -35,6 +36,17 @@ namespace AvalonUgh.Code.Editor
 
 		public KnownSelectors()
 		{
+			this.TileTypes = new TileSelectorBase[]
+				{
+					Stone,
+					Ridge,
+					RidgeTree,
+					Platform,
+					Cave,
+					Fence,
+					Bridge,
+				};
+
 			this.Types =
 				new SelectorBase[]
 				{

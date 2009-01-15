@@ -76,7 +76,7 @@ namespace AvalonUgh.Code.Editor
 					var Tile = new ASCIITileSizeInfo(k);
 					var TileColor = default(SolidColorBrush);
 
-					var TileSelector = Selectors.Types.FirstOrDefault(i => i.GetIdentifier() == k.Value);
+					var TileSelector = Selectors.TileTypes.FirstOrDefault(i => i.GetIdentifier() == k.Value);
 
 
 					if (TileSelector != null)

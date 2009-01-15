@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class FenceSelector : SelectorBase
+	public class FenceSelector : TileSelectorBase
 	{
 		public const string Identifier = "F";
 
@@ -106,28 +106,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 			}
 		}
 
-		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
-		{
-			var Selector = new FenceSelector().Sizes.SingleOrDefault(
-				k => k.Equals(Tile)
-			);
+		
 
-			if (Selector == null)
-			{
-				Console.WriteLine(
-					new { InvalidSize = new { Tile.Width, Tile.Height }, Identifier, Position.X, Position.Y }.ToString()
-				);
-
-				return;
-			}
-
-			Selector.CreateTo(Level,
-				new View.SelectorPosition
-				{
-					ContentX = Position.X * PrimitiveTile.Width,
-					ContentY = Position.Y * PrimitiveTile.Heigth,
-				}
-			);
-		}
+		//public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		//{
+		//    TileSelector.AttachToLevel(new FenceSelector().Sizes, Position, Tile, Level);
+		//}
 	}
 }
