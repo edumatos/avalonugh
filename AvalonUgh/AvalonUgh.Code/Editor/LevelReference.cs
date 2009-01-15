@@ -46,8 +46,17 @@ namespace AvalonUgh.Code.Editor
 		public string Data { get { return DataFuture.Value; } set { DataFuture.Value = value; } }
 		public readonly Future<string> DataFuture = new Future<string>();
 
+		public LevelReference()
+			: this(null)
+		{
+
+		}
+
 		public LevelReference(StorageLocation Location)
 		{
+			if (Location == null)
+				Location = new StorageLocation { Cookie = "edited" };
+
 			this.Location = Location;
 
 

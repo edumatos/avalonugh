@@ -20,8 +20,33 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly Canvas ExtendedContentContainer;
 
-		public MiniLevelWindow()
+		[Script]
+		public class ConstructorArgumentsInfo
 		{
+			public int VisibleTilesX = 20;
+			public int VisibleTilesY = 16;
+
+			public int Padding = 4;
+			public int Width = 4;
+			public int Height = 3;
+		}
+
+
+		public MiniLevelWindow()
+			: this(null)
+		{
+		}
+
+		public readonly ConstructorArgumentsInfo SmallTileInfo;
+
+		public MiniLevelWindow(ConstructorArgumentsInfo args)
+		{
+			if (args == null)
+				args = new ConstructorArgumentsInfo();
+
+			this.SmallTileInfo = args;
+			this.Padding = Padding;
+
 			this.ExtendedContentContainer = new Canvas
 			{
 				Width = ClientWidth,
@@ -30,6 +55,7 @@ namespace AvalonUgh.Code.Editor
 
 			this.DraggableArea.BringToFront();
 
+			this.LevelReference = null;
 		}
 
 		LevelReference InternalLevelReference;
@@ -41,31 +67,31 @@ namespace AvalonUgh.Code.Editor
 			}
 			set
 			{
+				if (value != null)
+					if (InternalLevelReference == value)
+						return;
 
 				InternalLevelReference = value;
 				UpdateContent();
 			}
 		}
 
-		[Script]
-		public class SmallTileInfo
-		{
-			public const int Width = 8;
-			public const int Height = 6;
-		}
-
+	
 		void UpdateContent()
 		{
-			const int VisibleTilesX = 20;
-			const int VisibleTilesY = 16;
+
 
 			Items.ToArray().Orphanize();
 			Items.Clear();
 
-			var Size = this.LevelReference.Size;
 
-			this.ClientWidth = VisibleTilesX * SmallTileInfo.Width;
-			this.ClientHeight = VisibleTilesY * SmallTileInfo.Height;
+			this.ClientWidth = this.SmallTileInfo.VisibleTilesX * SmallTileInfo.Width;
+			this.ClientHeight = this.SmallTileInfo.VisibleTilesY * SmallTileInfo.Height;
+
+			if (this.LevelReference == null)
+				return;
+
+			var Size = this.LevelReference.Size;
 
 			this.ExtendedContentContainer.SizeTo(
 				Size.Width * SmallTileInfo.Width,
@@ -94,8 +120,8 @@ namespace AvalonUgh.Code.Editor
 			}
 
 			this.ExtendedContentContainer.BringToFront().MoveTo(
-				(SmallTileInfo.Width * (VisibleTilesX - Size.Width) / 2),
-				(SmallTileInfo.Height * (VisibleTilesY - Size.Height) / 2)
+				(SmallTileInfo.Width * (this.SmallTileInfo.VisibleTilesX - Size.Width) / 2),
+				(SmallTileInfo.Height * (this.SmallTileInfo.VisibleTilesY - Size.Height) / 2)
 			);
 
 			Map.ForEach(

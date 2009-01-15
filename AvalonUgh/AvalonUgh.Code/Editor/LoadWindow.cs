@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ScriptCoreLib;
-using System.Windows.Controls;
-using AvalonUgh.Assets.Avalon;
-using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.ComponentModel;
-using System.Windows.Media;
-using ScriptCoreLib.Shared.Lambda;
-using System.Windows.Shapes;
+using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -20,7 +17,7 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
 
-		const int ItemsPerRow = 10;
+		const int ItemsPerRow = 6;
 
 		public event Action<LevelReference> Click;
 
@@ -107,12 +104,31 @@ namespace AvalonUgh.Code.Editor
 				{
 					value.Preview.MoveTo(Padding, Padding);
 
-					var x = index % ItemsPerRow * (value.SmallPreview.Width + Padding);
-					var y = Convert.ToInt32(index / ItemsPerRow) * (value.SmallPreview.Height + Padding);
+					var Preview = new MiniLevelWindow(
+						new MiniLevelWindow.ConstructorArgumentsInfo
+						{
+							Padding = 0,
+							Width = 4,
+							Height = 3
+						}
+					)
+					{
+						LevelReference = value
+					};
+
+
+					var x = index % ItemsPerRow * (Preview.SmallTileInfo.VisibleTilesX * Preview.SmallTileInfo.Width  + Padding);
+					var y = Convert.ToInt32(index / ItemsPerRow) * (Preview.SmallTileInfo.VisibleTilesY * Preview.SmallTileInfo.Height + Padding);
 
 					value.SmallPreview.AttachTo(PreviewArea).MoveTo(
 						x, y
 					);
+
+			
+					Preview.AttachContainerTo(PreviewArea).MoveContainerTo(
+						Convert.ToInt32(x), Convert.ToInt32(y)
+					);
+
 
 					var TouchOverlay = new Rectangle
 					{

@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ScriptCoreLib;
-using System.Windows.Controls;
-using ScriptCoreLib.Shared.Avalon.Extensions;
+﻿using System.ComponentModel;
 using System.Windows;
-using System.Windows.Media;
-using System.ComponentModel;
-using ScriptCoreLib.Shared.Lambda;
-using AvalonUgh.Assets.Avalon;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using AvalonUgh.Assets.Avalon;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -79,6 +75,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly Property PropertyCode = new Property { KeyText = "Code", ValueText = "" };
 		public readonly Property PropertyNextLevelCode = new Property { KeyText = "Next Level Code", ValueText = "" };
 
+		public readonly MiniLevelWindow Preview = new MiniLevelWindow();
 
 		public SaveWindow()
 		{
@@ -120,6 +117,15 @@ namespace AvalonUgh.Code.Editor
 			XSaveButton.AttachContainerTo(this.OverlayContainer);
 			XSaveButton.MoveContainerTo(this.ClientWidth - XSaveButton.Width, this.ClientHeight - XSaveButton.Height);
 
+			Preview.ThreeD_Bottom.Fill = Brushes.LightGreen;
+			Preview.ThreeD_Right.Fill = Brushes.LightGreen;
+
+			Preview.ThreeD_Top.Fill = Brushes.DarkGreen;
+			Preview.ThreeD_Left.Fill = Brushes.DarkGreen;
+
+			Preview.
+				AttachContainerTo(this.OverlayContainer).
+				MoveContainerTo(this.Padding,  this.ClientHeight - Preview.Height - Padding);
 
 			// text
 			// code
