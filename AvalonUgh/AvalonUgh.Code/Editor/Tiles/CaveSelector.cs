@@ -12,7 +12,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class CaveSelector : SelectorBase
+	public class CaveSelector : TileSelectorBase
 	{
 		public const string Identifier = "C";
 
@@ -86,9 +86,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 			}
 		}
 
-		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
-		{
-			TileSelector.AttachToLevel(new CaveSelector().Sizes, Position, Tile, Level);
-		}
+		//public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		//{
+		//    TileSelector.AttachToLevel(new CaveSelector().Sizes, Position, Tile, Level);
+		//}
 	}
 }

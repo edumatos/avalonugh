@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class PlatformSelector : SelectorBase
+	public class PlatformSelector : TileSelectorBase
 	{
 		public const string Identifier = "P";
 
@@ -190,9 +190,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 
 
-		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
-		{
-			TileSelector.AttachToLevel(new PlatformSelector().Sizes, Position, Tile, Level);
-		}
+		//public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		//{
+		//    TileSelector.AttachToLevel(new PlatformSelector().Sizes, Position, Tile, Level);
+		//}
 	}
 }

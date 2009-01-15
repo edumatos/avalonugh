@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class BridgeSelector : SelectorBase
+	public class BridgeSelector : TileSelectorBase
 	{
 		public const string Identifier = "B";
 
@@ -235,11 +235,11 @@ namespace AvalonUgh.Code.Editor.Tiles
 		}
 
 
+	
 
-
-		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
-		{
-			TileSelector.AttachToLevel(new BridgeSelector().Sizes, Position, Tile, Level);
-		}
+		//public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		//{
+		//    TileSelector.AttachToLevel(new BridgeSelector().Sizes, Position, Tile, Level);
+		//}
 	}
 }

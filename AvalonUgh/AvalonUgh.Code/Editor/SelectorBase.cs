@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AvalonUgh.Assets.Avalon;
 using ScriptCoreLib;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -21,9 +22,39 @@ namespace AvalonUgh.Code.Editor
 			this.Sizes = new View.SelectorInfo[0];
 		}
 
-		public virtual string GetIdentifier()
+
+	}
+
+	[Script]
+	public abstract class TileSelectorBase : SelectorBase
+	{
+
+		public abstract string GetIdentifier();
+
+		public void AttachTileToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
 		{
-			return "";
+			
+			var Selector = Sizes.SingleOrDefault(
+				k => k.Equals(Tile)
+			);
+
+			if (Selector == null)
+			{
+				Console.WriteLine(
+					new { InvalidSize = new { Tile.Width, Tile.Height }, Tile.Value, Position.X, Position.Y }.ToString()
+				);
+
+				return;
+			}
+
+			Selector.CreateTo(Level,
+				new View.SelectorPosition
+				{
+					ContentX = Position.X * PrimitiveTile.Width,
+					ContentY = Position.Y * PrimitiveTile.Heigth,
+				}
+			);
+		
 		}
 	}
 }

@@ -11,7 +11,7 @@ using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.Editor.Tiles
 {
 	[Script]
-	public class StoneSelector : SelectorBase
+	public class StoneSelector : TileSelectorBase
 	{
 		public const string ImageName = "stone";
 		public const string Identifier = "S";
@@ -358,9 +358,9 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 
 
-		public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
-		{
-			TileSelector.AttachToLevel(new StoneSelector().Sizes, Position, Tile, Level);
-		}
+		//public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
+		//{
+		//    TileSelector.AttachToLevel(new StoneSelector().Sizes, Position, Tile, Level);
+		//}
 	}
 }

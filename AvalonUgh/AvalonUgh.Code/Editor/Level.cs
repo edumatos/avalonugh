@@ -388,63 +388,13 @@ namespace AvalonUgh.Code.Editor
 			this.Map.ForEach(
 				k =>
 				{
-					var Tile = new ASCIITileSizeInfo(k);
-
-					// ridge
-					if (k.Value == RidgeSelector.Identifier)
-					{
-						RidgeSelector.AttachToLevel(k, Tile, this);
-
+					if (string.IsNullOrEmpty(k.Value))
 						return;
-					}
 
-					// ridgetree
-					if (k.Value == RidgeTreeSelector.Identifier)
-					{
-						RidgeTreeSelector.AttachToLevel(k, Tile, this);
+					var i = new ASCIITileSizeInfo(k);
 
-						return;
-					}
+					Selectors.TileTypes.SingleOrDefault(q => q.GetIdentifier() == i.Value).Apply(q => q.AttachTileToLevel(k, i, this));
 
-					// cave
-					if (k.Value == CaveSelector.Identifier)
-					{
-						CaveSelector.AttachToLevel(k, Tile, this);
-
-						return;
-					}
-
-					// fence
-					if (k.Value == FenceSelector.Identifier)
-					{
-						FenceSelector.AttachToLevel(k, Tile, this);
-
-						return;
-					}
-
-					// stone
-					if (k.Value == StoneSelector.Identifier)
-					{
-						StoneSelector.AttachToLevel(k, Tile, this);
-
-						return;
-					}
-
-					// platform
-					if (k.Value == PlatformSelector.Identifier)
-					{
-						PlatformSelector.AttachToLevel(k, Tile, this);
-
-						return;
-					}
-
-					// bridge
-					if (k.Value == BridgeSelector.Identifier)
-					{
-						BridgeSelector.AttachToLevel(k, Tile, this);
-
-						return;
-					}
 
 
 				}
