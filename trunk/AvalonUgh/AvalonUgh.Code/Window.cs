@@ -17,6 +17,8 @@ namespace AvalonUgh.Code
 	public partial class Window : ISupportsContainer
 	{
 		public Canvas Container { get; set; }
+
+		public Canvas BackgroundContainer { get; set; }
 		public Canvas ContentContainer { get; set; }
 		public Canvas OverlayContainer { get; set; }
 
@@ -78,35 +80,37 @@ namespace AvalonUgh.Code
 			this.Container = new Canvas
 			{
 			};
-
+			this.BackgroundContainer = new Canvas
+			{
+			}.AttachTo(this.Container);
 		
 
 			#region borders
 			this.ThreeD_Top = new Rectangle
 			{
 				Fill = Brushes.LightGreen,
-			}.AttachTo(this.Container);
+			}.AttachTo(this.BackgroundContainer);
 
 			this.ThreeD_Left = new Rectangle
 			{
 				Fill = Brushes.LightGreen,
-			}.AttachTo(this.Container);
+			}.AttachTo(this.BackgroundContainer);
 
 			this.ThreeD_Right = new Rectangle
 			{
 				Fill = Brushes.DarkGreen,
-			}.AttachTo(this.Container);
+			}.AttachTo(this.BackgroundContainer);
 
 			this.ThreeD_Bottom = new Rectangle
 			{
 				Fill = Brushes.DarkGreen,
-			}.AttachTo(this.Container);
+			}.AttachTo(this.BackgroundContainer);
 
 			var ThreeD_Fill = new Rectangle
 			{
 				Fill = Brushes.Green,
 				Opacity = 0.8
-			}.AttachTo(this.Container);
+			}.AttachTo(this.BackgroundContainer);
 			#endregion
 
 			this.ContentContainer = new Canvas().AttachTo(this.Container);
@@ -116,6 +120,11 @@ namespace AvalonUgh.Code
 				delegate
 				{
 					Container.SizeTo(
+						Width,
+						Height
+					);
+
+					BackgroundContainer.SizeTo(
 						Width,
 						Height
 					);
