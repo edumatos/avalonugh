@@ -124,9 +124,9 @@ namespace AvalonUgh.Code.Editor
 					var x = index % VisibleColumns * (Preview.SmallTileInfo.ClientWidth  + Padding);
 					var y = Convert.ToInt32(index / VisibleColumns) * (Preview.SmallTileInfo.ClientHeight + Padding);
 
-					value.SmallPreview.AttachTo(PreviewArea).MoveTo(
-						x, y
-					);
+					//value.SmallPreview.AttachTo(PreviewArea).MoveTo(
+					//    x, y
+					//);
 
 			
 					Preview.AttachContainerTo(PreviewArea).MoveContainerTo(
