@@ -41,7 +41,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly StorageLocation Location;
 
 		public readonly Image Preview;
-		public readonly Image SmallPreview;
+		//public readonly Image SmallPreview;
 
 		public string Data { get { return DataFuture.Value; } set { DataFuture.Value = value; } }
 		public readonly Future<string> DataFuture = new Future<string>();
@@ -78,13 +78,13 @@ namespace AvalonUgh.Code.Editor
 			};
 
 
-			this.SmallPreview = new Image
-			{
-				Stretch = System.Windows.Media.Stretch.Fill,
-				Source = PreviewSource,
-				Width = 48,
-				Height = 30,
-			};
+			//this.SmallPreview = new Image
+			//{
+			//    Stretch = System.Windows.Media.Stretch.Fill,
+			//    Source = PreviewSource,
+			//    Width = 48,
+			//    Height = 30,
+			//};
 
 			// the level might not be embedded nor saved yet
 			if (Location.Embedded != null)
@@ -95,32 +95,76 @@ namespace AvalonUgh.Code.Editor
 					}
 				);
 
-
-		}
-
-		public ASCIIImage Map
-		{
-			get
+			var Commands = new Level.AttributeDictonary
 			{
-				return new ASCIIImage(
-					new ASCIIImage.ConstructorArguments
-					{
-						value = this.Data,
-						IsComment = e => e.StartsWith(Level.Comment)
-					}
-				);
-			}
+				AttributeWater,
+				AttributeCode,
+				AttributeText,
+				AttributeBackground,
+			};
+
+			this.DataFuture.Continue(
+				LoadedData =>
+				{
+					this.Map = new ASCIIImage(
+						new ASCIIImage.ConstructorArguments
+						{
+							value = LoadedData,
+							IsComment = e => DoCommand(Commands, e)
+						}
+					);
+				}
+			);
+
 		}
+
+		public bool DoCommand(Level.AttributeDictonary Commands, string e)
+		{
+			if (!e.StartsWith(Level.Comment))
+			{
+				//TileRowsProcessed++;
+				return false;
+			}
+
+			var i = e.IndexOf(Level.Assignment);
+
+			if (i > 0)
+			{
+				var Key = e.Substring(Level.Comment.Length, i - Level.Comment.Length).Trim().ToLower();
+				if (Commands.ContainsKey(Key))
+				{
+					var Value = e.Substring(i + Level.Assignment.Length).Trim();
+
+					Commands[Key](Value);
+				}
+			}
+
+			return true;
+
+		}
+
+		public ASCIIImage Map;
+
+
+		/// <summary>
+		/// name of the level to show to the users
+		/// </summary>
+		public readonly Level.Attribute.String AttributeText = "text";
+
+		/// <summary>
+		///  the code to unlock this level
+		/// </summary>
+		public readonly Level.Attribute.String AttributeCode = "code";
+
+		public readonly Level.Attribute.String AttributeBackground = "background";
+
+		public readonly Level.Attribute.Int32 AttributeWater = "water";
 
 		public string Code
 		{
 			get
 			{
-				var value = "";
-
-				ApplyAttribute("code", k => value = k);
-
-				return value;
+				return this.AttributeCode.Value;
 			}
 		}
 
@@ -128,11 +172,7 @@ namespace AvalonUgh.Code.Editor
 		{
 			get
 			{
-				var value = "";
-
-				ApplyAttribute("text", k => value = k);
-
-				return value;
+				return this.AttributeText.Value;
 			}
 		}
 
@@ -140,11 +180,7 @@ namespace AvalonUgh.Code.Editor
 		{
 			get
 			{
-				var value = "";
-
-				ApplyAttribute("background", k => value = k);
-
-				return value;
+				return this.AttributeBackground.Value;
 			}
 		}
 
@@ -152,47 +188,10 @@ namespace AvalonUgh.Code.Editor
 		{
 			get
 			{
-				var value = 0;
-
-				ApplyAttribute("water", k => value = int.Parse(k));
-
-				return value;
+				return this.AttributeWater.Value;
 			}
 		}
 
-
-		public void ApplyAttribute(string AttributeKey, Action<string> handler)
-		{
-			if (this.Data == null)
-				return;
-
-			using (var r = new StringReader(this.Data))
-			{
-				var e = r.ReadLine();
-
-				while (e != null)
-				{
-					if (e.StartsWith(Level.Comment))
-					{
-						var i = e.IndexOf(Level.Assignment);
-
-						if (i > 0)
-						{
-							var Key = e.Substring(Level.Comment.Length, i - Level.Comment.Length).Trim().ToLower();
-
-							if (AttributeKey.ToLower() == Key)
-							{
-								var Value = e.Substring(i + Level.Assignment.Length).Trim();
-
-								handler(Value);
-							}
-						}
-					}
-
-					e = r.ReadLine();
-				}
-			}
-		}
 
 		[Script]
 		public class SizeType
