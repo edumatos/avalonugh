@@ -40,8 +40,6 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly StorageLocation Location;
 
-		public readonly Image Preview;
-		//public readonly Image SmallPreview;
 
 		public string Data { get { return DataFuture.Value; } set { DataFuture.Value = value; } }
 		public readonly Future<string> DataFuture = new Future<string>();
@@ -58,33 +56,6 @@ namespace AvalonUgh.Code.Editor
 				Location = new StorageLocation { Cookie = "edited" };
 
 			this.Location = Location;
-
-
-			NameFormat PreviewSource = null;
-
-			if (Location.Embedded == null)
-				PreviewSource = ((StorageLocation)0).Embedded;
-			else
-				PreviewSource = Location.Embedded.Clone();
-
-			PreviewSource.Extension = "png";
-
-			this.Preview = new Image
-			{
-				Stretch = System.Windows.Media.Stretch.Fill,
-				Source = PreviewSource,
-				Width = 160,
-				Height = 100,
-			};
-
-
-			//this.SmallPreview = new Image
-			//{
-			//    Stretch = System.Windows.Media.Stretch.Fill,
-			//    Source = PreviewSource,
-			//    Width = 48,
-			//    Height = 30,
-			//};
 
 			// the level might not be embedded nor saved yet
 			if (Location.Embedded != null)

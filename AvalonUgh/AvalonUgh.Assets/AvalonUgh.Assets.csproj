@@ -346,9 +346,6 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_02.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_02.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\platform0_3x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_3x2.png" />
   </ItemGroup>
@@ -579,9 +576,6 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_04.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_03.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_00_3x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_01_3x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_02_3x2.png" />
@@ -594,13 +588,7 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\dino0_09_3x2.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_04.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_01.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_01.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_05.txt" />
@@ -661,13 +649,7 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\tryo0_111_2x2.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_05.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_06.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_06.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\water_slpash.mp3" />
@@ -676,28 +658,16 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_07.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_07.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_08.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_08.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_09.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_09.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Question.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_10.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_10.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_11.txt" />
@@ -713,17 +683,11 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge500_3x2.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_11.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_12.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_1x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge0_1x3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_12.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_13.txt" />
@@ -744,13 +708,7 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree540.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_13.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_14.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_14.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_15.txt" />
@@ -759,16 +717,10 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone101_2x2.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_15.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_16.txt" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone102_2x3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_16.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_17.txt" />
@@ -777,28 +729,16 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone101_2x4.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_17.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone102_2x4.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_18.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_18.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_19.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_19.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_20.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_20.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_21.txt" />
@@ -809,68 +749,36 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_00.txt" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_00.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_21.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_22.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_22.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_23.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_23.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_24.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_24.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_25.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_25.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_26.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_26.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_27.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_27.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_28.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_28.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_29.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_29.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_30.txt" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_30.png" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_31.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_31.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_32.txt" />
@@ -900,7 +808,6 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_54.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_55.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level1_9000.txt" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level1_9000.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\talk0_00.mp3" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_56.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_57.txt" />
@@ -913,56 +820,22 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_64.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_65.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_66.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_67.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\plus_google.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\su.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\jsc_white.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\jsc_blue.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\jsc.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_66.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_65.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_64.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_63.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\btn_snow.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_62.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_61.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_60.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_59.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_58.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_57.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_56.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_55.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_54.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_53.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_52.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_51.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_50.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_49.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_48.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_47.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_46.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_45.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree555.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_44.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\snow1.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\snow0.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\box0.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_43.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_42.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_41.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_40.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_39.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_38.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_37.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_36.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree530.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_35.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_34.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree550.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge500.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge500_2x2.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_33.png" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
