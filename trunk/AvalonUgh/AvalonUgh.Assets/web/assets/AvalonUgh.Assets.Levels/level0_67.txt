@@ -1,0 +1,37 @@
+# generated map
+# text: Two trees and a tricky tunnel
+# code: WHATSTHEVERDICT
+# autoscroll: 0
+# water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background: 
+######################
+    S-SS-   SS-       
+ R--| || S--|| S-S--S-
+ |  S-S| |  SS-| |  | 
+ R-S| S--R-S|| | S-S| 
+ C-|| |  | C-| | | || 
+ | S|  S-R-| | S | S--
+# tree: 288
+# sign: 264;4
+# sign: 104;2
+# rock: 128
+ P--P--PPR-P--P-P--|  
+ |  |  S-| |  | |  S- 
+SS-S-S-| S-SS-S-S-S|  
+|| | | C-| || | S--|  
+S| | | | | S| | |  |  
+# sign: 184;3
+# tryo: 208
+SS-P-P--BBBBBBBBP-P-- 
+|| R-|  S-SS-S-S| |   
+S| S-SS-| || | |S-SS- 
+|| | || | S| S--| C-S-
+ S-| S| | R--|  | | | 
+# tree: 32
+# sign: 264;1
+ P-P-P--PP|  P-P--P-| 
+   | |       | |  |   
+######################

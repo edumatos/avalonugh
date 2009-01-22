@@ -33,16 +33,7 @@ namespace AvalonUgh.Code.Editor
 			{
 				this.Items = Items;
 			}
-			else
-			{
-				Enumerable.Range(1, 20).ForEach(
-					LevelNumber =>
-					{
-						this.Items.Add(new LevelReference(LevelNumber));
-					}
-				);
-			}
-
+		
 			var PreviewArguments =
 				new MiniLevelWindow.ConstructorArgumentsInfo
 				{
@@ -107,12 +98,24 @@ namespace AvalonUgh.Code.Editor
 					PreviewArea_Move(0, (PreviewArea.Height - PreviewContainer_Height) * -y);
 				};
 
+			var PreviewLarge = new MiniLevelWindow(
+					new MiniLevelWindow.ConstructorArgumentsInfo
+					{
+						Width = 8,
+						Height = 6
+					}
+				)
+			{
+				
+			}.MoveContainerTo(Padding, Padding).AttachContainerTo(this);
+
 
 			this.Items.ForEachNewOrExistingItem(
 				(value, index) =>
 				{
-					value.Preview.MoveTo(Padding, Padding);
+					//value.Preview.MoveTo(Padding, Padding);
 
+				
 					var Preview = new MiniLevelWindow(PreviewArguments)
 					{
 						LevelReference = value
@@ -124,10 +127,7 @@ namespace AvalonUgh.Code.Editor
 					var x = index % VisibleColumns * (Preview.SmallTileInfo.ClientWidth  + Padding);
 					var y = Convert.ToInt32(index / VisibleColumns) * (Preview.SmallTileInfo.ClientHeight + Padding);
 
-					//value.SmallPreview.AttachTo(PreviewArea).MoveTo(
-					//    x, y
-					//);
-
+				
 			
 					Preview.AttachContainerTo(PreviewArea).MoveContainerTo(
 						Convert.ToInt32(x), Convert.ToInt32(y)
@@ -136,7 +136,8 @@ namespace AvalonUgh.Code.Editor
 					Preview.DraggableArea.MouseEnter +=
 						delegate
 						{
-							value.Preview.AttachTo(this);
+							PreviewLarge.LevelReference = value;
+							
 
 							Info.Clear();
 							Info.AppendTextLine("Level " + value.Location.Embedded.AnimationFrame);
@@ -147,7 +148,7 @@ namespace AvalonUgh.Code.Editor
 					Preview.DraggableArea.MouseLeave +=
 						delegate
 						{
-							value.Preview.Orphanize();
+							PreviewLarge.LevelReference = null;
 							Info.Text = DefaultText;
 						};
 

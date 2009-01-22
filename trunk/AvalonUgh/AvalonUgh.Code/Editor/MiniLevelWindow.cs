@@ -52,6 +52,7 @@ namespace AvalonUgh.Code.Editor
 		public MiniLevelWindow()
 			: this(null)
 		{
+			
 		}
 
 		public readonly ConstructorArgumentsInfo SmallTileInfo;
@@ -60,6 +61,8 @@ namespace AvalonUgh.Code.Editor
 		{
 			if (args == null)
 				args = new ConstructorArgumentsInfo();
+
+			this.ContentContainer.Background = Brushes.Black;
 
 			this.SmallTileInfo = args;
 			this.Padding = args.Padding;
@@ -89,6 +92,7 @@ namespace AvalonUgh.Code.Editor
 						return;
 
 				InternalLevelReference = value;
+
 				UpdateContent();
 			}
 		}
@@ -96,7 +100,6 @@ namespace AvalonUgh.Code.Editor
 	
 		void UpdateContent()
 		{
-
 
 			Items.ToArray().Orphanize();
 			Items.Clear();
@@ -106,6 +109,10 @@ namespace AvalonUgh.Code.Editor
 			this.ClientHeight = this.SmallTileInfo.VisibleTilesY * SmallTileInfo.Height;
 
 			if (this.LevelReference == null)
+				return;
+
+
+			if (this.LevelReference.Map == null)
 				return;
 
 			var Size = this.LevelReference.Size;
