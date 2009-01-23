@@ -44,10 +44,11 @@ namespace AvalonUgh.LevelViewer.Shared
 			var levels = new KnownLevels();
 
 			var a_Relation = new AvalonUgh.Code.Window
-				{
-					Width = 16,
-					Height = 16
-				}.AttachContainerTo(this);
+			{
+				Width = 16,
+				Height = 16,
+				BackgroundColor = Colors.YellowGreen
+			}.AttachContainerTo(this);
 
 			a_Relation.Update();
 
@@ -68,6 +69,16 @@ namespace AvalonUgh.LevelViewer.Shared
 			)
 			{
 				LevelReference = levels.DefaultMissionLevel,
+				DragContainer = this
+			}.AttachContainerTo(this).MoveContainerTo(200, 200);
+
+			var cc = new MiniLevelWindow(
+				new MiniLevelWindow.ConstructorArgumentsInfo
+				{
+				}
+			)
+			{
+				LevelReference = levels.Levels.Random(),
 				DragContainer = this
 			}.AttachContainerTo(this).MoveContainerTo(200, 200);
 
@@ -109,6 +120,8 @@ namespace AvalonUgh.LevelViewer.Shared
 				{
 					UpdateRelations();
 				};
+
+			UpdateRelations();
 		}
 	}
 }

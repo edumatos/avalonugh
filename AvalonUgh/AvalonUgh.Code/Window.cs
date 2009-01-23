@@ -68,7 +68,37 @@ namespace AvalonUgh.Code
 		public readonly Rectangle ThreeD_Left;
 		public readonly Rectangle ThreeD_Bottom;
 		public readonly Rectangle ThreeD_Right;
+		public readonly Rectangle ThreeD_Fill;
 
+		Color InternalBackgroundColor;
+
+		public Color BackgroundColor
+		{
+			get
+			{
+				return InternalBackgroundColor;
+			}
+			set
+			{
+				InternalBackgroundColor = value;
+
+				var g = new[]
+				{
+					Colors.White,
+					value,
+					Colors.Black
+				}.ToGradient(5).ToArray();
+
+
+				this.ThreeD_Left.Fill = new SolidColorBrush(g[1]);
+				this.ThreeD_Top.Fill = new SolidColorBrush(g[1]);
+
+				this.ThreeD_Right.Fill = new SolidColorBrush(g[3]);
+				this.ThreeD_Bottom.Fill = new SolidColorBrush(g[3]);
+
+				this.ThreeD_Fill.Fill = new SolidColorBrush(InternalBackgroundColor);
+			}
+		}
 
 		public Window()
 		{
@@ -106,7 +136,7 @@ namespace AvalonUgh.Code
 				Fill = Brushes.DarkGreen,
 			}.AttachTo(this.BackgroundContainer);
 
-			var ThreeD_Fill = new Rectangle
+			this.ThreeD_Fill = new Rectangle
 			{
 				Fill = Brushes.Green,
 				Opacity = 0.8
