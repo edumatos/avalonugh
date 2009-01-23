@@ -52,7 +52,7 @@ namespace AvalonUgh.Code.Editor
 		public MiniLevelWindow()
 			: this(null)
 		{
-			
+
 		}
 
 		public readonly ConstructorArgumentsInfo SmallTileInfo;
@@ -93,11 +93,22 @@ namespace AvalonUgh.Code.Editor
 
 				InternalLevelReference = value;
 
-				UpdateContent();
+				if (InternalLevelReference != null)
+					InternalLevelReference.DataFuture.Continue(
+						delegate
+						{
+							// javascript takes more time to load
+							// we should check if really need to continue
+
+							if (InternalLevelReference == value)
+								UpdateContent();
+						}
+				);
+
 			}
 		}
 
-	
+
 		void UpdateContent()
 		{
 
