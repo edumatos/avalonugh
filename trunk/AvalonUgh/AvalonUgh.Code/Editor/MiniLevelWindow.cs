@@ -57,6 +57,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly ConstructorArgumentsInfo SmallTileInfo;
 
+
 		public MiniLevelWindow(ConstructorArgumentsInfo args)
 		{
 			if (args == null)

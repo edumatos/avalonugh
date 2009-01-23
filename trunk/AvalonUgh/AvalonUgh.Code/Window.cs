@@ -16,6 +16,9 @@ namespace AvalonUgh.Code
 	[Script]
 	public partial class Window : ISupportsContainer
 	{
+		public object Tag { get; set; }
+
+
 		public Canvas Container { get; set; }
 
 		public Canvas BackgroundContainer { get; set; }
@@ -33,8 +36,10 @@ namespace AvalonUgh.Code
 		int InternalPadding;
 		public int Padding { get { return InternalPadding; } set { InternalPadding = value; Update(); } }
 
+		public event Action AfterUpdate;
 		public readonly Action Update;
 
+		
 		public int ClientWidth
 		{
 			get
@@ -191,6 +196,9 @@ namespace AvalonUgh.Code
 					).MoveTo(BorderWidth, BorderWidth);
 
 					this.DraggableArea.SizeTo(Width, Height);
+
+					if (AfterUpdate != null)
+						AfterUpdate();
 				};
 
 			

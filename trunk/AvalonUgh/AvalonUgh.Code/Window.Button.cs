@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace AvalonUgh.Code
 {
-	partial class Window 
+	partial class Window
 	{
 		[Script]
 		public class Button : Window
@@ -34,6 +34,13 @@ namespace AvalonUgh.Code
 				}
 			}
 
+			public Button()
+				: this(null)
+			{
+			}
+
+			public event Action Click;
+
 			public Button(Image ButtonImage)
 			{
 				this.ButtonImage = ButtonImage;
@@ -44,8 +51,8 @@ namespace AvalonUgh.Code
 
 
 
-
-				ButtonImage.MoveTo(4, 4).AttachTo(this.ContentContainer);
+				if (ButtonImage != null)
+					ButtonImage.MoveTo(4, 4).AttachTo(this.ContentContainer);
 
 				this.ButtonText = new TextBox
 				{
@@ -57,9 +64,16 @@ namespace AvalonUgh.Code
 					IsReadOnly = true,
 				};
 
+				this.AfterUpdate +=
+					delegate
+					{
+						this.ButtonText.Width = this.ClientWidth - this.ClientHeight - 1;
+						this.ButtonText.Height = this.ClientHeight - 4;
+					};
+
 				this.ButtonText.MoveTo(24, 2).AttachTo(this.ContentContainer);
 
-				
+
 				this.ColorOverlay.Element.Show();
 				this.ColorOverlay.Element.Cursor = Cursors.Hand;
 
@@ -67,7 +81,9 @@ namespace AvalonUgh.Code
 					delegate
 					{
 						this.ButtonText.MoveTo(24, 2);
-						this.ButtonImage.MoveTo(4, 4);
+
+						if (this.ButtonImage != null)
+							this.ButtonImage.MoveTo(4, 4);
 
 						this.ThreeD_Left.Fill = Brushes.LightGreen;
 						this.ThreeD_Top.Fill = Brushes.LightGreen;
@@ -86,7 +102,10 @@ namespace AvalonUgh.Code
 					delegate
 					{
 						this.ButtonText.MoveTo(24 + 1, 2 + 1);
-						this.ButtonImage.MoveTo(5, 5);
+
+						if (this.ButtonImage != null)
+							this.ButtonImage.MoveTo(5, 5);
+
 						this.ThreeD_Left.Fill = Brushes.DarkGreen;
 						this.ThreeD_Top.Fill = Brushes.DarkGreen;
 					};
@@ -95,10 +114,15 @@ namespace AvalonUgh.Code
 					delegate
 					{
 						this.ButtonText.MoveTo(24, 2);
-						this.ButtonImage.MoveTo(4, 4);
+
+						if (this.ButtonImage != null)
+							this.ButtonImage.MoveTo(4, 4);
 
 						this.ThreeD_Left.Fill = Brushes.LightGreen;
 						this.ThreeD_Top.Fill = Brushes.LightGreen;
+
+						if (this.Click != null)
+							this.Click();
 					};
 			}
 		}

@@ -72,7 +72,11 @@ namespace AvalonUgh.Code.Editor
 				AttributeCode,
 				AttributeText,
 				AttributeBackground,
+				AttributeEpisode,
+				AttributeNextCode
 			};
+
+			this.AttributeBackground.Value = "";
 
 			this.DataFuture.Continue(
 				LoadedData =>
@@ -130,6 +134,10 @@ namespace AvalonUgh.Code.Editor
 		public readonly Level.Attribute.String AttributeBackground = "background";
 
 		public readonly Level.Attribute.Int32 AttributeWater = "water";
+
+		public readonly Level.Attribute.String AttributeEpisode = "episode";
+		public readonly Level.Attribute.String AttributeNextCode = "nextcode";
+
 
 		public string Code
 		{
