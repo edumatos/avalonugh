@@ -40,8 +40,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Game", "AvalonUgh
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.LevelViewer", "AvalonUgh.LevelViewer\AvalonUgh.LevelViewer.csproj", "{08040EDB-5008-4D09-8513-388C12888FBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.Code.Levels", "AvalonUgh.Code.Levels\AvalonUgh.Code.Levels.csproj", "{7E099736-CBEA-4D37-B35E-9E7FEF0C2F6E}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,10 +102,6 @@ Global
 		{08040EDB-5008-4D09-8513-388C12888FBD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08040EDB-5008-4D09-8513-388C12888FBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08040EDB-5008-4D09-8513-388C12888FBD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7E099736-CBEA-4D37-B35E-9E7FEF0C2F6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7E099736-CBEA-4D37-B35E-9E7FEF0C2F6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7E099736-CBEA-4D37-B35E-9E7FEF0C2F6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7E099736-CBEA-4D37-B35E-9E7FEF0C2F6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
