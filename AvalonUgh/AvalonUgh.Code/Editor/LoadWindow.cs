@@ -1,60 +1,53 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public class LoadWindow : Window
+	public class LoadWindow : CommonFileWindow
 	{
-		public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
-
-		const int VisibleColumns = 7;
-		const int VisibleRows = 4;
+		public readonly Tab EmbeddedLevels = "Embedded levels";
+		public readonly Tab SavedLevels = "Saved levels";
 
 		public event Action<LevelReference> Click;
 
-		public LoadWindow()
-			: this(null)
-		{
-		}
 
-		public LoadWindow(BindingList<LevelReference> Items)
+		public LoadWindow()
 		{
-			if (Items != null)
-			{
-				this.Items = Items;
-			}
+			this.Tabs.AddRange(EmbeddedLevels, SavedLevels);
+
+
 
 			var PreviewArguments =
 				new MiniLevelWindow.ConstructorArgumentsInfo
 				{
-					Padding = 0,
+					Padding = 2,
 					Width = 4,
 					Height = 3
 				};
 
 
-			this.Width = Padding + (PreviewArguments.ClientWidth + Padding) * VisibleColumns;
-			this.Height = Padding + 100 + Padding + (PreviewArguments.ClientHeight + Padding) * VisibleRows;
+			//this.Width = Padding + (PreviewArguments.ClientWidth + Padding) * VisibleColumns;
 
 			const string DefaultText = "Select a level below!";
+
+			var PreviewContainer_Height = (PreviewArguments.ClientHeight + Padding) * VisibleRows;
 
 			var Info = new TextBox
 			{
 				IsReadOnly = true,
 				AcceptsReturn = true,
 
-				FontFamily = new FontFamily("Courier"),
-				
+				FontFamily = new FontFamily("Courier New"),
+
 				Foreground = Brushes.Yellow,
 
 				Width = Width - 180 - Padding * 3,
@@ -62,137 +55,80 @@ namespace AvalonUgh.Code.Editor
 				Background = Brushes.Transparent,
 				BorderThickness = new System.Windows.Thickness(0),
 				Text = DefaultText
-			}.MoveTo(Padding * 2 + 180, Padding).AttachTo(this);
+			}.MoveTo(Padding, Padding * 3 + PreviewContainer_Height + EmbeddedLevels.Button.Height).AttachTo(this);
 
-			this.DraggableArea.BringToFront();
 
-			var PreviewContainer_Height = (PreviewArguments.ClientHeight + Padding) * VisibleRows - Padding;
-			var PreviewContainer = new Canvas
-			{
-				//Background = Brushes.Blue,
-				Width = (PreviewArguments.ClientWidth + Padding) * VisibleColumns - Padding,
-				Height = PreviewContainer_Height,
-				ClipToBounds = true,
-			}.AttachTo(this).MoveTo(
-				Padding,
-				Padding * 2 + 100
 
-			);
 
-			var PreviewArea = new Canvas
-			{
-				//Background = Brushes.Red,
-				Width = (PreviewArguments.ClientWidth + Padding) * VisibleColumns - Padding,
-			}.AttachTo(PreviewContainer);
-
-			var PreviewArea_Move = NumericEmitter.OfDouble(
-				(x, y) =>
+			Action<LevelReference> ShowInfo =
+				level =>
 				{
-					PreviewArea.MoveTo(x, y);
-				}
-			);
-			PreviewArea_Move(0, 0);
 
-			PreviewContainer.MouseMove +=
-				(sender, args) =>
-				{
-					var p = args.GetPosition(PreviewContainer);
-					var y = ((p.Y - 30) / (PreviewContainer_Height - 60)).Max(0).Min(1);
+					if (level != null)
+						if (level.Data != null)
+						{
+							Info.Clear();
+							
+							if (level.Location.Embedded != null)
+								Info.AppendTextLine("Level " + level.Location.Embedded.AnimationFrame);
 
-					var AllRows = Convert.ToInt32(this.Items.Count / VisibleColumns) + 1;
+							Info.AppendTextLine(level.Text);
+							Info.AppendTextLine("Size: " + level.Size.Width + "x" + level.Size.Height);
 
-					y = Math.Round( y * AllRows) / AllRows;
+							return;
+						}
 
-					PreviewArea_Move(0, (PreviewArea.Height - PreviewContainer_Height) * -y);
+					Info.Text = DefaultText;
 				};
 
-			var PreviewLarge = new MiniLevelWindow(
-					new MiniLevelWindow.ConstructorArgumentsInfo
-					{
-						Width = 8,
-						Height = 6
-					}
-				)
-			{
-
-			}.MoveContainerTo(Padding, Padding).AttachContainerTo(this);
-
-			this.Items.ForEachNewOrExistingItem(
-				(value, index, AddTask) =>
+			this.Tabs.ForEachNewOrExistingItem(
+				(value, index) =>
 				{
-					//value.Preview.MoveTo(Padding, Padding);
+					value.MouseEnter += ShowInfo;
 
-					var x = index % VisibleColumns * (PreviewArguments.ClientWidth + Padding);
-					var y = Convert.ToInt32(index / VisibleColumns) * (PreviewArguments.ClientHeight + Padding);
-
-
-					PreviewArea.Height = (PreviewArguments.ClientHeight + Padding) * (Convert.ToInt32(index / VisibleColumns) + 1) - Padding;
-
-					var Preview = new MiniLevelWindow(PreviewArguments)
-					{
-					};
-
-
-
-					Preview.DraggableArea.Cursor = Cursors.Hand;
-					Preview.BackgroundContainer.Hide();
-
-
-
-					Preview.AttachContainerTo(PreviewArea).MoveContainerTo(
-						Convert.ToInt32(x), Convert.ToInt32(y)
-					);
-
-					Preview.DraggableArea.MouseEnter +=
-						delegate
+					value.MouseLeave +=
+						level =>
 						{
-							PreviewLarge.LevelReference = value;
-
-
-							Info.Clear();
-							Info.AppendTextLine("Level " + value.Location.Embedded.AnimationFrame);
-							Info.AppendTextLine(value.Text);
-							Info.AppendTextLine("Size: " + value.Size.Width + "x" + value.Size.Height);
+							ShowInfo(this.CurrentLevel);
 						};
-
-					Preview.DraggableArea.MouseLeave +=
-						delegate
-						{
-							PreviewLarge.LevelReference = null;
-							Info.Text = DefaultText;
-						};
-
-					Preview.DraggableArea.MouseLeftButtonUp +=
-						delegate
-						{
-							if (Click != null)
-								Click(value);
-						};
-
-					AddTask(
-						SignalNext =>
-						{
-
-							Preview.LevelReference = value;
-
-							var LoadDelay = 300;
-
-							if (this.Visibility == System.Windows.Visibility.Visible)
-								LoadDelay = 50;
-
-							LoadDelay.AtDelay(SignalNext);
-					    }
-					);
 
 
 				}
 			);
 
 
+			#region buttons
 
-			// list
+			var ButtonLoad = new Window.Button(
+				new Image
+				{
+					Width = 16,
+					Height = 16,
+					Stretch = Stretch.Fill,
+					Source = new NameFormat
+					{
+						Path = Assets.Shared.KnownAssets.Path.Assets,
+						Index = -1,
+						Name = "btn_load",
+						Extension = "png"
+					}
+				})
+			{
+				Text = "Load"
+			};
+			ButtonLoad.AttachContainerTo(this.OverlayContainer);
+			ButtonLoad.MoveContainerTo(this.ClientWidth - ButtonLoad.Width, this.ClientHeight - ButtonLoad.Height * 2 - Padding);
 
-			this.Update();
+			ButtonLoad.Click +=
+				delegate
+				{
+					if (this.Click != null)
+						this.Click(this.CurrentLevel);
+				};
+			#endregion
+
+
+
 		}
 
 	}

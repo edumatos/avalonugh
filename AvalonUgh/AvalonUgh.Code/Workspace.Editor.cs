@@ -48,9 +48,20 @@ namespace AvalonUgh.Code
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
 
-				this.SaveWindow = new SaveWindow();
+				var slot1 = new LevelReference();
+				var slot2 = new LevelReference();
+				var slot3 = new LevelReference();
 
-				this.LoadWindow = new LoadWindow(args.Levels);
+				this.SaveWindow = new SaveWindow();
+				this.SaveWindow.SavedLevels.Items.Add(slot1);
+				this.SaveWindow.SavedLevels.Items.Add(slot2);
+				this.SaveWindow.SavedLevels.Items.Add(slot3);
+
+				this.LoadWindow = new LoadWindow();
+				this.LoadWindow.EmbeddedLevels.Items.AddRange(args.Levels.ToArray());
+				this.LoadWindow.SavedLevels.Items.Add(slot1);
+				this.LoadWindow.SavedLevels.Items.Add(slot2);
+				this.LoadWindow.SavedLevels.Items.Add(slot3);
 
 				this.Selectors = args.Selectors;
 				this.StatusbarHeight = 18;
@@ -255,6 +266,12 @@ namespace AvalonUgh.Code
 						};
 				};
 
+			this.Editor.SaveWindow.Click +=
+				SaveTarget =>
+				{
+					SaveTarget.Data = this.Editor.SaveWindow.Preview.LevelReference.Data;
+					this.Editor.SaveWindow.Hide();
+				};
 
 			#region LoadWindow
 			this.Editor.LoadWindow.Click +=
@@ -293,9 +310,18 @@ namespace AvalonUgh.Code
 								}
 							);
 
-							this.Sync_LoadLevel(
-								this.Editor.PortIdentity, NextLevelForEditor.Location.Embedded.AnimationFrame, ""
-							);
+							if (NextLevelForEditor.Location.Embedded != null)
+							{
+								this.Sync_LoadLevel(
+									this.Editor.PortIdentity, NextLevelForEditor.Location.Embedded.AnimationFrame, ""
+								);
+							}
+							else
+							{
+								this.Sync_LoadLevel(
+									this.Editor.PortIdentity, -1, NextLevelForEditor.Data
+								);
+							}
 						}
 					);
 

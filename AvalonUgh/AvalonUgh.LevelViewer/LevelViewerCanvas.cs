@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using AvalonUgh.Code.Editor;
 using ScriptCoreLib.Shared.Lambda;
+using System.ComponentModel;
 
 namespace AvalonUgh.LevelViewer.Shared
 {
@@ -36,13 +37,12 @@ namespace AvalonUgh.LevelViewer.Shared
 					}.MoveTo(0, i * 4).AttachTo(this)
 			).ToArray();
 
-			new TextBox
-			{
-				Text = "Episode editor concept"
-			}.AttachTo(this);
+			
 
 			var levels = new KnownLevels();
 
+	
+			#region demo
 			var a_Relation = new AvalonUgh.Code.Window
 			{
 				Width = 16,
@@ -122,6 +122,12 @@ namespace AvalonUgh.LevelViewer.Shared
 				};
 
 			UpdateRelations();
+			#endregion
+
+
+			
 		}
+
+		
 	}
 }

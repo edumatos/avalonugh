@@ -7,12 +7,19 @@ using AvalonUgh.Assets.Avalon;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using System;
 
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public class SaveWindow : Window
+	public class SaveWindow : CommonFileWindow
 	{
+		public readonly Tab SavedLevels = "Saved levels";
+
+		public event Action<LevelReference> Click;
+
+
+
 		[Script]
 		public class Property
 		{
@@ -79,8 +86,20 @@ namespace AvalonUgh.Code.Editor
 
 		public SaveWindow()
 		{
-			this.ClientWidth = 300 + Padding;
-			this.ClientHeight = 200;
+			this.Tabs.AddRange(SavedLevels);
+
+			var PreviewArguments =
+				new MiniLevelWindow.ConstructorArgumentsInfo
+				{
+					Padding = 0,
+					Width = 4,
+					Height = 3
+				};
+
+			this.Preview = new MiniLevelWindow(PreviewArguments);
+
+			var PreviewContainer_Height = (PreviewArguments.ClientHeight + Padding) * VisibleRows;
+		
 
 			Items.Add(PropertyText);
 			Items.Add(PropertyCode);
@@ -89,8 +108,8 @@ namespace AvalonUgh.Code.Editor
 			Items.ForEachNewOrExistingItem(
 				(p, i) =>
 				{
-					p.Key.Orphanize().AttachTo(this.ContentContainer).MoveTo(0, i * (22 + Padding));
-					p.Value.Orphanize().AttachTo(this.OverlayContainer).MoveTo(100 + Padding, i * (22 + Padding));
+					p.Key.Orphanize().AttachTo(this.ContentContainer).MoveTo(Preview.Width, PreviewContainer_Height +  i * (22 + Padding));
+					p.Value.Orphanize().AttachTo(this.OverlayContainer).MoveTo(Preview.Width + 100 + Padding, PreviewContainer_Height + i * (22 + Padding));
 				}
 			);
 
@@ -114,8 +133,19 @@ namespace AvalonUgh.Code.Editor
 				Text = "Save"
 			};
 
+			XSaveButton.Click +=
+				delegate
+				{
+					if (Click != null)
+						Click(CurrentLevel);
+				};
+
 			XSaveButton.AttachContainerTo(this.OverlayContainer);
-			XSaveButton.MoveContainerTo(this.ClientWidth - XSaveButton.Width, this.ClientHeight - XSaveButton.Height);
+			XSaveButton.MoveContainerTo(this.ClientWidth - XSaveButton.Width, this.ClientHeight - XSaveButton.Height - XSaveButton.Height - 4);
+
+
+
+			
 
 			Preview.ThreeD_Bottom.Fill = Brushes.LightGreen;
 			Preview.ThreeD_Right.Fill = Brushes.LightGreen;
@@ -125,7 +155,7 @@ namespace AvalonUgh.Code.Editor
 
 			Preview.
 				AttachContainerTo(this.OverlayContainer).
-				MoveContainerTo(this.Padding,  this.ClientHeight - Preview.Height - Padding);
+				MoveContainerTo(0,  this.ClientHeight - Preview.Height);
 
 			// text
 			// code
