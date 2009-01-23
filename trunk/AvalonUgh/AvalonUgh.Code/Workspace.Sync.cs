@@ -1,21 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ScriptCoreLib;
-using ScriptCoreLib.Shared.Avalon.Extensions;
-using System.Windows.Controls;
-using System.Windows.Media;
-using AvalonUgh.Code.Editor;
 using System.ComponentModel;
-using AvalonUgh.Code.Dialogs;
-using System.Windows.Input;
-using ScriptCoreLib.Shared.Avalon.Tween;
-using System.Windows;
-using ScriptCoreLib.Shared.Lambda;
-using AvalonUgh.Assets.Shared;
-using System.Windows.Shapes;
-using AvalonUgh.Code.Input;
+using ScriptCoreLib;
 
 namespace AvalonUgh.Code
 {

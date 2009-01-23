@@ -113,14 +113,7 @@ namespace AvalonUgh.Code
 					NewPort.Loaded +=
 						delegate
 						{
-							NewPort.View.EditorSelectorApplied +=
-								(Selector, Position) =>
-								{
-									if (Selector.Width == 0)
-										return;
-
-									(Assets.Shared.KnownAssets.Path.Audio + "/place_tile.mp3").PlaySound();
-								};
+					
 
 							Console.WriteLine("port loaded " + new { NewPort.Width, NewPort.Height, NewPort.StatusbarHeight });
 
@@ -172,6 +165,13 @@ namespace AvalonUgh.Code
 							NewPort.View.EditorSelectorApplied +=
 								(Selector, Position) =>
 								{
+									if (Selector.Width > 0)
+									{
+										(Assets.Shared.KnownAssets.Path.Audio + "/place_tile.mp3").PlaySound();
+									}
+
+									this.Console.WriteLine("NewPort.View.EditorSelectorApplied");
+
 									var Index = KnownSelectors.Index.Of(Selector, this.Selectors);
 
 									this.Sync_EditorSelector(NewPort.PortIdentity, Index.Type, Index.Size, Position.ContentX, Position.ContentY);
@@ -452,6 +452,8 @@ namespace AvalonUgh.Code
 			this.Sync_EditorSelector =
 				(int port, int type, int size, int x, int y) =>
 				{
+					this.Console.WriteLine("EditorSelector: " + new { port, type });
+
 					var CurrentPort = this.Ports.SingleOrDefault(k => k.PortIdentity == port);
 
 					var Selector = this.Selectors.Types[type].Sizes[size];

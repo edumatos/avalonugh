@@ -91,6 +91,8 @@ namespace AvalonUgh.Code.Editor
 					if (InternalLevelReference == value)
 						return;
 
+				ClearContent();
+
 				InternalLevelReference = value;
 
 				if (InternalLevelReference != null)
@@ -108,16 +110,20 @@ namespace AvalonUgh.Code.Editor
 			}
 		}
 
-
-		void UpdateContent()
+		void ClearContent()
 		{
-
 			Items.ToArray().Orphanize();
 			Items.Clear();
 
 
 			this.ClientWidth = this.SmallTileInfo.VisibleTilesX * SmallTileInfo.Width;
 			this.ClientHeight = this.SmallTileInfo.VisibleTilesY * SmallTileInfo.Height;
+		}
+
+		void UpdateContent()
+		{
+
+
 
 			if (this.LevelReference == null)
 				return;

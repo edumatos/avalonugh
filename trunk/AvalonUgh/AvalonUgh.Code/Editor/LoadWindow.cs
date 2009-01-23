@@ -17,7 +17,7 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
 
-		const int VisibleColumns = 6;
+		const int VisibleColumns = 7;
 		const int VisibleRows = 4;
 
 		public event Action<LevelReference> Click;
@@ -33,7 +33,7 @@ namespace AvalonUgh.Code.Editor
 			{
 				this.Items = Items;
 			}
-		
+
 			var PreviewArguments =
 				new MiniLevelWindow.ConstructorArgumentsInfo
 				{
@@ -53,12 +53,16 @@ namespace AvalonUgh.Code.Editor
 				IsReadOnly = true,
 				AcceptsReturn = true,
 
-				Width = Width - 160 - Padding * 3,
+				FontFamily = new FontFamily("Courier"),
+				
+				Foreground = Brushes.Yellow,
+
+				Width = Width - 180 - Padding * 3,
 				Height = 100,
 				Background = Brushes.Transparent,
 				BorderThickness = new System.Windows.Thickness(0),
 				Text = DefaultText
-			}.MoveTo(Padding * 2 + 160, Padding).AttachTo(this);
+			}.MoveTo(Padding * 2 + 180, Padding).AttachTo(this);
 
 			this.DraggableArea.BringToFront();
 
@@ -95,6 +99,10 @@ namespace AvalonUgh.Code.Editor
 					var p = args.GetPosition(PreviewContainer);
 					var y = ((p.Y - 30) / (PreviewContainer_Height - 60)).Max(0).Min(1);
 
+					var AllRows = Convert.ToInt32(this.Items.Count / VisibleColumns) + 1;
+
+					y = Math.Round( y * AllRows) / AllRows;
+
 					PreviewArea_Move(0, (PreviewArea.Height - PreviewContainer_Height) * -y);
 				};
 
@@ -106,29 +114,31 @@ namespace AvalonUgh.Code.Editor
 					}
 				)
 			{
-				
+
 			}.MoveContainerTo(Padding, Padding).AttachContainerTo(this);
 
-
 			this.Items.ForEachNewOrExistingItem(
-				(value, index) =>
+				(value, index, AddTask) =>
 				{
 					//value.Preview.MoveTo(Padding, Padding);
 
-				
+					var x = index % VisibleColumns * (PreviewArguments.ClientWidth + Padding);
+					var y = Convert.ToInt32(index / VisibleColumns) * (PreviewArguments.ClientHeight + Padding);
+
+
+					PreviewArea.Height = (PreviewArguments.ClientHeight + Padding) * (Convert.ToInt32(index / VisibleColumns) + 1) - Padding;
+
 					var Preview = new MiniLevelWindow(PreviewArguments)
 					{
-						LevelReference = value
 					};
+
+
 
 					Preview.DraggableArea.Cursor = Cursors.Hand;
 					Preview.BackgroundContainer.Hide();
 
-					var x = index % VisibleColumns * (Preview.SmallTileInfo.ClientWidth  + Padding);
-					var y = Convert.ToInt32(index / VisibleColumns) * (Preview.SmallTileInfo.ClientHeight + Padding);
 
-				
-			
+
 					Preview.AttachContainerTo(PreviewArea).MoveContainerTo(
 						Convert.ToInt32(x), Convert.ToInt32(y)
 					);
@@ -137,7 +147,7 @@ namespace AvalonUgh.Code.Editor
 						delegate
 						{
 							PreviewLarge.LevelReference = value;
-							
+
 
 							Info.Clear();
 							Info.AppendTextLine("Level " + value.Location.Embedded.AnimationFrame);
@@ -159,7 +169,22 @@ namespace AvalonUgh.Code.Editor
 								Click(value);
 						};
 
-					PreviewArea.Height = (PreviewArguments.ClientHeight + Padding) * (Convert.ToInt32(index / VisibleColumns) + 1) - Padding;
+					AddTask(
+						SignalNext =>
+						{
+
+							Preview.LevelReference = value;
+
+							var LoadDelay = 300;
+
+							if (this.Visibility == System.Windows.Visibility.Visible)
+								LoadDelay = 50;
+
+							LoadDelay.AtDelay(SignalNext);
+					    }
+					);
+
+
 				}
 			);
 
@@ -169,7 +194,6 @@ namespace AvalonUgh.Code.Editor
 
 			this.Update();
 		}
-
 
 	}
 }
