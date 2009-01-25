@@ -24,6 +24,7 @@ pushd ..\bin\%ConfigurationName%\web
 
 :: to upload to nonoba and to reference in tests
 copy "*.dll" "../../../../Public/"
+copy "*.pdb" "../../../../Public/"
 copy "*.swf" "../../../../Public/"
 
 popd

@@ -9,7 +9,6 @@ using ScriptCoreLib.Shared.Avalon.Cursors;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
-
 namespace AvalonUgh.Code
 {
 	partial class Workspace
@@ -21,7 +20,9 @@ namespace AvalonUgh.Code
 			public class ConstructorArguments
 			{
 				public KnownSelectors Selectors;
-				public BindingList<LevelReference> Levels;
+
+				public BindingList<LevelReference> EmbeddedLevels;
+				public BindingList<LevelReference> SavedLevels;
 			}
 
 			public readonly EditorToolbar Toolbar;
@@ -48,20 +49,17 @@ namespace AvalonUgh.Code
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
 
-				var slot1 = new LevelReference();
-				var slot2 = new LevelReference();
-				var slot3 = new LevelReference();
+
 
 				this.SaveWindow = new SaveWindow();
-				this.SaveWindow.SavedLevels.Items.Add(slot1);
-				this.SaveWindow.SavedLevels.Items.Add(slot2);
-				this.SaveWindow.SavedLevels.Items.Add(slot3);
+				this.SaveWindow.SavedLevels.Items.MirrorTo(args.SavedLevels);
+
 
 				this.LoadWindow = new LoadWindow();
-				this.LoadWindow.EmbeddedLevels.Items.AddRange(args.Levels.ToArray());
-				this.LoadWindow.SavedLevels.Items.Add(slot1);
-				this.LoadWindow.SavedLevels.Items.Add(slot2);
-				this.LoadWindow.SavedLevels.Items.Add(slot3);
+
+				this.LoadWindow.EmbeddedLevels.Items.MirrorTo(args.EmbeddedLevels);
+				this.LoadWindow.SavedLevels.Items.MirrorTo(args.SavedLevels);
+
 
 				this.Selectors = args.Selectors;
 				this.StatusbarHeight = 18;
@@ -269,6 +267,10 @@ namespace AvalonUgh.Code
 			this.Editor.SaveWindow.Click +=
 				SaveTarget =>
 				{
+					// we can only save on an empty slot at this time
+					if (SaveTarget.Data != null)
+						return;
+
 					SaveTarget.Data = this.Editor.SaveWindow.Preview.LevelReference.Data;
 					this.Editor.SaveWindow.Hide();
 				};
@@ -277,6 +279,10 @@ namespace AvalonUgh.Code
 			this.Editor.LoadWindow.Click +=
 				NextLevelForEditor =>
 				{
+					// we can not load an empty slot at this time
+					if (NextLevelForEditor.Data == null)
+						return;
+
 					this.Editor.LoadWindow.Hide();
 
 					// send early warning
