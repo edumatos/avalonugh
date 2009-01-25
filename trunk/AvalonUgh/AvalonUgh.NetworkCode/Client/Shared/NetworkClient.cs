@@ -204,9 +204,17 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					Server_LoadLevel.ForEachNewOrExistingItem(
 						IncomingData =>
 						{
+							var NewSlot = new LevelReference();
+
 							this.Content.SavedLevels.Add(
-								new LevelReference { Data = IncomingData }
+								NewSlot
 							);
+
+							if (!string.IsNullOrEmpty(IncomingData))
+							{
+								// this slot has value
+								NewSlot.Data = IncomingData;
+							}
 
 							if (Server_LoadLevel.Count == e.levels)
 							{

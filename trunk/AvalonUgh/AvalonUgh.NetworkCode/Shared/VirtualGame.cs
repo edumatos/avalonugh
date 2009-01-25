@@ -133,7 +133,7 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			var SavedLevels = player.Data["avalonugh"]["savedlevels"];
 			var SavedLevelsCountString = SavedLevels["count"];
-			var SavedLevelsCount = 0;
+			var SavedLevelsCount = 5;
 			try
 			{
 				SavedLevelsCount = int.Parse(SavedLevelsCountString.Value);
@@ -172,6 +172,8 @@ namespace AvalonUgh.NetworkCode.Shared
 				{
 					if (e.index >= SavedLevelsCount)
 						SavedLevelsCountString.Value = "" + (e.index + 1);
+
+					Console.WriteLine("save slot:" + e.index);
 
 					SavedLevels[e.index].Value = e.data;
 				};
