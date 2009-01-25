@@ -9,6 +9,7 @@ using ScriptCoreLib.Shared.Avalon.Cursors;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Media;
 namespace AvalonUgh.Code
 {
 	partial class Workspace
@@ -56,6 +57,8 @@ namespace AvalonUgh.Code
 
 
 				this.LoadWindow = new LoadWindow();
+
+				
 
 				this.LoadWindow.EmbeddedLevels.Items.MirrorTo(args.EmbeddedLevels);
 				this.LoadWindow.SavedLevels.Items.MirrorTo(args.SavedLevels);
@@ -280,6 +283,9 @@ namespace AvalonUgh.Code
 				NextLevelForEditor =>
 				{
 					// we can not load an empty slot at this time
+					if (NextLevelForEditor == null)
+						return;
+
 					if (NextLevelForEditor.Data == null)
 						return;
 

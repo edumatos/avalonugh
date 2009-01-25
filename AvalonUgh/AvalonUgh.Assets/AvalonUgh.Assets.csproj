@@ -821,6 +821,8 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_65.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_66.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_67.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_68.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_69.txt" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\plus_google.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\su.png" />

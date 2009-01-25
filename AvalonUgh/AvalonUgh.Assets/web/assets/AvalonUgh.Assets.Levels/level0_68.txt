@@ -1,0 +1,37 @@
+# generated map
+# text: Neptuns fork
+# code: ZEROSEX
+# autoscroll: 0
+# water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background: 
+######################
+     S-S--S-S-SS-S--  
+ S-S-| |  | | || |  S-
+ | | | S-SC-SS-| SSS- 
+ | | R-|  | || R-|||  
+# sign: 152;1
+S-S-S| | P---| | S-|  
+| | R-S-S-R-S| SR-S-- 
+S-| | C-| R-C-S-| |   
+| | R-| | | | | R-S-S-
+# sign: 232;3
+# sign: 136;2
+ SS-| PP--R-P--P| | | 
+ || S-S|  | |  SS-| | 
+S-| | S--S| S-S-| SS- 
+| | | |  |R-| | | ||  
+S--R-S-SS-| S-| SR-|  
+|  | | || R-| S-|| |  
+S-R-C-S-| | | | C-R-S-
+# rock: 224
+| | | | | R-| | | | | 
+# tree: 128
+# sign: 104;4
+# sign: 232;5
+# tryo: 256
+| R-P---PB| BP---P| | 
+  | |     |  |        
+######################

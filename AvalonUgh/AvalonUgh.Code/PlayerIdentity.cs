@@ -14,7 +14,9 @@ namespace AvalonUgh.Code
 		//public int SyncFrameWindow = 5;
 
 		// should be larger for laggy networks
-		public int SyncFrameWindow = 6;
+		//public int SyncFrameWindow = 6;
+		
+		public int SyncFrameWindow = 5;
 
 
 		public int Number;

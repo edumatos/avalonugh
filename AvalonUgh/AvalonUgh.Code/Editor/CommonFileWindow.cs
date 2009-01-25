@@ -17,6 +17,8 @@ namespace AvalonUgh.Code.Editor
 		[Script]
 		public class Tab
 		{
+			public CommonFileWindow Parent;
+
 			public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
 
 			public readonly Window.Button Button;
@@ -139,15 +141,21 @@ namespace AvalonUgh.Code.Editor
 						AddTask(
 							SignalNext =>
 							{
+								100.AtIntervalWithTimer(
+									t =>
+									{
+										if (Parent == null)
+											return;
 
-								Preview.LevelReference = value;
+										if (Parent.Visibility == System.Windows.Visibility.Hidden)
+											return;
 
-								var LoadDelay = 300;
+										Preview.LevelReference = value;
 
-								//if (this.Visibility == System.Windows.Visibility.Visible)
-								//    LoadDelay = 50;
-
-								LoadDelay.AtDelay(SignalNext);
+										t.Stop();
+										SignalNext();
+									}
+								);
 							}
 						);
 
@@ -170,7 +178,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly BindingList<Tab> Tabs = new BindingList<Tab>();
 
-		public const int VisibleColumns = 6;
+		public const int VisibleColumns = 7;
 		public const int VisibleRows = 4;
 
 
@@ -179,8 +187,7 @@ namespace AvalonUgh.Code.Editor
 
 		public CommonFileWindow()
 		{
-			//this.Tabs = new BindingList<Tab> { EmbeddedLevels, SavedLevels };
-
+			this.BackgroundColor = Colors.DarkGreen;
 
 
 			var PreviewArguments =
@@ -203,6 +210,8 @@ namespace AvalonUgh.Code.Editor
 			this.Tabs.ForEachNewOrExistingItem(
 				(value, index) =>
 				{
+					value.Parent = this;
+
 					value.Button.MoveContainerTo((value.Button.Width + Padding) * index, 0);
 					value.Button.AttachContainerTo(this.OverlayContainer);
 
