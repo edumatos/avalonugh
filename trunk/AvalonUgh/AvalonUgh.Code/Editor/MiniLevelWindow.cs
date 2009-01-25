@@ -10,6 +10,7 @@ using AvalonUgh.Assets.Avalon;
 using System.Windows.Controls;
 using System.Windows;
 using AvalonUgh.Assets.Shared;
+using System;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -152,6 +153,12 @@ namespace AvalonUgh.Code.Editor
 
 			if (!string.IsNullOrEmpty(Background))
 			{
+				if (Background == "null")
+					throw new Exception("Background null trap 1");
+
+				if (Background == null)
+					throw new Exception("Background null trap 2");
+
 				new Image
 				{
 					Stretch = Stretch.Fill,

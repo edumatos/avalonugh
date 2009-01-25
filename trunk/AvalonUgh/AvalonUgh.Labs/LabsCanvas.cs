@@ -59,7 +59,23 @@ namespace AvalonUgh.Labs.Shared
 				}
 			);
 
-			
+			w.SavedLevels.Add(
+				new LevelReference()
+			);
+
+			w.SavedLevels.Add(
+				new LevelReference()
+			);
+			w.SavedLevels.Add(
+				new LevelReference()
+			);
+			w.SavedLevels.Add(
+				new LevelReference()
+			);
+			w.SavedLevels.Add(
+				new LevelReference()
+			);
+
 			w.AttachContainerTo(this);
 		}
 	}

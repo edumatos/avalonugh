@@ -315,13 +315,14 @@ namespace AvalonUgh.Code.Editor
 
 
 
-			var BackgroundImageSource = Assets.Shared.KnownAssets.Path.Backgrounds + "/" + this.AttributeBackground.Value + ".png";
-
 			// cannot use FileNames in partial trust at this time
 
 			//if (Assets.Shared.KnownAssets.Default.FileNames.Contains(BackgroundImageSource))
 			if (!string.IsNullOrEmpty(this.AttributeBackground.Value))
 			{
+
+				var BackgroundImageSource = Assets.Shared.KnownAssets.Path.Backgrounds + "/" + this.AttributeBackground.Value + ".png";
+
 				this.BackgroundImage = new Image
 				{
 					Source = BackgroundImageSource.ToSource(),

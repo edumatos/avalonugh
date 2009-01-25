@@ -128,13 +128,12 @@ namespace AvalonUgh.Code
 				value =>
 				{
 					if (Level.BackgroundImage != null)
-						Level.BackgroundImage.Orphanize();
-
-					if (string.IsNullOrEmpty(value))
 					{
+						Level.BackgroundImage.Orphanize();
 						Level.BackgroundImage = null;
 					}
-					else
+
+					if (!string.IsNullOrEmpty(value))
 					{
 						Level.BackgroundImage = new Image
 						{

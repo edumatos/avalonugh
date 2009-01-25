@@ -10,6 +10,7 @@ namespace AvalonUgh.NetworkCode.Shared
 	{
 		public partial interface IMessages
 		{
+			void Server_Message(string text);
 			void Server_LoadLevel(int index, string data);
 			void Server_Hello(int user, string name, int others, int levels);
 

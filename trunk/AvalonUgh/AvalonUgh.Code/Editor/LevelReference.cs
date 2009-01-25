@@ -77,6 +77,13 @@ namespace AvalonUgh.Code.Editor
 			};
 
 			this.AttributeBackground.Value = "";
+			this.AttributeBackground.Assigned +=
+				value =>
+				{
+					if (value == "null")
+						throw new Exception("null trap");
+
+				};
 
 			this.DataFuture.Continue(
 				LoadedData =>
@@ -110,6 +117,9 @@ namespace AvalonUgh.Code.Editor
 				{
 					var Value = e.Substring(i + Level.Assignment.Length).Trim();
 
+					if (Value == "null")
+						throw new Exception("null trap 3" + new { e, i });
+					 
 					Commands[Key](Value);
 				}
 			}

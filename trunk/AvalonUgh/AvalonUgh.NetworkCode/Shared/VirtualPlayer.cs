@@ -31,5 +31,37 @@ namespace AvalonUgh.NetworkCode.Shared
 
 		}
 
+		public DynamicData SavedLevels
+		{
+			get
+			{
+				return this.Data["avalonugh"]["savedlevels"];
+			}
+		}
+
+		public int SavedLevelsCount
+		{
+			get
+			{
+				var SavedLevelsCountString = SavedLevels["count"];
+				var SavedLevelsCount = 0;
+				try
+				{
+					SavedLevelsCount = int.Parse(SavedLevelsCountString.Value);
+				}
+				catch
+				{
+				}
+
+				return SavedLevelsCount;
+			}
+
+			set
+			{
+				var SavedLevelsCountString = SavedLevels["count"];
+
+				SavedLevelsCountString.Value = "" + value;
+			}
+		}
 	}
 }

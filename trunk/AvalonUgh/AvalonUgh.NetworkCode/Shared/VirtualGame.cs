@@ -131,23 +131,24 @@ namespace AvalonUgh.NetworkCode.Shared
 			//if (this.Settings.GetBoolean(SettingsInfo.hints, true))
 			//    hints = 1;
 
-			var SavedLevels = player.Data["avalonugh"]["savedlevels"];
-			var SavedLevelsCountString = SavedLevels["count"];
-			var SavedLevelsCount = 5;
-			try
+			player.ToPlayer.Server_Message("tag: " + player.SavedLevels["tag"].Value);
+			player.SavedLevels["tag"].Value = "ok";
+			player.ToPlayer.Server_Message("tag: " + player.SavedLevels["tag"].Value);
+
+			if (player.SavedLevelsCount == 0)
 			{
-				SavedLevelsCount = int.Parse(SavedLevelsCountString.Value);
+				player.SavedLevelsCount = 5;
+
+				player.ToPlayer.Server_Message("First 5 slots have been created for you!");
 			}
-			catch
-			{
-			}
+
 
 			// let new player know how it is named, also send magic bytes to verify
 			player.ToPlayer.Server_Hello(
-				player.UserId, 
-				player.Username, 
+				player.UserId,
+				player.Username,
 				this.Users.Count - 1,
-				SavedLevelsCount
+				player.SavedLevelsCount
 				//navbar,
 				//vote,
 				//layoutinput,
@@ -156,26 +157,32 @@ namespace AvalonUgh.NetworkCode.Shared
 			);
 
 
-			for (int i = 0; i < SavedLevelsCount; i++)
+			for (int i = 0; i < player.SavedLevelsCount; i++)
 			{
-				player.ToPlayer.Server_LoadLevel(i, SavedLevels[i].Value);
+				player.ToPlayer.Server_LoadLevel(i, player.SavedLevels[i].Value);
 			}
 
 			// let other players know that there is a new player in the map
 			player.ToOthers.Server_UserJoined(
-			   player.UserId, 
+			   player.UserId,
 			   player.Username
 			);
 
 			player.FromPlayer.Server_LoadLevel +=
 				e =>
 				{
-					if (e.index >= SavedLevelsCount)
-						SavedLevelsCountString.Value = "" + (e.index + 1);
+					if (e.index >= player.SavedLevelsCount)
+						player.SavedLevelsCount = (e.index + 1);
 
 					Console.WriteLine("save slot:" + e.index);
 
-					SavedLevels[e.index].Value = e.data;
+					var Slot = player.SavedLevels[e.index];
+
+					Slot.Value = e.data;
+
+					player.ToPlayer.Server_Message(
+						"before: " + e.data.Length + " after: " + Slot.Value.Length
+					);
 				};
 
 			//var PreventStatic = 0;

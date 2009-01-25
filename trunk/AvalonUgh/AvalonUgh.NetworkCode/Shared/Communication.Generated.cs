@@ -19,6 +19,7 @@ namespace AvalonUgh.NetworkCode.Shared
         public enum Messages
         {
             None = 100,
+            Server_Message,
             Server_LoadLevel,
             Server_Hello,
             Server_UserJoined,
@@ -62,6 +63,7 @@ namespace AvalonUgh.NetworkCode.Shared
         [CompilerGenerated]
         public partial interface IEvents
         {
+            event Action<RemoteEvents.Server_MessageArguments> Server_Message;
             event Action<RemoteEvents.Server_LoadLevelArguments> Server_LoadLevel;
             event Action<RemoteEvents.Server_HelloArguments> Server_Hello;
             event Action<RemoteEvents.Server_UserJoinedArguments> Server_UserJoined;
@@ -109,6 +111,20 @@ namespace AvalonUgh.NetworkCode.Shared
                 public object[] args;
             }
             #endregion
+            public void Server_Message(string text)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.Server_Message, args = new object[] { text } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.Server_Message(text);
+                    }
+                }
+            }
             public void Server_LoadLevel(int index, string data)
             {
                 if (this.Send != null)
@@ -871,6 +887,20 @@ namespace AvalonUgh.NetworkCode.Shared
                 #endregion
             }
             #endregion
+            #region Server_MessageArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class Server_MessageArguments
+            {
+                public string text;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ text = ").Append(this.text).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<Server_MessageArguments> Server_Message;
             #region Server_LoadLevelArguments
             [Script]
             [CompilerGenerated]
@@ -1316,6 +1346,7 @@ namespace AvalonUgh.NetworkCode.Shared
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
                         {
+                            { Messages.Server_Message, e => { Server_Message(new Server_MessageArguments { text = e.GetString(0) }); } },
                             { Messages.Server_LoadLevel, e => { Server_LoadLevel(new Server_LoadLevelArguments { index = e.GetInt32(0), data = e.GetString(1) }); } },
                             { Messages.Server_Hello, e => { Server_Hello(new Server_HelloArguments { user = e.GetInt32(0), name = e.GetString(1), others = e.GetInt32(2), levels = e.GetInt32(3) }); } },
                             { Messages.Server_UserJoined, e => { Server_UserJoined(new Server_UserJoinedArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
@@ -1348,6 +1379,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
                         {
+                            { Messages.Server_Message, e => Server_Message },
                             { Messages.Server_LoadLevel, e => Server_LoadLevel },
                             { Messages.Server_Hello, e => Server_Hello },
                             { Messages.Server_UserJoined, e => Server_UserJoined },
@@ -1439,6 +1471,14 @@ namespace AvalonUgh.NetworkCode.Shared
             {
                 e();
             }
+            public event Action<RemoteEvents.Server_MessageArguments> Server_Message;
+            void IMessages.Server_Message(string text)
+            {
+                if(Server_Message == null) return;
+                var v = new RemoteEvents.Server_MessageArguments { text = text };
+                this.VirtualLatency(() => this.Server_Message(v));
+            }
+
             public event Action<RemoteEvents.Server_LoadLevelArguments> Server_LoadLevel;
             void IMessages.Server_LoadLevel(int index, string data)
             {
@@ -1668,4 +1708,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 25.01.2009 11:40:29
+// 25.01.2009 13:03:45
