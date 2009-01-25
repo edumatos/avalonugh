@@ -94,13 +94,13 @@ namespace AvalonUgh.Code
 				KnownLevels.Levels
 			);
 
-			this.SavedLevels.AddRange(
-				new LevelReference(),
-				new LevelReference(),
-				new LevelReference(),
-				new LevelReference(),
-				new LevelReference()
-			);
+			//this.SavedLevels.AddRange(
+			//    new LevelReference(),
+			//    new LevelReference(),
+			//    new LevelReference(),
+			//    new LevelReference(),
+			//    new LevelReference()
+			//);
 
 			this.Container = new Canvas
 			{
