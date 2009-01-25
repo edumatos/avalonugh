@@ -235,7 +235,9 @@ namespace AvalonUgh.Code.Editor
 							Revert =
 								delegate
 								{
-									Preview.BackgroundColor = Colors.Green;
+									if (CurrentLevel != level)
+										Preview.BackgroundColor = Colors.Green;
+
 									CurrentLevelChanged -= Revert;
 								};
 							CurrentLevelChanged += Revert;

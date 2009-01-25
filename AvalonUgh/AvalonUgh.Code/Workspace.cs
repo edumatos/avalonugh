@@ -28,7 +28,9 @@ namespace AvalonUgh.Code
 		//public Canvas Overlay { get; set; }
 
 		public readonly KnownSelectors Selectors = new KnownSelectors();
-		public readonly BindingList<LevelReference> Levels = new BindingList<LevelReference>();
+
+		public readonly BindingList<LevelReference> EmbeddedLevels = new BindingList<LevelReference>();
+		public readonly BindingList<LevelReference> SavedLevels = new BindingList<LevelReference>();
 
 
 
@@ -88,10 +90,17 @@ namespace AvalonUgh.Code
 
 			var KnownLevels = new KnownLevels();
 
-			this.Levels.AddRange(
+			this.EmbeddedLevels.AddRange(
 				KnownLevels.Levels
 			);
 
+			this.SavedLevels.AddRange(
+				new LevelReference(),
+				new LevelReference(),
+				new LevelReference(),
+				new LevelReference(),
+				new LevelReference()
+			);
 
 			this.Container = new Canvas
 			{
@@ -259,7 +268,8 @@ namespace AvalonUgh.Code
 				new EditorPort.ConstructorArguments
 				{
 					Selectors = this.Selectors,
-					Levels = this.Levels
+					EmbeddedLevels = this.EmbeddedLevels,
+					SavedLevels = this.SavedLevels,
 				})
 			{
 
@@ -486,7 +496,7 @@ namespace AvalonUgh.Code
 					}
 					else
 					{
-						CurrentPort.LevelReference = this.Levels.Single(k => k.Location.Embedded.AnimationFrame == level);
+						CurrentPort.LevelReference = this.EmbeddedLevels.Single(k => k.Location.Embedded.AnimationFrame == level);
 					}
 
 				};
@@ -818,7 +828,7 @@ namespace AvalonUgh.Code
 					this.Lobby.Window.ColorOverlay.SetOpacity(1,
 						delegate
 						{
-							var NextLevel2 = this.Levels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
+							var NextLevel2 = this.EmbeddedLevels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
 
 							if (NextLevel2 == null)
 							{
