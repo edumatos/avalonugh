@@ -24,6 +24,7 @@ namespace AvalonUgh.NetworkCode.Shared
 		{
 			var k = this.Data["avalonugh"]["propertybag"][0];
 
+		
 			Console.WriteLine(k.GetCombinedKey());
 
 			k.Value = "you got a bag alright!";

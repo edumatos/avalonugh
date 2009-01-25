@@ -131,11 +131,23 @@ namespace AvalonUgh.NetworkCode.Shared
 			//if (this.Settings.GetBoolean(SettingsInfo.hints, true))
 			//    hints = 1;
 
+			var SavedLevels = player.Data["avalonugh"]["savedlevels"];
+			var SavedLevelsCountString = SavedLevels["count"];
+			var SavedLevelsCount = 0;
+			try
+			{
+				SavedLevelsCount = int.Parse(SavedLevelsCountString.Value);
+			}
+			catch
+			{
+			}
+
 			// let new player know how it is named, also send magic bytes to verify
 			player.ToPlayer.Server_Hello(
 				player.UserId, 
 				player.Username, 
-				this.Users.Count - 1
+				this.Users.Count - 1,
+				SavedLevelsCount
 				//navbar,
 				//vote,
 				//layoutinput,
@@ -143,11 +155,26 @@ namespace AvalonUgh.NetworkCode.Shared
 				//new Handshake().Bytes
 			);
 
+
+			for (int i = 0; i < SavedLevelsCount; i++)
+			{
+				player.ToPlayer.Server_LoadLevel(i, SavedLevels[i].Value);
+			}
+
 			// let other players know that there is a new player in the map
 			player.ToOthers.Server_UserJoined(
 			   player.UserId, 
 			   player.Username
 			);
+
+			player.FromPlayer.Server_LoadLevel +=
+				e =>
+				{
+					if (e.index >= SavedLevelsCount)
+						SavedLevelsCountString.Value = "" + (e.index + 1);
+
+					SavedLevels[e.index].Value = e.data;
+				};
 
 			//var PreventStatic = 0;
 

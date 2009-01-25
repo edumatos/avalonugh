@@ -161,6 +161,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			Content.Console.WriteLine("InitializeEvents");
 
 			var Server_Hello_UserSynced = new BindingList<PlayerIdentity>();
+			var Server_LoadLevel = new BindingList<string>();
 
 			this.Events.Server_Hello +=
 				e =>
@@ -198,6 +199,48 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							}
 						);
 					}
+
+					// fixme: server says there are no slots for us to save to!
+					Server_LoadLevel.ForEachNewOrExistingItem(
+						IncomingData =>
+						{
+							this.Content.SavedLevels.Add(
+								new LevelReference { Data = IncomingData }
+							);
+
+							if (Server_LoadLevel.Count == e.levels)
+							{
+								// all saved levels have been loaded
+
+								this.Content.SavedLevels.ForEachNewOrExistingItem(
+									level =>
+									{
+										// from an empty shell to a level with data
+										// it must have been saved by level editor
+										level.DataFuture.Continue(
+											data =>
+											{
+												var index = this.Content.SavedLevels.IndexOf(level);
+
+												this.Content.Console.WriteLine("save: " + new { index, data.Length } );
+
+												this.Messages.Server_LoadLevel(
+													index,
+													data
+												);
+											}
+										);
+									}
+								);
+							}
+						}
+					);
+				};
+
+			this.Events.Server_LoadLevel +=
+				e =>
+				{
+					Server_LoadLevel.Add(e.data);
 				};
 
 
