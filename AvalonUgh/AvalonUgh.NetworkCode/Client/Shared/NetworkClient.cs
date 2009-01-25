@@ -1,26 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 using AvalonUgh.Code;
-using AvalonUgh.Code.Dialogs;
 using AvalonUgh.Code.Input;
 using AvalonUgh.NetworkCode.Shared;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
-using System.ComponentModel;
 
 namespace AvalonUgh.NetworkCode.Client.Shared
 {
 
 	using AvalonUgh.Code.Editor;
-	using System.Diagnostics;
 
 	[Script]
 	public class NetworkClient : VirtualClient, ISupportsContainer
@@ -163,6 +158,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			var Server_Hello_UserSynced = new BindingList<PlayerIdentity>();
 			var Server_LoadLevel = new BindingList<string>();
 
+			this.Events.Server_Message +=
+				e =>
+				{
+					this.Content.Console.WriteLine("server: " + e.text);
+				};
+
 			this.Events.Server_Hello +=
 				e =>
 				{
@@ -248,6 +249,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Events.Server_LoadLevel +=
 				e =>
 				{
+					Content.Console.WriteLine("Server_LoadLevel " + e.index + " length " + e.data.Length);
+
 					Server_LoadLevel.Add(e.data);
 				};
 

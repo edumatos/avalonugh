@@ -11,6 +11,7 @@ using ScriptCoreLib.CSharp.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Shapes;
 using ScriptCoreLib.Shared.Lambda;
+using System.Collections.Specialized;
 
 namespace AvalonUgh.Labs.Multiplayer
 {
@@ -53,12 +54,16 @@ namespace AvalonUgh.Labs.Multiplayer
 					var server_to_client = Bridge();
 					var client_to_server = Bridge();
 
+					var player_data = new StringDictionary();
+
 					var u = new VirtualPlayer
 					{
 						UserId = UserId++,
 						FromPlayer = client_to_server,
 						ToPlayer = server_to_client,
-						Username = "guest" + UserId
+						Username = "guest" + UserId,
+						SetData = (key, value) => player_data[key] = value,
+						GetData = (key, value) => player_data.ContainsKey(key) ? player_data[key] : value
 					};
 
 					u.ToOthers =

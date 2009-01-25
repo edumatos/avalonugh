@@ -64,6 +64,11 @@ namespace AvalonUgh.Code.Editor
 
 				public override string ToString()
 				{
+					// seems like actionscript acts differently while concating nulls
+
+					if (this.Value == null)
+						return this.Key + ":";
+
 					return this.Key + ": " + this.Value;
 				}
 			}
