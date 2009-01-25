@@ -131,9 +131,14 @@ namespace AvalonUgh.NetworkCode.Shared
 			//if (this.Settings.GetBoolean(SettingsInfo.hints, true))
 			//    hints = 1;
 
+			TestStorage(player);
+
 			player.ToPlayer.Server_Message("tag: " + player.SavedLevels["tag"].Value);
 			player.SavedLevels["tag"].Value = "ok";
 			player.ToPlayer.Server_Message("tag: " + player.SavedLevels["tag"].Value);
+
+			TestStorage(player);
+			TestStorage(player);
 
 			if (player.SavedLevelsCount == 0)
 			{
@@ -204,6 +209,28 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			//    };
 
+		}
+
+		private void TestStorage(VirtualPlayer player)
+		{
+			var t = player.Data["test"];
+
+			var c = 0;
+
+			for (int i = 1; i <= 128; i++)
+			{
+				var k = t[i];
+
+				var len = i * 8;
+
+				if (k.Value.Length == len)
+					c = i;
+
+				k.Value = new string('_', len);
+			}
+
+			player.ToPlayer.Server_Message("TestStorage: " + c + " - " + (c * 8) + " bytes");
+ 
 		}
 
 
