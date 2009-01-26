@@ -65,7 +65,7 @@ namespace AvalonUgh.SneakPeak.Shared
 				{
 					Console.WriteLine(LevelText);
 
-					var Level = new Level(LevelText, Zoom);
+					var Level = new Level(LevelText, Zoom, null);
 
 					// subtract statusbar
 					var View = new View(DefaultWidth, DefaultHeight, Level);
@@ -152,7 +152,7 @@ namespace AvalonUgh.SneakPeak.Shared
 					{
 						Animation = Actor.AnimationEnum.Panic,
 						RespectPlatforms = true,
-						Level = Level,
+                        //Level = Level,
 						CanBeHitByVehicle = false
 					};
 
@@ -294,7 +294,8 @@ namespace AvalonUgh.SneakPeak.Shared
 					(Assets.Shared.KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 
 					#region level editor
-					var et = new EditorToolbar(this);
+                    // just make the compiler happy
+					var et = new EditorToolbar(null);
 
 					et.MoveContainerTo((DefaultWidth - et.Width) / 2, DefaultHeight - et.Padding * 2 - PrimitiveTile.Heigth * 2);
 					et.AttachContainerTo(this);
