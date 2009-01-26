@@ -133,6 +133,7 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			// clear
 
+			#region test
 			var PreventStatic = 0;
 
 			{
@@ -162,6 +163,7 @@ namespace AvalonUgh.NetworkCode.Shared
 				);
 				player.ToPlayer.Server_Message("TestStorage: before set: " + c);
 			}
+			#endregion
 
 
 			player.ToPlayer.Server_Message("tag: " + player.SavedLevels["tag"].Value);
@@ -195,7 +197,15 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			for (int i = 0; i < player.SavedLevelsCount; i++)
 			{
-				player.ToPlayer.Server_LoadLevel(i, player.SavedLevels[i].Value);
+				DynamicData.Composed Slot = player.SavedLevels[i];
+
+				Slot.ChunkSize = 8 * 30;
+
+				player.ToPlayer.Server_Message(
+					"data: " + Slot.Value.Length + " saved length: " + Slot.Length
+				);
+
+				player.ToPlayer.Server_LoadLevel(i, Slot.Value);
 			}
 
 			// let other players know that there is a new player in the map
@@ -210,14 +220,14 @@ namespace AvalonUgh.NetworkCode.Shared
 					if (e.index >= player.SavedLevelsCount)
 						player.SavedLevelsCount = (e.index + 1);
 
-					Console.WriteLine("save slot:" + e.index);
 
-					var Slot = player.SavedLevels[e.index];
+					DynamicData.Composed Slot = player.SavedLevels[e.index];
 
+					Slot.ChunkSize = 8 * 30;
 					Slot.Value = e.data;
 
 					player.ToPlayer.Server_Message(
-						"before: " + e.data.Length + " after: " + Slot.Value.Length
+						"before: " + e.data.Length + " after: " + Slot.Value.Length + " saved length: " + Slot.Length 
 					);
 				};
 

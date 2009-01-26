@@ -46,15 +46,25 @@ namespace AvalonUgh.Labs.Multiplayer
 
 			var UserId = 0;
 
+			var DataStorage = new Stack<StringDictionary>();
+
+			
+
 			new ServerWindow(
 				delegate
 				{
+					StringDictionary CurrentDataStorage = null;
+
+					if (DataStorage.Count == 0)
+						CurrentDataStorage = new StringDictionary();
+					else
+						CurrentDataStorage = DataStorage.Pop();
+
 					Console.WriteLine("new client");
 
 					var server_to_client = Bridge();
 					var client_to_server = Bridge();
 
-					var player_data = new StringDictionary();
 
 					var u = new VirtualPlayer
 					{
@@ -62,8 +72,8 @@ namespace AvalonUgh.Labs.Multiplayer
 						FromPlayer = client_to_server,
 						ToPlayer = server_to_client,
 						Username = "guest" + UserId,
-						SetData = (key, value) => player_data[key] = value,
-						GetData = (key, value) => player_data.ContainsKey(key) ? player_data[key] : value
+						SetData = (key, value) => CurrentDataStorage[key] = value,
+						GetData = (key, value) => CurrentDataStorage.ContainsKey(key) ? CurrentDataStorage[key] : value
 					};
 
 					u.ToOthers =
@@ -109,6 +119,8 @@ namespace AvalonUgh.Labs.Multiplayer
 					w.Closed +=
 						delegate
 						{
+							DataStorage.Push(CurrentDataStorage);
+
 							Server.Users.Remove(u);
 							Server.UserLeft(u);
 							u.UserLeft();
