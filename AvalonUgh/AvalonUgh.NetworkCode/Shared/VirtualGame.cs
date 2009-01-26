@@ -131,14 +131,45 @@ namespace AvalonUgh.NetworkCode.Shared
 			//if (this.Settings.GetBoolean(SettingsInfo.hints, true))
 			//    hints = 1;
 
-			TestStorage(player);
+			// clear
+
+			var PreventStatic = 0;
+
+			{
+				var c = TestStorage(player, (index, length) =>
+					{
+						var StaticPrevented = PreventStatic;
+						return "";
+					});
+				player.ToPlayer.Server_Message("TestStorage: before clear: " + c);
+			}
+
+			{
+				var c = TestStorage(player, (index, length) =>
+				{
+					var StaticPrevented = PreventStatic;
+					return new string('_', length);
+				});
+				player.ToPlayer.Server_Message("TestStorage: after clear: " + c);
+			}
+
+			{
+				var c = TestStorage(player, (index, length) =>
+					{
+						var StaticPrevented = PreventStatic;
+						return new string('x', length);
+					}
+				);
+				player.ToPlayer.Server_Message("TestStorage: before set: " + c);
+			}
+
 
 			player.ToPlayer.Server_Message("tag: " + player.SavedLevels["tag"].Value);
 			player.SavedLevels["tag"].Value = "ok";
 			player.ToPlayer.Server_Message("tag: " + player.SavedLevels["tag"].Value);
 
-			TestStorage(player);
-			TestStorage(player);
+
+
 
 			if (player.SavedLevelsCount == 0)
 			{
@@ -211,7 +242,7 @@ namespace AvalonUgh.NetworkCode.Shared
 
 		}
 
-		private void TestStorage(VirtualPlayer player)
+		private int TestStorage(VirtualPlayer player, Func<int, int, string> GetValue)
 		{
 			var t = player.Data["test"];
 
@@ -226,11 +257,12 @@ namespace AvalonUgh.NetworkCode.Shared
 				if (k.Value.Length == len)
 					c = i;
 
-				k.Value = new string('_', len);
+				k.Value = GetValue(i, len);
 			}
 
-			player.ToPlayer.Server_Message("TestStorage: " + c + " - " + (c * 8) + " bytes");
- 
+			return c;
+
+
 		}
 
 
