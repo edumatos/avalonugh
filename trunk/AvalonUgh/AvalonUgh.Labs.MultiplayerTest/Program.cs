@@ -15,6 +15,11 @@ namespace AvalonUgh.Labs.MultiplayerTest
 	{
 		static void Main(string[] args)
 		{
+#if DEBUG
+			// the flash file will be built in release build
+			return;
+#endif
+
 			Console.WriteLine("running Nonoba DevelopmentServer...");
 
 			// http://board.flashkit.com/board/showthread.php?t=305322
