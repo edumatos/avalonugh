@@ -145,6 +145,7 @@
     <Compile Include="Editor\CommonFileWindow.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="GameSocialLinks.cs" />
+    <Compile Include="Statusbar.cs" />
     <Compile Include="Window.Button.cs" />
     <Compile Include="Editor\SaveWindow.cs" />
     <Compile Include="Workspace.Editor.cs" />

@@ -341,12 +341,22 @@ namespace AvalonUgh.Code
 
 			public MissionPort(ConstructorArguments args)
 			{
+                var Statusbar = new Statusbar(
+                      new Statusbar.ConstructorArguments
+                      {
+                          Zoom = args.Zoom
+                      }
+                  );
+
 				this.Padding = args.Padding;
 				this.Zoom = args.Zoom;
-				this.StatusbarHeight = 18;
+                this.StatusbarHeight = Statusbar.Height + 2 * args.Zoom;
 
 				this.Width = args.Width;
 				this.Height = args.Height;
+
+                Statusbar.MoveContainerTo(0, args.Height - Statusbar.Height - 1 * args.Zoom);
+                Statusbar.AttachContainerTo(this.Window.ContentContainer);
 
 
 				this.Intro = new LevelIntroDialog
@@ -400,6 +410,8 @@ namespace AvalonUgh.Code
 
 				//        k.Actor.CurrentVehicle = StartVehicle;
 				//    };
+
+          
 			}
 		}
 	}
