@@ -823,6 +823,16 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_67.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_68.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Levels\level0_69.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\0.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\1.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\3.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\4.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\5.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\6.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\7.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\8.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\9.png" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\plus_google.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\su.png" />

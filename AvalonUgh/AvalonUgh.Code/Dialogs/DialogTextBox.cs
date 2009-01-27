@@ -1,23 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ScriptCoreLib;
-using System.Windows.Media;
-using System.Windows;
-using ScriptCoreLib.Shared.Avalon.Extensions;
-using System.Windows.Controls;
 using System.IO;
-using AvalonUgh.Assets.Shared;
-using ScriptCoreLib.Shared.Lambda;
-using System.Windows.Shapes;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using AvalonUgh.Assets.Shared;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.Dialogs
 {
 	[Script]
 	public class DialogTextBox : ISupportsContainer
 	{
+        public int FontWidth = PrimitiveFont.Width;
+        public int FontHeigth = PrimitiveFont.Heigth;
+
 		public Canvas Container { get; set; }
 
 		Color _Color = Colors.Brown;
@@ -130,6 +131,9 @@ namespace AvalonUgh.Code.Dialogs
 			if (this.Color == Colors.Blue)
 				FontPath = Assets.Shared.KnownAssets.Path.Fonts.Blue;
 
+            if (this.Color == Colors.White)
+                FontPath = Assets.Shared.KnownAssets.Path.Fonts.White;
+
 
 			var a = new List<string>();
 
@@ -186,7 +190,7 @@ namespace AvalonUgh.Code.Dialogs
 
 						var f = PrimitiveFont.ToFileName(s);
 
-						var px = x * (PrimitiveFont.Width + 1) * Zoom;
+						var px = x * (FontWidth + 1) * Zoom;
 
 						var nLength = n.Length;
 
@@ -194,22 +198,22 @@ namespace AvalonUgh.Code.Dialogs
 							nLength--;
 
 						if (this.TextAlignment == TextAlignment.Center)
-							px += (this.Width - nLength * (PrimitiveFont.Width + 1) * Zoom) / 2;
+							px += (this.Width - nLength * (FontWidth + 1) * Zoom) / 2;
 
-						var py = y * PrimitiveFont.Heigth * Zoom;
+						var py = y * this.FontHeigth * Zoom;
 
 						new Image
 						{
 							Source = (FontPath + "/" + f + ".png").ToSource(),
 							Stretch = Stretch.Fill,
-							Width = PrimitiveFont.Width * Zoom,
-							Height = PrimitiveFont.Heigth * Zoom
+							Width = FontWidth * Zoom,
+							Height = FontHeigth * Zoom
 						}.AttachTo(this).MoveTo(
 							px,
 							py
 						).AddTo(this.Chars);
 
-						_Width = _Width.Max(px + PrimitiveFont.Width * Zoom);
+						_Width = _Width.Max(px + FontWidth * Zoom);
 						x++;
 					}
 
@@ -217,13 +221,14 @@ namespace AvalonUgh.Code.Dialogs
 				}
 			}
 
-			this._Height = Convert.ToInt32(PrimitiveFont.Heigth * Zoom * y);
+			this._Height = Convert.ToInt32(FontHeigth * Zoom * y);
 			// render em
 
 			if (this.AutoSize)
 				this._Width = Convert.ToInt32(_Width);
 
-			this.TouchOverlay.SizeTo(_Width, _Height);
+            this.Container.SizeTo(_Width, _Height);
+            this.TouchOverlay.SizeTo(_Width, _Height);
 		}
 
 		public Visibility Visibility
