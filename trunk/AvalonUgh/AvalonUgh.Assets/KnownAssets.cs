@@ -40,7 +40,8 @@ namespace AvalonUgh.Assets
 				public static class Fonts
 				{
 					public const string Brown = "assets/AvalonUgh.Assets.Fonts/Brown";
-					public const string Blue = "assets/AvalonUgh.Assets.Fonts/Blue";
+                    public const string Blue = "assets/AvalonUgh.Assets.Fonts/Blue";
+                    public const string White = "assets/AvalonUgh.Assets.Fonts/White";
 				}
 			}
 
