@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using AvalonUgh.Assets.Avalon;
 using System.Windows.Media;
+using AvalonUgh.Code.Dialogs;
+using System.Windows.Shapes;
 
 namespace AvalonUgh.Code
 {
@@ -14,9 +16,6 @@ namespace AvalonUgh.Code
     public class Statusbar : ISupportsContainer
     {
         public Canvas Container { get; set; }
-
-
-
 
         public int Width
         {
@@ -93,6 +92,36 @@ namespace AvalonUgh.Code
             };
 
             BackgroundSolo.AttachTo(this);
+
+            Func<int, string, DialogTextBox> f =
+                (x, text) =>
+                {
+                    return new DialogTextBox
+                    {
+                        FontWidth = 5,
+                        FontHeigth = 5,
+                        Zoom = Arguments.Zoom,
+                        Color = Colors.White,
+                        Text = text,
+                    }.AttachContainerTo(this).MoveContainerTo(x * Arguments.Zoom, 1 * Arguments.Zoom);
+                };
+
+            f(33, "00");
+            f(118, "000000");
+            f(177, "00");
+            f(244, "0000");
+            f(290, "00");
+
+            new Rectangle
+            {
+                Fill = new SolidColorBrush( Color.FromRgb(0xe0, 0xec, 0x98)),
+                Width = 32 * Arguments.Zoom,
+                Height = 3 * Arguments.Zoom
+            }.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
+
+            // E0EC98
         }
+
+     
     }
 }

@@ -905,30 +905,7 @@ namespace AvalonUgh.Code
             }.AttachContainerTo(this);
 
 
-            var Score1 = new DialogTextBox
-            {
-                FontWidth = 5,
-                FontHeigth = 5,
-                Zoom = 2,
-                Color = Colors.White,
-                Text = "1234567890",
 
-            }.AttachContainerTo(this);
-
-            1.AtIntervalWithCounter(
-                c =>
-                {
-                    var pad = 4;
-                    var v = c.ToString();
-
-                    if (v.Length < pad)
-                        v = new string('0', pad - v.Length) + v;
-
-                    Score1.Text = v;
-                }
-            );
-
-            Score1.Container.Background = Brushes.Black;
 
             BackgroundLoading.MoveContainerTo(0, args.DefaultHeight - BackgroundLoading.Height);
 
