@@ -381,7 +381,7 @@ namespace AvalonUgh.Code
 			// center bottom
 			this.MoveContentTo(
 				(width - ContentActualWidth) / 2,
-				(height - ContentActualHeight) / 2
+				(height - ContentActualHeight) / 2 + 1
 			);
 
 			this.Flashlight = new Flashlight(
