@@ -85,7 +85,7 @@ namespace AvalonUgh.Code
                 Source = new NameFormat
                 {
                     Path = Assets.Shared.KnownAssets.Path.Statusbar,
-                    Name = "solo",
+                    Name = "duo",
                     Index = 0,
                     Extension = "png"
                 }
@@ -106,18 +106,33 @@ namespace AvalonUgh.Code
                     }.AttachContainerTo(this).MoveContainerTo(x * Arguments.Zoom, 1 * Arguments.Zoom);
                 };
 
-            f(33, "00");
-            f(118, "000000");
-            f(177, "00");
-            f(244, "0000");
-            f(290, "00");
+			//f(33, "00");
+			//f(118, "000000");
+			//f(177, "00");
+			//f(244, "0000");
+			//f(290, "00");
 
-            new Rectangle
-            {
-                Fill = new SolidColorBrush( Color.FromRgb(0xe0, 0xec, 0x98)),
-                Width = 32 * Arguments.Zoom,
-                Height = 3 * Arguments.Zoom
-            }.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
+
+			//new Rectangle
+			//{
+			//    Fill = new SolidColorBrush(Color.FromRgb(0xe0, 0xec, 0x98)),
+			//    Width = 32 * Arguments.Zoom,
+			//    Height = 3 * Arguments.Zoom
+			//}.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
+
+			f(33, "00");
+			f(114, "000000");
+			f(169, "00");
+			f(232, "0000");
+			f(305, "00");
+
+
+			new Rectangle
+			{
+				Fill = new SolidColorBrush(Color.FromRgb(0xe0, 0xec, 0x98)),
+				Width = 32 * Arguments.Zoom,
+				Height = 3 * Arguments.Zoom
+			}.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
 
             // E0EC98
         }

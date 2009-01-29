@@ -834,6 +834,7 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\8.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\9.png" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\duo0.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\solo0.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\plus_google.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\su.png" />
