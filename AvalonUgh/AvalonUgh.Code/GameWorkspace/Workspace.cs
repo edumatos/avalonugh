@@ -11,7 +11,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.GameWorkspace
 {
     [Script]
     public partial class Workspace : ISupportsContainer, IDisposable
@@ -126,6 +126,8 @@ namespace AvalonUgh.Code
 
                             Console.WriteLine("port loaded " + new { NewPort.Width, NewPort.Height, NewPort.StatusbarHeight });
 
+							// a port was loaded,
+							// if we are displaying loading, we shall hide it now
                             this.BackgroundLoading.Hide();
 
                             NewPort.Level.KnownTryoperus.ForEachNewOrExistingItem(
@@ -202,6 +204,7 @@ namespace AvalonUgh.Code
             #endregion
 
 
+			// the ingame status bar can support 1 or 2 players. The third player cannot be show ant this time.
             this.SupportedKeyboardInputs = new[]
 			{
 				new KeyboardInput(
@@ -283,14 +286,7 @@ namespace AvalonUgh.Code
                 PortIdentity = PortIdentity_Editor,
             };
 
-            this.Editor.Loaded +=
-                delegate
-                {
-                    // each time this a map in the editor is loaded we will update minimap
-
-                    this.MiniLevel.LevelReference = this.Editor.LevelReference;
-                    this.MiniLevel.BringContainerToFront();
-                };
+    
 
             this.Ports.Add(this.Editor);
 
@@ -645,142 +641,7 @@ namespace AvalonUgh.Code
                 };
 
 
-            //this.Lobby.Menu.Players = 1;
-
-            #region local0
-            var Local0 =
-                new PlayerInfo
-                {
-                    Actor = new Actor.man0(DefaultZoom)
-                    {
-                        RespectPlatforms = true,
-                        CanBeHitByVehicle = false,
-                    },
-
-                };
-
-
-
-
-            Local0.Actor.EnterCave +=
-                delegate
-                {
-
-
-                    var ManAsObstacle = Local0.Actor.ToObstacle();
-
-                    // are we trying to enter a cave?
-                    var NearbyCave = Local0.Actor.CurrentLevel.KnownCaves.FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
-
-                    if (NearbyCave != null)
-                    {
-                        // we need to align us in front of the cave
-                        // and show entering animation
-
-                        Console.WriteLine("entering a cave");
-
-                        AIDirector.WalkActorToTheCaveAndEnter(Local0.Actor, NearbyCave,
-                            delegate
-                            {
-                                if (CurrentPort.PortIdentity == PortIdentity_CaveMission)
-                                {
-                                    this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
-                                    this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
-                                        delegate
-                                        {
-
-                                            this.PrimaryMission.BringContainerToFront();
-                                            this.CurrentPort = this.PrimaryMission;
-
-                                            var EntryPointCave = this.PrimaryMission.Level.KnownCaves.AtModulus(
-                                                Local0.Actor.CurrentLevel.KnownCaves.IndexOf(NearbyCave)
-                                            );
-
-                                            AIDirector.ActorExitCaveFast(Local0.Actor);
-                                            Local0.Actor.CurrentLevel = this.PrimaryMission.Level;
-                                            AIDirector.ActorExitAnyCave(Local0.Actor, EntryPointCave);
-
-
-                                            this.PrimaryMission.Window.ColorOverlay.Opacity = 0;
-
-                                        }
-                                    );
-
-                                    return;
-                                }
-
-                                if (CurrentPort.PortIdentity == PortIdentity_Mission)
-                                {
-                                    this.CaveMission.Window.ColorOverlay.Opacity = 1;
-                                    this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
-                                        delegate
-                                        {
-                                            this.CaveMission.BringContainerToFront();
-                                            this.CurrentPort = this.CaveMission;
-
-                                            if (this.CaveMission.LevelReference == null)
-                                            {
-                                                this.CaveMission.LevelReference = KnownLevels.DefaultCaveLevel;
-                                            }
-
-                                            this.CaveMission.WhenLoaded(
-                                                delegate
-                                                {
-
-                                                    //this.CaveMission.View.Flashlight.Visible = true;
-                                                    //this.CaveMission.View.Flashlight.Container.Opacity = 0.7;
-
-                                                    //this.CaveMission.View.LocationTracker.Target = Local0;
-
-
-                                                    var EntryPointCave = this.CaveMission.Level.KnownCaves.AtModulus(
-                                                        Local0.Actor.CurrentLevel.KnownCaves.IndexOf(NearbyCave)
-                                                    );
-
-                                                    AIDirector.ActorExitCaveFast(Local0.Actor);
-                                                    Local0.Actor.CurrentLevel = this.CaveMission.Level;
-                                                    AIDirector.ActorExitAnyCave(Local0.Actor, EntryPointCave);
-
-                                                    this.CaveMission.Window.ColorOverlay.Opacity = 0;
-
-                                                }
-                                            );
-
-                                            Console.WriteLine("we should spawn a submission now");
-                                        }
-                                    );
-                                    return;
-                                }
-
-                                Console.WriteLine("inside a cave");
-
-                                // should we load another level and enter that?
-                                // for the first version lets keep it simple
-                                // lets just exit another cave
-
-                                if (Local0.Actor.CurrentLevel.KnownCaves.Count == 0)
-                                {
-                                    // whatif the cave is destroyed?
-                                    AIDirector.ActorExitCaveFast(Local0.Actor);
-                                    return;
-                                }
-
-                                var NextCave = Local0.Actor.CurrentLevel.KnownCaves.Next(k => k == NearbyCave);
-
-
-                                AIDirector.ActorExitAnyCave(Local0.Actor, NextCave);
-                            }
-                        );
-
-
-                        return;
-                    }
-
-                };
-
-
-            #endregion
-
+         
 
             Lobby.WhenLoaded(
                 delegate
@@ -794,19 +655,7 @@ namespace AvalonUgh.Code
 
                     Lobby.Window.ColorOverlay.Opacity = 0;
 
-                    this.MiniLevel = new MiniLevelWindow
-                    {
-                        DragContainer = this.Container,
-                        LevelReference = Lobby.LevelReference
-                    };
-
-                    this.MiniLevel.AttachContainerTo(this);
-
-                    this.Console.AnimatedTopChanged +=
-                        delegate
-                        {
-                            this.MiniLevel.BringContainerToFront();
-                        };
+              
                 }
             );
 
@@ -889,25 +738,15 @@ namespace AvalonUgh.Code
 
 
 
-            InitializeMenuEditorButton();
-
-
-            BackgroundLoading = new DialogTextBox
-            {
-                Zoom = 2,
-                Text = "loading...",
-                Visibility = Visibility.Hidden
-            }.AttachContainerTo(this);
-
-            var s = new Statusbar.StatusbarWindow
-            {
-                DragContainer = this.Container
-            }.AttachContainerTo(this);
+			this.InitializeMenuEditorButton();
+			this.InitializeBackgroundLoading();
 
 
 
 
-            BackgroundLoading.MoveContainerTo(0, args.DefaultHeight - BackgroundLoading.Height);
+
+
+
 
             this.EnableKeyboardFocus();
 
@@ -916,7 +755,6 @@ namespace AvalonUgh.Code
             this.StartThinking();
         }
 
-        public readonly DialogTextBox BackgroundLoading;
 
 
         Dialog InternalActiveDialog;
@@ -947,6 +785,5 @@ namespace AvalonUgh.Code
 
         #endregion
 
-        MiniLevelWindow MiniLevel;
     }
 }

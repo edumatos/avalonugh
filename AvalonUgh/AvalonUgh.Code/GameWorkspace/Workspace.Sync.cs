@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using ScriptCoreLib;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
 	{
