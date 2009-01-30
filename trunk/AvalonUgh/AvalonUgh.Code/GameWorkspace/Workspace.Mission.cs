@@ -74,13 +74,21 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				this.Fail.AttachContainerTo(this.Window.OverlayContainer);
 
-
-				this.WhenLoaded(
+				this.Loaded +=
 					delegate
 					{
-						this.Intro.BringContainerToFront();
-					}
-				);
+						// we do not need to see the start position markers
+						// it is useful only in the editor
+						this.View.StartPositionsContainer.Hide();
+					};
+
+
+				//this.WhenLoaded(
+				//    delegate
+				//    {
+				//        this.Intro.BringContainerToFront();
+				//    }
+				//);
 
 
 				//this.PlayerJoined +=
@@ -103,6 +111,21 @@ namespace AvalonUgh.Code.GameWorkspace
 				//    };
 
 
+			}
+
+			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)
+			{
+				if (this.Level == null)
+					throw new Exception("Level has to be loaded before you can teleport into it");
+
+				if (this.Level.KnownCaves.Any())
+				{
+					var c = this.Level.KnownCaves.Random();
+
+					return CreateTuple(c.X, c.Y);
+				}
+
+				return CreateTuple(100, 100);
 			}
 		}
 	}
