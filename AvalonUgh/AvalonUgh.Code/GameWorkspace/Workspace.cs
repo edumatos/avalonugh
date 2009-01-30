@@ -861,31 +861,36 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
-
-							this.Lobby.Menu.Hide();
-							this.Lobby.SocialLinks.Hide();
-
-							var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.ContentContainer);
-
-							// we could show credits in the meantime!
-							Lobby.Window.ColorOverlay.Opacity = 0;
-
-
-							this.LocalIdentity.HandleFutureFrameInTime(2000,
+							this.LocalIdentity.HandleFutureFrameInTime(500,
 								delegate
 								{
-									Lobby.Window.ColorOverlay.Opacity = 1;
+
+									this.Lobby.Menu.Hide();
+									this.Lobby.SocialLinks.Hide();
+
+									var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.ContentContainer);
+
+									// we could show credits in the meantime!
+									Lobby.Window.ColorOverlay.Opacity = 0;
 
 
-									this.LocalIdentity.HandleFutureFrameInTime(400,
+									this.LocalIdentity.HandleFutureFrameInTime(2000,
 										delegate
 										{
-											this.Lobby.Menu.Show();
-											this.Lobby.SocialLinks.Show();
-											CurrentCredit.OrphanizeContainer();
+											Lobby.Window.ColorOverlay.Opacity = 1;
 
-											Lobby.Window.ColorOverlay.Opacity = 0;
 
+											this.LocalIdentity.HandleFutureFrameInTime(400,
+												delegate
+												{
+													this.Lobby.Menu.Show();
+													this.Lobby.SocialLinks.Show();
+													CurrentCredit.OrphanizeContainer();
+
+													Lobby.Window.ColorOverlay.Opacity = 0;
+
+												}
+											);
 										}
 									);
 								}
