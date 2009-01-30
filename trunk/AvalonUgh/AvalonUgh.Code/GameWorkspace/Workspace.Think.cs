@@ -5,7 +5,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
 	{

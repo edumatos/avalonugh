@@ -17,7 +17,7 @@ using AvalonUgh.Assets.Shared;
 using System.Windows.Shapes;
 using AvalonUgh.Code.Input;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
 	{

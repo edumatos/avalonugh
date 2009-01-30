@@ -17,6 +17,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Dialogs;
+using AvalonUgh.Code.GameWorkspace;
 
 namespace AvalonUgh.Labs.Shared
 {

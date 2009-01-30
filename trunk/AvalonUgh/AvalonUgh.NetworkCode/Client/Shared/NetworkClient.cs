@@ -16,6 +16,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 {
 
 	using AvalonUgh.Code.Editor;
+	using AvalonUgh.Code.GameWorkspace;
 
 	[Script]
 	public class NetworkClient : VirtualClient, ISupportsContainer
@@ -584,7 +585,10 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					if (this.Content.CurrentPort.PortIdentity == e.port)
 						this.Content.CurrentPort.Window.ColorOverlay.Opacity = 1;
 					else
+					{
+						// remote player is going to reload 
 						this.Content.BackgroundLoading.Show();
+					}
 				};
 			#endregion
 

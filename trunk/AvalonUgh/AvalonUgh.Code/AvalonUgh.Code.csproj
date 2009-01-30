@@ -145,16 +145,18 @@
     <Compile Include="Editor\CommonFileWindow.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="GameSocialLinks.cs" />
+    <Compile Include="GameWorkspace\Workspace.Mission.cs" />
+    <Compile Include="GameWorkspace\Workspace.BackgroundLoading.cs" />
     <Compile Include="Statusbar.cs" />
     <Compile Include="Window.Button.cs" />
     <Compile Include="Editor\SaveWindow.cs" />
-    <Compile Include="Workspace.Editor.cs" />
+    <Compile Include="GameWorkspace\Workspace.Editor.cs" />
     <Compile Include="Editor\SnowSelector.cs" />
-    <Compile Include="Workspace.Sync.cs" />
+    <Compile Include="GameWorkspace\Workspace.Sync.cs" />
     <Compile Include="Snow.cs" />
-    <Compile Include="Workspace.Port.cs" />
-    <Compile Include="Workspace.HandleKeyUp.cs" />
-    <Compile Include="Workspace.Think.cs" />
+    <Compile Include="GameWorkspace\Workspace.Port.cs" />
+    <Compile Include="GameWorkspace\Workspace.HandleKeyUp.cs" />
+    <Compile Include="GameWorkspace\Workspace.Think.cs" />
     <Compile Include="Dialogs\Dialog.cs" />
     <Compile Include="Dialogs\DialogTextBox.cs" />
     <Compile Include="Dialogs\GameConsole.cs" />
@@ -186,7 +188,7 @@
     <Compile Include="Editor\Sprites\Vehicle.ISupportsPlayerInput.cs" />
     <Compile Include="PlayerIdentity.cs" />
     <Compile Include="PlayerInfo.cs" />
-    <Compile Include="Workspace.cs" />
+    <Compile Include="GameWorkspace\Workspace.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Documents\UIConcept.jnt" />

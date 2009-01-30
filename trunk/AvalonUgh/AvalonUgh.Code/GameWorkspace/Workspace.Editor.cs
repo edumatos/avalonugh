@@ -10,7 +10,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
 	{
@@ -215,7 +215,6 @@ namespace AvalonUgh.Code
 
 									 //this.Editor.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
-									 this.MiniLevel.BringContainerToFront();
 
 									 this.Editor.BringContainerToFront();
 									 this.Editor.Toolbar.BringContainerToFront();
