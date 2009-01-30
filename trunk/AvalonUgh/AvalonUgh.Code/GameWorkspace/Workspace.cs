@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -10,8 +11,6 @@ using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
-using System.Windows.Documents;
-using System.Collections.Generic;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -67,8 +66,6 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			public int DefaultWidth;
 			public int DefaultHeight;
-
-			public bool Paused;
 		}
 
 		public readonly ConstructorArguments Arguments;
@@ -83,7 +80,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.LocalIdentity = new PlayerIdentity
 			{
 				Name = "LocalPlayer",
-				SyncFramePaused = args.Paused,
+				SyncFramePaused = true,
 				SyncFrameRate = DefaultFramerate
 			};
 
@@ -743,46 +740,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			);
 
 
-			Lobby.WhenLoaded(
-				delegate
-				{
-					Console.WriteLine("lobby loaded");
-
-					// we should load lobby only once
-
-					this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
-
-
-					this.Lobby.Menu.Hide();
-					this.Lobby.SocialLinks.Hide();
-
-					var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.ContentContainer);
-
-					// we could show credits in the meantime!
-					Lobby.Window.ColorOverlay.Opacity = 0;
-
-
-					this.LocalIdentity.HandleFutureFrameInTime(2000,
-						delegate
-						{
-							Lobby.Window.ColorOverlay.Opacity = 1;
-
-
-							this.LocalIdentity.HandleFutureFrameInTime(400,
-								delegate
-								{
-									this.Lobby.Menu.Show();
-									this.Lobby.SocialLinks.Show();
-									CurrentCredit.OrphanizeContainer();
-
-									Lobby.Window.ColorOverlay.Opacity = 0;
-
-								}
-							);
-						}
-					);
-				}
-			);
+			
 
 
 
@@ -889,6 +847,67 @@ namespace AvalonUgh.Code.GameWorkspace
 			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
 
 			this.StartThinking();
+
+
+			Action StartGameWithCredits =
+				delegate
+				{
+					this.Lobby.WhenLoaded(
+						delegate
+						{
+							Console.WriteLine("lobby loaded");
+
+							// we should load lobby only once
+
+							this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
+
+
+							this.Lobby.Menu.Hide();
+							this.Lobby.SocialLinks.Hide();
+
+							var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.ContentContainer);
+
+							// we could show credits in the meantime!
+							Lobby.Window.ColorOverlay.Opacity = 0;
+
+
+							this.LocalIdentity.HandleFutureFrameInTime(2000,
+								delegate
+								{
+									Lobby.Window.ColorOverlay.Opacity = 1;
+
+
+									this.LocalIdentity.HandleFutureFrameInTime(400,
+										delegate
+										{
+											this.Lobby.Menu.Show();
+											this.Lobby.SocialLinks.Show();
+											CurrentCredit.OrphanizeContainer();
+
+											Lobby.Window.ColorOverlay.Opacity = 0;
+
+										}
+									);
+								}
+							);
+						}
+					);
+
+				};
+
+			this.LocalIdentity.SyncFramePausedChanged +=
+				delegate
+				{
+					if (!this.LocalIdentity.SyncFramePaused)
+					{
+						if (StartGameWithCredits != null)
+							StartGameWithCredits();
+
+						StartGameWithCredits = null;
+					}
+
+
+				};
 		}
 
 

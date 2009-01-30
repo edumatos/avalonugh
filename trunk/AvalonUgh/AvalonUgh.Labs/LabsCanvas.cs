@@ -77,6 +77,8 @@ namespace AvalonUgh.Labs.Shared
 				new LevelReference()
 			);
 
+			w.LocalIdentity.SyncFramePaused = false;
+
 			w.AttachContainerTo(this);
 		}
 	}

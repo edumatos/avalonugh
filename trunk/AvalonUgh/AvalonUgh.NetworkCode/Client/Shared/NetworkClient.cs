@@ -122,7 +122,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 			#endregion
 
-			Content = new Workspace(
+			this.Content = new Workspace(
 				new Workspace.ConstructorArguments
 				{
 					WindowPadding = WindowPadding,
@@ -132,8 +132,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 					DefaultWidth = DefaultWidth,
 					DefaultHeight = DefaultHeight,
-
-					Paused = true
 				}
 			).AttachContainerTo(this);
 
