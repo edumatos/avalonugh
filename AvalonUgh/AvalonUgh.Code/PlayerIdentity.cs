@@ -15,7 +15,7 @@ namespace AvalonUgh.Code
 
 		// should be larger for laggy networks
 		//public int SyncFrameWindow = 6;
-		
+
 		public int SyncFrameWindow = 5;
 
 
@@ -52,7 +52,7 @@ namespace AvalonUgh.Code
 			}
 		}
 
-	
+
 
 		#region SyncFrame
 		public event Action SyncFrameChanged;
@@ -96,6 +96,16 @@ namespace AvalonUgh.Code
 		}
 
 
+		public int HandleFutureFrameInTime(int delay, Action handler)
+		{
+			// how many frames will we sleep?
+
+			// var rate = 1000 / fps;
+
+			var f = Convert.ToInt32(this.SyncFrameRate * delay * 0.001);
+
+			return HandleFutureFrame(f, handler);
+		}
 
 		public int HandleFutureFrame(Action handler)
 		{

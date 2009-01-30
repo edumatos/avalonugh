@@ -26,6 +26,7 @@ namespace AvalonUgh.Code.Dialogs
 
 		public readonly Rectangle Background;
 
+		public event Action MoreGames;
 		public event Action Shop;
 		public event Action Play;
 		public event Action Editor;
@@ -169,6 +170,24 @@ namespace AvalonUgh.Code.Dialogs
 			Options_3.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_3_Y);
 
 
+			var Options_MoreGames_Y = Options_Y - Convert.ToInt32((PrimitiveFont.Heigth * Zoom + 4) * 4);
+			var Options_MoreGames = new DialogTextBox
+			{
+				Width = Width,
+				Zoom = Zoom,
+				TextAlignment = TextAlignment.Center,
+				Text = "more games",
+				Visibility = Visibility.Hidden
+			}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_MoreGames_Y);
+
+			Options_MoreGames.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_MoreGames_Y);
+
+			Options_MoreGames.Click +=
+				delegate
+				{
+					if (this.MoreGames != null)
+						this.MoreGames();
+				};
 
 			var Options_Shop_Y = Options_Y - Convert.ToInt32((PrimitiveFont.Heigth * Zoom + 4) * 2.5);
 			var Options_Shop = new DialogTextBox
@@ -341,6 +360,9 @@ namespace AvalonUgh.Code.Dialogs
 				{
 					Options_6.Show(Options_1.Visibility != Visibility.Hidden);
 
+					Options_Shop.Show(Options_1.Visibility != Visibility.Hidden);
+					Options_MoreGames.Show(Options_1.Visibility != Visibility.Hidden);
+
 					if (Options_1.Visibility == Visibility.Visible)
 					{
 						AnimatedBackgroundOpacity = 0.5;
@@ -355,7 +377,6 @@ namespace AvalonUgh.Code.Dialogs
 						AnimatedBackgroundOpacity = 0;
 						Options_1.Visibility = Visibility.Visible;
 						Options_3.Visibility = Visibility.Hidden;
-						Options_Shop.Visibility = Visibility.Hidden;
 						Options_2.Visibility = Visibility.Hidden;
 						Options_4.Visibility = Visibility.Hidden;
 					}

@@ -24,7 +24,7 @@ namespace AvalonUgh.Code.GameWorkspace
 		public readonly KeyboardInput[] SupportedKeyboardInputs;
 
 
-		void EnableKeyboardFocus()
+		void InitializeKeyboardFocus()
 		{
 			// we are going for the keyboard input
 			// we want to enable the tilde console feature
