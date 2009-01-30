@@ -169,7 +169,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				e =>
 				{
 					// yay, the server tells me my name. lets atleast remember it.
-					this.Content.LocalIdentity.Number = e.user;
+					this.Content.LocalIdentity.NetworkNumber = e.user;
 					this.Content.LocalIdentity.Name = e.name;
 
 					Content.Console.WriteLine("Server_Hello " + e);
@@ -261,7 +261,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				e =>
 				{
 					//Content.Console.WriteLine("Server_UserJoined " + new { e, this.Content.LocalIdentity.SyncFrame });
-					var EgoIsPrimate = this.AllPlayers.Min(k => k.Number) == this.Content.LocalIdentity.Number;
+					var EgoIsPrimate = this.AllPlayers.Min(k => k.NetworkNumber) == this.Content.LocalIdentity.NetworkNumber;
 
 					this.Messages.UserHello(
 						e.user,
@@ -278,7 +278,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						new PlayerIdentity
 						{
 							Name = e.name,
-							Number = e.user,
+							NetworkNumber = e.user,
 							// that new client is paused
 							// we need to run out of frames in order to pause correctly
 							SyncFrame = LowestSyncFrame
@@ -413,7 +413,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						new PlayerIdentity
 						{
 							Name = e.name,
-							Number = e.user,
+							NetworkNumber = e.user,
 							SyncFrame = e.frame
 						}
 					);
@@ -915,7 +915,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		{
 			get
 			{
-				return this.CoPlayers.FirstOrDefault(k => user == k.Number);
+				return this.CoPlayers.FirstOrDefault(k => user == k.NetworkNumber);
 			}
 		}
 

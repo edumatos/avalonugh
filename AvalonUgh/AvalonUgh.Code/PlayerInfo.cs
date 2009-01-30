@@ -33,7 +33,7 @@ namespace AvalonUgh.Code
 
 		public override string ToString()
 		{
-			return new { IdentityLocal, Identity.Number, Identity.Name }.ToString();
+			return new { IdentityLocal, Number = Identity.NetworkNumber, Identity.Name }.ToString();
 		}
 
 
