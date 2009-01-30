@@ -61,6 +61,8 @@ namespace AvalonUgh.Code.GameWorkspace
 						SocialLinks.BringContainerToFront();
 
 						this.SocialLinksMenu.BringContainerToFront();
+
+						this.Window.ColorOverlay.Element.BringToFront();
 					}
 				);
 

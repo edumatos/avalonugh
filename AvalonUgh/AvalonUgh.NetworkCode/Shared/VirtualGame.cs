@@ -29,6 +29,9 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			//var score = 0;
 
+			player.SetScore("joinx", 1);
+			player.AddScore("joiny", 1);
+
 			//player.FromPlayer.AddScore += e =>
 			//{
 			//    score += e.score;

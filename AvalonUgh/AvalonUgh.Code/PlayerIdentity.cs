@@ -31,7 +31,23 @@ namespace AvalonUgh.Code
 
 		public int SyncFrameLatency;
 		public int SyncFrameRate;
-		public bool SyncFramePaused;
+
+		bool InternalSyncFramePaused;
+		public event Action SyncFramePausedChanged;
+		public bool SyncFramePaused
+		{
+			get
+			{
+				return InternalSyncFramePaused;
+			}
+			set
+			{
+				InternalSyncFramePaused = value;
+				if (SyncFramePausedChanged != null)
+					SyncFramePausedChanged();
+			}
+		}
+
 		public bool SyncFramePausedSkip;
 
 

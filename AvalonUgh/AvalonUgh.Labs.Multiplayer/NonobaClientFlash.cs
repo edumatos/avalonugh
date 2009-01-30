@@ -83,6 +83,7 @@ namespace AvalonUgh.Labs.Multiplayer.ActionScript
 
 			//AvalonUgh.Game.ActionScript.KnownEmbeddedAssets.RegisterTo(Handlers);
 			AvalonUgh.Assets.ActionScript.KnownEmbeddedAssets.RegisterTo(Handlers);
+			ScriptCoreLib.ActionScript.Avalon.Carousel.KnownEmbeddedAssets.RegisterTo(Handlers);
 
 			//// assets from referenced assemblies
 			Handlers.Add(e => global::ScriptCoreLib.ActionScript.Avalon.Cursors.EmbeddedAssets.Default[e]);
