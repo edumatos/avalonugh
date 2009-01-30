@@ -797,9 +797,10 @@ namespace AvalonUgh.Code.GameWorkspace
 					// who join later can only spectate for level already loaded
 					// or join as passangers
 
-					this.Sync_RemoteOnly_LoadLevelHint(
-						PortIdentity_Mission
-					);
+					if (this.Sync_RemoteOnly_LoadLevelHint != null)
+						this.Sync_RemoteOnly_LoadLevelHint(
+							PortIdentity_Mission
+						);
 
 					// fade this to black
 					// switch the ports

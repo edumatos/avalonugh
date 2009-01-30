@@ -37,6 +37,8 @@ namespace AvalonUgh.Code.GameWorkspace
 				DragContainer = this.Container
 			};
 
+			Status.BackgroundContainer.Opacity = 0.4;
+
 			this.Console.AnimatedTopChanged +=
 				delegate
 				{
@@ -56,7 +58,6 @@ namespace AvalonUgh.Code.GameWorkspace
 						Frame = this.LocalIdentity.SyncFrame, 
 						Paused = this.LocalIdentity.SyncFramePaused,
 						Limit = this.LocalIdentity.SyncFrameLimit,
-						Z = 1
 					}.ToString();
 					Think();
 				}

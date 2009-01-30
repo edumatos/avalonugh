@@ -11,6 +11,12 @@ namespace AvalonUgh.Code
 	[Script]
 	public class PlayerIdentity
 	{
+
+		public int NetworkNumber;
+
+		public string Name;
+
+
 		//public int SyncFrameWindow = 5;
 
 		// should be larger for laggy networks
@@ -19,9 +25,7 @@ namespace AvalonUgh.Code
 		public int SyncFrameWindow = 5;
 
 
-		public int Number;
 
-		public string Name;
 
 		public readonly BindingList<PlayerInfo> Locals = new BindingList<PlayerInfo>();
 
@@ -84,7 +88,7 @@ namespace AvalonUgh.Code
 
 		public override string ToString()
 		{
-			return new { Number, Name, SyncFrame }.ToString();
+			return new { Number = NetworkNumber, Name, SyncFrame }.ToString();
 		}
 
 		public PlayerInfo this[int IdentityLocal]
