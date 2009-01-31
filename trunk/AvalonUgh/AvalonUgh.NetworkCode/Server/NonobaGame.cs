@@ -20,24 +20,9 @@ namespace AvalonUgh.NetworkCode.Server
 		}
 	}
 
-	[GameSetup.Boolean(
-		"mojo",
-		"Enable mojo",
-		"Enable mojo in game",
-		false)]
-	[GameSetup.String(
-		"password",
-		"Level Password",
-		"Level Password",
-		"")]
-	[GameSetup.Integer(
-		"players",
-		"Local Players",
-		"Local Players",
-		0, 3, 
-		0)]
+
 	[Script]
-	public class NonobaGame : NonobaGame<NonobaGameUser<VirtualPlayer>>
+	public partial class NonobaGame : NonobaGame<NonobaGameUser<VirtualPlayer>>
 	{
 		// this c# server code is going through jsc to
 		// assemble a single assembly.

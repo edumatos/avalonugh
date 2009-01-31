@@ -169,6 +169,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					// yay, the server tells me my name. lets atleast remember it.
 					this.Content.LocalIdentity.NetworkNumber = e.user;
 					this.Content.LocalIdentity.Name = e.name;
+					this.Content.LocalIdentity.SyncFrameWindow = e.framelimit;
 
 					Content.Console.WriteLine("Server_Hello " + e);
 

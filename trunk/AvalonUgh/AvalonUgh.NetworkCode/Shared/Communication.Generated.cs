@@ -139,17 +139,17 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void Server_Hello(int user, string name, int others, int levels)
+            public void Server_Hello(int user, string name, int others, int levels, int framelimit)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.Server_Hello, args = new object[] { user, name, others, levels } });
+                    Send(new SendArguments { i = Messages.Server_Hello, args = new object[] { user, name, others, levels, framelimit } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.Server_Hello(user, name, others, levels);
+                        Target__.Server_Hello(user, name, others, levels, framelimit);
                     }
                 }
             }
@@ -925,10 +925,11 @@ namespace AvalonUgh.NetworkCode.Shared
                 public string name;
                 public int others;
                 public int levels;
+                public int framelimit;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", name = ").Append(this.name).Append(", others = ").Append(this.others).Append(", levels = ").Append(this.levels).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", name = ").Append(this.name).Append(", others = ").Append(this.others).Append(", levels = ").Append(this.levels).Append(", framelimit = ").Append(this.framelimit).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1348,7 +1349,7 @@ namespace AvalonUgh.NetworkCode.Shared
                         {
                             { Messages.Server_Message, e => { Server_Message(new Server_MessageArguments { text = e.GetString(0) }); } },
                             { Messages.Server_LoadLevel, e => { Server_LoadLevel(new Server_LoadLevelArguments { index = e.GetInt32(0), data = e.GetString(1) }); } },
-                            { Messages.Server_Hello, e => { Server_Hello(new Server_HelloArguments { user = e.GetInt32(0), name = e.GetString(1), others = e.GetInt32(2), levels = e.GetInt32(3) }); } },
+                            { Messages.Server_Hello, e => { Server_Hello(new Server_HelloArguments { user = e.GetInt32(0), name = e.GetString(1), others = e.GetInt32(2), levels = e.GetInt32(3), framelimit = e.GetInt32(4) }); } },
                             { Messages.Server_UserJoined, e => { Server_UserJoined(new Server_UserJoinedArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                             { Messages.Server_UserLeft, e => { Server_UserLeft(new Server_UserLeftArguments { user = e.GetInt32(0), name = e.GetString(1) }); } },
                             { Messages.UserHello, e => { UserHello(new UserHelloArguments { user = e.GetInt32(0), name = e.GetString(1), frame = e.GetInt32(2) }); } },
@@ -1488,10 +1489,10 @@ namespace AvalonUgh.NetworkCode.Shared
             }
 
             public event Action<RemoteEvents.Server_HelloArguments> Server_Hello;
-            void IMessages.Server_Hello(int user, string name, int others, int levels)
+            void IMessages.Server_Hello(int user, string name, int others, int levels, int framelimit)
             {
                 if(Server_Hello == null) return;
-                var v = new RemoteEvents.Server_HelloArguments { user = user, name = name, others = others, levels = levels };
+                var v = new RemoteEvents.Server_HelloArguments { user = user, name = name, others = others, levels = levels, framelimit = framelimit };
                 this.VirtualLatency(() => this.Server_Hello(v));
             }
 
@@ -1708,4 +1709,4 @@ namespace AvalonUgh.NetworkCode.Shared
     }
     #endregion
 }
-// 25.01.2009 13:03:45
+// 31.01.2009 11:54:30

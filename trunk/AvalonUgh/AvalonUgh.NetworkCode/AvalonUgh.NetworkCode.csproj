@@ -82,6 +82,7 @@
     <Compile Include="Client\ActionScript\NonobaClient.cs" />
     <Compile Include="Client\Shared\NetworkClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\NonobaGame.Setup.cs" />
     <Compile Include="Server\NonobaGame.cs" />
     <Compile Include="Shared\Communication.cs" />
     <Compile Include="Shared\Communication.Generated.cs">

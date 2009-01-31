@@ -12,7 +12,7 @@ namespace AvalonUgh.NetworkCode.Shared
 		{
 			void Server_Message(string text);
 			void Server_LoadLevel(int index, string data);
-			void Server_Hello(int user, string name, int others, int levels);
+			void Server_Hello(int user, string name, int others, int levels, int framelimit);
 
 			void Server_UserJoined(int user, string name);
 			void Server_UserLeft(int user, string name);
