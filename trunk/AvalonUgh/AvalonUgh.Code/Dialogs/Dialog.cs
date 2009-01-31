@@ -103,22 +103,27 @@ namespace AvalonUgh.Code.Dialogs
 
 			this.Container = new Canvas
 			{
+				Name = "Dialog_Container",
 			};
 
 			this.BackgroundContainer = new Canvas
 			{
+				Name = "Dialog_BackgroundContainer",
 				Background = Brushes.Black
 			}.AttachTo(this.Container);
 
 
 			this.Background = new Image
 			{
+				Name = "Dialog_Background",
+
 				Stretch = Stretch.Fill,
 				Source = (KnownAssets.Path.Backgrounds + "/004.png").ToSource()
 			}.AttachTo(this.BackgroundContainer);
 
 			this.Content = new DialogTextBox
 			{
+				
 				TextAlignment = TextAlignment.Center,
 				Color = Colors.Brown
 			}.AttachContainerTo(this);

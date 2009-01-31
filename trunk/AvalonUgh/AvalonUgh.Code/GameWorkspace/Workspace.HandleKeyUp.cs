@@ -100,6 +100,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			if (HandleKeyUpDisabled)
 				return;
 
+
 			// oem7 will trigger the console
 			if (args.Key == Key.Oem7)
 			{

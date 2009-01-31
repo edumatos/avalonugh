@@ -52,19 +52,22 @@ namespace AvalonUgh.Code
 
 		public GameMenu(int Width, int Height, int ShadowHeight)
 		{
-			var ContentHeight = Height * 2 / 3;
+			var ContentHeight = Height * 3 / 4;
 
 			this.Container = new Canvas
 			{
 				Width = Width,
-				Height = ContentHeight + ShadowHeight
+				Height = ContentHeight + ShadowHeight,
+				Name = "GameMenu_Container",
+
 			};
 
 			var ShadowContainer = new Canvas
 			{
 				Width = Width,
 				Height = ContentHeight + ShadowHeight,
-				Opacity = 0.5
+				Opacity = 0.5,
+				Name = "GameMenu_ShadowContainer",
 			}.AttachTo(this.Container);
 
 			new Rectangle

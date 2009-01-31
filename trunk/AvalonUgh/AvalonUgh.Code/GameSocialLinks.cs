@@ -65,7 +65,8 @@ namespace AvalonUgh.Code
 					{
 						Source = e.Source,
 						Width = e.Width,
-						Height = e.Height
+						Height = e.Height,
+						Name = "GameSocialLinks_Button_Image",
 					}.AttachTo(this).MoveTo(x, y);
 
 					e.Overlay = new Rectangle
@@ -74,7 +75,8 @@ namespace AvalonUgh.Code
 						Width = e.Width,
 						Height = e.Height,
 						Opacity = 0,
-						Cursor = Cursors.Hand
+						Cursor = Cursors.Hand,
+						Name = "GameSocialLinks_Button_Overlay",
 					}.AttachTo(this).MoveTo(x, y);
 
 					e.Overlay.MouseEnter +=

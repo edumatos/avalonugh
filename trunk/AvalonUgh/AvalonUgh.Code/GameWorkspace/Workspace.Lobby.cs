@@ -11,6 +11,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Code.Diagnostics;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -51,18 +52,16 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				this.Menu.AttachContainerTo(this.Window.OverlayContainer);
 
+				this.Window.Container.WriteTreeToConsoleOnClick();
 
 
 				this.WhenLoaded(
 					delegate
 					{
-						this.Menu.BringContainerToFront();
-
-						SocialLinks.BringContainerToFront();
-
-						this.SocialLinksMenu.BringContainerToFront();
-
-						this.Window.ColorOverlay.Element.BringToFront();
+						//this.Menu.BringContainerToFront();
+						//this.SocialLinksMenu.BringContainerToFront();
+						//this.Window.ColorOverlay.Element.BringToFront();
+						//this.SocialLinks.BringContainerToFront();
 					}
 				);
 
@@ -92,6 +91,40 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			private void AttachSocialLinks()
 			{
+
+
+				// redefine the ctor to fit our context
+				Func<string, string, string, GameMenu.Option> Option =
+					(Text, Image, href) =>
+						new GameMenu.Option
+						{
+							Text = "Play " + Text + "!",
+							Source = (KnownAssets.Path.SocialLinks + "/" + Image + ".png").ToSource(),
+							Hyperlink = new Uri(href),
+							MarginAfter = Math.PI / 3
+						};
+
+				var ShadowSize = 40;
+
+
+
+				this.SocialLinksMenu = new GameMenu(this.Arguments.Width, this.Arguments.Height, ShadowSize)
+				{
+					Option("FreeCell", "Preview_FreeCell",  "http://nonoba.com/zproxy/avalon-freecell"),
+					Option("Spider Solitaire", "Preview_Spider",  "http://nonoba.com/zproxy/avalon-spider-solitaire"),
+					Option("Treasure Hunt", "Preview_TreasureHunt",  "http://nonoba.com/zproxy/treasure-hunt"),
+					Option("FlashMinesweeper:MP", "Preview_Minesweeper", "http://nonoba.com/zproxy/flashminesweepermp"),
+					Option("Multiplayer Mahjong", "Preview_Mahjong", "http://nonoba.com/zproxy/mahjong-multiplayer"),
+					Option("Multiplayer SpaceInvaders", "Preview_SpaceInvaders", "http://nonoba.com/zproxy/flashspaceinvaders"),
+				};
+
+				this.SocialLinksMenu.IdleText = "More games!";
+
+				this.SocialLinksMenu.AttachContainerTo(this.Window.OverlayContainer);
+
+				this.Menu.MoreGames += this.SocialLinksMenu.Show;
+
+
 				this.SocialLinks = new GameSocialLinks(this.Window.OverlayContainer)
 				{
 					new GameSocialLinks.Button { 
@@ -107,37 +140,6 @@ namespace AvalonUgh.Code.GameWorkspace
 						Hyperlink = new Uri( "http://www.stumbleupon.com/submit?url=" + Info.Nonoba.URL)
 					}
 				};
-
-				// redefine the ctor to fit our context
-				Func<string, string, string, GameMenu.Option> Option =
-					(Text, Image, href) =>
-						new GameMenu.Option
-						{
-							Text = "Play " + Text + "!",
-							Source = (KnownAssets.Path.SocialLinks + "/" + Image + ".png").ToSource(),
-							Hyperlink = new Uri(href),
-							MarginAfter = Math.PI / 3
-						};
-
-				var ShadowSize = 40;
-
-			
-
-				this.SocialLinksMenu  = new GameMenu(this.Arguments.Width, this.Arguments.Height, ShadowSize)
-				{
-					Option("FreeCell", "Preview_FreeCell",  "http://nonoba.com/zproxy/avalon-freecell"),
-					Option("Spider Solitaire", "Preview_Spider",  "http://nonoba.com/zproxy/avalon-spider-solitaire"),
-					Option("Treasure Hunt", "Preview_TreasureHunt",  "http://nonoba.com/zproxy/treasure-hunt"),
-					Option("FlashMinesweeper:MP", "Preview_Minesweeper", "http://nonoba.com/zproxy/flashminesweepermp"),
-					Option("Multiplayer Mahjong", "Preview_Mahjong", "http://nonoba.com/zproxy/mahjong-multiplayer"),
-					Option("Multiplayer SpaceInvaders", "Preview_SpaceInvaders", "http://nonoba.com/zproxy/flashspaceinvaders"),
-				};
-
-				this.SocialLinksMenu.IdleText = "More games!";
-
-				this.SocialLinksMenu.AttachContainerTo(this.Window.OverlayContainer);
-
-				this.Menu.MoreGames += this.SocialLinksMenu.Show;
 			}
 		}
 

@@ -34,6 +34,8 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			public event Action<PlayerInfo> PlayerJoined;
 
+			public readonly Canvas TouchContainerForViewContent;
+
 			public Port()
 			{
 				this.Window.ContentContainer.Background = Brushes.Black;
@@ -60,6 +62,15 @@ namespace AvalonUgh.Code.GameWorkspace
 						k.Actor.CurrentLevelChanged += DetectDeparture;
 					}
 				);
+
+				// we are doing some advanced layering now
+				this.TouchContainerForViewContent = new Canvas
+				{
+					Name = "Port_TouchContainerForViewContent",
+					// we need to update this if the level changes
+					// in size
+
+				}.AttachTo(this.Window.OverlayContainer);
 			}
 
 
@@ -156,13 +167,12 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 							// we are doing some advanced layering now
-							var TouchContainerForViewContent = new Canvas
-							{
+							this.TouchContainerForViewContent.SizeTo(
 								// we need to update this if the level changes
 								// in size
-								Width = View.ContentExtendedWidth,
-								Height = View.ContentExtendedHeight
-							}.AttachTo(this.Window.OverlayContainer);
+								View.ContentExtendedWidth,
+								View.ContentExtendedHeight
+							);
 
 							View.ContentExtendedContainerMoved +=
 								(x, y) => TouchContainerForViewContent.MoveTo(x, y);
