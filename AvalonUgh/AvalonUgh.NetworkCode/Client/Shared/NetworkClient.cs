@@ -84,44 +84,11 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			IsConnected = false;
 		}
 
-		public BindingList<PlayerIdentity> CoPlayers;
-
-		public IEnumerable<PlayerIdentity> AllPlayers
-		{
-			get
-			{
-				return CoPlayers.ConcatSingle(this.Content.LocalIdentity);
-			}
-		}
+	
 
 		public void InitializeEvents()
 		{
-			#region CoPlayers
-
-			// coplayers are remoted locals
-			this.CoPlayers = new BindingList<PlayerIdentity>();
-			this.CoPlayers.ForEachNewItem(
-				c =>
-				{
-					c.Locals.AttachTo(this.Content.Players);
-
-				}
-			);
-
-			this.CoPlayers.ForEachItemDeleted(
-				c =>
-				{
-					// if coplayers leave at different times it will cause desync
-					this.Content.Console.WriteLine("removing all locals for " + c);
-
-
-					while (c.Locals.Count > 0)
-						c.Locals.RemoveAt(0);
-				}
-			);
-
-			#endregion
-
+	
 			this.Content = new Workspace(
 				new Workspace.ConstructorArguments
 				{
@@ -260,7 +227,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				e =>
 				{
 					//Content.Console.WriteLine("Server_UserJoined " + new { e, this.Content.LocalIdentity.SyncFrame });
-					var EgoIsPrimate = this.AllPlayers.Min(k => k.NetworkNumber) == this.Content.LocalIdentity.NetworkNumber;
+					var EgoIsPrimate = this.Content.AllPlayers.Min(k => k.NetworkNumber) == this.Content.LocalIdentity.NetworkNumber;
 
 					this.Messages.UserHello(
 						e.user,
@@ -270,10 +237,10 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 					var LowestSyncFrame = this.Content.LocalIdentity.SyncFrame;
 
-					if (this.CoPlayers.Any())
-						LowestSyncFrame = this.CoPlayers.Min(k => k.SyncFrame) - this.Content.LocalIdentity.SyncFrameWindow;
+					if (this.Content.CoPlayers.Any())
+						LowestSyncFrame = this.Content.CoPlayers.Min(k => k.SyncFrame) - this.Content.LocalIdentity.SyncFrameWindow;
 
-					this.CoPlayers.Add(
+					this.Content.CoPlayers.Add(
 						new PlayerIdentity
 						{
 							Name = e.name,
@@ -289,7 +256,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					// the new player needs to be synced
 					// lets pause for now to figure out how to do that
 
-					var NextSyncFrameLimit = this.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+					var NextSyncFrameLimit = this.Content.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 					// we can only increase the limiter
 					this.Content.LocalIdentity.SyncFrameLimit = this.Content.LocalIdentity.SyncFrameLimit.Max(NextSyncFrameLimit);
 
@@ -318,38 +285,42 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							#region EgoIsPrimate
 							if (EgoIsPrimate)
 							{
-
-								if (this.Content.Editor.LevelReference != null)
-								{
-									// yay, we are in the editor
-									// are we the only one?
-
-									if (this.Content.Editor.Level.IsDirty)
+								Action<Workspace.Port> ReplicatePort =
+									(Port) =>
 									{
-										this.Content.Console.WriteLine("as a primate, I will send custom map to the new player");
+										if (Port.LevelReference == null)
+											return;
 
-										this.Messages.UserLoadLevel(
-											e.user,
-											this.Content.Editor.PortIdentity,
-											this.Content.LocalIdentity.SyncFrame,
-											-1,
-											this.Content.Editor.Level.ToString()
-										);
+										if (Port.Level.IsDirty)
+										{
+											this.Content.Console.WriteLine("as a primate, I will send custom map to the new player");
 
-									}
-									else
-									{
-										this.Content.Console.WriteLine("as a primate, I will send map reference to the new player");
+											this.Messages.UserLoadLevel(
+												e.user,
+												Port.PortIdentity,
+												this.Content.LocalIdentity.SyncFrame,
+												-1,
+												Port.Level.ToString()
+											);
 
-										this.Messages.UserLoadLevel(
-											e.user,
-											this.Content.Editor.PortIdentity,
-											this.Content.LocalIdentity.SyncFrame,
-											this.Content.Editor.LevelReference.Location.Embedded.AnimationFrame,
-											""
-										);
-									}
-								}
+										}
+										else
+										{
+											this.Content.Console.WriteLine("as a primate, I will send map reference to the new player");
+
+											this.Messages.UserLoadLevel(
+												e.user,
+												Port.PortIdentity,
+												this.Content.LocalIdentity.SyncFrame,
+												Port.LevelReference.Location.Embedded.AnimationFrame,
+												""
+											);
+										}
+									};
+
+								ReplicatePort(this.Content.PrimaryMission);
+								ReplicatePort(this.Content.Editor);
+
 							}
 							#endregion
 
@@ -412,7 +383,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					Content.Console.WriteLine("UserHello " + e);
 
-					this.CoPlayers.Add(
+					this.Content.CoPlayers.Add(
 						new PlayerIdentity
 						{
 							Name = e.name,
@@ -443,19 +414,19 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 					Content.Console.WriteLine("Server_UserLeft " + e + " - " + c);
 
-					this.CoPlayers.Remove(c);
+					this.Content.CoPlayers.Remove(c);
 
 					// if we are again alone on the server
 					// and we are not in sync 
 					// we can just proceed as we do not need to sync
-					if (this.CoPlayers.Count == 0)
+					if (this.Content.CoPlayers.Count == 0)
 					{
 						this.Content.LocalIdentity.SyncFramePaused = false;
 						this.Content.LocalIdentity.SyncFrameLimit = 0;
 					}
 					else
 					{
-						this.Content.LocalIdentity.SyncFrameLimit = this.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+						this.Content.LocalIdentity.SyncFrameLimit = this.Content.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 					}
 				};
 
@@ -497,7 +468,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 
 					// if we are paused we will not try to recalculate our new limit
-					var NextSyncFrameLimit = this.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
+					var NextSyncFrameLimit = this.Content.CoPlayers.Min(k => k.SyncFrame) + this.Content.LocalIdentity.SyncFrameWindow;
 					// we can only increase the limiter
 					this.Content.LocalIdentity.SyncFrameLimit = this.Content.LocalIdentity.SyncFrameLimit.Max(NextSyncFrameLimit);
 
@@ -519,6 +490,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						{
 							var p = c[e.local];
 
+							if (p == null)
+							{
+								this.Content.Console.WriteLine("error: UserKeyStateChanged desync " + e);
+
+								return;
+							}
 							// if the remote frame is less than here
 							// then we are in the future
 							// otherwise they are in the future
@@ -562,7 +539,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 
 						this.Content.Editor.Arrows.Add(a);
 
-						this.CoPlayers.ForEachItemDeleted(
+						this.Content.CoPlayers.ForEachItemDeleted(
 							DeletedIdentity =>
 							{
 								if (DeletedIdentity == c)
@@ -771,6 +748,40 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			}
 			#endregion
 
+
+			#region Sync_Vehicalize
+			{
+				var Sync_Vehicalize = this.Content.Sync_Vehicalize;
+
+				this.Content.Sync_Vehicalize =
+					(int user, int local) =>
+					{
+						var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+							delegate
+							{
+								Sync_Vehicalize(user, local);
+							}
+						);
+
+						this.Messages.Vehicalize(FutureFrame, local);
+					};
+
+				this.Events.UserVehicalize +=
+					e =>
+					{
+						var c = this[e.user];
+
+						this.Content.LocalIdentity.HandleFrame(e.frame,
+							delegate
+							{
+								Sync_Vehicalize(c.NetworkNumber, e.local);
+							}
+						);
+					};
+			}
+			#endregion
+
+
 			this.Content.LocalIdentity.Locals.ForEachNewOrExistingItem(
 				Local =>
 				{
@@ -949,7 +960,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 		{
 			get
 			{
-				return this.CoPlayers.FirstOrDefault(k => user == k.NetworkNumber);
+				return this.Content.CoPlayers.FirstOrDefault(k => user == k.NetworkNumber);
 			}
 		}
 

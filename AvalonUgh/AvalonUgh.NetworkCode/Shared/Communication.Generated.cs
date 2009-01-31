@@ -50,6 +50,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserMouseMove,
             MissionStartHint,
             UserMissionStartHint,
+            Vehicalize,
+            UserVehicalize,
         }
         #endregion
 
@@ -96,6 +98,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserMouseMoveArguments> UserMouseMove;
             event Action<RemoteEvents.MissionStartHintArguments> MissionStartHint;
             event Action<RemoteEvents.UserMissionStartHintArguments> UserMissionStartHint;
+            event Action<RemoteEvents.VehicalizeArguments> Vehicalize;
+            event Action<RemoteEvents.UserVehicalizeArguments> UserVehicalize;
         }
         #endregion
 
@@ -549,6 +553,34 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void Vehicalize(int frame, int local)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.Vehicalize, args = new object[] { frame, local } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.Vehicalize(frame, local);
+                    }
+                }
+            }
+            public void UserVehicalize(int user, int frame, int local)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserVehicalize, args = new object[] { user, frame, local } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserVehicalize(user, frame, local);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -615,6 +647,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.LoadLevelHint += this.UserLoadLevelHint;
                     value.MouseMove += this.UserMouseMove;
                     value.MissionStartHint += this.UserMissionStartHint;
+                    value.Vehicalize += this.UserVehicalize;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -631,6 +664,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.LoadLevelHint -= this.UserLoadLevelHint;
                     value.MouseMove -= this.UserMouseMove;
                     value.MissionStartHint -= this.UserMissionStartHint;
+                    value.Vehicalize -= this.UserVehicalize;
                 }
                 #endregion
 
@@ -682,6 +716,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserMissionStartHint(MissionStartHintArguments e)
                 {
                     Target.UserMissionStartHint(this.user, e.frame, e.difficulty);
+                }
+                public void UserVehicalize(VehicalizeArguments e)
+                {
+                    Target.UserVehicalize(this.user, e.frame, e.local);
                 }
                 #endregion
             }
@@ -805,6 +843,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserMissionStartHint(this.user, e.frame, e.difficulty);
                 }
+                public void UserVehicalize(int frame, int local)
+                {
+                    this.Target.UserVehicalize(this.user, frame, local);
+                }
+                public void UserVehicalize(UserVehicalizeArguments e)
+                {
+                    this.Target.UserVehicalize(this.user, e.frame, e.local);
+                }
                 #endregion
             }
             #endregion
@@ -832,6 +878,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserLoadLevelHint += this.UserLoadLevelHint;
                     value.UserMouseMove += this.UserMouseMove;
                     value.UserMissionStartHint += this.UserMissionStartHint;
+                    value.UserVehicalize += this.UserVehicalize;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -850,6 +897,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserLoadLevelHint -= this.UserLoadLevelHint;
                     value.UserMouseMove -= this.UserMouseMove;
                     value.UserMissionStartHint -= this.UserMissionStartHint;
+                    value.UserVehicalize -= this.UserVehicalize;
                 }
                 #endregion
 
@@ -937,6 +985,12 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserMissionStartHint(this.user, e.frame, e.difficulty);
+                }
+                public void UserVehicalize(UserVehicalizeArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserVehicalize(this.user, e.frame, e.local);
                 }
                 #endregion
             }
@@ -1427,6 +1481,36 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserMissionStartHintArguments> UserMissionStartHint;
+            #region VehicalizeArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class VehicalizeArguments
+            {
+                public int frame;
+                public int local;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", local = ").Append(this.local).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<VehicalizeArguments> Vehicalize;
+            #region UserVehicalizeArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserVehicalizeArguments : WithUserArguments
+            {
+                public int frame;
+                public int local;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", local = ").Append(this.local).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserVehicalizeArguments> UserVehicalize;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -1462,6 +1546,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserMouseMove, e => { UserMouseMove(new UserMouseMoveArguments { user = e.GetInt32(0), port = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3) }); } },
                             { Messages.MissionStartHint, e => { MissionStartHint(new MissionStartHintArguments { frame = e.GetInt32(0), difficulty = e.GetInt32(1) }); } },
                             { Messages.UserMissionStartHint, e => { UserMissionStartHint(new UserMissionStartHintArguments { user = e.GetInt32(0), frame = e.GetInt32(1), difficulty = e.GetInt32(2) }); } },
+                            { Messages.Vehicalize, e => { Vehicalize(new VehicalizeArguments { frame = e.GetInt32(0), local = e.GetInt32(1) }); } },
+                            { Messages.UserVehicalize, e => { UserVehicalize(new UserVehicalizeArguments { user = e.GetInt32(0), frame = e.GetInt32(1), local = e.GetInt32(2) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -1497,6 +1583,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserMouseMove, e => UserMouseMove },
                             { Messages.MissionStartHint, e => MissionStartHint },
                             { Messages.UserMissionStartHint, e => UserMissionStartHint },
+                            { Messages.Vehicalize, e => Vehicalize },
+                            { Messages.UserVehicalize, e => UserVehicalize },
                         }
                 ;
             }
@@ -1808,9 +1896,25 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserMissionStartHint(v));
             }
 
+            public event Action<RemoteEvents.VehicalizeArguments> Vehicalize;
+            void IMessages.Vehicalize(int frame, int local)
+            {
+                if(Vehicalize == null) return;
+                var v = new RemoteEvents.VehicalizeArguments { frame = frame, local = local };
+                this.VirtualLatency(() => this.Vehicalize(v));
+            }
+
+            public event Action<RemoteEvents.UserVehicalizeArguments> UserVehicalize;
+            void IMessages.UserVehicalize(int user, int frame, int local)
+            {
+                if(UserVehicalize == null) return;
+                var v = new RemoteEvents.UserVehicalizeArguments { user = user, frame = frame, local = local };
+                this.VirtualLatency(() => this.UserVehicalize(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 31.01.2009 15:50:08
+// 31.01.2009 16:49:39
