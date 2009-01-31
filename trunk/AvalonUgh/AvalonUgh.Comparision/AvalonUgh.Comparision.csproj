@@ -10,11 +10,14 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AvalonUgh.Comparision</RootNamespace>
     <AssemblyName>AvalonUgh.Comparision</AssemblyName>
-    <FileUpgradeFlags></FileUpgradeFlags>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
-    <UpgradeBackupLocation></UpgradeBackupLocation>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <StartupObject></StartupObject>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -89,6 +92,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="docs\description.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_top_left.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_top_right.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_top_span.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\TiledBackground.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\App.ico" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\diagram_jsc.png" />

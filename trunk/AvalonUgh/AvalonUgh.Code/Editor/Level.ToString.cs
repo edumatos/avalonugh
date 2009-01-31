@@ -14,9 +14,18 @@ namespace AvalonUgh.Code.Editor
 {
 	partial class Level
 	{
-
-
 		public override string ToString()
+		{
+			return ToString(ToStringMode.ForSavedLevel);
+		}
+
+		public enum ToStringMode
+		{
+			ForSavedLevel,
+			ForSync
+		}
+
+		public string ToString(ToStringMode Mode)
 		{
 			using (var s = new StringWriter())
 			{
