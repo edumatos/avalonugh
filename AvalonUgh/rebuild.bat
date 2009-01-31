@@ -1,5 +1,6 @@
 @echo off
 setlocal
+
 echo - svn update
 X:\util\TortoiseSVN\bin\TortoiseProc.exe /command:update /path:"." /notempfile /closeonend:1
 echo - hint path fix
