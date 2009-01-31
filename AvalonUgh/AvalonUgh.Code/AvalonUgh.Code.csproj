@@ -47,7 +47,7 @@
     </Reference>
     <Reference Include="ScriptCoreLib.Avalon.Carousel, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\util\jsc\bin\ScriptCoreLib.Avalon.Carousel.dll</HintPath>
+      <HintPath>c:\util\jsc\bin\ScriptCoreLib.Avalon.Carousel.dll</HintPath>
     </Reference>
     <Reference Include="ScriptCoreLib.Avalon.Cursors, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
