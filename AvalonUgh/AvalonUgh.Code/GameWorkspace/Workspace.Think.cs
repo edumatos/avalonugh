@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
 using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -13,6 +14,8 @@ namespace AvalonUgh.Code.GameWorkspace
 		public const int DefaultFramerate = 55;
 
 		public Window FrameStatusToolbar;
+
+	
 
 		void StartThinking()
 		{

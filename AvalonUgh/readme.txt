@@ -1,1 +1,1 @@
-x
+You can use rebuild.bat to set up a scheduled build of the game.
