@@ -136,6 +136,8 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			// clear
 
+			var framelimit = this.Settings.GetInteger("framelimit", 5);
+
 			#region test
 			var PreventStatic = 0;
 
@@ -189,7 +191,8 @@ namespace AvalonUgh.NetworkCode.Shared
 				player.UserId,
 				player.Username,
 				this.Users.Count - 1,
-				player.SavedLevelsCount
+				player.SavedLevelsCount,
+				framelimit
 				//navbar,
 				//vote,
 				//layoutinput,
