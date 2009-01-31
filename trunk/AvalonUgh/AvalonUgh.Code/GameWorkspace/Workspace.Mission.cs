@@ -146,120 +146,186 @@ namespace AvalonUgh.Code.GameWorkspace
 			}
 		}
 
-
 		void InitializePlayButton()
 		{
+			this.Sync_MissionStartHint =
+				(int user, int difficulty) =>
+				{
+					// sync difficulty
+					this.Lobby.Menu.DifficultyLevel = difficulty;
+
+
+					// we need protection for reentrancy
+
+
+					this.Lobby.Menu.Options_CountDown.Show();
+
+					this.Lobby.Menu.Options_Options.Hide();
+					this.Lobby.Menu.Options_Options.TouchOverlay.Hide();
+					this.Lobby.Menu.Options_Play.Hide();
+					this.Lobby.Menu.Options_Play.TouchOverlay.Hide();
+
+					this.Lobby.Menu.Options_CountDown.Text = "3";
+
+					// look, a time line! in code!
+					this.LocalIdentity.HandleFutureFrameInTime(
+						1000, () => this.Lobby.Menu.Options_CountDown.Text = "2"
+					);
+
+					this.LocalIdentity.HandleFutureFrameInTime(
+						2000, () => this.Lobby.Menu.Options_CountDown.Text = "1"
+					);
+
+					this.LocalIdentity.HandleFutureFrameInTime(
+						3000,
+						delegate
+						{
+							this.Lobby.Menu.Options_CountDown.Hide();
+							this.Lobby.FadeToBlack();
+						}
+					);
+
+
+					// in the future only the player that pressed the button 
+					// will tell others what level to load
+
+					this.LocalIdentity.HandleFutureFrameInTime(
+						3500,
+						delegate
+						{
+							if (user == this.LocalIdentity.NetworkNumber)
+							{
+								// MissionStartHint continues here
+								// only the initiator knows about the level to be loaded
+
+								var NextLevel2 = this.LoadableLevels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
+
+								if (NextLevel2 == null)
+								{
+									// password does not match
+									NextLevel2 = this.KnownLevels.DefaultMissionLevel;
+								}
+
+								this.Sync_LoadLevelEx(this.PrimaryMission, NextLevel2);
+							}
+						}
+					);
+
+					this.PrimaryMission.WhenLoaded(
+						delegate
+						{
+							// we are showing black lobby
+							// we now need to show the introducion to the level
+							// and we need to teleport our guys over to the mission
+
+							this.Console.WriteLine("ready for mission at frame " + this.LocalIdentity.SyncFrame);
+
+							EnterMission();
+						}
+					);
+				};
+
 			this.Lobby.Menu.Play +=
 				delegate
 				{
-					// user is indicating we are ready to play.
-
-					// everybody who is in the lobby will be added to the game as players
-					// who join later can only spectate for level already loaded
-					// or join as passangers
-
-					if (this.Sync_RemoteOnly_LoadLevelHint != null)
-						this.Sync_RemoteOnly_LoadLevelHint(
-							PortIdentity_Mission
+					if (this.PrimaryMission.LevelReference == null)
+						this.Sync_MissionStartHint(
+							this.LocalIdentity.NetworkNumber,
+							this.Lobby.Menu.DifficultyLevel
 						);
+				};
+		}
 
-					// fade this to black
-					// switch the ports
-					// fade in the intro
-					// load
-					// fade to black
-					// fade to view
-					//this.Lobby.Window.ColorOverlay.Element.BringToFront();
-					this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
-					this.Lobby.Window.ColorOverlay.SetOpacity(1,
+		private void EnterMission()
+		{
+			// we need to create vehicles for local players
+
+			foreach (var i in this.LocalIdentity.Locals)
+			{
+				//var v = new Vehicle(DefaultZoom);
+				var p = this.PrimaryMission.GetRandomEntrypointForVehicle((x, y) => new { x, y });
+
+				this.Sync_TeleportTo(
+					this.LocalIdentity.Locals,
+					this.PrimaryMission.PortIdentity,
+					i.IdentityLocal,
+					p.x,
+					p.y,
+					0, 0
+				);
+
+				//i.Actor.ColorStripe = v.SupportedColorStripes.Keys.AtModulus(i.Identity.NetworkNumber);
+				//i.Actor.ColorStripe = Colors.Blue;
+
+				//v.MoveTo(p.x, p.y);
+
+				//this.PrimaryMission.Level.KnownVehicles.Add(v);
+
+				//i.Actor.CurrentLevel = this.PrimaryMission.Level;
+				//i.Actor.CurrentVehicle = v;
+			}
+
+			(KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
+
+			// user is indicating we are ready to play.
+
+			// everybody who is in the lobby will be added to the game as players
+			// who join later can only spectate for level already loaded
+			// or join as passangers
+
+	
+			// fade this to black
+			// switch the ports
+			// fade in the intro
+			// load
+			// fade to black
+			// fade to view
+			//this.Lobby.Window.ColorOverlay.Element.BringToFront();
+			this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
+			this.Lobby.Window.ColorOverlay.SetOpacity(1,
+				delegate
+				{
+					PrimaryMission.Intro.LevelNumber = PrimaryMission.LevelReference.Location.Embedded.AnimationFrame;
+					PrimaryMission.Intro.LevelTitle = PrimaryMission.LevelReference.Text;
+					PrimaryMission.Intro.LevelPassword = PrimaryMission.LevelReference.Code;
+
+					PrimaryMission.Intro.BringContainerToFront();
+					PrimaryMission.Intro.Show();
+					PrimaryMission.Fail.Hide();
+
+					this.CurrentPort = this.PrimaryMission;
+
+					
+
+					PrimaryMission.BringContainerToFront();
+					PrimaryMission.Window.ColorOverlay.SetOpacity(0,
 						delegate
 						{
-							var NextLevel2 = this.EmbeddedLevels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
+							// are we loading or rejoining?
+							// this will freeze the game
+							// and we will display non animated dialog for that time
+							// but what if the load is way too fast?
 
-							if (NextLevel2 == null)
-							{
-								// password does not match
-								NextLevel2 = this.KnownLevels.DefaultMissionLevel;
-							}
-
-
-							Console.WriteLine("loading level - " + NextLevel2.Text);
-
-							// fade in the level start menu
-							// create and load new port
-							// hide other ports
-							// fade out
-
-							// if we are in multyplayer
-							// we need to do this in sync
-
-
-							//PrimaryMission.LevelReference = NextLevel;
-							PrimaryMission.Intro.LevelNumber = NextLevel2.Location.Embedded.AnimationFrame;
-							PrimaryMission.Intro.LevelTitle = NextLevel2.Text;
-							PrimaryMission.Intro.LevelPassword = NextLevel2.Code;
-
-							PrimaryMission.Intro.BringContainerToFront();
-							PrimaryMission.Intro.Show();
-							PrimaryMission.Fail.Hide();
-
-							this.CurrentPort = this.PrimaryMission;
-
-							(KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
-
-							PrimaryMission.BringContainerToFront();
-							PrimaryMission.Window.ColorOverlay.SetOpacity(0,
+							PrimaryMission.WhenLoaded(
 								delegate
 								{
-									// are we loading or rejoining?
-									if (PrimaryMission.LevelReference == null)
-										PrimaryMission.LevelReference = NextLevel2;
-
-									// this will freeze the game
-									// and we will display non animated dialog for that time
-									// but what if the load is way too fast?
-
-									PrimaryMission.WhenLoaded(
+									PrimaryMission.Window.ColorOverlay.SetOpacity(1,
 										delegate
 										{
-											PrimaryMission.Window.ColorOverlay.SetOpacity(1,
-												delegate
-												{
-													PrimaryMission.Intro.Hide();
+											PrimaryMission.Intro.Hide();
 
 
-													// we need to create vehicles for local players
+								
 
-													foreach (var i in this.LocalIdentity.Locals)
-													{
-														var v = new Vehicle(DefaultZoom);
-														var p = this.PrimaryMission.GetRandomEntrypointForVehicle((x, y) => new { x, y });
-
-														//i.Actor.ColorStripe = v.SupportedColorStripes.Keys.AtModulus(i.Identity.NetworkNumber);
-														i.Actor.ColorStripe = Colors.Blue;
-
-														v.MoveTo(p.x, p.y);
-
-														this.PrimaryMission.Level.KnownVehicles.Add(v);
-
-														i.Actor.CurrentLevel = this.PrimaryMission.Level;
-														i.Actor.CurrentVehicle = v;
-													}
-
-
-													PrimaryMission.Window.ColorOverlay.Opacity = 0;
-												}
-											);
+											PrimaryMission.Window.ColorOverlay.Opacity = 0;
 										}
 									);
 								}
 							);
 						}
 					);
-
-
-
-				};
+				}
+			);
 		}
 	}
 }

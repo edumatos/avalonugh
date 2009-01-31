@@ -48,6 +48,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserLoadLevelHint,
             MouseMove,
             UserMouseMove,
+            MissionStartHint,
+            UserMissionStartHint,
         }
         #endregion
 
@@ -92,6 +94,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserLoadLevelHintArguments> UserLoadLevelHint;
             event Action<RemoteEvents.MouseMoveArguments> MouseMove;
             event Action<RemoteEvents.UserMouseMoveArguments> UserMouseMove;
+            event Action<RemoteEvents.MissionStartHintArguments> MissionStartHint;
+            event Action<RemoteEvents.UserMissionStartHintArguments> UserMissionStartHint;
         }
         #endregion
 
@@ -517,6 +521,34 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void MissionStartHint(int frame, int difficulty)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.MissionStartHint, args = new object[] { frame, difficulty } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.MissionStartHint(frame, difficulty);
+                    }
+                }
+            }
+            public void UserMissionStartHint(int user, int frame, int difficulty)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserMissionStartHint, args = new object[] { user, frame, difficulty } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserMissionStartHint(user, frame, difficulty);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -582,6 +614,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.LoadLevel += this.UserLoadLevel;
                     value.LoadLevelHint += this.UserLoadLevelHint;
                     value.MouseMove += this.UserMouseMove;
+                    value.MissionStartHint += this.UserMissionStartHint;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -597,6 +630,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.LoadLevel -= this.UserLoadLevel;
                     value.LoadLevelHint -= this.UserLoadLevelHint;
                     value.MouseMove -= this.UserMouseMove;
+                    value.MissionStartHint -= this.UserMissionStartHint;
                 }
                 #endregion
 
@@ -644,6 +678,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserMouseMove(MouseMoveArguments e)
                 {
                     Target.UserMouseMove(this.user, e.port, e.x, e.y);
+                }
+                public void UserMissionStartHint(MissionStartHintArguments e)
+                {
+                    Target.UserMissionStartHint(this.user, e.frame, e.difficulty);
                 }
                 #endregion
             }
@@ -759,6 +797,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserMouseMove(this.user, e.port, e.x, e.y);
                 }
+                public void UserMissionStartHint(int frame, int difficulty)
+                {
+                    this.Target.UserMissionStartHint(this.user, frame, difficulty);
+                }
+                public void UserMissionStartHint(UserMissionStartHintArguments e)
+                {
+                    this.Target.UserMissionStartHint(this.user, e.frame, e.difficulty);
+                }
                 #endregion
             }
             #endregion
@@ -785,6 +831,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserLoadLevel += this.UserLoadLevel;
                     value.UserLoadLevelHint += this.UserLoadLevelHint;
                     value.UserMouseMove += this.UserMouseMove;
+                    value.UserMissionStartHint += this.UserMissionStartHint;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -802,6 +849,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserLoadLevel -= this.UserLoadLevel;
                     value.UserLoadLevelHint -= this.UserLoadLevelHint;
                     value.UserMouseMove -= this.UserMouseMove;
+                    value.UserMissionStartHint -= this.UserMissionStartHint;
                 }
                 #endregion
 
@@ -883,6 +931,12 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserMouseMove(this.user, e.port, e.x, e.y);
+                }
+                public void UserMissionStartHint(UserMissionStartHintArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserMissionStartHint(this.user, e.frame, e.difficulty);
                 }
                 #endregion
             }
@@ -1343,6 +1397,36 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserMouseMoveArguments> UserMouseMove;
+            #region MissionStartHintArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class MissionStartHintArguments
+            {
+                public int frame;
+                public int difficulty;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", difficulty = ").Append(this.difficulty).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<MissionStartHintArguments> MissionStartHint;
+            #region UserMissionStartHintArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserMissionStartHintArguments : WithUserArguments
+            {
+                public int frame;
+                public int difficulty;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", difficulty = ").Append(this.difficulty).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserMissionStartHintArguments> UserMissionStartHint;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -1376,6 +1460,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserLoadLevelHint, e => { UserLoadLevelHint(new UserLoadLevelHintArguments { user = e.GetInt32(0), port = e.GetInt32(1) }); } },
                             { Messages.MouseMove, e => { MouseMove(new MouseMoveArguments { port = e.GetInt32(0), x = e.GetDouble(1), y = e.GetDouble(2) }); } },
                             { Messages.UserMouseMove, e => { UserMouseMove(new UserMouseMoveArguments { user = e.GetInt32(0), port = e.GetInt32(1), x = e.GetDouble(2), y = e.GetDouble(3) }); } },
+                            { Messages.MissionStartHint, e => { MissionStartHint(new MissionStartHintArguments { frame = e.GetInt32(0), difficulty = e.GetInt32(1) }); } },
+                            { Messages.UserMissionStartHint, e => { UserMissionStartHint(new UserMissionStartHintArguments { user = e.GetInt32(0), frame = e.GetInt32(1), difficulty = e.GetInt32(2) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -1409,6 +1495,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserLoadLevelHint, e => UserLoadLevelHint },
                             { Messages.MouseMove, e => MouseMove },
                             { Messages.UserMouseMove, e => UserMouseMove },
+                            { Messages.MissionStartHint, e => MissionStartHint },
+                            { Messages.UserMissionStartHint, e => UserMissionStartHint },
                         }
                 ;
             }
@@ -1704,9 +1792,25 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserMouseMove(v));
             }
 
+            public event Action<RemoteEvents.MissionStartHintArguments> MissionStartHint;
+            void IMessages.MissionStartHint(int frame, int difficulty)
+            {
+                if(MissionStartHint == null) return;
+                var v = new RemoteEvents.MissionStartHintArguments { frame = frame, difficulty = difficulty };
+                this.VirtualLatency(() => this.MissionStartHint(v));
+            }
+
+            public event Action<RemoteEvents.UserMissionStartHintArguments> UserMissionStartHint;
+            void IMessages.UserMissionStartHint(int user, int frame, int difficulty)
+            {
+                if(UserMissionStartHint == null) return;
+                var v = new RemoteEvents.UserMissionStartHintArguments { user = user, frame = frame, difficulty = difficulty };
+                this.VirtualLatency(() => this.UserMissionStartHint(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 31.01.2009 11:54:30
+// 31.01.2009 15:50:08

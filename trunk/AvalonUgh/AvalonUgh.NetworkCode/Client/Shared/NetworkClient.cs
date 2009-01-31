@@ -314,6 +314,46 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							// there is some catching up to do
 							// like we need to tell it about our locals
 
+
+							#region EgoIsPrimate
+							if (EgoIsPrimate)
+							{
+
+								if (this.Content.Editor.LevelReference != null)
+								{
+									// yay, we are in the editor
+									// are we the only one?
+
+									if (this.Content.Editor.Level.IsDirty)
+									{
+										this.Content.Console.WriteLine("as a primate, I will send custom map to the new player");
+
+										this.Messages.UserLoadLevel(
+											e.user,
+											this.Content.Editor.PortIdentity,
+											this.Content.LocalIdentity.SyncFrame,
+											-1,
+											this.Content.Editor.Level.ToString()
+										);
+
+									}
+									else
+									{
+										this.Content.Console.WriteLine("as a primate, I will send map reference to the new player");
+
+										this.Messages.UserLoadLevel(
+											e.user,
+											this.Content.Editor.PortIdentity,
+											this.Content.LocalIdentity.SyncFrame,
+											this.Content.Editor.LevelReference.Location.Embedded.AnimationFrame,
+											""
+										);
+									}
+								}
+							}
+							#endregion
+
+
 							foreach (var Local in this.Content.LocalIdentity.Locals)
 							{
 								// we should pause the new joiner until
@@ -348,42 +388,6 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 										(int)Local.Input.Keyboard.ToDefaultTranslation(k.Key),
 										Convert.ToInt32(k.Value)
 									);
-								}
-							}
-
-							if (EgoIsPrimate)
-							{
-
-								if (this.Content.Editor.LevelReference != null)
-								{
-									// yay, we are in the editor
-									// are we the only one?
-
-									if (this.Content.Editor.Level.IsDirty)
-									{
-										this.Content.Console.WriteLine("as a primate, I will send custom map to the new player");
-
-										this.Messages.UserLoadLevel(
-											e.user,
-											this.Content.Editor.PortIdentity,
-											this.Content.LocalIdentity.SyncFrame,
-											-1,
-											this.Content.Editor.Level.ToString()
-										);
-
-									}
-									else
-									{
-										this.Content.Console.WriteLine("as a primate, I will send map reference to the new player");
-
-										this.Messages.UserLoadLevel(
-											e.user,
-											this.Content.Editor.PortIdentity,
-											this.Content.LocalIdentity.SyncFrame,
-											this.Content.Editor.LevelReference.Location.Embedded.AnimationFrame,
-											""
-										);
-									}
 								}
 							}
 
@@ -735,6 +739,37 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 			#endregion
 
+			#region Sync_MissionStartHint
+			{
+				var Sync_MissionStartHint = this.Content.Sync_MissionStartHint;
+
+				this.Content.Sync_MissionStartHint =
+					(int user, int difficulty) =>
+					{
+						var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
+							delegate
+							{
+								Sync_MissionStartHint(user, difficulty);
+							}
+						);
+
+						this.Messages.MissionStartHint(FutureFrame, difficulty);
+					};
+
+				this.Events.UserMissionStartHint +=
+					e =>
+					{
+						var c = this[e.user];
+
+						this.Content.LocalIdentity.HandleFrame(e.frame,
+							delegate
+							{
+								Sync_MissionStartHint(c.NetworkNumber, e.difficulty);
+							}
+						);
+					};
+			}
+			#endregion
 
 			this.Content.LocalIdentity.Locals.ForEachNewOrExistingItem(
 				Local =>
