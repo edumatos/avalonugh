@@ -101,31 +101,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level01.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level02.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level03.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level04.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level06.txt" />
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level05.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level07.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level08.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Labs\level09.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Extensions\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

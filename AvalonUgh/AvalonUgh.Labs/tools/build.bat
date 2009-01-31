@@ -22,8 +22,8 @@ goto :eof
 pushd ..\bin\%ConfigurationName%
 
 ::call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as -js
-::call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as -js
-call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as 
+call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as -js
+::call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as 
 
 
 popd

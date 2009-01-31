@@ -11,22 +11,22 @@ namespace AvalonUgh.NetworkCode.Server
 {
 
 
-	[GameSetup.Boolean(
-		"mojo",
-		"Enable mojo",
-		"Enable mojo in game",
-		false)]
-	[GameSetup.String(
-		"password",
-		"Level Password",
-		"Level Password",
-		"")]
-	[GameSetup.Integer(
-		"players",
-		"Local Players",
-		"Local Players",
-		0, 3, 
-		0)]
+	//[GameSetup.Boolean(
+	//    "mojo",
+	//    "Enable mojo",
+	//    "Enable mojo in game",
+	//    false)]
+	//[GameSetup.String(
+	//    "password",
+	//    "Level Password",
+	//    "Level Password",
+	//    "")]
+	//[GameSetup.Integer(
+	//    "players",
+	//    "Local Players",
+	//    "Local Players",
+	//    0, 3, 
+	//    0)]
 
 	[GameSetup.Integer(
 		"framelimit",
