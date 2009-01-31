@@ -32,7 +32,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Container.Focusable = true;
 			this.Container.Focus();
 
-			
+
 			// at this time we should add a local player
 			this.Container.MouseLeftButtonDown +=
 				(sender, key_args) =>
@@ -68,7 +68,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Editor.Toolbar.LevelText
 			);
 
-		
+
 
 			this.Lobby.Menu.EnteringPasswordChanged +=
 				delegate
@@ -210,33 +210,60 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				//this.Ports.ForEach(k => k.Visible = k.PortIdentity == PortIdentity_Lobby);
 
+				Action GoToLobby =
+					delegate
+					{
+						this.Lobby.Window.ColorOverlay.Opacity = 1;
+						this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
+							delegate
+							{
+								// entering lobby
+
+								// remove all locals from all ports
+								this.LocalIdentity.Locals.ForEach(
+									k =>
+									{
+										var p = this.Lobby.GetRandomEntrypoint((x, y) => new { x, y });
+
+										this.Sync_TeleportTo(
+											this.LocalIdentity.Locals, 
+											this.Lobby.PortIdentity, 
+											k.IdentityLocal,
+											p.x, 
+											p.y, 
+											0, 0
+										);
+									}
+								);
+
+
+								this.Lobby.Window.BringContainerToFront();
+								this.Lobby.Window.ColorOverlay.Opacity = 0;
+							}
+						);
+					};
+
 				// if all players quit the game
 				// we would be able to start another level
-				if (this.CurrentPort != this.Lobby)
+				if (this.CurrentPort == this.Editor)
+				{
+					GoToLobby();
+				}
+				else if (this.CurrentPort == this.PrimaryMission)
 				{
 					// looks like we bailed an active game, it will continue until someone is in there
-					if (this.PrimaryMission.Level != null)
-						this.Lobby.Menu.PlayText = "resume";
+					this.Lobby.Menu.PlayText = "watch others play";
 
-					this.Lobby.Window.ColorOverlay.Opacity = 1;
-					this.CurrentPort.Window.ColorOverlay.SetOpacity(1,
+					this.PrimaryMission.Window.ColorOverlay.SetOpacity(1,
 						delegate
 						{
-							// entering lobby
+							this.PrimaryMission.Fail.Show();
+							(KnownAssets.Path.Audio + "/gameover.mp3").PlaySound();
 
-							// remove all locals from all ports
-							this.LocalIdentity.Locals.ForEach(
-								k => this.Sync_TeleportTo(this.LocalIdentity.Locals, 0, k.IdentityLocal, 0, 0, 0, 0)
-							);
-
-
-							this.CurrentPort = this.Lobby;
-							this.CurrentPort.Players.AddRange(this.LocalIdentity.Locals.ToArray());
-
-							this.Lobby.Window.BringContainerToFront();
-							this.Lobby.Window.ColorOverlay.Opacity = 0;
+							this.PrimaryMission.Window.ColorOverlay.SetOpacity(0, GoToLobby);
 						}
 					);
+
 				}
 			}
 

@@ -11,6 +11,7 @@ using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using AvalonUgh.Code.Dialogs;
+using AvalonUgh.Code.Editor.Sprites;
 namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
@@ -113,6 +114,22 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			}
 
+			public Tuple GetRandomEntrypointForVehicle<Tuple>(Func<double, double, Tuple> CreateTuple)
+			{
+				if (this.Level == null)
+					throw new Exception("Level has to be loaded before you can teleport into it");
+
+				var s = LambdaExtensions.Random(
+					from k in this.Level.KnownStones
+					where k.Selector.PrimitiveTileCountX >= 2
+					where k.Selector.PrimitiveTileCountY >= 2
+					where k.Y < this.Level.WaterTop
+					select k
+				);
+
+				return CreateTuple(s.X, s.Y);
+			}
+
 			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)
 			{
 				if (this.Level == null)
@@ -127,6 +144,122 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				return CreateTuple(100, 100);
 			}
+		}
+
+
+		void InitializePlayButton()
+		{
+			this.Lobby.Menu.Play +=
+				delegate
+				{
+					// user is indicating we are ready to play.
+
+					// everybody who is in the lobby will be added to the game as players
+					// who join later can only spectate for level already loaded
+					// or join as passangers
+
+					if (this.Sync_RemoteOnly_LoadLevelHint != null)
+						this.Sync_RemoteOnly_LoadLevelHint(
+							PortIdentity_Mission
+						);
+
+					// fade this to black
+					// switch the ports
+					// fade in the intro
+					// load
+					// fade to black
+					// fade to view
+					//this.Lobby.Window.ColorOverlay.Element.BringToFront();
+					this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
+					this.Lobby.Window.ColorOverlay.SetOpacity(1,
+						delegate
+						{
+							var NextLevel2 = this.EmbeddedLevels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
+
+							if (NextLevel2 == null)
+							{
+								// password does not match
+								NextLevel2 = this.KnownLevels.DefaultMissionLevel;
+							}
+
+
+							Console.WriteLine("loading level - " + NextLevel2.Text);
+
+							// fade in the level start menu
+							// create and load new port
+							// hide other ports
+							// fade out
+
+							// if we are in multyplayer
+							// we need to do this in sync
+
+
+							//PrimaryMission.LevelReference = NextLevel;
+							PrimaryMission.Intro.LevelNumber = NextLevel2.Location.Embedded.AnimationFrame;
+							PrimaryMission.Intro.LevelTitle = NextLevel2.Text;
+							PrimaryMission.Intro.LevelPassword = NextLevel2.Code;
+
+							PrimaryMission.Intro.BringContainerToFront();
+							PrimaryMission.Intro.Show();
+							PrimaryMission.Fail.Hide();
+
+							this.CurrentPort = this.PrimaryMission;
+
+							(KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
+
+							PrimaryMission.BringContainerToFront();
+							PrimaryMission.Window.ColorOverlay.SetOpacity(0,
+								delegate
+								{
+									// are we loading or rejoining?
+									if (PrimaryMission.LevelReference == null)
+										PrimaryMission.LevelReference = NextLevel2;
+
+									// this will freeze the game
+									// and we will display non animated dialog for that time
+									// but what if the load is way too fast?
+
+									PrimaryMission.WhenLoaded(
+										delegate
+										{
+											PrimaryMission.Window.ColorOverlay.SetOpacity(1,
+												delegate
+												{
+													PrimaryMission.Intro.Hide();
+
+
+													// we need to create vehicles for local players
+
+													foreach (var i in this.LocalIdentity.Locals)
+													{
+														var v = new Vehicle(DefaultZoom);
+														var p = this.PrimaryMission.GetRandomEntrypointForVehicle((x, y) => new { x, y });
+
+														//i.Actor.ColorStripe = v.SupportedColorStripes.Keys.AtModulus(i.Identity.NetworkNumber);
+														i.Actor.ColorStripe = Colors.Blue;
+
+														v.MoveTo(p.x, p.y);
+
+														this.PrimaryMission.Level.KnownVehicles.Add(v);
+
+														i.Actor.CurrentLevel = this.PrimaryMission.Level;
+														i.Actor.CurrentVehicle = v;
+													}
+
+
+													PrimaryMission.Window.ColorOverlay.Opacity = 0;
+												}
+											);
+										}
+									);
+								}
+							);
+						}
+					);
+
+
+
+				};
 		}
 	}
 }

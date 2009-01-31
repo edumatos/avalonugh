@@ -55,16 +55,6 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Window.Container.WriteTreeToConsoleOnClick();
 
 
-				this.WhenLoaded(
-					delegate
-					{
-						//this.Menu.BringContainerToFront();
-						//this.SocialLinksMenu.BringContainerToFront();
-						//this.Window.ColorOverlay.Element.BringToFront();
-						//this.SocialLinks.BringContainerToFront();
-					}
-				);
-
 
 				new Image
 				{

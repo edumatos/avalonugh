@@ -16,47 +16,26 @@ namespace AvalonUgh.Code.Editor.Sprites
 	partial class Vehicle
 	{
 
-
+		Color InternalColorStripe;
 		public Color ColorStripe
 		{
+			get
+			{
+				return InternalColorStripe;
+			}
 			set
 			{
+				InternalColorStripe = value;
+
 				foreach (var v in this.SupportedColorStripes)
 				{
 					v.Value.Show(v.Key == value);
 				}
 
-				//ColorStripeBlue.Hide();
-				//ColorStripeRed.Hide();
-				//ColorStripeYellow.Hide();
-
-				//if (value == Colors.Red)
-				//{
-				//    ColorStripeRed.Show();
-				//    return;
-				//}
-
-				//if (value == Colors.Blue)
-				//{
-				//    ColorStripeBlue.Show();
-				//    return;
-				//}
-
-				//if (value == Colors.Yellow)
-				//{
-				//    ColorStripeYellow.Show();
-				//    return;
-				//}
-
-				//if (value == Colors.Gray)
-				//{
-				//    ColorStripeGray.Show();
-				//    return;
-				//}
 			}
 		}
 
-		 Dictionary<Color, Image> SupportedColorStripes;
+		public Dictionary<Color, Image> SupportedColorStripes;
 
 		private void InitializeColorStripe()
 		{

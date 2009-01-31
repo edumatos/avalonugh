@@ -10,7 +10,7 @@ namespace AvalonUgh.Code.GameWorkspace
 	partial class Workspace
 	{
 		//public const int DefaultFramerate = 55;
-		public const int DefaultFramerate = 60;
+		public const int DefaultFramerate = 55;
 
 		public Window FrameStatusToolbar;
 

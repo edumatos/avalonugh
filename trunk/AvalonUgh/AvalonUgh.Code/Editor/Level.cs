@@ -156,7 +156,7 @@ namespace AvalonUgh.Code.Editor
 				Level = this,
 			};
 
-			this.AttributeGravity.Value = 30;
+			this.AttributeGravity.Value = 20;
 			this.AttributeWind.Value = 0;
 			
 			// the water shall be deep enough to enable diving
