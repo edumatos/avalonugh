@@ -39,7 +39,7 @@ namespace AvalonUgh.Code
 		public event Action AfterUpdate;
 		public readonly Action Update;
 
-		
+
 		public int ClientWidth
 		{
 			get
@@ -110,15 +110,18 @@ namespace AvalonUgh.Code
 			Width = 360;
 			Height = 200;
 			BorderWidth = 1;
-			
+
 
 			this.Container = new Canvas
 			{
+				Name = "Window_Container"
 			};
+
 			this.BackgroundContainer = new Canvas
 			{
+				Name = "Window_BackgroundContainer"
 			}.AttachTo(this.Container);
-		
+
 
 			#region borders
 			this.ThreeD_Top = new Rectangle
@@ -148,9 +151,12 @@ namespace AvalonUgh.Code
 			}.AttachTo(this.BackgroundContainer);
 			#endregion
 
-			this.ContentContainer = new Canvas().AttachTo(this.Container);
+			this.ContentContainer = new Canvas
+			{
+				Name = "Window_ContentContainer"
+			}.AttachTo(this.Container);
 
-		
+
 			Update =
 				delegate
 				{
@@ -184,7 +190,7 @@ namespace AvalonUgh.Code
 						BorderWidth,
 						Height - BorderWidth * 2
 					).MoveTo(Width - BorderWidth, BorderWidth);
-						
+
 					ThreeD_Bottom.SizeTo(
 						Width,
 						BorderWidth
@@ -201,9 +207,10 @@ namespace AvalonUgh.Code
 						AfterUpdate();
 				};
 
-			
+
 			this.DraggableArea = new Rectangle
 			{
+				Name = "Window_DraggableArea",
 				Width = Width,
 				Height = Height,
 				Fill = Brushes.Black,
@@ -218,11 +225,13 @@ namespace AvalonUgh.Code
 
 			this.OverlayContainer = new Canvas
 			{
-				
+				Name = "Window_OverlayContainer",
+
 			}.AttachTo(this.Container);
 
 			this.ColorOverlay = new Rectangle
 			{
+				Name = "Window_ColorOverlay",
 				Fill = Brushes.Black,
 				Opacity = 0,
 				Visibility = Visibility.Hidden,

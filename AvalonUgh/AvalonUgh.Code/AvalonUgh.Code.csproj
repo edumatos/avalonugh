@@ -146,6 +146,7 @@
     <Compile Include="AIDirector.cs" />
     <Compile Include="AnimationDictionary.cs" />
     <Compile Include="AudioLoop.cs" />
+    <Compile Include="Diagnostics\DOMDump.cs" />
     <Compile Include="Editor\CommonFileWindow.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="GameMenu.cs" />

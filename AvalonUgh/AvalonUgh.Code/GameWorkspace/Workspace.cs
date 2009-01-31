@@ -865,10 +865,8 @@ namespace AvalonUgh.Code.GameWorkspace
 								delegate
 								{
 
-									this.Lobby.Menu.Hide();
-									this.Lobby.SocialLinks.Hide();
 
-									var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.ContentContainer);
+									var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.OverlayContainer);
 
 									// we could show credits in the meantime!
 									Lobby.Window.ColorOverlay.Opacity = 0;
@@ -883,8 +881,6 @@ namespace AvalonUgh.Code.GameWorkspace
 											this.LocalIdentity.HandleFutureFrameInTime(400,
 												delegate
 												{
-													this.Lobby.Menu.Show();
-													this.Lobby.SocialLinks.Show();
 													CurrentCredit.OrphanizeContainer();
 
 													Lobby.Window.ColorOverlay.Opacity = 0;

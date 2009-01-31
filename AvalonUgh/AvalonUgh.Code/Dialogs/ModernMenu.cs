@@ -92,7 +92,8 @@ namespace AvalonUgh.Code.Dialogs
 			this.Container = new Canvas
 			{
 				Width = Width,
-				Height = Height
+				Height = Height,
+				Name = "ModernMenu_Container",
 			};
 
 			this.Background = new Rectangle
@@ -100,6 +101,7 @@ namespace AvalonUgh.Code.Dialogs
 				Width = Width,
 				Height = Height,
 				Fill = Brushes.Black,
+				Name = "ModernMenu_Background",
 			}.AttachTo(this);
 
 			this._SetBackgroundOpacity__ = NumericEmitter.Of(

@@ -12,6 +12,8 @@ namespace AvalonUgh.Code.GameWorkspace
 		//public const int DefaultFramerate = 55;
 		public const int DefaultFramerate = 60;
 
+		public Window FrameStatusToolbar;
+
 		void StartThinking()
 		{
 			var ClientWidth = 400;
@@ -36,7 +38,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				DragContainer = this.Container
 			};
-
+			FrameStatusToolbar = Status;
 			Status.BackgroundContainer.Opacity = 0.4;
 
 			this.Console.AnimatedTopChanged +=

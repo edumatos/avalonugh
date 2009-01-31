@@ -80,10 +80,14 @@ namespace AvalonUgh.Code.Dialogs
 
 		public DialogTextBox()
 		{
-			this.Container = new Canvas();
+			this.Container = new Canvas
+			{
+				Name = "DialogTextBox_Container",
+			};
 
 			this.TouchOverlay = new Rectangle
 			{
+				Name = "DialogTextBox_TouchOverlay",
 				Fill = Brushes.Red,
 				Opacity = 0,
 				Cursor = Cursors.Hand
