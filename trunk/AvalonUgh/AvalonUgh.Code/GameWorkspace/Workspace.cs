@@ -13,6 +13,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Sprites;
 using System.Diagnostics;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -694,7 +695,8 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Lobby.Menu.AnyClick +=
 				delegate
 				{
-					(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
+					SoundBoard.Default.enter();
+
 				};
 
 

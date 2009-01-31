@@ -12,6 +12,7 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using AvalonUgh.Code.Dialogs;
 using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
@@ -84,32 +85,6 @@ namespace AvalonUgh.Code.GameWorkspace
 					};
 
 
-				//this.WhenLoaded(
-				//    delegate
-				//    {
-				//        this.Intro.BringContainerToFront();
-				//    }
-				//);
-
-
-				//this.PlayerJoined +=
-				//    k =>
-				//    {
-				//        k.Actor.CurrentLevel = this.Level;
-
-
-				//        var StartVehicle = this.Level.KnownVehicles.FirstOrDefault(i => i.CurrentDriver == null);
-
-				//        if (StartVehicle == null)
-				//        {
-				//            var StartPositionStone = this.Level.KnownStones.Random(i => i.Selector.PrimitiveTileCountX > 1 && i.Selector.PrimitiveTileCountY > 1);
-
-				//            StartVehicle = new Vehicle(this.Level.Zoom).AddTo(this.Level.KnownVehicles);
-				//            StartVehicle.MoveTo(StartPositionStone.X, StartPositionStone.Y);
-				//        }
-
-				//        k.Actor.CurrentVehicle = StartVehicle;
-				//    };
 
 
 			}
@@ -165,21 +140,31 @@ namespace AvalonUgh.Code.GameWorkspace
 					this.Lobby.Menu.Options_Play.Hide();
 					this.Lobby.Menu.Options_Play.TouchOverlay.Hide();
 
-					this.Lobby.Menu.Options_CountDown.Text = "3";
+					Action<int> SetCounter =
+						e =>
+						{
+							this.Lobby.Menu.Options_CountDown.Text = "" + e;
+
+							SoundBoard.Default.enter();
+						};
+
+
+					SetCounter(3);
 
 					// look, a time line! in code!
 					this.LocalIdentity.HandleFutureFrameInTime(
-						300 * 1, () => this.Lobby.Menu.Options_CountDown.Text = "2"
+						300 * 1, () => SetCounter(2)
 					);
 
 					this.LocalIdentity.HandleFutureFrameInTime(
-						300 * 2, () => this.Lobby.Menu.Options_CountDown.Text = "1"
+						300 * 2, () => SetCounter(1)
 					);
 
 					this.LocalIdentity.HandleFutureFrameInTime(
 						300 * 3,
 						delegate
 						{
+							SetCounter(0);
 							this.Lobby.Menu.Options_CountDown.Hide();
 							this.Lobby.FadeToBlack();
 						}
