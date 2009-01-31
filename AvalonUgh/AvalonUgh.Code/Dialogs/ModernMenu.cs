@@ -12,12 +12,15 @@ using AvalonUgh.Assets.Shared;
 using System.Windows;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Input;
+using System.ComponentModel;
 
 namespace AvalonUgh.Code.Dialogs
 {
 	[Script]
 	public class ModernMenu : ISupportsContainer
 	{
+		public event Action AnyClick;
+
 		public Canvas Container { get; set; }
 
 		public readonly int Zoom;
@@ -124,7 +127,22 @@ namespace AvalonUgh.Code.Dialogs
 
 			this.AnimatedBackgroundOpacity = 0;
 
+			var KnownOptions = new BindingList<DialogTextBox>();
 
+			KnownOptions.ForEachNewOrExistingItem(
+				NewOption =>
+				{
+					NewOption.TouchOverlay.MouseLeftButtonUp +=
+						delegate
+						{
+							if (AnyClick != null)
+								AnyClick();
+						};
+
+					NewOption.AttachContainerTo(this.Container);
+					NewOption.TouchOverlay.AttachTo(this.Container);
+				}
+			);
 
 
 			var Options_Y = (Height - PrimitiveFont.Heigth * Zoom) / 2;
@@ -134,9 +152,9 @@ namespace AvalonUgh.Code.Dialogs
 				Zoom = Zoom,
 				TextAlignment = TextAlignment.Center,
 				Text = "options"
-			}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_Y);
+			}.AddTo(KnownOptions).MoveContainerTo(0, Options_Y);
 
-			Options.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_Y);
+			Options.TouchOverlay.MoveTo(0, Options_Y);
 
 
 			var Options_1_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * 1;
@@ -147,9 +165,9 @@ namespace AvalonUgh.Code.Dialogs
 				TextAlignment = TextAlignment.Center,
 				Text = "play",
 				Visibility = Visibility.Visible
-			}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_1_Y);
+			}.AddTo(KnownOptions).MoveContainerTo(0, Options_1_Y);
 
-			Options_1.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_1_Y);
+			Options_1.TouchOverlay.MoveTo(0, Options_1_Y);
 
 			Options_1.Click +=
 				delegate

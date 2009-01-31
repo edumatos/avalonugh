@@ -11,6 +11,7 @@ using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -29,6 +30,7 @@ namespace AvalonUgh.Code.GameWorkspace
 		//public Canvas Overlay { get; set; }
 
 		public readonly KnownSelectors Selectors = new KnownSelectors();
+		public readonly KnownLevels KnownLevels = new KnownLevels();
 
 		public readonly BindingList<LevelReference> EmbeddedLevels = new BindingList<LevelReference>();
 		public readonly BindingList<LevelReference> SavedLevels = new BindingList<LevelReference>();
@@ -91,9 +93,6 @@ namespace AvalonUgh.Code.GameWorkspace
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
 				//Enabled = true,
 			};
-
-
-			var KnownLevels = new KnownLevels();
 
 			this.EmbeddedLevels.AddRange(
 				KnownLevels.Levels
@@ -410,6 +409,27 @@ namespace AvalonUgh.Code.GameWorkspace
 					NewPlayer.Actor.EnterCave +=
 						delegate
 						{
+
+							// are we trying to enter a cave?
+							var NearbyCave = NewPlayer.Actor.NearbyCave;
+
+							if (NearbyCave != null)
+							{
+								AIDirector.WalkActorToTheCaveAndEnter(NewPlayer.Actor, NearbyCave,
+									delegate
+									{
+										this.LocalIdentity.HandleFutureFrameInTime(1000,
+											delegate
+											{
+												AIDirector.ActorExitCave(NewPlayer.Actor);
+											}
+										);
+									}
+								);
+
+								return;
+							}
+
 							if (NewPlayer.Actor.VelocityX == 0)
 								if (NewPlayer.Actor.Animation != Actor.AnimationEnum.Talk)
 								{
@@ -530,11 +550,12 @@ namespace AvalonUgh.Code.GameWorkspace
 
 						this.Console.WriteLine("created new player via teleport " + new { p.Identity, p.IdentityLocal });
 
+						p.IdentityLocal = local;
 					}
 
 
 
-					p.IdentityLocal = local;
+					
 
 					var CurrentPort = this.Ports.SingleOrDefault(k => k.PortIdentity == port);
 
@@ -542,6 +563,8 @@ namespace AvalonUgh.Code.GameWorkspace
 						p.Actor.CurrentLevel = null;
 					else
 						p.Actor.CurrentLevel = CurrentPort.Level;
+
+					p.Actor.CurrentVehicle = null;
 
 					p.Actor.MoveTo(x, y);
 					p.Actor.VelocityX = vx;
@@ -740,108 +763,22 @@ namespace AvalonUgh.Code.GameWorkspace
 			);
 
 
-			
+
 
 
 
 			this.CurrentPort = this.Lobby;
 
-			Lobby.Menu.Play +=
-				delegate
-				{
-					// user is indicating we are ready to play.
-
-					// everybody who is in the lobby will be added to the game as players
-					// who join later can only spectate for level already loaded
-					// or join as passangers
-
-					if (this.Sync_RemoteOnly_LoadLevelHint != null)
-						this.Sync_RemoteOnly_LoadLevelHint(
-							PortIdentity_Mission
-						);
-
-					// fade this to black
-					// switch the ports
-					// fade in the intro
-					// load
-					// fade to black
-					// fade to view
-					this.Lobby.Window.ColorOverlay.Element.BringToFront();
-					this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
-					this.Lobby.Window.ColorOverlay.SetOpacity(1,
-						delegate
-						{
-							var NextLevel2 = this.EmbeddedLevels.FirstOrDefault(k => k.Code.ToLower() == Lobby.Menu.Password.ToLower());
-
-							if (NextLevel2 == null)
-							{
-								// password does not match
-								NextLevel2 = KnownLevels.DefaultMissionLevel;
-							}
-
-
-							Console.WriteLine("loading level - " + NextLevel2.Text);
-
-							// fade in the level start menu
-							// create and load new port
-							// hide other ports
-							// fade out
-
-							// if we are in multyplayer
-							// we need to do this in sync
-
-
-							//PrimaryMission.LevelReference = NextLevel;
-							PrimaryMission.Intro.LevelNumber = NextLevel2.Location.Embedded.AnimationFrame;
-							PrimaryMission.Intro.LevelTitle = NextLevel2.Text;
-							PrimaryMission.Intro.LevelPassword = NextLevel2.Code;
-
-							PrimaryMission.Intro.BringContainerToFront();
-							PrimaryMission.Intro.Show();
-							PrimaryMission.Fail.Hide();
-
-							this.CurrentPort = this.PrimaryMission;
-
-							PrimaryMission.BringContainerToFront();
-							PrimaryMission.Window.ColorOverlay.SetOpacity(0,
-								delegate
-								{
-									if (PrimaryMission.LevelReference == null)
-										PrimaryMission.LevelReference = NextLevel2;
-
-									// this will freeze the game
-									// and we will display non animated dialog for that time
-									// but what if the load is way too fast?
-
-									PrimaryMission.WhenLoaded(
-										delegate
-										{
-											PrimaryMission.Window.ColorOverlay.SetOpacity(1,
-												delegate
-												{
-													PrimaryMission.Players.AddRange(this.LocalIdentity.Locals.ToArray());
-													PrimaryMission.Intro.Hide();
-
-
-													PrimaryMission.Window.ColorOverlay.Opacity = 0;
-												}
-											);
-										}
-									);
-								}
-							);
-						}
-					);
-
-
-
-				};
-
-
-
+			this.InitializePlayButton();
 			this.InitializeMenuEditorButton();
 			this.InitializeBackgroundLoading();
 			this.InitializeKeyboardFocus();
+
+			this.Lobby.Menu.AnyClick +=
+				delegate
+				{
+					(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
+				};
 
 
 			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
@@ -855,11 +792,14 @@ namespace AvalonUgh.Code.GameWorkspace
 					this.Lobby.WhenLoaded(
 						delegate
 						{
+							// we will default to 1 local player
+							this.Lobby.Menu.Players = 1;
+
 							Console.WriteLine("lobby loaded");
 
 							// we should load lobby only once
 
-							this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
+							//this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
 							this.LocalIdentity.HandleFutureFrameInTime(500,
 								delegate

@@ -13,6 +13,7 @@ using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Tiles;
 using AvalonUgh.Code.Editor.Sprites;
 using System.ComponentModel;
+using System.Windows.Media;
 
 namespace AvalonUgh.Code
 {
@@ -20,6 +21,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public Color ColorStripe { get; set; }
+
 		public double MassCenterModifier { get; set; }
 
 		public double LastCollisionVelocity { get; set; }
@@ -499,9 +502,9 @@ namespace AvalonUgh.Code
 			{
 				if (this.VelocityY == 0)
 				{
-					this.VelocityY -= this.Zoom * 2.5;
+					this.VelocityY -= this.Zoom * 1.5;
 
-					this.VelocityX *= 1.2;
+					this.VelocityX *= 1.1;
 
 					if (Jumping != null)
 						Jumping();
@@ -597,5 +600,16 @@ namespace AvalonUgh.Code
 			}
 		}
 		public event Action CurrentLevelChanged;
+
+		public Cave NearbyCave
+		{
+			get
+			{
+				var ManAsObstacle = this.ToObstacle();
+
+				return this.CurrentLevel.KnownCaves.FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+
+			}
+		}
 	}
 }
