@@ -169,15 +169,15 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					// look, a time line! in code!
 					this.LocalIdentity.HandleFutureFrameInTime(
-						1000, () => this.Lobby.Menu.Options_CountDown.Text = "2"
+						300 * 1, () => this.Lobby.Menu.Options_CountDown.Text = "2"
 					);
 
 					this.LocalIdentity.HandleFutureFrameInTime(
-						2000, () => this.Lobby.Menu.Options_CountDown.Text = "1"
+						300 * 2, () => this.Lobby.Menu.Options_CountDown.Text = "1"
 					);
 
 					this.LocalIdentity.HandleFutureFrameInTime(
-						3000,
+						300 * 3,
 						delegate
 						{
 							this.Lobby.Menu.Options_CountDown.Hide();
@@ -190,7 +190,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					// will tell others what level to load
 
 					this.LocalIdentity.HandleFutureFrameInTime(
-						3500,
+						300 * 4,
 						delegate
 						{
 							if (user == this.LocalIdentity.NetworkNumber)
@@ -214,6 +214,8 @@ namespace AvalonUgh.Code.GameWorkspace
 					this.PrimaryMission.WhenLoaded(
 						delegate
 						{
+
+							
 							// we are showing black lobby
 							// we now need to show the introducion to the level
 							// and we need to teleport our guys over to the mission
@@ -221,18 +223,46 @@ namespace AvalonUgh.Code.GameWorkspace
 							this.Console.WriteLine("ready for mission at frame " + this.LocalIdentity.SyncFrame);
 
 							EnterMission();
+
+							this.Lobby.Menu.Options_CountDown.Hide();
+
+							this.Lobby.Menu.Options_Options.Show();
+							this.Lobby.Menu.Options_Options.TouchOverlay.Show();
+							this.Lobby.Menu.Options_Play.Show();
+							this.Lobby.Menu.Options_Play.TouchOverlay.Show();
+
 						}
 					);
 				};
+
+			this.PrimaryMission.WhenLoaded(
+				delegate
+				{
+					// either loaded before or after game start
+
+					this.Lobby.Menu.Options_Play.Text = "watch others play";
+				}
+			);
 
 			this.Lobby.Menu.Play +=
 				delegate
 				{
 					if (this.PrimaryMission.LevelReference == null)
+					{
 						this.Sync_MissionStartHint(
 							this.LocalIdentity.NetworkNumber,
 							this.Lobby.Menu.DifficultyLevel
 						);
+					}
+					else
+					{
+						// we are only going to observe
+						this.Lobby.Menu.Players = 0;
+
+						this.LocalIdentity.HandleFutureFrame(
+							EnterMission
+						);
+					}
 				};
 		}
 
@@ -242,7 +272,6 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			foreach (var i in this.LocalIdentity.Locals)
 			{
-				//var v = new Vehicle(DefaultZoom);
 				var p = this.PrimaryMission.GetRandomEntrypointForVehicle((x, y) => new { x, y });
 
 				this.Sync_TeleportTo(
@@ -254,15 +283,9 @@ namespace AvalonUgh.Code.GameWorkspace
 					0, 0
 				);
 
-				//i.Actor.ColorStripe = v.SupportedColorStripes.Keys.AtModulus(i.Identity.NetworkNumber);
-				//i.Actor.ColorStripe = Colors.Blue;
+				this.Sync_Vehicalize(this.LocalIdentity.NetworkNumber, i.IdentityLocal);
 
-				//v.MoveTo(p.x, p.y);
 
-				//this.PrimaryMission.Level.KnownVehicles.Add(v);
-
-				//i.Actor.CurrentLevel = this.PrimaryMission.Level;
-				//i.Actor.CurrentVehicle = v;
 			}
 
 			(KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
@@ -273,7 +296,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			// who join later can only spectate for level already loaded
 			// or join as passangers
 
-	
+
 			// fade this to black
 			// switch the ports
 			// fade in the intro
@@ -285,7 +308,11 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Lobby.Window.ColorOverlay.SetOpacity(1,
 				delegate
 				{
-					PrimaryMission.Intro.LevelNumber = PrimaryMission.LevelReference.Location.Embedded.AnimationFrame;
+					if (PrimaryMission.LevelReference.Location.Embedded != null)
+						PrimaryMission.Intro.LevelNumber = PrimaryMission.LevelReference.Location.Embedded.AnimationFrame;
+					else
+						PrimaryMission.Intro.LevelNumber = 0;
+
 					PrimaryMission.Intro.LevelTitle = PrimaryMission.LevelReference.Text;
 					PrimaryMission.Intro.LevelPassword = PrimaryMission.LevelReference.Code;
 
@@ -295,7 +322,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					this.CurrentPort = this.PrimaryMission;
 
-					
+
 
 					PrimaryMission.BringContainerToFront();
 					PrimaryMission.Window.ColorOverlay.SetOpacity(0,
@@ -315,7 +342,7 @@ namespace AvalonUgh.Code.GameWorkspace
 											PrimaryMission.Intro.Hide();
 
 
-								
+
 
 											PrimaryMission.Window.ColorOverlay.Opacity = 0;
 										}

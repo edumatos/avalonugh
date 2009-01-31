@@ -65,21 +65,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				}
 			);
 
-			//Func<string, Image> CreateStripe =
-			//             color =>
-			//                 new Image
-			//                 {
-			//                     Source = (Assets.Shared.KnownAssets.Path.Sprites + "/vehicle0_" + color + "_2x2.png").ToSource(),
-			//                     Stretch = Stretch.Fill,
-			//                     Width = this.Width,
-			//                     Height = this.Height,
-			//                     Visibility = Visibility.Hidden
-			//                 }.AttachTo(this.Container);
-
-			//this.ColorStripeRed = CreateStripe("red");
-			//this.ColorStripeBlue = CreateStripe("blue");
-			//this.ColorStripeYellow = CreateStripe("yellow");
-			//this.ColorStripeGray = CreateStripe("gray");
+	
 		}
 
 	}

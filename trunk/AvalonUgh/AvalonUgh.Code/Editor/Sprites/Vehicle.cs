@@ -224,7 +224,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				if (value)
 				{
-					this.ColorStripe = Colors.Gray;
+					this.ColorStripe = Colors.Transparent;
 					IsAnimated = false;
 					UnmannedImage.Show();
 					frames.ForEach(k => k.Hide());

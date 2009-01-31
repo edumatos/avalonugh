@@ -61,6 +61,9 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			void MissionStartHint(int frame, int difficulty);
 			void UserMissionStartHint(int user, int frame, int difficulty);
+
+			void Vehicalize(int frame, int local);
+			void UserVehicalize(int user, int frame, int local);
 		}
 
 
