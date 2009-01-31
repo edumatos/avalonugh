@@ -653,6 +653,12 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				{
 					var c = this[e.user];
 
+					if (c == null)
+					{
+						this.Content.Console.WriteLine("timetravel: havent met " + e.user + " yet");
+						return;
+					}
+
 					this.Content.LocalIdentity.HandleFrame(e.frame,
 						delegate
 						{

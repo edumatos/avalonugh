@@ -12,6 +12,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Windows.Shapes;
 using ScriptCoreLib.Shared.Lambda;
 using System.Collections.Specialized;
+using System.Diagnostics;
 
 namespace AvalonUgh.Labs.Multiplayer
 {
@@ -25,6 +26,17 @@ namespace AvalonUgh.Labs.Multiplayer
 		public const int Lag = 70;
 		//public const int Lag = 50;
 
+
+		static void VirtualLatency(Action e)
+		{
+			Lag.AtDelay(
+				delegate
+				{
+					e();
+				}
+			);
+		}
+
 		[STAThread]
 		static public void Main(string[] args)
 		{
@@ -33,8 +45,9 @@ namespace AvalonUgh.Labs.Multiplayer
 				() =>
 					new Communication.Bridge
 					{
-						VirtualLatency = e => Lag.AtDelay(e)
-						// VirtualLatency = e => e()
+						VirtualLatency = VirtualLatency
+
+						//VirtualLatency = e => e()
 					};
 
 			var Server = new VirtualGame
@@ -48,7 +61,7 @@ namespace AvalonUgh.Labs.Multiplayer
 
 			var DataStorage = new Stack<StringDictionary>();
 
-			
+
 
 			new ServerWindow(
 				delegate
@@ -109,6 +122,7 @@ namespace AvalonUgh.Labs.Multiplayer
 
 					var w = c.ToWindow();
 
+					w.Title += " - " + u.UserId + " " + u.Username;
 
 					w.Show();
 
@@ -198,7 +212,7 @@ namespace AvalonUgh.Labs.Multiplayer
 			b2.Click += delegate { SpawnClients(2); };
 			b3.Click += delegate { SpawnClients(3); };
 
-			50.AtDelay(() => SpawnClients(1));
+			50.AtDelay(() => SpawnClients(2));
 		}
 	}
 }
