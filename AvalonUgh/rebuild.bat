@@ -1,8 +1,15 @@
 @echo off
 setlocal
 
+
 echo - svn update
 X:\util\TortoiseSVN\bin\TortoiseProc.exe /command:update /path:"." /notempfile /closeonend:1
+echo status:  %ERRORLEVEL% 
+
+echo - kill running flash
+taskkill /f /im FlashPlayer.exe  
+
+
 echo - hint path fix
 c:\util\jsc\bin\HintPathFixer.exe
 
@@ -14,6 +21,9 @@ set flags=/nologo /verbosity:q /p:Configuration=Release
 
 call :build AvalonUgh.Labs.sln
 
+echo - done building, running flash
+
+start Public/LabsFlash.swf
 
 
 popd
