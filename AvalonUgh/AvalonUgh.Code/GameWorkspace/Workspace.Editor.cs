@@ -24,6 +24,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				public BindingList<LevelReference> EmbeddedLevels;
 				public BindingList<LevelReference> SavedLevels;
+				public BindingList<LevelReference> DiscoveredLevels;
 			}
 
 			public readonly EditorToolbar Toolbar;
@@ -62,6 +63,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				this.LoadWindow.EmbeddedLevels.Items.MirrorTo(args.EmbeddedLevels);
 				this.LoadWindow.SavedLevels.Items.MirrorTo(args.SavedLevels);
+				this.LoadWindow.DiscoveredLevels.Items.MirrorTo(args.DiscoveredLevels);
 
 
 				this.Selectors = args.Selectors;

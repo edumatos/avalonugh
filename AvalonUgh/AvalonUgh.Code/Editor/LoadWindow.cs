@@ -16,13 +16,18 @@ namespace AvalonUgh.Code.Editor
 	{
 		public readonly Tab EmbeddedLevels = "Embedded levels";
 		public readonly Tab SavedLevels = "Saved levels";
+		public readonly Tab DiscoveredLevels = "Discovered levels";
 
 		public event Action<LevelReference> Click;
 
 
 		public LoadWindow()
 		{
-			this.Tabs.AddRange(EmbeddedLevels, SavedLevels);
+			this.Tabs.AddRange(
+				EmbeddedLevels, 
+				SavedLevels,
+				DiscoveredLevels
+			);
 
 
 

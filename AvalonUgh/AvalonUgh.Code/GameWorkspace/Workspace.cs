@@ -12,6 +12,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Code.Editor.Sprites;
+using System.Diagnostics;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -34,8 +35,15 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		public readonly BindingList<LevelReference> EmbeddedLevels = new BindingList<LevelReference>();
 		public readonly BindingList<LevelReference> SavedLevels = new BindingList<LevelReference>();
+		public readonly BindingList<LevelReference> DiscoveredLevels = new BindingList<LevelReference>();
 
-
+		public IEnumerable<LevelReference> LoadableLevels
+		{
+			get
+			{
+				return EmbeddedLevels.Concat(SavedLevels).Concat(DiscoveredLevels).Where(k => k.Data != null);
+			}
+		}
 
 		/// <summary>
 		/// This will reflect the clients name and number,
@@ -277,6 +285,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					Selectors = this.Selectors,
 					EmbeddedLevels = this.EmbeddedLevels,
 					SavedLevels = this.SavedLevels,
+					DiscoveredLevels = this.DiscoveredLevels,
 				})
 			{
 
@@ -508,12 +517,18 @@ namespace AvalonUgh.Code.GameWorkspace
 						// it into our store
 						// we need to take a hash of it tho
 
-						CurrentPort.LevelReference =
+						var LevelReference =
 							new LevelReference(new LevelReference.StorageLocation { Cookie = "editorlevel" })
 							{
 								Data = custom
 							};
 
+						// we might not to want to add duplicates
+						// but we do not store hashes at this time
+
+						this.DiscoveredLevels.Add(LevelReference);
+
+						CurrentPort.LevelReference = LevelReference;
 					}
 					else
 					{
@@ -786,55 +801,73 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.StartThinking();
 
 
+			InitializeSplashCredits(TextContainers);
+		}
+
+		void ShowSplashCredit(List<Dialog> TextContainers, Action done)
+		{
+			this.LocalIdentity.HandleFutureFrameInTime(500,
+				 delegate
+				 {
+
+
+					 var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.OverlayContainer);
+
+					 // we could show credits in the meantime!
+					 Lobby.Window.ColorOverlay.Opacity = 0;
+
+
+					 this.LocalIdentity.HandleFutureFrameInTime(2000,
+						 delegate
+						 {
+							 Lobby.Window.ColorOverlay.Opacity = 1;
+
+
+							 this.LocalIdentity.HandleFutureFrameInTime(400,
+								 delegate
+								 {
+									 CurrentCredit.OrphanizeContainer();
+
+									 done();
+
+								 }
+							 );
+						 }
+					 );
+				 }
+			 );
+		}
+
+		private void InitializeSplashCredits(List<Dialog> TextContainers)
+		{
 			Action StartGameWithCredits =
-				delegate
-				{
-					this.Lobby.WhenLoaded(
-						delegate
-						{
-							// we will default to 1 local player
-							this.Lobby.Menu.Players = 1;
+				 delegate
+				 {
+					 this.Lobby.WhenLoaded(
+						 delegate
+						 {
+							 // we will default to 1 local player
+							 this.Lobby.Menu.Players = 1;
 
-							Console.WriteLine("lobby loaded");
+							 Console.WriteLine("lobby loaded");
 
-							// we should load lobby only once
+							 // we should load lobby only once
 
-							//this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
+							 //this.Lobby.Players.AddRange(this.LocalIdentity.Locals.ToArray());
 
-							this.LocalIdentity.HandleFutureFrameInTime(500,
-								delegate
-								{
+							 Action done = () => Lobby.Window.ColorOverlay.Opacity = 0;
 
-
-									var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.OverlayContainer);
-
-									// we could show credits in the meantime!
-									Lobby.Window.ColorOverlay.Opacity = 0;
+#if DEBUG
+							 done(); 
+#else
+							 ShowSplashCredit(TextContainers, done);
+#endif
 
 
-									this.LocalIdentity.HandleFutureFrameInTime(2000,
-										delegate
-										{
-											Lobby.Window.ColorOverlay.Opacity = 1;
+						 }
+					 );
 
-
-											this.LocalIdentity.HandleFutureFrameInTime(400,
-												delegate
-												{
-													CurrentCredit.OrphanizeContainer();
-
-													Lobby.Window.ColorOverlay.Opacity = 0;
-
-												}
-											);
-										}
-									);
-								}
-							);
-						}
-					);
-
-				};
+				 };
 
 			this.LocalIdentity.SyncFramePausedChanged +=
 				delegate

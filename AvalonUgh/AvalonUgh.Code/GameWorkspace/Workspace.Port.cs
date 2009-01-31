@@ -235,6 +235,11 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				e();
 			}
+
+			public void FadeToBlack()
+			{
+				this.Window.ColorOverlay.Opacity = 1;
+			}
 		}
 
 

@@ -58,6 +58,9 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			void MouseMove(int port, double x, double y);
 			void UserMouseMove(int user, int port, double x, double y);
+
+			void MissionStartHint(int frame, int difficulty);
+			void UserMissionStartHint(int user, int frame, int difficulty);
 		}
 
 

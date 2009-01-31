@@ -68,17 +68,21 @@ namespace AvalonUgh.Code.Dialogs
 		readonly DialogTextBox Options_5;
 		readonly Action Options_Click;
 		readonly Action Options_3_Click;
-		readonly DialogTextBox Options_1;
+		public readonly DialogTextBox Options_Play;
+
+		public readonly DialogTextBox Options_CountDown;
+		public readonly DialogTextBox Options_Options;
+		public event Action CountDown;
 
 		public string PlayText
 		{
 			get
 			{
-				return Options_1.Text;
+				return Options_Play.Text;
 			}
 			set
 			{
-				Options_1.Text = value;
+				Options_Play.Text = value;
 			}
 		}
 
@@ -153,23 +157,43 @@ namespace AvalonUgh.Code.Dialogs
 				TextAlignment = TextAlignment.Center,
 				Text = "options"
 			}.AddTo(KnownOptions).MoveContainerTo(0, Options_Y);
-
+			this.Options_Options = Options;
 			Options.TouchOverlay.MoveTo(0, Options_Y);
 
 
-			var Options_1_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * 1;
-			this.Options_1 = new DialogTextBox
+			var Options_CountDown_Y = Convert.ToInt32( Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * 0.5);
+			this.Options_CountDown = new DialogTextBox
+			{
+				Width = Width,
+				Zoom = Zoom,
+				TextAlignment = TextAlignment.Center,
+				Text = "3",
+				Visibility = Visibility.Hidden
+			}.AddTo(KnownOptions).MoveContainerTo(0, Options_CountDown_Y);
+
+			Options_CountDown.TouchOverlay.MoveTo(0, Options_CountDown_Y);
+
+			Options_CountDown.Click +=
+				delegate
+				{
+					if (this.CountDown != null)
+						this.CountDown();
+				};
+
+
+			var Options_Play_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * 1;
+			this.Options_Play = new DialogTextBox
 			{
 				Width = Width,
 				Zoom = Zoom,
 				TextAlignment = TextAlignment.Center,
 				Text = "play",
 				Visibility = Visibility.Visible
-			}.AddTo(KnownOptions).MoveContainerTo(0, Options_1_Y);
+			}.AddTo(KnownOptions).MoveContainerTo(0, Options_Play_Y);
 
-			Options_1.TouchOverlay.MoveTo(0, Options_1_Y);
+			Options_Play.TouchOverlay.MoveTo(0, Options_Play_Y);
 
-			Options_1.Click +=
+			Options_Play.Click +=
 				delegate
 				{
 					if (this.Play != null)
@@ -378,15 +402,15 @@ namespace AvalonUgh.Code.Dialogs
 			Options_Click =
 				delegate
 				{
-					Options_6.Show(Options_1.Visibility != Visibility.Hidden);
+					Options_6.Show(Options_Play.Visibility != Visibility.Hidden);
 
-					Options_Shop.Show(Options_1.Visibility != Visibility.Hidden);
-					Options_MoreGames.Show(Options_1.Visibility != Visibility.Hidden);
+					Options_Shop.Show(Options_Play.Visibility != Visibility.Hidden);
+					Options_MoreGames.Show(Options_Play.Visibility != Visibility.Hidden);
 
-					if (Options_1.Visibility == Visibility.Visible)
+					if (Options_Play.Visibility == Visibility.Visible)
 					{
 						AnimatedBackgroundOpacity = 0.5;
-						Options_1.Visibility = Visibility.Hidden;
+						Options_Play.Visibility = Visibility.Hidden;
 						Options_3.Visibility = Visibility.Visible;
 						Options_Shop.Visibility = Visibility.Visible;
 						Options_2.Visibility = Visibility.Visible;
@@ -395,7 +419,7 @@ namespace AvalonUgh.Code.Dialogs
 					else
 					{
 						AnimatedBackgroundOpacity = 0;
-						Options_1.Visibility = Visibility.Visible;
+						Options_Play.Visibility = Visibility.Visible;
 						Options_3.Visibility = Visibility.Hidden;
 						Options_2.Visibility = Visibility.Hidden;
 						Options_4.Visibility = Visibility.Hidden;

@@ -502,7 +502,7 @@ namespace AvalonUgh.Code
 			{
 				if (this.VelocityY == 0)
 				{
-					this.VelocityY -= this.Zoom * 1.5;
+					this.VelocityY -= this.Zoom * 2.0;
 
 					this.VelocityX *= 1.1;
 

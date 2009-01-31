@@ -207,9 +207,9 @@ namespace AvalonUgh.NetworkCode.Shared
 
 				Slot.ChunkSize = 8 * 30;
 
-				player.ToPlayer.Server_Message(
-					"data: " + Slot.Value.Length + " saved length: " + Slot.Length
-				);
+				//player.ToPlayer.Server_Message(
+				//    "data: " + Slot.Value.Length + " saved length: " + Slot.Length
+				//);
 
 				player.ToPlayer.Server_LoadLevel(i, Slot.Value);
 			}
