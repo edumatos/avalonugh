@@ -83,10 +83,9 @@ namespace AvalonUgh.Labs.MultiplayerTest
 
 					x.button1.Enabled = File.Exists(exe);
 
-					x.button1.Click +=
+					Action CreateNewPlayer =
 						delegate
 						{
-
 							var p = Process.Start(exe);
 
 							x.checkedListBox1.Items.Add(p.Id);
@@ -117,7 +116,12 @@ namespace AvalonUgh.Labs.MultiplayerTest
 
 									//p.CloseMainWindow();
 								};
+						};
 
+					x.button1.Click +=
+						delegate
+						{
+							CreateNewPlayer();
 						};
 
 					x.FormClosed +=
@@ -168,6 +172,8 @@ namespace AvalonUgh.Labs.MultiplayerTest
 
 					//x.ShowServerWindow.Checked = true;
 					//x.ShowServerWindow.Checked = false;
+
+					CreateNewPlayer();
 
 					Application.Run(app);
 
