@@ -20,13 +20,15 @@ set flags=/nologo /verbosity:q /p:Configuration=Release
 
 :: rebuild framework
 
-call :build AvalonUgh.Labs.sln
+::call :build AvalonUgh.Labs.sln
 call :build AvalonUgh.Multiplayer.sln
 
 echo - done building, running flash
 
-start Public/LabsFlash.swf
-start AvalonUgh.Labs.MultiplayerTest\bin\Release\AvalonUgh.Labs.MultiplayerTest.exe
+::start Public/LabsFlash.swf
+pushd AvalonUgh.Labs.MultiplayerTest\bin\Release
+start AvalonUgh.Labs.MultiplayerTest.exe
+popd
 
 popd
 endlocal
