@@ -227,6 +227,8 @@ namespace AvalonUgh.Code.GameWorkspace
 								);
 
 								this.CurrentPort = this.Lobby;
+								Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3");
+
 
 								this.Lobby.Window.BringContainerToFront();
 								this.Lobby.Window.ColorOverlay.Opacity = 0;
