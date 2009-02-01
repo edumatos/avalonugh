@@ -23,7 +23,13 @@ namespace AvalonUgh.Code
 	{
 		public PlayerInfo PlayerInfo;
 
-		public Color ColorStripe { get; set; }
+		public Color GetColorStripeForVehicle(Vehicle v)
+		{
+			if (this.PlayerInfo == null)
+				return Colors.Transparent;
+
+			return v.SupportedColorStripes.Keys.AtModulus(this.PlayerInfo.Identity.NetworkNumber);
+		}
 
 		public double MassCenterModifier { get; set; }
 
@@ -143,7 +149,6 @@ namespace AvalonUgh.Code
 
 		public Actor(int Zoom)
 		{
-			this.ColorStripe = Colors.Gray;
 			this.CanBeHitByVehicle = true;
 			this.RespectPlatforms = true;
 
