@@ -62,6 +62,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Platform> KnownPlatforms = new BindingList<Platform>();
 		public readonly BindingList<Bridge> KnownBridges = new BindingList<Bridge>();
 
+		public readonly BindingList<Actor> KnownComputerActors = new BindingList<Actor>();
 		public readonly BindingList<Actor> KnownActors = new BindingList<Actor>();
 		public readonly BindingList<Vehicle> KnownVehicles = new BindingList<Vehicle>();
 		public readonly BindingList<Tryoperus> KnownTryoperus = new BindingList<Tryoperus>();
@@ -150,6 +151,7 @@ namespace AvalonUgh.Code.Editor
 			//if (Selectors == null)
 			//    throw new ArgumentNullException();
 
+			this.KnownComputerActors.AttachTo(this.KnownActors);
 
 			this.Physics = new Physics
 			{
