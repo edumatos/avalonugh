@@ -45,9 +45,9 @@ namespace AvalonUgh.Labs.Multiplayer
 				() =>
 					new Communication.Bridge
 					{
-						VirtualLatency = VirtualLatency
+						//VirtualLatency = VirtualLatency
 
-						//VirtualLatency = e => e()
+						VirtualLatency = e => e()
 					};
 
 			var Server = new VirtualGame

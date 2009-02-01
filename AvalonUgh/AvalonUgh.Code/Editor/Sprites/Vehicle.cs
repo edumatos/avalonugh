@@ -85,7 +85,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				if (_CurrentDriver != null)
 				{
 					this.ExitIsBlocked = true;
-					this.ColorStripe = value.ColorStripe;
+					this.ColorStripe = value.GetColorStripeForVehicle(this);
 
 					if (_CurrentDriver.CurrentVehicle != this)
 						_CurrentDriver.CurrentVehicle = this;

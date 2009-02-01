@@ -114,7 +114,6 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					var v = new Vehicle(DefaultZoom);
 
-					l.Actor.ColorStripe = v.SupportedColorStripes.Keys.AtModulus(user);
 
 					v.MoveTo(l.X, l.Y);
 
