@@ -751,7 +751,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						 delegate
 						 {
 							 // we will default to 1 local player
-							 //this.Lobby.Menu.Players = 1;
+							 this.Lobby.Menu.Players = 1;
 
 							 Console.WriteLine("lobby loaded");
 

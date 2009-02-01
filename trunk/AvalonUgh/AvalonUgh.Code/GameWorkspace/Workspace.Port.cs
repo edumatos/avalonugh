@@ -27,41 +27,12 @@ namespace AvalonUgh.Code.GameWorkspace
 		{
 			public readonly Window Window = new Window();
 
-			public readonly List<PlayerInfo> TeleportedPlayers = new List<PlayerInfo>();
-
-
-			//public readonly BindingList<PlayerInfo> Players = new BindingList<PlayerInfo>();
-
-			public event Action<PlayerInfo> PlayerJoined;
-
 			public readonly Canvas TouchContainerForViewContent;
 
 			public Port()
 			{
 				this.Window.ContentContainer.Background = Brushes.Black;
 				this.Window.ColorOverlay.Opacity = 1;
-
-				//this.Players.ForEachNewOrExistingItem(
-				//    k =>
-				//    {
-				//        if (PlayerJoined != null)
-				//            PlayerJoined(k);
-
-				//        Action DetectDeparture = null;
-
-				//        DetectDeparture =
-				//            delegate
-				//            {
-				//                if (k.Actor.CurrentLevel != this.Level)
-				//                {
-				//                    k.Actor.CurrentLevelChanged -= DetectDeparture;
-				//                    this.Players.Remove(k);
-				//                }
-				//            };
-
-				//        k.Actor.CurrentLevelChanged += DetectDeparture;
-				//    }
-				//);
 
 				// we are doing some advanced layering now
 				this.TouchContainerForViewContent = new Canvas
