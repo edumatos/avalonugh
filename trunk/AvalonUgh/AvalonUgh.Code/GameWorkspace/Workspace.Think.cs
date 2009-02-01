@@ -5,6 +5,8 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib;
+using AvalonUgh.Code.Editor;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -123,13 +125,29 @@ namespace AvalonUgh.Code.GameWorkspace
 					}
 
 					p.Level.Physics.Apply();
+
+					this.ThinkForComputerPlayers(p.Level);
 				}
 			}
-
 
 			this.LocalIdentity.SyncFrame++;
 		}
 
+		private void ThinkForComputerPlayers(Level level)
+		{
+			if (level.KnownComputerActors.Count > 0)
+				return;
 
+			if (level.KnownCaves.Count == 0)
+				return;
+
+			var c = level.KnownCaves.AtModulus(this.LocalIdentity.SyncFrame);
+
+			var a = new Actor.woman0(level.Zoom);
+
+			level.KnownComputerActors.Add(a);
+
+			AIDirector.ActorExitAnyCave(a, c);
+		}
 	}
 }

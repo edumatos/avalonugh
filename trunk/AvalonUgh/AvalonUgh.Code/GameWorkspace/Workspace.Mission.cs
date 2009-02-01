@@ -297,6 +297,8 @@ namespace AvalonUgh.Code.GameWorkspace
 			// fade to black
 			// fade to view
 			//this.Lobby.Window.ColorOverlay.Element.BringToFront();
+
+			#region Smoke And mirrors
 			this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
 			this.Lobby.Window.ColorOverlay.SetOpacity(1,
 				delegate
@@ -345,7 +347,12 @@ namespace AvalonUgh.Code.GameWorkspace
 						}
 					);
 				}
-			);
+			); 
+			#endregion
+		
+		
+			
+
 		}
 	}
 }
