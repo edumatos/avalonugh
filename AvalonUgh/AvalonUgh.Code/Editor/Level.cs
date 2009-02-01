@@ -180,18 +180,7 @@ namespace AvalonUgh.Code.Editor
 				Sign = (Attribute.Int32_Int32)"sign",
 			};
 
-			Create.Rock.Assigned +=
-				x =>
-				{
-					Selectors.Rock.Size_1x1.CreateTo(this,
-						new View.SelectorPosition
-						{
-							ContentX = x - PrimitiveTile.Width / 2,
-							ContentY = (this.TileRowsProcessed - 1) * PrimitiveTile.Heigth
-						}
-					);
-				};
-
+		
 
 			Create.tryo.Assigned +=
 				x =>
@@ -205,6 +194,7 @@ namespace AvalonUgh.Code.Editor
 					);
 				};
 
+			#region vehicle
 			Create.Vehicle.Assigned +=
 				x =>
 				{
@@ -216,12 +206,34 @@ namespace AvalonUgh.Code.Editor
 						}
 					);
 				};
+
 			Attribute.Int32_Array SyncAttributeVehicle = "*vehicle";
 			SyncAttributeVehicle.Assigned +=
 				delegate
 				{
 					Selectors.Vehicle.Size_2x2.CreateTo(this, SyncAttributeVehicle);
 				};
+			#endregion
+
+			#region Rock
+			Create.Rock.Assigned +=
+				x =>
+				{
+					Selectors.Rock.Size_1x1.CreateTo(this,
+						new View.SelectorPosition
+						{
+							ContentX = x - PrimitiveTile.Width / 2,
+							ContentY = (this.TileRowsProcessed - 1) * PrimitiveTile.Heigth
+						}
+					);
+				};
+			Attribute.Int32_Array SyncAttributeRock = "*rock";
+			SyncAttributeRock.Assigned +=
+				delegate
+				{
+					Selectors.Rock.Size_1x1.CreateTo(this, SyncAttributeRock);
+				};
+			#endregion
 
 
 			Create.Dino.Assigned +=
@@ -288,7 +300,7 @@ namespace AvalonUgh.Code.Editor
 				Create.Vehicle,
 
 				SyncAttributeVehicle,
-
+				SyncAttributeRock,
 
 				AttributeWind,
 				AttributeSnow,

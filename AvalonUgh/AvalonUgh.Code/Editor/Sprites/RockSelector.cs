@@ -61,6 +61,38 @@ namespace AvalonUgh.Code.Editor.Sprites
 				v.AddTo(Level.KnownRocks);
 				v.MoveTo(x, y);
 			}
+
+			public void CreateTo(Level level, Level.Attribute.Int32_Array SyncAttributeRock)
+			{
+				var v = new Rock(level.Zoom);
+
+				// this kind of serializing and deserializing should be hard typed
+
+				v.MoveTo(
+					SyncAttributeRock[0],
+					SyncAttributeRock[1]
+				);
+				v.VelocityX = SyncAttributeRock[2];
+				v.VelocityY = SyncAttributeRock[3];
+
+				if (SyncAttributeRock.Value[4] > 0)
+				{
+					var g = new Rock(level.Zoom);
+
+					g.MoveTo(
+						SyncAttributeRock[5],
+						SyncAttributeRock[6]
+					);
+					g.Container.Opacity = 0.5;
+
+
+					v.StartPosition = g;
+				}
+
+				
+
+				level.KnownRocks.Add(v);
+			}
 		}
 
 	}
