@@ -27,13 +27,26 @@ namespace AvalonUgh.Code.Editor.Sprites
 			{
 				InternalColorStripe = value;
 
+				AssertValueColor(value);
 				foreach (var v in this.SupportedColorStripes)
 				{
+					AssertKeyColor(v.Key);
 					v.Value.Show(v.Key == value);
 				}
 
 			}
 		}
+
+		static void AssertKeyColor(Color c)
+		{
+			var r = c.R;
+		}
+
+		static void AssertValueColor(Color c)
+		{
+			var r = c.R;
+		}
+
 
 		public Dictionary<Color, Image> SupportedColorStripes;
 
