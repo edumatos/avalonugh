@@ -78,7 +78,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly BindingList<Property> Items = new BindingList<Property>();
 
-		public readonly Property PropertyText = new Property { KeyText = "Text", ValueText = "Look what I made!" };
+		public readonly Property PropertyText = new Property { KeyText = "Text", ValueText = "My new level" };
 		public readonly Property PropertyCode = new Property { KeyText = "Code", ValueText = "" };
 		public readonly Property PropertyNextLevelCode = new Property { KeyText = "Next Level Code", ValueText = "" };
 
@@ -108,8 +108,14 @@ namespace AvalonUgh.Code.Editor
 			Items.ForEachNewOrExistingItem(
 				(p, i) =>
 				{
-					p.Key.Orphanize().AttachTo(this.ContentContainer).MoveTo(Preview.Width, PreviewContainer_Height +  i * (22 + Padding));
-					p.Value.Orphanize().AttachTo(this.OverlayContainer).MoveTo(Preview.Width + 100 + Padding, PreviewContainer_Height + i * (22 + Padding));
+					p.Key.Orphanize().AttachTo(this.ContentContainer).MoveTo(
+						Preview.Width,
+						40 + PreviewContainer_Height + i * (22 + Padding)
+					);
+					p.Value.Orphanize().AttachTo(this.OverlayContainer).MoveTo(
+						Preview.Width + 100 + Padding,
+						40 + PreviewContainer_Height + i * (22 + Padding)
+					);
 				}
 			);
 

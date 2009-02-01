@@ -275,8 +275,12 @@ namespace AvalonUgh.Code.GameWorkspace
 					if (SaveTarget.Data != null)
 						return;
 
-					SaveTarget.Data = this.Editor.SaveWindow.Preview.LevelReference.Data;
+					this.Editor.Level.AttributeText.Value = this.Editor.SaveWindow.PropertyText.ValueText;
+					this.Editor.Level.AttributeCode.Value = this.Editor.SaveWindow.PropertyCode.ValueText;
+
 					this.Editor.SaveWindow.Hide();
+
+					SaveTarget.Data = this.Editor.Level.ToString();
 				};
 
 			#region LoadWindow

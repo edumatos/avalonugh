@@ -129,16 +129,19 @@ namespace AvalonUgh.Code.GameWorkspace
 					// sync difficulty
 					this.Lobby.Menu.DifficultyLevel = difficulty;
 
-
-					// we need protection for reentrancy
-
-
-					this.Lobby.Menu.Options_CountDown.Show();
+					// if we are not in the lobby, 
 
 					this.Lobby.Menu.Options_Options.Hide();
 					this.Lobby.Menu.Options_Options.TouchOverlay.Hide();
 					this.Lobby.Menu.Options_Play.Hide();
 					this.Lobby.Menu.Options_Play.TouchOverlay.Hide();
+
+
+
+					// we need protection for reentrancy
+
+
+					this.Lobby.Menu.Options_CountDown.Show();
 
 					Action<int> SetCounter =
 						e =>
@@ -196,18 +199,23 @@ namespace AvalonUgh.Code.GameWorkspace
 						}
 					);
 
+
+
 					this.PrimaryMission.WhenLoaded(
 						delegate
 						{
 
-							
+
 							// we are showing black lobby
 							// we now need to show the introducion to the level
 							// and we need to teleport our guys over to the mission
 
 							this.Console.WriteLine("ready for mission at frame " + this.LocalIdentity.SyncFrame);
 
-							EnterMission();
+							if (this.CurrentPort == this.Lobby)
+							{
+								EnterMission();
+							}
 
 							this.Lobby.Menu.Options_CountDown.Hide();
 
