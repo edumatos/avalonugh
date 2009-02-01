@@ -160,21 +160,58 @@ namespace AvalonUgh.Code.Editor
 
 				if (Mode == ToStringMode.ForSync)
 				{
+					foreach (var i in this.KnownRocks)
+					{
+						WriteAttribute(SerializeRock(i));
+					}
+
+					// vehicles can contain rocks, thus the ordering
 
 					foreach (var i in this.KnownVehicles)
 					{
-
 						WriteAttribute(SerializeVehicle(i));
 					}
 
-				
+
 				}
 
 				return s.ToString();
 			}
 		}
 
-		private static Attribute.Int32_Array SerializeVehicle(AvalonUgh.Code.Editor.Sprites.Vehicle i)
+		private Attribute.Int32_Array SerializeRock(AvalonUgh.Code.Editor.Sprites.Rock i)
+		{
+			var StartPosition = i.StartPosition;
+
+			Attribute.Int32_Array a = "*rock";
+
+			a[0] = i.X;
+			a[1] = i.Y;
+			a[2] = i.VelocityX;
+			a[3] = i.VelocityY;
+
+			// use the sync version of values
+			i.X = a[0];
+			i.Y = a[1];
+			i.VelocityX = a[2];
+			i.VelocityY = a[3];
+
+			if (StartPosition != null)
+			{
+				// bool StartPosition
+				a.Value[4] = 1;
+				a[5] = StartPosition.X;
+				a[6] = StartPosition.Y;
+
+				StartPosition.X = a[5];
+				StartPosition.Y = a[6];
+			}
+
+
+			return a;
+		}
+
+		private Attribute.Int32_Array SerializeVehicle(AvalonUgh.Code.Editor.Sprites.Vehicle i)
 		{
 			var StartPosition = i.StartPosition;
 
@@ -210,6 +247,14 @@ namespace AvalonUgh.Code.Editor
 				a.Value[8] = i.CurrentDriver.PlayerInfo.Identity.NetworkNumber;
 				a.Value[9] = i.CurrentDriver.PlayerInfo.IdentityLocal;
 			}
+
+			if (i.CurrentWeapon != null)
+			{
+				a.Value[10] = 1;
+				a.Value[11] = this.KnownRocks.IndexOf(i.CurrentWeapon);
+
+			}
+
 			return a;
 		}
 	}

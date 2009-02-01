@@ -119,10 +119,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 					var NetworkNumber = SyncAttributeVehicle.Value[8];
 					var IdentityLocal = SyncAttributeVehicle.Value[9];
 
-					//
-					v.IsUnmanned = false;
-
-
+					#region CurrentDriver
 					level.KnownActors.ForEachNewOrExistingItem(
 						value =>
 						{
@@ -142,6 +139,15 @@ namespace AvalonUgh.Code.Editor.Sprites
 							v = null;
 						}
 					);
+					#endregion
+				}
+
+
+				if (SyncAttributeVehicle.Value[10] > 0)
+				{
+					var RockIndex = SyncAttributeVehicle.Value[8];
+
+					v.CurrentWeapon = level.KnownRocks.AtModulus(RockIndex);
 				}
 
 				level.KnownVehicles.Add(v);

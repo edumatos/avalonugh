@@ -135,7 +135,7 @@ namespace AvalonUgh.Code.Editor
 			[Script]
 			public sealed class Int32_Array : Attribute
 			{
-				public int[] Value = new int[10];
+				public int[] Value = new int[16];
 
 				public event Action<int[]> Assigned;
 
