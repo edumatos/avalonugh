@@ -202,7 +202,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							 // remove all locals from all ports
 							 this.LocalIdentity.Locals.ForEach(
-								 k => this.Sync_TeleportTo(this.LocalIdentity.Locals, 0, k.IdentityLocal, 0, 0, 0, 0)
+								 k => this.Sync_TeleportTo(this.LocalIdentity.NetworkNumber, 0, k.IdentityLocal, 0, 0, 0, 0)
 							 );
 
 							 // now we need to sync the editor
@@ -233,7 +233,7 @@ namespace AvalonUgh.Code.GameWorkspace
 										 var t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y });
 
 										 this.Sync_TeleportTo(
-											 this.LocalIdentity.Locals,
+											 this.LocalIdentity.NetworkNumber,
 											 this.Editor.PortIdentity,
 											 p.IdentityLocal, t.x, t.y, 0, 0
 										 );
@@ -301,7 +301,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						{
 							// remove all locals from all ports
 							this.LocalIdentity.Locals.ForEach(
-								k => this.Sync_TeleportTo(this.LocalIdentity.Locals, 0, k.IdentityLocal, 0, 0, 0, 0)
+								k => this.Sync_TeleportTo(this.LocalIdentity.NetworkNumber, 0, k.IdentityLocal, 0, 0, 0, 0)
 							);
 
 							this.Editor.WhenLoadedQueue.Enqueue(
@@ -314,7 +314,7 @@ namespace AvalonUgh.Code.GameWorkspace
 										var t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y });
 
 										this.Sync_TeleportTo(
-											this.LocalIdentity.Locals,
+											this.LocalIdentity.NetworkNumber,
 											this.Editor.PortIdentity,
 											p.IdentityLocal, t.x, t.y, 0, 0
 										);

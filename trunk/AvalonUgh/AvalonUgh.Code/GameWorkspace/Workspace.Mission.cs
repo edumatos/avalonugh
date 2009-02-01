@@ -260,7 +260,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				var p = this.PrimaryMission.GetRandomEntrypointForVehicle((x, y) => new { x, y });
 
 				this.Sync_TeleportTo(
-					this.LocalIdentity.Locals,
+					this.LocalIdentity.NetworkNumber,
 					this.PrimaryMission.PortIdentity,
 					i.IdentityLocal,
 					p.x,

@@ -212,7 +212,7 @@ namespace AvalonUgh.Labs.Multiplayer
 			b2.Click += delegate { SpawnClients(2); };
 			b3.Click += delegate { SpawnClients(3); };
 
-			50.AtDelay(() => SpawnClients(2));
+			50.AtDelay(() => SpawnClients(1));
 		}
 	}
 }

@@ -55,6 +55,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				PercisionY = PrimitiveTile.Heigth;
 			}
 
+
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
 				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
@@ -78,11 +79,72 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				Level.KnownVehicles.Add(v);
 
+			}
+
+			public void CreateTo(Level level, Level.Attribute.Int32_Array SyncAttributeVehicle)
+			{
+				var v = new Vehicle(level.Zoom);
+
+				// this kind of serializing and deserializing should be hard typed
+
+				v.CurrentLevel = level;
+				v.CurrentDriver = null;
+				v.MoveTo(
+					SyncAttributeVehicle[0], 
+					SyncAttributeVehicle[1]
+				);
+				v.VelocityX = SyncAttributeVehicle[2];
+				v.VelocityY = SyncAttributeVehicle[3];
+
+				if (SyncAttributeVehicle.Value[4] > 0)
+				{
+					var g = new Vehicle(level.Zoom);
+
+					g.CurrentDriver = null;
+					g.MoveTo(
+						SyncAttributeVehicle[5],
+						SyncAttributeVehicle[6]	
+					);
+					g.Container.Opacity = 0.5;
 
 
-	
+					v.StartPosition = g;
+				}
 
-				// we should add a ghost for the vehicle starting point
+				if (SyncAttributeVehicle.Value[7] > 0)
+				{
+					// we have to find the driver
+					// he is either in our world
+					// or comes at a future point of time
+					var NetworkNumber = SyncAttributeVehicle.Value[8];
+					var IdentityLocal = SyncAttributeVehicle.Value[9];
+
+					//
+					v.IsUnmanned = false;
+
+
+					level.KnownActors.ForEachNewOrExistingItem(
+						value =>
+						{
+							if (v == null)
+								return;
+
+							if (value.PlayerInfo == null)
+								return;
+
+							if (value.PlayerInfo.IdentityLocal != IdentityLocal)
+								return;
+
+							if (value.PlayerInfo.Identity.NetworkNumber != NetworkNumber)
+								return;
+
+							v.CurrentDriver = value;
+							v = null;
+						}
+					);
+				}
+
+				level.KnownVehicles.Add(v);
 			}
 		}
 	}

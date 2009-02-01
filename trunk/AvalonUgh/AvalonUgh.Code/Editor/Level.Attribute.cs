@@ -133,6 +133,66 @@ namespace AvalonUgh.Code.Editor
 			}
 
 			[Script]
+			public sealed class Int32_Array : Attribute
+			{
+				public int[] Value = new int[10];
+
+				public event Action<int[]> Assigned;
+
+				public static implicit operator Attribute.Int32_Array(string Key)
+				{
+					return new Attribute.Int32_Array { Key = Key }.Apply(
+						k =>
+							k.Assign =
+								v =>
+								{
+									var p = v.Split(';');
+
+									for (int i = 0; i < k.Value.Length; i++)
+									{
+										k.Value[i] = int.Parse(p[i]);
+									}
+
+									k.Assigned(k.Value);
+								}
+					);
+				}
+
+				public double DoubleToIntegerScale = 1000.0;
+
+
+
+				public double this[int index]
+				{
+					get
+					{
+						return this.Value[index] / DoubleToIntegerScale;
+					}
+					set
+					{
+						this.Value[index] = Convert.ToInt32(value * DoubleToIntegerScale);
+					}
+				}
+
+				public override string ToString()
+				{
+					var w = new StringBuilder();
+
+					w.Append(this.Key + ": ");
+
+					for (int i = 0; i < this.Value.Length; i++)
+					{
+						if (i > 0)
+							w.Append(";");
+
+						w.Append(this.Value[i]);
+					}
+
+					return w.ToString();
+				}
+			}
+
+			[Script]
 			public sealed class Int32_Int32 : Attribute
 			{
 				public int Value0;

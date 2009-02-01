@@ -21,7 +21,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 		[Script]
-		public delegate void DelegateTeleportTo(BindingList<PlayerInfo> a, int port, int local, double x, double y, double vx, double vy);
+		public delegate void DelegateTeleportTo(int user, int port, int local, double x, double y, double vx, double vy);
 		public DelegateTeleportTo Sync_TeleportTo;
 
 		[Script]
@@ -128,15 +128,19 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			#region Sync_TeleportTo local implementation
 			this.Sync_TeleportTo =
-				(BindingList<PlayerInfo> a, int port, int local, double x, double y, double vx, double vy) =>
+				(int user, int port, int local, double x, double y, double vx, double vy) =>
 				{
+					var c = this.AllPlayers.Single(k => k.NetworkNumber == user);
+					BindingList<PlayerInfo> a = c.Locals;
+
 					var p = a.SingleOrDefault(k => k.IdentityLocal == local);
 
 					if (p == null)
 					{
 						p = new PlayerInfo
 						{
-							Identity = LocalIdentity,
+							Identity = c,
+							IdentityLocal = local,
 							Input = new PlayerInput
 							{
 
@@ -154,8 +158,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 						this.Console.WriteLine("created new player via teleport " + new { p.Identity, p.IdentityLocal });
 
-						p.IdentityLocal = local;
-						
+						p.Actor.PlayerInfo = p;
 					}
 
 
@@ -164,12 +167,14 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					var CurrentPort = this.Ports.SingleOrDefault(k => k.PortIdentity == port);
 
+					p.Actor.CurrentVehicle = null;
+
+					// assigning a level may assign a pending vehcile
 					if (CurrentPort == null)
 						p.Actor.CurrentLevel = null;
 					else
 						p.Actor.CurrentLevel = CurrentPort.Level;
 
-					p.Actor.CurrentVehicle = null;
 
 					p.Actor.MoveTo(x, y);
 					p.Actor.VelocityX = vx;

@@ -300,7 +300,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 												Port.PortIdentity,
 												this.Content.LocalIdentity.SyncFrame,
 												-1,
-												Port.Level.ToString()
+												Port.Level.ToString(Level.ToStringMode.ForSync)
 											);
 
 										}
@@ -662,7 +662,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					this.Content.LocalIdentity.HandleFrame(e.frame,
 						delegate
 						{
-							Sync_TeleportTo(c.Locals, e.port, e.local, e.x, e.y, e.vx, e.vy);
+							Sync_TeleportTo(e.user, e.port, e.local, e.x, e.y, e.vx, e.vy);
 						},
 						delegate
 						{
@@ -672,16 +672,17 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				};
 
 			this.Content.Sync_TeleportTo =
-				(BindingList<PlayerInfo> a, int port, int local, double x, double y, double vx, double vy) =>
+				(int user, int port, int local, double x, double y, double vx, double vy) =>
 				{
 					var FutureFrame = this.Content.LocalIdentity.HandleFutureFrame(
 						delegate
 						{
 							// do a local teleport in the future
-							Sync_TeleportTo(a, port, local, x, y, vx, vy);
+							Sync_TeleportTo(user, port, local, x, y, vx, vy);
 						}
 					);
 
+					// we cannot teleoprt other player locals
 					this.Messages.TeleportTo(FutureFrame, local, port, x, y, vx, vy);
 				};
 

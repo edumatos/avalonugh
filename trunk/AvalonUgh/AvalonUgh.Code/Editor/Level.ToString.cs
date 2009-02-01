@@ -92,7 +92,7 @@ namespace AvalonUgh.Code.Editor
 				WriteTiles(this.KnownPlatforms.ToArray());
 				WriteTiles(this.KnownBridges.ToArray());
 
-				
+
 				Map.ForEach(
 					(row, index) =>
 					{
@@ -104,12 +104,12 @@ namespace AvalonUgh.Code.Editor
 
 
 						WriteAttribute.InvokeAsEnumerable(
-							from tree in  this.KnownTrees
+							from tree in this.KnownTrees
 							where tree.BaseY == index
 							select new Attribute.Int32 { Key = "tree", Value = tree.UnscaledX }
 						);
 
-				
+
 
 						WriteAttribute.InvokeAsEnumerable(
 							from i in this.KnownGold
@@ -123,30 +123,33 @@ namespace AvalonUgh.Code.Editor
 							select new Attribute.Int32_Int32 { Key = "sign", Value0 = i.UnscaledX, Value1 = i.Value }
 						);
 
-					
-						WriteAttribute.InvokeAsEnumerable(
-							from i in this.KnownVehicles
-							let StartPosition = i.StartPosition
-							where StartPosition != null
-							where StartPosition.BaseY == index
-							select new Attribute.Int32 { Key = "vehicle", Value = StartPosition.UnscaledX }
-						);
+						if (Mode == ToStringMode.ForSavedLevel)
+						{
+							// for saved levels we store only the start positions
+							WriteAttribute.InvokeAsEnumerable(
+								from i in this.KnownVehicles
+								let StartPosition = i.StartPosition
+								where StartPosition != null
+								where StartPosition.BaseY == index
+								select new Attribute.Int32 { Key = "vehicle", Value = StartPosition.UnscaledX }
+							);
 
-						WriteAttribute.InvokeAsEnumerable(
-							from i in this.KnownTryoperus
-							let StartPosition = i.StartPosition
-							where StartPosition != null
-							where StartPosition.BaseY == index
-							select new Attribute.Int32 { Key = Sprites.Tryoperus.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
-						);
+							WriteAttribute.InvokeAsEnumerable(
+								from i in this.KnownTryoperus
+								let StartPosition = i.StartPosition
+								where StartPosition != null
+								where StartPosition.BaseY == index
+								select new Attribute.Int32 { Key = Sprites.Tryoperus.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
+							);
 
-						WriteAttribute.InvokeAsEnumerable(
-							from i in this.KnownRocks
-							let StartPosition = i.StartPosition
-							where StartPosition != null
-							where StartPosition.BaseY == index
-							select new Attribute.Int32 { Key = Sprites.Rock.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
-						);
+							WriteAttribute.InvokeAsEnumerable(
+								from i in this.KnownRocks
+								let StartPosition = i.StartPosition
+								where StartPosition != null
+								where StartPosition.BaseY == index
+								select new Attribute.Int32 { Key = Sprites.Rock.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
+							);
+						}
 
 
 						s.WriteLine(row);
@@ -155,8 +158,59 @@ namespace AvalonUgh.Code.Editor
 
 				s.WriteLine(new string('#', w));
 
+				if (Mode == ToStringMode.ForSync)
+				{
+					foreach (var i in this.KnownVehicles)
+					{
+						Attribute.Int32_Array a = SerializeVehicle(i);
+
+						WriteAttribute(a);
+					}
+
+				
+				}
+
 				return s.ToString();
 			}
+		}
+
+		private static Attribute.Int32_Array SerializeVehicle(AvalonUgh.Code.Editor.Sprites.Vehicle i)
+		{
+			var StartPosition = i.StartPosition;
+
+			Attribute.Int32_Array a = "*vehicle";
+
+			a[0] = i.X;
+			a[1] = i.Y;
+			a[2] = i.VelocityX;
+			a[3] = i.VelocityY;
+
+			// use the sync version of values
+			i.X = a[0];
+			i.Y = a[1];
+			i.VelocityX = a[2];
+			i.VelocityY = a[3];
+
+			if (StartPosition != null)
+			{
+				// bool StartPosition
+				a.Value[4] = 1;
+				a[5] = StartPosition.X;
+				a[6] = StartPosition.Y;
+
+				StartPosition.X = a[5];
+				StartPosition.Y = a[6];
+			}
+
+			if (i.CurrentDriver != null)
+			{
+				a.Value[7] = 1;
+
+				// who is the driver?
+				a.Value[8] = i.CurrentDriver.PlayerInfo.Identity.NetworkNumber;
+				a.Value[9] = i.CurrentDriver.PlayerInfo.IdentityLocal;
+			}
+			return a;
 		}
 	}
 }
