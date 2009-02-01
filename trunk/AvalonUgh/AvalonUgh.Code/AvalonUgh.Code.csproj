@@ -151,6 +151,7 @@
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameSocialLinks.cs" />
+    <Compile Include="GameWorkspace\Workspace.ThinkForComputerPlayers.cs" />
     <Compile Include="GameWorkspace\Workspace.Lobby.cs" />
     <Compile Include="GameWorkspace\Workspace.Mission.cs" />
     <Compile Include="GameWorkspace\Workspace.BackgroundLoading.cs" />

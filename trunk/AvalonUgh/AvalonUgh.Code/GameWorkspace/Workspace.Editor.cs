@@ -278,6 +278,8 @@ namespace AvalonUgh.Code.GameWorkspace
 					this.Editor.Level.AttributeText.Value = this.Editor.SaveWindow.PropertyText.ValueText;
 					this.Editor.Level.AttributeCode.Value = this.Editor.SaveWindow.PropertyCode.ValueText;
 
+					this.Lobby.Menu.Password = this.Editor.SaveWindow.PropertyCode.ValueText;
+
 					this.Editor.SaveWindow.Hide();
 
 					SaveTarget.Data = this.Editor.Level.ToString();

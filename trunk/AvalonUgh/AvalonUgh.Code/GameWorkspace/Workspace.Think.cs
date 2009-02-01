@@ -17,7 +17,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		public Window FrameStatusToolbar;
 
-	
+
 
 		void StartThinking()
 		{
@@ -61,8 +61,9 @@ namespace AvalonUgh.Code.GameWorkspace
 			ThinkTimer = (1000 / DefaultFramerate).AtInterval(
 				delegate
 				{
-					StatusText.Text = new { 
-						Frame = this.LocalIdentity.SyncFrame, 
+					StatusText.Text = new
+					{
+						Frame = this.LocalIdentity.SyncFrame,
 						Paused = this.LocalIdentity.SyncFramePaused,
 						Limit = this.LocalIdentity.SyncFrameLimit,
 					}.ToString();
@@ -124,6 +125,8 @@ namespace AvalonUgh.Code.GameWorkspace
 						t.Think();
 					}
 
+
+
 					p.Level.Physics.Apply();
 
 					this.ThinkForComputerPlayers(p.Level);
@@ -133,21 +136,5 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.LocalIdentity.SyncFrame++;
 		}
 
-		private void ThinkForComputerPlayers(Level level)
-		{
-			if (level.KnownComputerActors.Count > 0)
-				return;
-
-			if (level.KnownCaves.Count == 0)
-				return;
-
-			var c = level.KnownCaves.AtModulus(this.LocalIdentity.SyncFrame);
-
-			var a = new Actor.woman0(level.Zoom);
-
-			level.KnownComputerActors.Add(a);
-
-			AIDirector.ActorExitAnyCave(a, c);
-		}
 	}
 }
