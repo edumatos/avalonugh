@@ -226,7 +226,7 @@ namespace AvalonUgh.Code.GameWorkspace
 										var p = this.Lobby.GetRandomEntrypoint((x, y) => new { x, y });
 
 										this.Sync_TeleportTo(
-											this.LocalIdentity.Locals, 
+											this.LocalIdentity.NetworkNumber, 
 											this.Lobby.PortIdentity, 
 											k.IdentityLocal,
 											p.x, 

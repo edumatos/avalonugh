@@ -92,6 +92,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="docs\description.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_bottom_left.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_bottom_right.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_bottom_span.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_middle_left.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_middle_right.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_top_left.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_top_right.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Comparision\layout_top_span.png" />

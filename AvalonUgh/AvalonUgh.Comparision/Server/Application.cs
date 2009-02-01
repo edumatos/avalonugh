@@ -61,6 +61,8 @@ namespace AvalonUgh.Comparision.Server
 			(AvalonUgh.Comparision.Shared.KnownAssets.Path.Assets + "/jsc.png").ToImageToConsole();
 			Console.WriteLine("</a>");
 
+			Native.Link("multiplayer", "?multiplayer");
+
 
 			Action<int, int, string> CreateIFrame =
 				(w, h, src) => Console.WriteLine("<iframe frameborder='0' width='" + w + "' height='" + h + "' src='" + src + "' ></iframe>"); ;

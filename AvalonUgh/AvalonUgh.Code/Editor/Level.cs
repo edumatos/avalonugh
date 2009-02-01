@@ -216,6 +216,12 @@ namespace AvalonUgh.Code.Editor
 						}
 					);
 				};
+			Attribute.Int32_Array SyncAttributeVehicle = "*vehicle";
+			SyncAttributeVehicle.Assigned +=
+				delegate
+				{
+					Selectors.Vehicle.Size_2x2.CreateTo(this, SyncAttributeVehicle);
+				};
 
 
 			Create.Dino.Assigned +=
@@ -267,17 +273,21 @@ namespace AvalonUgh.Code.Editor
 					}.AddTo(KnownSigns).MoveBaseTo(x, y);
 				};
 
+
 		
 
 			var Commands = new AttributeDictonary
 			{
 				Create.Dino,
 				Create.Gold,
-				Create.Rock,
-				Create.Vehicle,
 				Create.Sign,
 				Create.Tree,
+				
 				Create.tryo,
+				Create.Rock,
+				Create.Vehicle,
+
+				SyncAttributeVehicle,
 
 
 				AttributeWind,

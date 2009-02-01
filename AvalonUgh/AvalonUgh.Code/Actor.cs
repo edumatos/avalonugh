@@ -21,6 +21,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public PlayerInfo PlayerInfo;
+
 		public Color ColorStripe { get; set; }
 
 		public double MassCenterModifier { get; set; }
@@ -141,6 +143,7 @@ namespace AvalonUgh.Code
 
 		public Actor(int Zoom)
 		{
+			this.ColorStripe = Colors.Gray;
 			this.CanBeHitByVehicle = true;
 			this.RespectPlatforms = true;
 

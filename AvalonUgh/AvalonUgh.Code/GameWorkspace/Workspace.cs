@@ -547,7 +547,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						// this function call may need to be synchronized in time
 						// in network mode
 						this.Sync_TeleportTo(
-							this.LocalIdentity.Locals,
+							this.LocalIdentity.NetworkNumber,
 							this.CurrentPort.PortIdentity,
 							this.LocalIdentity.Locals.Count,
 							EntryPoint.x,
@@ -561,7 +561,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						var t = this.Editor.GetRandomEntrypoint((x, y) => new { x, y });
 
 						this.Sync_TeleportTo(
-							this.LocalIdentity.Locals,
+							this.LocalIdentity.NetworkNumber,
 							this.CurrentPort.PortIdentity,
 							this.LocalIdentity.Locals.Count,
 							t.x,
@@ -576,7 +576,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						var t = this.PrimaryMission.GetRandomEntrypoint((x, y) => new { x, y });
 
 						this.Sync_TeleportTo(
-							this.LocalIdentity.Locals,
+							this.LocalIdentity.NetworkNumber,
 							this.CurrentPort.PortIdentity,
 							this.LocalIdentity.Locals.Count,
 							t.x,
@@ -751,7 +751,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						 delegate
 						 {
 							 // we will default to 1 local player
-							 this.Lobby.Menu.Players = 1;
+							 //this.Lobby.Menu.Players = 1;
 
 							 Console.WriteLine("lobby loaded");
 
