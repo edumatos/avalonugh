@@ -96,6 +96,8 @@ namespace AvalonUgh.Code
 
 		public bool EnterVehicleBlocked;
 
+		public int FramesWaitedForNextAction;
+
 		public Cave CurrentCave;
 
 		public bool CanBeHitByVehicle;
@@ -190,6 +192,7 @@ namespace AvalonUgh.Code
 			}
 			set
 			{
+
 				_Animation = value;
 
 				Console.WriteLine(new { ActorAnimation = value }.ToString());
