@@ -6,8 +6,9 @@ echo - svn update
 X:\util\TortoiseSVN\bin\TortoiseProc.exe /command:update /path:"." /notempfile /closeonend:1
 echo status:  %ERRORLEVEL% 
 
-echo - kill running flash
+echo - kill running demos
 taskkill /f /im FlashPlayer.exe  
+taskkill /f /im AvalonUgh.Labs.MultiplayerTest.exe
 
 
 echo - hint path fix
@@ -20,11 +21,12 @@ set flags=/nologo /verbosity:q /p:Configuration=Release
 :: rebuild framework
 
 call :build AvalonUgh.Labs.sln
+call :build AvalonUgh.Multiplayer.sln
 
 echo - done building, running flash
 
 start Public/LabsFlash.swf
-
+start AvalonUgh.Labs.MultiplayerTest\bin\Release\AvalonUgh.Labs.MultiplayerTest.exe
 
 popd
 endlocal
