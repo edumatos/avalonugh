@@ -316,6 +316,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					PrimaryMission.Fail.Hide();
 
 					this.CurrentPort = this.PrimaryMission;
+					Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music2.mp3");
 
 
 

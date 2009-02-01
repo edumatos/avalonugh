@@ -98,9 +98,9 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			this.Music = new AudioLoop
 			{
-				Volume = 0.3,
+				Volume = 0.6,
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
-				//Enabled = true,
+				
 			};
 
 			this.EmbeddedLevels.AddRange(
