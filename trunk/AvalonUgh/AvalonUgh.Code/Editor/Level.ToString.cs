@@ -160,11 +160,11 @@ namespace AvalonUgh.Code.Editor
 
 				if (Mode == ToStringMode.ForSync)
 				{
+
 					foreach (var i in this.KnownVehicles)
 					{
-						Attribute.Int32_Array a = SerializeVehicle(i);
 
-						WriteAttribute(a);
+						WriteAttribute(SerializeVehicle(i));
 					}
 
 				
