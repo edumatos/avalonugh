@@ -1,5 +1,5 @@
 #summary One-sentence summary of this page.
-#labels Featured
+#labels Featured,video
 
 = Introduction =
 
@@ -71,4 +71,5 @@ Users shall be able to create new levels and exchange those, either by:
  # all levels loaded at multiplayer games
 
 = Videos =
- # http://www.youtube.com/watch?v=lluAkkLRdHI
+
+<wiki:video url="http://www.youtube.com/watch?v=lluAkkLRdHI"/>
