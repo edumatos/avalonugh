@@ -109,5 +109,19 @@ namespace AvalonUgh.Code
 				Bottom = this.Bottom + y,
 			};
 		}
+
+		public Obstacle ToPercision(double e)
+		{
+			var Left = Math.Round(this.Left / e) * e;
+			var Top = Math.Round(this.Top / e) * e;
+
+			return new Obstacle
+			{
+				Left = Left,
+				Top = Top,
+				Right = Left + Width,
+				Bottom = Top + Height
+			};
+		}
 	}
 }

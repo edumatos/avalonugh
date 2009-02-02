@@ -7,6 +7,9 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib;
 using AvalonUgh.Code.Editor;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Shared;
+using System;
+using System.Collections.Generic;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -17,7 +20,9 @@ namespace AvalonUgh.Code.GameWorkspace
 		{
 			foreach (var p in level.KnownComputerActors)
 			{
-				var p_AsObstacle = p.ToObstacle();
+				var p_AsObstacle = p.ToObstacle().ToPercision(
+					PrimitiveTile.Width * level.Zoom / 2
+				);
 
 				if (p.AIInputEnabled)
 				{
@@ -56,22 +61,71 @@ namespace AvalonUgh.Code.GameWorkspace
 							ShouldStopWalking = true;
 						}
 
+						// where to?
+						// how far are we from the sign anyhow?
+
+						Func<ISupportsObstacle[], int, bool> Intersects =
+							(source, x) =>
+							{
+								var o = p_AsObstacle.WithOffset(level.Zoom * PrimitiveTile.Width * x, 0);
+
+								return source.Any(k => k.ToObstacle().Intersects(o));
+							};
+
+						var SignDistanceThisWay = Enumerable.FirstOrDefault(
+							from i in Enumerable.Range(0, 10)
+							where Intersects(level.KnownSigns.ToArray(), i)
+							select new { i }
+						);
+
+						var CaveDistanceTheOtherWay = Enumerable.FirstOrDefault(
+							from i in Enumerable.Range(0, 10)
+							where Intersects(level.KnownCaves.ToArray(), -i)
+							select new { i }
+						);
+
+
+						if (CaveDistanceTheOtherWay != null)
+							if (SignDistanceThisWay != null)
+								if (SignDistanceThisWay.i <= CaveDistanceTheOtherWay.i)
+									ShouldStopWalking = true;
+
 						if (ShouldStopWalking)
 						{
 							p.VelocityX *= 0.7;
 						}
 						else
 						{
-							p.VelocityX = (p.VelocityX + 0.1).Min(0.7);
+							if (SignDistanceThisWay == null)
+							{
+								if (CaveDistanceTheOtherWay != null)
+									p.VelocityX = (p.VelocityX - 0.1).Max(-0.7);
+							}
+							else
+							{
+								// get going!
+								p.VelocityX = (p.VelocityX + 0.1).Min(0.7);
+							}
 
+
+						}
+
+						if (p.VelocityX > 0)
 							if (p.Animation != Actor.AnimationEnum.WalkRight)
 								p.Animation = Actor.AnimationEnum.WalkRight;
-						}
+
+
+						if (p.VelocityX < 0)
+							if (p.Animation != Actor.AnimationEnum.WalkLeft)
+								p.Animation = Actor.AnimationEnum.WalkLeft;
+
 
 						if (p.VelocityX == 0)
 							if (p.VelocityY == 0)
 								if (p.Animation != Actor.AnimationEnum.Idle)
 									p.Animation = Actor.AnimationEnum.Idle;
+
+
 					}
 				}
 			}
