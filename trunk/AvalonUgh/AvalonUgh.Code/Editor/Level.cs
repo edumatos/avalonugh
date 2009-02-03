@@ -120,7 +120,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Rock> KnownRocks = new BindingList<Rock>();
 		public readonly BindingList<Gold> KnownGold = new BindingList<Gold>();
 
-		public readonly List<Obstacle> KnownObstacles = new List<Obstacle>();
+		public readonly List<Obstacle> KnownInvisibleObstacles = new List<Obstacle>();
 
 
 
@@ -396,7 +396,7 @@ namespace AvalonUgh.Code.Editor
 				Bottom = this.ActualHeight + ZoomedBorder.Bottom + BorderSize
 			};
 
-			this.KnownObstacles.AddRange(
+			this.KnownInvisibleObstacles.AddRange(
 				this.BorderObstacleTop,
 				this.BorderObstacleRight,
 				this.BorderObstacleLeft,
@@ -507,7 +507,7 @@ namespace AvalonUgh.Code.Editor
 							var Platforms = this.KnownPlatforms.Select(k => k.ToObstacle());
 
 
-							var value = this.KnownObstacles.AsEnumerable()
+							var value = this.KnownInvisibleObstacles.AsEnumerable()
 								.Concat(Bridges)
 								.Concat(Ridges)
 								.Concat(RidgeTrees)

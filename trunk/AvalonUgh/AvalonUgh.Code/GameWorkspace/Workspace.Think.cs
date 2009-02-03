@@ -100,6 +100,8 @@ namespace AvalonUgh.Code.GameWorkspace
 				return;
 
 
+
+
 			//// we could pause the game here
 			foreach (var p in Players)
 			{
@@ -129,7 +131,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					p.Level.Physics.Apply();
 
-					this.ThinkForComputerPlayers(p.Level);
+					this.ThinkForComputerPlayers(p.View);
 				}
 			}
 
