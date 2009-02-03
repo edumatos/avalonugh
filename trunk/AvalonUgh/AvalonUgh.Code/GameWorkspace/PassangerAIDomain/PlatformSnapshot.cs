@@ -47,8 +47,10 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 					View.Level.Zoom * PrimitiveTile.Heigth * y
 				);
 
-			var af = f.With(x => x * -1, y => y);
-			var bf = f.With(x => x + 1, y => y);
+			Func<int, int> PassInteger = y => y;
+
+			var af = f.With(x => x * -1, PassInteger);
+			var bf = f.With(x => x + 1, PassInteger);
 
 			var b = bf(0, 0);
 
@@ -103,20 +105,33 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 					}
 				};
 
-			var TheFoundSign = default(Sign);
+			//var TheFoundSign = default(Sign);
+			var PossibleDirections = new[] { af, bf };
 
 			foreach (var k in
-				from Direction in new[] { af, bf }
+				from Direction in PossibleDirections
 				let KeepGoingInThisDirection = new BooleanObject { Value = true }
 				from StepsTakenInThatDirection in Enumerable.Range(1, 10)
 				where KeepGoingInThisDirection.Value
-				where TheFoundSign == null
-				select new { ff = Direction.FixFirstParam(StepsTakenInThatDirection), KeepGoingInThisDirection })
+				//where TheFoundSign == null
+				select new { ff = Direction.FixFirstParam(StepsTakenInThatDirection)
+					, KeepGoingInThisDirection 
+				})
 			{
-				
+				Action StopGoingInThisDirection =
+					delegate
+					{
+						k.KeepGoingInThisDirection.Value = false;
+					};
+
+				Action<Sign> AddSign =
+					delegate
+					{
+					};
+
 				ReturnSignIfPathIsOk(k.ff,
-					value => TheFoundSign = value,
-					() => k.KeepGoingInThisDirection.Value = false
+					AddSign,
+					StopGoingInThisDirection
 				);
 			}
 
