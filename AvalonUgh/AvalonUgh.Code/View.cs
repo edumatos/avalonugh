@@ -6,6 +6,8 @@ using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace AvalonUgh.Code
 {
@@ -440,6 +442,8 @@ namespace AvalonUgh.Code
 				OffsetX = ContentOffsetX,
 				OffsetY = ContentOffsetY,
 			};
+
+			this.ContentInfoColoredShapes.AttachToFrameworkElement(this.ContentInfoOverlay);
 		}
 
 
@@ -500,6 +504,26 @@ namespace AvalonUgh.Code
 			);
 		}
 
+		public readonly BindingList<Rectangle> ContentInfoColoredShapes = new BindingList<Rectangle>();
+
+		public void AddToContentInfoColoredShapes(Obstacle o, Brush b)
+		{
+			if (ContentInfoOverlay.Visibility != System.Windows.Visibility.Visible)
+				return;
+
+			var r = new Rectangle
+			{
+				Fill = b,
+				Width = o.Width,
+				Height = o.Height,
+				Opacity = 0.3
+			}.MoveTo(
+				o.Left + this.ContentOffsetX,
+				o.Top + this.ContentOffsetY
+			);
+
+			r.AddTo(this.ContentInfoColoredShapes);
+		}
 
 		#region IDisposable Members
 

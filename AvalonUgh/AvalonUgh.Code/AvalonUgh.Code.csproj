@@ -151,6 +151,8 @@
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameSocialLinks.cs" />
+    <Compile Include="GameWorkspace\PassangerAIDomain\PassangerAI.cs" />
+    <Compile Include="GameWorkspace\PassangerAIDomain\PlatformSnapshot.cs" />
     <Compile Include="GameWorkspace\Workspace.ThinkForComputerPlayers.cs" />
     <Compile Include="GameWorkspace\Workspace.Lobby.cs" />
     <Compile Include="GameWorkspace\Workspace.Mission.cs" />

@@ -1,22 +1,52 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
-using ScriptCoreLib.Shared.Avalon.Extensions;
-using ScriptCoreLib;
-using AvalonUgh.Code.Editor;
-using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
-using System;
-using System.Collections.Generic;
+using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.GameWorkspace.PassangerAIDomain;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
 	{
 
-		private void ThinkForComputerPlayers(Level level)
+		private void ThinkForComputerPlayers(View view)
+		{
+			// clear any thought shapes
+			view.ContentInfoColoredShapes.ToArray().ForEach(k => view.ContentInfoColoredShapes.Remove(k));
+
+
+			//ThinkForComputerPlayers_OldImplementation(level);
+
+			
+			// a player is created on a different platform
+			// if prvious actor has stopped walking and is at its 
+			// wait position
+			
+			// if there is alreadysomeone waiting on the platform
+			// the passenger will not exit the cave
+
+			// only if the compiler could compile that previous dml statement :)
+
+
+			foreach (var c in view.Level.KnownCaves)
+			{
+				var s = PlatformSnapshot.Of(view, c);
+
+
+			}
+
+
+		}
+
+		private void ThinkForComputerPlayers_OldImplementation(Level level)
 		{
 			foreach (var p in level.KnownComputerActors)
 			{
@@ -145,7 +175,6 @@ namespace AvalonUgh.Code.GameWorkspace
 			a.MoveTo(c.X, c.Y);
 			a.Animation = Actor.AnimationEnum.Hidden;
 			a.CurrentCave = c;
-
 		}
 	}
 }
