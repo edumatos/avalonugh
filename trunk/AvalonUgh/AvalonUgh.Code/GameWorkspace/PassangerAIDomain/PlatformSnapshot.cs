@@ -103,6 +103,11 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 						View.AddToContentInfoColoredShapes(TheSign.ToObstacle(), Brushes.Cyan);
 						e.SignFound(TheSign);
 					}
+
+					// there could be a cave in the path
+					// there could be multiple signs
+					// there could be a vehicle
+
 				};
 
 			//var TheFoundSign = default(Sign);
