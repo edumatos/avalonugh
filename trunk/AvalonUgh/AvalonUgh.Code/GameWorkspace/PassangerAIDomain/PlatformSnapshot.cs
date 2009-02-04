@@ -71,68 +71,73 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 				}
 			}
 
-			Action<Func<int, Obstacle>, Action<Sign>, Action> ReturnSignIfPathIsOk =
-				(ff, SignFound, StopSearch) =>
+			Action<A> ReturnSignIfPathIsOk =
+				e =>
 				{
-					var LandingTile = ff(0);
+					var LandingTile = e.GetObstacleAtHeight(0);
 
 					var LandingTileReference = LandingTiles.FirstOrDefault(k => k.ToObstacle().Intersects(LandingTile));
 
 					if (LandingTileReference == null)
 					{
-						StopSearch();
+						e.StopSearch();
 						return;
 					}
 
 					// we got platform
 					View.AddToContentInfoColoredShapes(LandingTileReference.ToObstacle(), Brushes.Green);
 
-					var SpaceOnLandingTile = ff(-1);
+					var SpaceOnLandingTile = e.GetObstacleAtHeight(-1);
 
 					var SpaceOnLandingTileObstacle = Obstacles.FirstOrDefault(k => k.Intersects(SpaceOnLandingTile));
 					if (SpaceOnLandingTileObstacle != null)
 					{
 						// we got platform
 						View.AddToContentInfoColoredShapes(SpaceOnLandingTileObstacle, Brushes.Red);
-						StopSearch();
+						e.StopSearch();
 					}
 
 					var TheSign = Signs.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
 					if (TheSign != null)
 					{
 						View.AddToContentInfoColoredShapes(TheSign.ToObstacle(), Brushes.Cyan);
-						SignFound(TheSign);
+						e.SignFound(TheSign);
 					}
 				};
 
 			//var TheFoundSign = default(Sign);
 			var PossibleDirections = new[] { af, bf };
 
+		
 			foreach (var k in
-				from Direction in PossibleDirections
-				let KeepGoingInThisDirection = new BooleanObject { Value = true }
-				from StepsTakenInThatDirection in Enumerable.Range(1, 10)
-				where KeepGoingInThisDirection.Value
-				//where TheFoundSign == null
-				select new { ff = Direction.FixFirstParam(StepsTakenInThatDirection)
-					, KeepGoingInThisDirection 
-				})
+				PossibleDirections.SelectMany(Direction => Enumerable.Range(1, 10).Select(StepsTakenInThatDirection => Direction.FixFirstParam(StepsTakenInThatDirection)))
+
+				//from Direction in PossibleDirections
+				////let KeepGoingInThisDirection = new BooleanObject { Value = true }
+				//from StepsTakenInThatDirection in Enumerable.Range(1, 10)
+				////where KeepGoingInThisDirection.Value
+				////where TheFoundSign == null
+				//select new { ff = Direction.FixFirstParam(StepsTakenInThatDirection)
+				//    //, KeepGoingInThisDirection 
+				//}
+				)
 			{
-				Action StopGoingInThisDirection =
-					delegate
-					{
-						k.KeepGoingInThisDirection.Value = false;
-					};
+				var z = new A
+				{
+					GetObstacleAtHeight = k,
+					StopSearch =
+						delegate
+						{
+						},
+					SignFound = 
+						delegate
+						{
+						}
+				};
 
-				Action<Sign> AddSign =
-					delegate
-					{
-					};
+				
 
-				ReturnSignIfPathIsOk(k.ff,
-					AddSign,
-					StopGoingInThisDirection
-				);
+				ReturnSignIfPathIsOk(z);
 			}
 
 
@@ -140,9 +145,11 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 		}
 
 		[Script]
-		public class BooleanObject
+		public class A
 		{
-			public bool Value;
+			public Func<int, Obstacle> GetObstacleAtHeight;
+			public Action<Sign> SignFound;
+			public Action StopSearch;
 		}
 	}
 
