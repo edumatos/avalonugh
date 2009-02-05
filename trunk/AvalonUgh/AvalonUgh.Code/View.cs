@@ -516,7 +516,7 @@ namespace AvalonUgh.Code
 				Fill = b,
 				Width = o.Width,
 				Height = o.Height,
-				Opacity = 0.3
+				Opacity = 0.2
 			}.MoveTo(
 				o.Left + this.ContentOffsetX,
 				o.Top + this.ContentOffsetY

@@ -18,7 +18,20 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 	public class PlatformSnapshot
 	{
 		public Cave Cave;
-		public Sign Sign;
+
+		/// <summary>
+		/// A cave can be referenced by multiple signs giving the passanger to indicate 
+		/// his wishes in multiple sign numbers. It only will create confusion for
+		/// the driver tho.
+		/// </summary>
+		public readonly List<Sign> CaveSigns = new List<Sign>();
+
+		/// <summary>
+		/// These vehicles are ready for passengers. We will select the first in this list. The list should be 
+		/// distance sorted.
+		/// </summary>
+		public readonly List<Vehicle> CaveVehicles = new List<Vehicle>();
+
 
 
 		public static PlatformSnapshot Of(View View, Cave Cave)
@@ -27,11 +40,13 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 
 			var o = Cave.ToObstacle();
 
-			View.AddToContentInfoColoredShapes(o, Brushes.Cyan);
+			//View.AddToContentInfoColoredShapes(o, Brushes.Cyan);
 
 			var LandingTiles = View.Level.KnownLandingTiles.ToArray();
+			var Vehicles = View.Level.KnownVehicles.Where(k => k.CurrentDriver != null).ToArray();
 			var Signs = View.Level.KnownSigns.ToArray();
 			var Obstacles = View.Level.ToObstacles().ToArray();
+			var Caves = View.Level.KnownCaves.Where(k => k != Cave).ToArray();
 
 			var a = new Obstacle
 			{
@@ -54,24 +69,10 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 
 			var b = bf(0, 0);
 
-			{
-				// left direction
-				var at = LandingTiles.FirstOrDefault(k => k.ToObstacle().Intersects(a));
-				if (at != null)
-				{
-					View.AddToContentInfoColoredShapes(at.ToObstacle(), Brushes.Green);
-				}
+			var p = new PlatformSnapshot { Cave = Cave };
 
 
-				// right direction
-				var bt = LandingTiles.FirstOrDefault(k => k.ToObstacle().Intersects(b));
-				if (bt != null)
-				{
-					View.AddToContentInfoColoredShapes(bt.ToObstacle(), Brushes.Green);
-				}
-			}
-
-			Action<A> ReturnSignIfPathIsOk =
+			Action<A> CheckPath =
 				e =>
 				{
 					var LandingTile = e.GetObstacleAtHeight(0);
@@ -85,7 +86,7 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 					}
 
 					// we got platform
-					View.AddToContentInfoColoredShapes(LandingTileReference.ToObstacle(), Brushes.Green);
+					View.AddToContentInfoColoredShapes(LandingTile, Brushes.Green);
 
 					var SpaceOnLandingTile = e.GetObstacleAtHeight(-1);
 
@@ -93,15 +94,31 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 					if (SpaceOnLandingTileObstacle != null)
 					{
 						// we got platform
-						View.AddToContentInfoColoredShapes(SpaceOnLandingTileObstacle, Brushes.Red);
+						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Red);
 						e.StopSearch();
+						return;
+					}
+
+					var AnotherCave = Caves.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
+					if (AnotherCave != null)
+					{
+						e.StopSearch();
+						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.White);
+						return;
 					}
 
 					var TheSign = Signs.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
 					if (TheSign != null)
 					{
-						View.AddToContentInfoColoredShapes(TheSign.ToObstacle(), Brushes.Cyan);
-						e.SignFound(TheSign);
+						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Cyan);
+						TheSign.DistinctAddTo(p.CaveSigns);
+					}
+
+					var TheVehicle = Vehicles.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
+					if (TheVehicle != null)
+					{
+						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.GreenYellow);
+						TheVehicle.DistinctAddTo(p.CaveVehicles);
 					}
 
 					// there could be a cave in the path
@@ -111,49 +128,46 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 				};
 
 			//var TheFoundSign = default(Sign);
-			var PossibleDirections = new[] { af, bf };
+			var PossibleDirections = new[] { af, bf }.ToFlaggable();
+			var PossibleSteps = Enumerable.Range(0, 10).ToFlaggable();
 
-		
+
 			foreach (var k in
-				PossibleDirections.SelectMany(Direction => Enumerable.Range(1, 10).Select(StepsTakenInThatDirection => Direction.FixFirstParam(StepsTakenInThatDirection)))
-
-				//from Direction in PossibleDirections
-				////let KeepGoingInThisDirection = new BooleanObject { Value = true }
-				//from StepsTakenInThatDirection in Enumerable.Range(1, 10)
-				////where KeepGoingInThisDirection.Value
-				////where TheFoundSign == null
-				//select new { ff = Direction.FixFirstParam(StepsTakenInThatDirection)
-				//    //, KeepGoingInThisDirection 
-				//}
+				PossibleSteps.SelectMany(
+					Step =>
+						PossibleDirections.Select(
+							Direction =>
+								new { Step, Direction }
+						)
 				)
+			)
 			{
+			
 				var z = new A
 				{
-					GetObstacleAtHeight = k,
+
+					GetObstacleAtHeight = k.Direction.Current.FixFirstParam(k.Step.Current),
 					StopSearch =
 						delegate
 						{
+							k.Direction.SkipAtNextIteration = true;
 						},
-					SignFound = 
-						delegate
-						{
-						}
+					
 				};
 
-				
 
-				ReturnSignIfPathIsOk(z);
+
+				CheckPath(z);
 			}
 
 
-			return new PlatformSnapshot { Cave = Cave };
+			return p;
 		}
 
 		[Script]
 		public class A
 		{
 			public Func<int, Obstacle> GetObstacleAtHeight;
-			public Action<Sign> SignFound;
 			public Action StopSearch;
 		}
 	}
