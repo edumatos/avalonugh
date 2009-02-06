@@ -36,6 +36,15 @@ namespace AvalonUgh.Code.GameWorkspace
 			// only if the compiler could compile that previous dml statement :)
 
 
+			// these beliefes on current environment
+			// could be saved for some frames
+			// altho when the map is synced
+			// with new players
+			// the beliefs should be dropped and recalculated
+			// because we wont be syncing the beliefs on them selves
+			// we are just syncing the state of elements
+			// which should be stored as a few integers
+
 			foreach (var c in view.Level.KnownCaves)
 			{
 				var s = PlatformSnapshot.Of(view, c);
