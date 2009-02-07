@@ -71,9 +71,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 					if (trigger != null)
 					{
 						if (trigger is Actor.man0)
-							Constructor = () => new Actor.man1(Level.Zoom);
-						else if (trigger is Actor.man1)
 							Constructor = () => new Actor.woman0(Level.Zoom);
+						else if (trigger is Actor.woman0)
+							Constructor = () => new Actor.man1(Level.Zoom);
 
 						Level.KnownPassengers.Remove(trigger);
 					}

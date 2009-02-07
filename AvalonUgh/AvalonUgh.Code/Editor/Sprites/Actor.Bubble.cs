@@ -31,8 +31,14 @@ namespace AvalonUgh.Code
 			public readonly int OffsetX;
 			public readonly int OffsetY;
 
-			public Bubble(int Zoom)
+			public Bubble(int Zoom) : this(Zoom, -1)
 			{
+			}
+
+			public Bubble(int Zoom, int CaveSign)
+			{
+				this.CaveSign = CaveSign;
+
 				this.OffsetX = 2 * Zoom;
 				this.OffsetY = -22 * Zoom;
 
@@ -42,15 +48,27 @@ namespace AvalonUgh.Code
 					Height = 24 * Zoom
 				};
 
-				new NameFormat
+				var Image = new NameFormat
 				{
 					Path = KnownAssets.Path.Sprites,
-					Name = "bubble_question",
-					Index = 0,
+			
 
 					Extension = "png",
 					Zoom = Zoom
-				}.ToImage(16, 24).AttachTo(this);
+				};
+
+				if (CaveSign < 0)
+				{
+					Image.Name = "bubble_question";
+					Image.Index = 0;
+				}
+				else
+				{
+					Image.Name = "bubble_sign";
+					Image.Index = CaveSign;
+				}
+
+				Image.ToImage(16, 24).AttachTo(this);
 
 			}
 		}

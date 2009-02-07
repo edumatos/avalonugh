@@ -177,8 +177,8 @@ namespace AvalonUgh.Code.Editor
 
 					p.WaitPosition = new Obstacle
 					{
-						Left = x - Level.Zoom * 2,
-						Right = x + Level.Zoom * 2,
+						Left = x - Level.Zoom * 1,
+						Right = x + Level.Zoom * 1,
 						Top = TheFirstSignAsObstacle.Top,
 						Bottom = TheFirstSignAsObstacle.Bottom
 					};
