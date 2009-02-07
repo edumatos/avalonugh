@@ -11,12 +11,12 @@
 S-S--S-           S-- 
 | |  | S-S-SS-S-S-|   
 SS-SSS-| | || | | C-S-
-|| ||| | SS-| S | | | 
+|| ||| | SS-| S | |0| 
 # sign: 248;1
  | S-| S--| | PP-P-P-P
  | | S-|  | S-S-SS-|  
 S-C-S| S-S| | S--SS-S-
-| |  | | |S-| |  || | 
+| |0 | | |S-| |  || | 
 # tree: 96
 # sign: 72;2
 PP-P-PP-S-| SSS-S-| S-
@@ -24,7 +24,7 @@ PP-P-PP-S-| SSS-S-| S-
  S-S-S-|| || S| S-| | 
 S-S| | S-S-| || | S-S-
 | SS-| S-| S--C-| | | 
-| || | | S |  | | | S-
+| || | | S |  |0| | S-
 # sign: 168;3
 # rock: 112
  S-| P-P-BBBP-PP-SS-| 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ScriptCoreLib;
+using AvalonUgh.Code.Editor.Tiles;
 
 namespace AvalonUgh.Code
 {
@@ -13,6 +14,9 @@ namespace AvalonUgh.Code
 
 		public readonly int Width = 1;
 		public readonly int Height = 1;
+
+
+		public Tile.VariationElement Variation;
 
 		/* X33
 		 * 444
@@ -47,8 +51,16 @@ namespace AvalonUgh.Code
 				y = Select(0, Height);
 			}
 
+			if (Width > 1)
+				if (Height > 1)
+				{
+					var Variation = Select(1, 1);
 
-			
+					if (char.IsNumber(Variation, 0))
+						this.Variation = new Tile.VariationElement { Value = int.Parse(Variation) };
+
+				}
+
 		}
 	}
 

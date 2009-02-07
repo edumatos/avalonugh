@@ -19,6 +19,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 		public readonly Level Level;
 
+		[Script]
+		public class VariationElement
+		{
+			public int Value;
+		}
+
+		public VariationElement Variation;
+
 		public Tile(Level Level, TileSelector Selector)
 		{
 			this.Level = Level;

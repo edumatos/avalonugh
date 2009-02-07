@@ -54,8 +54,6 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			public override void CreateTo(Level Level, View.SelectorPosition Position)
 			{
-				Name.Index = (Name.Index + 1) % Name.IndexCount;
-
 				RemovePlatforms(this, Level, Position);
 
 				{
@@ -79,16 +77,16 @@ namespace AvalonUgh.Code.Editor.Tiles
 				var u = new Cave(Level, this)
 				{
 					Position = Position,
+					Variation = new Tile.VariationElement {Value = Name.Index },
 					Image = ToImage(Level, Position)
 				};
 
 				Level.KnownCaves.Add(u);
+
+				Name.Index = (Name.Index + 1) % Name.IndexCount;
 			}
 		}
 
-		//public static void AttachToLevel(ASCIIImage.Entry Position, ASCIITileSizeInfo Tile, Level Level)
-		//{
-		//    TileSelector.AttachToLevel(new CaveSelector().Sizes, Position, Tile, Level);
-		//}
+	
 	}
 }

@@ -60,6 +60,7 @@ namespace AvalonUgh.Code.Editor
 							var p = k.Position;
 
 
+
 							for (int y = 0; y < k.Selector.PrimitiveTileCountY; y++)
 							{
 								var old = Map[p.TileY + y];
@@ -78,6 +79,21 @@ namespace AvalonUgh.Code.Editor
 										old.Substring(p.TileX + 1);
 								}
 							}
+
+							if (k.Selector.PrimitiveTileCountX > 1)
+								if (k.Selector.PrimitiveTileCountY > 1)
+									if (k.Variation != null)
+									{
+										// we can now save the tile variation info
+
+										var old = Map[p.TileY + 1];
+
+										Map[p.TileY + 1] =
+											old.Substring(0, p.TileX + 1) + k.Variation.Value.ToString() +
+											old.Substring(p.TileX + 2);
+									}
+
+
 						}
 					};
 				#endregion

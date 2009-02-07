@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using ScriptCoreLib;
 using AvalonUgh.Assets.Shared;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
@@ -121,6 +122,18 @@ namespace AvalonUgh.Code
 				Top = Top,
 				Right = Left + Width,
 				Bottom = Top + Height
+			};
+		}
+
+		public Obstacle GrowTo(Obstacle e)
+		{
+			return new Obstacle
+			{
+				Left = this.Left.Min(e.Left),
+				Top = this.Top.Min(e.Top),
+				Right = this.Right.Max(e.Right),
+				Bottom = this.Bottom.Max(e.Bottom),
+
 			};
 		}
 	}

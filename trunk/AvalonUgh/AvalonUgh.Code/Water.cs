@@ -129,7 +129,7 @@ namespace AvalonUgh.Code
 					{
 						value.Visibility = Visibility.Visible;
 
-						(300).AtDelay(
+						(120).AtDelay(
 							delegate
 							{
 								value.Visibility = Visibility.Hidden;

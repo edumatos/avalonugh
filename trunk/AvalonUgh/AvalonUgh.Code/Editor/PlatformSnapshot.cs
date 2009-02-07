@@ -28,7 +28,7 @@ namespace AvalonUgh.Code.Editor
 
 		public Obstacle WaitPosition;
 
-
+		public Obstacle IncludedSpace;
 
 		public static PlatformSnapshot Of(Level Level, Cave Cave)
 		{
@@ -83,7 +83,7 @@ namespace AvalonUgh.Code.Editor
 					}
 
 					// we got platform
-					Level.AddToContentInfoColoredShapes(LandingTile, Brushes.Green);
+					//Level.AddToContentInfoColoredShapes(LandingTile, Brushes.Green);
 
 					var SpaceOnLandingTile = e.GetObstacleAtHeight(-1);
 
@@ -95,6 +95,16 @@ namespace AvalonUgh.Code.Editor
 						e.StopSearch();
 						return;
 					}
+
+					if (p.IncludedSpace == null)
+					{
+						p.IncludedSpace = SpaceOnLandingTile;
+					}
+					else
+					{
+						p.IncludedSpace = p.IncludedSpace.GrowTo(SpaceOnLandingTile);
+					}
+
 
 					var AnotherCave = Caves.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
 					if (AnotherCave != null)
@@ -111,22 +121,13 @@ namespace AvalonUgh.Code.Editor
 						TheSign.DistinctAddTo(p.CaveSigns);
 					}
 
-					//var TheVehicle = TaxiVehicles.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
-					//if (TheVehicle != null)
-					//{
-					//    View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.GreenYellow);
-					//    TheVehicle.DistinctAddTo(p.CaveVehicles);
-					//}
 
-					// there could be a cave in the path
-					// there could be multiple signs
-					// there could be a vehicle
 
 				};
 
 			//var TheFoundSign = default(Sign);
 			var PossibleDirections = new[] { af, bf }.ToFlaggable();
-			var PossibleSteps = Enumerable.Range(0, 10).ToFlaggable();
+			var PossibleSteps = Enumerable.Range(0, 20).ToFlaggable();
 
 
 			foreach (var k in
@@ -157,6 +158,10 @@ namespace AvalonUgh.Code.Editor
 				CheckPath(z);
 			}
 
+			if (p.IncludedSpace != null)
+				Level.AddToContentInfoColoredShapes(p.IncludedSpace, Brushes.Green, 0.2);
+
+			#region find WaitPosition
 			p.CaveSigns.FirstOrDefault().Apply(
 				TheFirstSign =>
 				{
@@ -177,9 +182,12 @@ namespace AvalonUgh.Code.Editor
 						Top = TheFirstSignAsObstacle.Top,
 						Bottom = TheFirstSignAsObstacle.Bottom
 					};
+
 					Level.AddToContentInfoColoredShapes(p.WaitPosition, Brushes.GreenYellow);
 				}
 			);
+			#endregion
+
 
 			return p;
 		}
