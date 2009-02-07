@@ -11,6 +11,7 @@ using AvalonUgh.Code.GameWorkspace.PassangerAIDomain;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -60,7 +61,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				select new { Passenger, PassengerObstacle, Platform, PickupArrived }
 			);
 
-		
+
 
 
 			foreach (var i in Passengers)
@@ -68,13 +69,32 @@ namespace AvalonUgh.Code.GameWorkspace
 				if (i.PickupArrived)
 				{
 					if (i.Passenger.Animation != Actor.AnimationEnum.Talk)
+					{
 						i.Passenger.Animation = Actor.AnimationEnum.Talk;
+
+						SoundBoard.Default.talk0_00();
+
+						i.Passenger.KnownBubbles.Add(
+							
+							// show where shall we go
+
+							new Actor.Bubble(view.Level.Zoom)
+						);
+					}
 
 				}
 				else
 				{
+					i.Passenger.KnownBubbles.RemoveAll();
+
 					if (i.Passenger.Animation != Actor.AnimationEnum.Idle)
 						i.Passenger.Animation = Actor.AnimationEnum.Idle;
+
+					if (i.PassengerObstacle.Intersects(i.Platform.WaitPosition))
+						i.Passenger.VelocityX *= 0.3;
+
+					i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.Platform.WaitPosition.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
+					i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.WaitPosition.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
 
 				}
 			}

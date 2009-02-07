@@ -79,7 +79,15 @@ namespace AvalonUgh.Assets.Avalon
 
 		public Image ToImage()
 		{
-			
+			return ToImage(
+				this.Width * PrimitiveTile.Width,
+				this.Height * PrimitiveTile.Heigth
+			);
+		}
+
+		public Image ToImage(double Width, double Height)
+		{
+
 			if (this.ToSource == null)
 				throw new ArgumentNullException("e.ToSource");
 
@@ -87,8 +95,8 @@ namespace AvalonUgh.Assets.Avalon
 			{
 				Source = this.ToSource(this),
 				Stretch = Stretch.Fill,
-				Width = this.Width * PrimitiveTile.Width * this.Zoom,
-				Height = this.Height * PrimitiveTile.Heigth * this.Zoom,
+				Width = Width * this.Zoom,
+				Height = Height * this.Zoom,
 			};
 		}
 

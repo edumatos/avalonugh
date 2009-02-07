@@ -86,7 +86,15 @@ namespace AvalonUgh.Code.Editor.Sprites
 				//g.Animation = Tryoperus.AnimationEnum.Left_Hit;
 
 
-				var a =  Constructor();
+				var a = Constructor();
+
+				a.AccelerationHandicap = 0.6;
+				a.MaxVelocityX = 1;
+				a.DefaultPlayerInput =
+					new AvalonUgh.Code.Input.PlayerInput
+					{
+						Keyboard = new AvalonUgh.Code.Input.KeyboardInput(new AvalonUgh.Code.Input.KeyboardInput.Arguments.Arrows())
+					};
 
 				a.Animation = Actor.AnimationEnum.Idle;
 				a.StartPosition = g;

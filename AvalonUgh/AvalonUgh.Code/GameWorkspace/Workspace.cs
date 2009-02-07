@@ -445,7 +445,15 @@ namespace AvalonUgh.Code.GameWorkspace
 								{
 									NewPlayer.Actor.Animation = Actor.AnimationEnum.Talk;
 
-									(Assets.Shared.KnownAssets.Path.Audio + "/talk0_00.mp3").PlaySound();
+									SoundBoard.Default.talk0_00();
+
+
+									NewPlayer.Actor.KnownBubbles.Add(
+
+										// show where shall we go
+
+										new Actor.Bubble(DefaultZoom)
+									);
 								}
 						};
 

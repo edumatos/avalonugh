@@ -112,6 +112,8 @@ namespace AvalonUgh.Code.GameWorkspace
 			{
 				if (p.Level != null)
 				{
+					this.ThinkForComputerPlayers(p.View);
+
 					if (this.LocalIdentity.SyncFrame % 30 == 0)
 						if (p.Level.AttributeWaterRise.BooleanValue)
 							p.Level.AttributeWater.Value++;
@@ -129,18 +131,13 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					foreach (var t in p.Level.KnownPassengers)
 					{
-						t.AddAcceleration(
-							new AvalonUgh.Code.Input.PlayerInput
-							{
-								Keyboard = new AvalonUgh.Code.Input.KeyboardInput(new AvalonUgh.Code.Input.KeyboardInput.Arguments.Arrows())
-							}
-						);
+						t.AddAcceleration(t.DefaultPlayerInput);
 					}
 
 
 					p.Level.Physics.Apply();
 
-					this.ThinkForComputerPlayers(p.View);
+					
 				}
 			}
 

@@ -21,6 +21,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public PlayerInput DefaultPlayerInput;
+
 		public Actor StartPosition;
 
 		public PlayerInfo PlayerInfo;
@@ -157,6 +159,12 @@ namespace AvalonUgh.Code
 				Width = this.Width,
 				Height = this.Height
 			};
+
+
+			this.KnownBubbles.ForEachNewOrExistingItem(
+				k => k.Image.MoveTo(this.X, this.Y - k.Image.Height)
+			); 
+
 		}
 
 		public enum AnimationEnum
@@ -209,9 +217,9 @@ namespace AvalonUgh.Code
 					this.TalkFrames.First().Show();
 
 				if (value == AnimationEnum.WalkLeft)
-					this.WalkLeftFrames.First().Show();
+					this.WalkLeftFrames.FirstOrDefault().Apply(k => k.Show());
 				if (value == AnimationEnum.WalkRight)
-					this.WalkRightFrames.First().Show();
+					this.WalkRightFrames.FirstOrDefault().Apply(k => k.Show());
 
 			}
 		}
@@ -427,6 +435,8 @@ namespace AvalonUgh.Code
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 
+			this.KnownBubbles.ForEach(k => k.Image.MoveTo(x, y - k.Image.Height));
+
 
 			if (LocationChanged != null)
 				LocationChanged();
@@ -460,6 +470,9 @@ namespace AvalonUgh.Code
 
 		public bool AIInputEnabled;
 
+		public double MaxVelocityX;
+		public double AccelerationHandicap = 1.0;
+
 		public void AddAcceleration(PlayerInput e)
 		{
 			// if the AI is controlling this actor
@@ -480,15 +493,16 @@ namespace AvalonUgh.Code
 					this.Animation = AnimationEnum.WalkLeft;
 
 				// at some point we should not be able to accelerate
-				this.VelocityX -= this.Zoom * DefaultAcceleraton;
+				if (this.MaxVelocityX == 0 || Math.Abs(this.VelocityX) < this.MaxVelocityX)
+					this.VelocityX -= this.Zoom * DefaultAcceleraton * AccelerationHandicap;
 			}
 			else if (e.Keyboard.IsPressedRight)
 			{
 				if (this.Animation != AnimationEnum.WalkRight)
 					this.Animation = AnimationEnum.WalkRight;
 
-
-				this.VelocityX += this.Zoom * DefaultAcceleraton;
+				if (this.MaxVelocityX == 0 || Math.Abs(this.VelocityX) < this.MaxVelocityX)
+					this.VelocityX += this.Zoom * DefaultAcceleraton * AccelerationHandicap;
 			}
 			else
 			{
@@ -544,6 +558,10 @@ namespace AvalonUgh.Code
 					if (EnterVehicle != null)
 						EnterVehicle();
 				}
+
+			if (this.GetVelocity() > 0)
+				this.KnownBubbles.RemoveAll();
+
 		}
 
 

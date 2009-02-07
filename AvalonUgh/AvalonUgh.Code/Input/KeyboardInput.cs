@@ -147,7 +147,7 @@ namespace AvalonUgh.Code.Input
 			};
 
 
-	
+
 
 			if (e.InputControl != null)
 			{
@@ -190,7 +190,7 @@ namespace AvalonUgh.Code.Input
 							}
 						}
 
-					
+
 					};
 			}
 
@@ -204,8 +204,24 @@ namespace AvalonUgh.Code.Input
 		public bool IsPressedEnter { get { return KeyState[ConstructorArguments.Enter]; } }
 		public bool IsPressedDown { get { return KeyState[ConstructorArguments.Down]; } }
 		public bool IsPressedUp { get { return KeyState[ConstructorArguments.Up]; } }
-		public bool IsPressedLeft { get { return KeyState[ConstructorArguments.Left]; } }
-		public bool IsPressedRight { get { return KeyState[ConstructorArguments.Right]; } }
+		public bool IsPressedLeft
+		{
+			get
+			{
+				return KeyState[ConstructorArguments.Left];
+			}
+			set
+			{
+				KeyState[ConstructorArguments.Left] = value;
+			}
+		}
+
+		public bool IsPressedRight { get { return KeyState[ConstructorArguments.Right]; }
+			set
+			{
+				KeyState[ConstructorArguments.Right] = value;
+			}
+		}
 
 	}
 }

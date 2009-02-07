@@ -237,6 +237,10 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownActors.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
+			this.Level.KnownActors.AttachTo(k => k.KnownBubbles, b => b.Image, this.StartPositionsContainer);
+
+		
+
 
 			this.Level.KnownDinos.AttachTo(this.Entities);
 
@@ -445,7 +449,7 @@ namespace AvalonUgh.Code
 				OffsetY = ContentOffsetY,
 			};
 
-			this.Level.ContentInfoColoredShapes.AttachToFrameworkElement(this.PlatformsInfoOverlay);
+			this.Level.ContentInfoColoredShapes.AttachToFrameworkElement(this.StartPositionsContainer);
 		}
 
 
