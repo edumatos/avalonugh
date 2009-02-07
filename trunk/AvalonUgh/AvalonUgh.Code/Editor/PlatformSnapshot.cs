@@ -12,7 +12,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Shared;
 
-namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
+namespace AvalonUgh.Code.Editor
 {
 	[Script]
 	public class PlatformSnapshot
@@ -26,15 +26,11 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 		/// </summary>
 		public readonly List<Sign> CaveSigns = new List<Sign>();
 
-		/// <summary>
-		/// These vehicles are ready for passengers. We will select the first in this list. The list should be 
-		/// distance sorted.
-		/// </summary>
-		public readonly List<Vehicle> CaveVehicles = new List<Vehicle>();
+		public Obstacle WaitPosition;
 
 
 
-		public static PlatformSnapshot Of(View View, Cave Cave)
+		public static PlatformSnapshot Of(Level Level, Cave Cave)
 		{
 			// show that we are thinking about that cave
 
@@ -42,24 +38,25 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 
 			//View.AddToContentInfoColoredShapes(o, Brushes.Cyan);
 
-			var LandingTiles = View.Level.KnownLandingTiles.ToArray();
-			var Vehicles = View.Level.KnownVehicles.Where(k => k.CurrentDriver != null).ToArray();
-			var Signs = View.Level.KnownSigns.ToArray();
-			var Obstacles = View.Level.ToObstacles().ToArray();
-			var Caves = View.Level.KnownCaves.Where(k => k != Cave).ToArray();
+			var LandingTiles = Level.KnownLandingTiles.ToArray();
+
+			var TaxiVehicles = Level.KnownVehicles.Where(k => k.CurrentDriver != null).Where(k => k.GetVelocity() == 0).ToArray();
+			var Signs = Level.KnownSigns.ToArray();
+			var Obstacles = Level.ToObstacles().ToArray();
+			var Caves = Level.KnownCaves.Where(k => k != Cave).ToArray();
 
 			var a = new Obstacle
 			{
 				Left = o.Left,
 				Top = o.Bottom,
-				Width = View.Level.Zoom * PrimitiveTile.Width,
-				Height = View.Level.Zoom * PrimitiveTile.Heigth,
+				Width = Level.Zoom * PrimitiveTile.Width,
+				Height = Level.Zoom * PrimitiveTile.Heigth,
 			};
 
 			Func<int, int, Obstacle> f =
 				(x, y) => a.WithOffset(
-					View.Level.Zoom * PrimitiveTile.Width * x,
-					View.Level.Zoom * PrimitiveTile.Heigth * y
+					Level.Zoom * PrimitiveTile.Width * x,
+					Level.Zoom * PrimitiveTile.Heigth * y
 				);
 
 			Func<int, int> PassInteger = y => y;
@@ -86,7 +83,7 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 					}
 
 					// we got platform
-					View.AddToContentInfoColoredShapes(LandingTile, Brushes.Green);
+					Level.AddToContentInfoColoredShapes(LandingTile, Brushes.Green);
 
 					var SpaceOnLandingTile = e.GetObstacleAtHeight(-1);
 
@@ -94,7 +91,7 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 					if (SpaceOnLandingTileObstacle != null)
 					{
 						// we got platform
-						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Red);
+						Level.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Red);
 						e.StopSearch();
 						return;
 					}
@@ -103,23 +100,23 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 					if (AnotherCave != null)
 					{
 						e.StopSearch();
-						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.White);
+						Level.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.White);
 						return;
 					}
 
 					var TheSign = Signs.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
 					if (TheSign != null)
 					{
-						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Cyan);
+						Level.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Cyan);
 						TheSign.DistinctAddTo(p.CaveSigns);
 					}
 
-					var TheVehicle = Vehicles.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
-					if (TheVehicle != null)
-					{
-						View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.GreenYellow);
-						TheVehicle.DistinctAddTo(p.CaveVehicles);
-					}
+					//var TheVehicle = TaxiVehicles.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
+					//if (TheVehicle != null)
+					//{
+					//    View.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.GreenYellow);
+					//    TheVehicle.DistinctAddTo(p.CaveVehicles);
+					//}
 
 					// there could be a cave in the path
 					// there could be multiple signs
@@ -142,7 +139,7 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 				)
 			)
 			{
-			
+
 				var z = new A
 				{
 
@@ -152,7 +149,7 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 						{
 							k.Direction.SkipAtNextIteration = true;
 						},
-					
+
 				};
 
 
@@ -160,6 +157,29 @@ namespace AvalonUgh.Code.GameWorkspace.PassangerAIDomain
 				CheckPath(z);
 			}
 
+			p.CaveSigns.FirstOrDefault().Apply(
+				TheFirstSign =>
+				{
+					var TheFirstSignAsObstacle = TheFirstSign.ToObstacle();
+
+					var x = 0.0;
+
+					if (Cave.X < TheFirstSignAsObstacle.X)
+						x = o.Right + (TheFirstSignAsObstacle.Left - o.Right) / 2;
+					else
+						x = o.Left + (TheFirstSignAsObstacle.Right - o.Left) / 2;
+
+
+					p.WaitPosition = new Obstacle
+					{
+						Left = x - Level.Zoom,
+						Right = x + Level.Zoom,
+						Top = TheFirstSignAsObstacle.Top,
+						Bottom = TheFirstSignAsObstacle.Bottom
+					};
+					Level.AddToContentInfoColoredShapes(p.WaitPosition, Brushes.GreenYellow);
+				}
+			);
 
 			return p;
 		}
