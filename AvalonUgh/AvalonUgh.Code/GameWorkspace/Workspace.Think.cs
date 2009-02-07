@@ -127,6 +127,15 @@ namespace AvalonUgh.Code.GameWorkspace
 						t.Think();
 					}
 
+					foreach (var t in p.Level.KnownPassengers)
+					{
+						t.AddAcceleration(
+							new AvalonUgh.Code.Input.PlayerInput
+							{
+								Keyboard = new AvalonUgh.Code.Input.KeyboardInput(new AvalonUgh.Code.Input.KeyboardInput.Arguments.Arrows())
+							}
+						);
+					}
 
 
 					p.Level.Physics.Apply();

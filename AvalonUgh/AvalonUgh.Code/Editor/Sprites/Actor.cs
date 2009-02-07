@@ -21,6 +21,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public Actor StartPosition;
+
 		public PlayerInfo PlayerInfo;
 
 		public Color GetColorStripeForVehicle(Vehicle v)
@@ -136,16 +138,6 @@ namespace AvalonUgh.Code
 
 		public void StabilityReached()
 		{
-			if (CurrentLevel != null)
-			{
-
-				if (this.ToObstacle().Bottom < this.CurrentLevel.WaterTop)
-				{
-					if (this.Animation == AnimationEnum.Panic)
-						this.Animation = AnimationEnum.Idle;
-				}
-			}
-
 
 		}
 
@@ -371,6 +363,14 @@ namespace AvalonUgh.Code
 							this.Animation = AnimationEnum.Panic;
 
 						return;
+					}
+					else
+					{
+						if (VelocityY == 0)
+						{
+							this.Animation = AnimationEnum.Idle;
+							return;
+						}
 					}
 
 					this.PanicFrames.ForEach(
