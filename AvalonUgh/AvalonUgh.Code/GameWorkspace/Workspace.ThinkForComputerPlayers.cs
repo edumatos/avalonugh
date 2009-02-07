@@ -19,9 +19,13 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		private void ThinkForComputerPlayers(View view)
 		{
-			// clear any thought shapes
-			view.ContentInfoColoredShapes.ToArray().ForEach(k => view.ContentInfoColoredShapes.Remove(k));
+			// we cannot reevaluate the environment on each frame
+			// as it takes way much time
 
+			//if (this.LocalIdentity.SyncFrame % 20 != 0)
+			//    return;
+
+		
 
 			//ThinkForComputerPlayers_OldImplementation(level);
 
@@ -45,12 +49,17 @@ namespace AvalonUgh.Code.GameWorkspace
 			// we are just syncing the state of elements
 			// which should be stored as a few integers
 
-			foreach (var c in view.Level.KnownCaves)
+			foreach (var p in view.Level.ToPlatformSnapshots())
 			{
-				var s = PlatformSnapshot.Of(view, c);
-
 
 			}
+
+			//foreach (var c in view.Level.KnownCaves)
+			//{
+			//    var s = PlatformSnapshot.Of(view, c);
+
+
+			//}
 
 
 		}

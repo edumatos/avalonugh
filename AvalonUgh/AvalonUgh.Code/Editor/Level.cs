@@ -9,6 +9,8 @@ using AvalonUgh.Code.Editor.Tiles;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -519,7 +521,38 @@ namespace AvalonUgh.Code.Editor
 					);
 
 			return ToObstacles_Cache();
+		}
 
+
+		Func<IEnumerable<PlatformSnapshot>> ToPlatformSnapshots_Cache;
+		public IEnumerable<PlatformSnapshot> ToPlatformSnapshots()
+		{
+			// we will recalculate tile obstacles only when they actually change
+			if (ToPlatformSnapshots_Cache == null)
+				ToPlatformSnapshots_Cache =
+					new IBindingList[]
+					{
+						KnownCaves,
+						KnownSigns,
+						KnownStones,
+						KnownFences,
+						KnownBridges,
+						KnownPlatforms,
+						KnownRidges,
+						KnownRidgeTrees,
+					}.WhereListChanged(
+						delegate
+						{
+							Console.WriteLine("Level.ToPlatformSnapshots");
+
+							// clear any thought shapes
+							ContentInfoColoredShapes.ToArray().ForEach(k => ContentInfoColoredShapes.Remove(k));
+
+							return this.KnownCaves.ToArray(k => PlatformSnapshot.Of(this, k)).AsEnumerable();
+						}
+					);
+
+			return ToPlatformSnapshots_Cache();
 		}
 
 		[Script]
@@ -726,6 +759,26 @@ namespace AvalonUgh.Code.Editor
 				);
 		}
 
+
+
+
+		public readonly BindingList<Rectangle> ContentInfoColoredShapes = new BindingList<Rectangle>();
+
+		public void AddToContentInfoColoredShapes(Obstacle o, Brush b)
+		{
+			var r = new Rectangle
+			{
+				Fill = b,
+				Width = o.Width,
+				Height = o.Height,
+				Opacity = 0.4
+			}.MoveTo(
+				o.Left, // + this.ContentOffsetX,
+				o.Top // + this.ContentOffsetY
+			);
+
+			r.AddTo(this.ContentInfoColoredShapes);
+		}
 
 	}
 }
