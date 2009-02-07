@@ -178,13 +178,18 @@ namespace AvalonUgh.Code
 			this.Entities = new Canvas
 			{
 				Width = this.ContentActualWidth,
-				Height = this.ContentActualHeight
+				Height = this.ContentActualHeight,
+				//Background = Brushes.Red,
+				//Opacity = 0.5
+
 			}.AttachTo(this.Content);
 
 			this.BubbleContainer = new Canvas
 			{
 				Width = this.ContentActualWidth,
-				Height = this.ContentActualHeight
+				Height = this.ContentActualHeight,
+				//Background = Brushes.Red,
+				//Opacity = 0.5
 			}.AttachTo(this.Content);
 
 
@@ -251,6 +256,9 @@ namespace AvalonUgh.Code
 
 			#region sync the level platforms into view
 
+			this.Level.KnownSigns.AttachTo(this.Entities);
+			this.Level.KnownTrees.AttachTo(this.Entities);
+
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownActors.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 			this.Level.KnownActors.AttachTo(k => k.KnownBubbles, this.BubbleContainer);
@@ -260,8 +268,8 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownDinos.AttachTo(this.Entities);
 
-			this.Level.KnownSigns.AttachTo(this.Entities);
-			this.Level.KnownTrees.AttachTo(this.Entities);
+			
+			
 
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
 			this.Level.KnownTryoperus.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
