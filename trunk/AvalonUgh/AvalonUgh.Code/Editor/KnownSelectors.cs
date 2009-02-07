@@ -17,6 +17,8 @@ namespace AvalonUgh.Code.Editor
 		public readonly ArrowSelector Arrow = new ArrowSelector();
 		public readonly WaterLevelSelector WaterLevel = new WaterLevelSelector();
 
+		public readonly Sprites.PassengerSelector Passenger = new Sprites.PassengerSelector();
+
 		public readonly Sprites.TryoperusSelector Tryoperus = new Sprites.TryoperusSelector();
 		public readonly Sprites.RockSelector Rock = new Sprites.RockSelector();
 		public readonly Sprites.VehicleSelector Vehicle = new Sprites.VehicleSelector();
@@ -76,7 +78,8 @@ namespace AvalonUgh.Code.Editor
 					new BackgroundSelector(),
 
 					new Sprites.GoldSelector(),
-					new Sprites.PassengerSelector()
+					
+					Passenger
 				};
 
 			ParamsFunc<SelectorBase, Func<SelectorBase>> f =

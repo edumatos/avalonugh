@@ -101,6 +101,55 @@ namespace AvalonUgh.Code.Editor.Sprites
 				a.AddTo(Level.KnownPassengers).MoveTo(x, y);
 			}
 
+
+			public void CreateTo(Level level, Level.Attribute.Int32_Array source)
+			{
+				var ForSync = source.Value[0];
+
+				var gx = source[6];
+				var gy = source[7];
+
+				var g = new Actor.man0(level.Zoom);
+
+				g.MoveTo(gx, gy);
+
+
+				var a = new Actor.man0(level.Zoom);
+
+				a.AccelerationHandicap = 0.6;
+				a.MaxVelocityX = 1;
+				a.DefaultPlayerInput =
+					new AvalonUgh.Code.Input.PlayerInput
+					{
+						Keyboard = new AvalonUgh.Code.Input.KeyboardInput(new AvalonUgh.Code.Input.KeyboardInput.Arguments.Arrows())
+					};
+
+				a.Animation = Actor.AnimationEnum.Idle;
+				a.StartPosition = g;
+
+				if (ForSync == 1)
+				{
+					a.Memory_LogicState = source.Value[5];
+
+					var zx = source[1];
+					var zy = source[2];
+					var zvx = source[3];
+					var zvy = source[4];
+
+					a.VelocityX = zvx;
+					a.VelocityY = zvy;
+					a.MoveTo(zx, zy);
+
+				}
+				else
+				{
+					
+					a.MoveTo(gx, gy);
+				}
+
+				a.AddTo(level.KnownPassengers);
+			}
+
 		}
 	}
 }

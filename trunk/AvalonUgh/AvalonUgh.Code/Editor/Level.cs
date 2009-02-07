@@ -239,6 +239,15 @@ namespace AvalonUgh.Code.Editor
 				};
 			#endregion
 
+			Attribute.Int32_Array SyncAttributePassenger = "passenger";
+			SyncAttributePassenger.Assigned +=
+				delegate
+				{
+					Console.WriteLine("passenger");
+
+					Selectors.Passenger.Size_2x2.CreateTo(this, SyncAttributePassenger);
+					
+				};
 
 			Create.Dino.Assigned +=
 				x_ =>
@@ -280,6 +289,9 @@ namespace AvalonUgh.Code.Editor
 			Create.Sign.Assigned +=
 				(x_, SignValue) =>
 				{
+					Console.WriteLine("sign");
+
+
 					var x = x_ * Zoom;
 					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
 
@@ -305,6 +317,7 @@ namespace AvalonUgh.Code.Editor
 
 				SyncAttributeVehicle,
 				SyncAttributeRock,
+				SyncAttributePassenger,
 
 				AttributeWind,
 				AttributeSnow,
@@ -437,6 +450,7 @@ namespace AvalonUgh.Code.Editor
 						};
 				};
 
+
 			DetectModifications.AsParamsAction()(
 				this.KnownBridges,
 				this.KnownCaves,
@@ -451,7 +465,8 @@ namespace AvalonUgh.Code.Editor
 				this.KnownStones,
 				this.KnownTrees,
 				this.KnownTryoperus,
-				this.KnownVehicles
+				this.KnownVehicles,
+				this.KnownPassengers
 			);
 			
 		}

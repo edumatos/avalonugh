@@ -165,6 +165,8 @@ namespace AvalonUgh.Code.Editor
 								where StartPosition.BaseY == index
 								select new Attribute.Int32 { Key = Sprites.Rock.SpecificNameFormat.Alias, Value = StartPosition.UnscaledX }
 							);
+
+
 						}
 
 
@@ -187,8 +189,11 @@ namespace AvalonUgh.Code.Editor
 					{
 						WriteAttribute(SerializeVehicle(i));
 					}
+				}
 
-
+				foreach (var i in this.KnownPassengers)
+				{
+					WriteAttribute(SerializePassenger(i, Mode));
 				}
 
 				return s.ToString();
@@ -223,6 +228,40 @@ namespace AvalonUgh.Code.Editor
 				StartPosition.Y = a[6];
 			}
 
+
+			return a;
+		}
+
+
+		private Attribute.Int32_Array SerializePassenger(AvalonUgh.Code.Actor i, ToStringMode Mode)
+		{
+			var StartPosition = i.StartPosition;
+
+			Attribute.Int32_Array a = "passenger";
+
+			if (Mode == ToStringMode.ForSync)
+			{
+				a.Value[0] = 1;
+
+				a[1] = i.X;
+				a[2] = i.Y;
+				a[3] = i.VelocityX;
+				a[4] = i.VelocityY;
+
+				// use the sync version of values
+				i.X = a[1];
+				i.Y = a[2];
+				i.VelocityX = a[3];
+				i.VelocityY = a[4];
+
+				a.Value[5] = i.Memory_LogicState;
+			}
+
+			a[6] = StartPosition.X;
+			a[7] = StartPosition.Y;
+
+			StartPosition.X = a[6];
+			StartPosition.Y = a[7];
 
 			return a;
 		}
@@ -273,5 +312,7 @@ namespace AvalonUgh.Code.Editor
 
 			return a;
 		}
+
+
 	}
 }

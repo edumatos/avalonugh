@@ -84,11 +84,11 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			IsConnected = false;
 		}
 
-	
+
 
 		public void InitializeEvents()
 		{
-	
+
 			this.Content = new Workspace(
 				new Workspace.ConstructorArguments
 				{
@@ -198,7 +198,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 											{
 												var index = this.Content.SavedLevels.IndexOf(level);
 
-												this.Content.Console.WriteLine("save: " + new { index, data.Length } );
+												this.Content.Console.WriteLine("save: " + new { index, data.Length });
 
 												this.Messages.Server_LoadLevel(
 													index,
@@ -291,31 +291,17 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 										if (Port.LevelReference == null)
 											return;
 
-										if (Port.Level.IsDirty)
-										{
-											this.Content.Console.WriteLine("as a primate, I will send custom map to the new player");
 
-											this.Messages.UserLoadLevel(
-												e.user,
-												Port.PortIdentity,
-												this.Content.LocalIdentity.SyncFrame,
-												-1,
-												Port.Level.ToString(Level.ToStringMode.ForSync)
-											);
+										// ports are always dirty
+										// because of the passengers
 
-										}
-										else
-										{
-											this.Content.Console.WriteLine("as a primate, I will send map reference to the new player");
-
-											this.Messages.UserLoadLevel(
-												e.user,
-												Port.PortIdentity,
-												this.Content.LocalIdentity.SyncFrame,
-												Port.LevelReference.Location.Embedded.AnimationFrame,
-												""
-											);
-										}
+										this.Messages.UserLoadLevel(
+											e.user,
+											Port.PortIdentity,
+											this.Content.LocalIdentity.SyncFrame,
+											-1,
+											Port.Level.ToString(Level.ToStringMode.ForSync)
+										);
 									};
 
 								ReplicatePort(this.Content.PrimaryMission);
