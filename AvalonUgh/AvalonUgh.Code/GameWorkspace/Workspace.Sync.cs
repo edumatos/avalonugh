@@ -139,7 +139,6 @@ namespace AvalonUgh.Code.GameWorkspace
 						p = new PlayerInfo
 						{
 							Identity = c,
-							IdentityLocal = local,
 							Input = new PlayerInput
 							{
 

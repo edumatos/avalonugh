@@ -97,7 +97,7 @@ namespace AvalonUgh.Code
 			this.Locals.ForEachNewItem(
 				i =>
 				{
-					i.IdentityLocal = this.Locals.Count;
+					i.IdentityLocal = this.Locals.Count - 1;
 				}
 			);
 		}

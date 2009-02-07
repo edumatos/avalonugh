@@ -248,7 +248,8 @@ namespace AvalonUgh.Code.GameWorkspace
 							 if (this.Editor.LevelReference == null)
 							 {
 								 this.Sync_LoadLevel(
-									 this.Editor.PortIdentity, 0, ""
+									 // load default editor level
+									 this.Editor.PortIdentity, 1, ""
 								 );
 							 }
 						 }

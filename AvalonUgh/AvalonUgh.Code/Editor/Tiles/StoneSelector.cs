@@ -27,15 +27,14 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public readonly View.SelectorInfo Size_2x1 = new Size_Generic(2, 1, 1);
 		public readonly View.SelectorInfo Size_2x2 = new Size_Generic(2, 2, 2);
 		public readonly View.SelectorInfo Size_2x3 = new Size_Generic(2, 3, 3);
-		public readonly View.SelectorInfo Size_3x2 = new Size_Generic(3, 2, 1);
-		public readonly View.SelectorInfo Size_4x2 = new Size_Generic(4, 2, 1);
+		public readonly View.SelectorInfo Size_3x2 = new Size_Generic(3, 2, 2);
 		public readonly View.SelectorInfo Size_2x4 = new Size_Generic(2, 4, 1);
 
 		public readonly View.SelectorInfo
 			Size_3x3,
 			Size_3x4,
-			Size_6x6,
-			Size_8x4,
+			//Size_6x6,
+			//Size_8x4,
 			Size_5x5,
 			Size_5x4,
 			Size_6x3;
@@ -73,29 +72,29 @@ namespace AvalonUgh.Code.Editor.Tiles
 					}
 				);
 
-			this.Size_6x6 =
-				new TileSelector.Composite(6, 6,
-					(Level, Position) =>
-					{
-						this.Size_2x2.CreateTo(Level, Position[2, 2]);
-						this.Size_4x2.CreateTo(Level, Position[0, 0]);
-						this.Size_2x4.CreateTo(Level, Position[4, 0]);
-						this.Size_2x4.CreateTo(Level, Position[0, 2]);
-						this.Size_4x2.CreateTo(Level, Position[2, 4]);
-					}
-				);
+			//this.Size_6x6 =
+			//    new TileSelector.Composite(6, 6,
+			//        (Level, Position) =>
+			//        {
+			//            this.Size_2x2.CreateTo(Level, Position[2, 2]);
+			//            this.Size_4x2.CreateTo(Level, Position[0, 0]);
+			//            this.Size_2x4.CreateTo(Level, Position[4, 0]);
+			//            this.Size_2x4.CreateTo(Level, Position[0, 2]);
+			//            this.Size_4x2.CreateTo(Level, Position[2, 4]);
+			//        }
+			//    );
 
-			this.Size_8x4 =
-				new TileSelector.Composite(8, 4,
-					(Level, Position) =>
-					{
-						this.Size_4x2.CreateTo(Level, Position[0, 0]);
-						this.Size_4x2.CreateTo(Level, Position[4, 0]);
-						this.Size_4x2.CreateTo(Level, Position[2, 2]);
-						this.Size_2x2.CreateTo(Level, Position[0, 2]);
-						this.Size_2x2.CreateTo(Level, Position[6, 2]);
-					}
-				);
+			//this.Size_8x4 =
+			//    new TileSelector.Composite(8, 4,
+			//        (Level, Position) =>
+			//        {
+			//            this.Size_4x2.CreateTo(Level, Position[0, 0]);
+			//            this.Size_4x2.CreateTo(Level, Position[4, 0]);
+			//            this.Size_4x2.CreateTo(Level, Position[2, 2]);
+			//            this.Size_2x2.CreateTo(Level, Position[0, 2]);
+			//            this.Size_2x2.CreateTo(Level, Position[6, 2]);
+			//        }
+			//    );
 
 
 			this.Size_5x5 =
@@ -144,7 +143,6 @@ namespace AvalonUgh.Code.Editor.Tiles
 					this.Size_2x2,
 					this.Size_2x3,
 					this.Size_3x2,
-					this.Size_4x2,
 					this.Size_2x4,
 
 					this.Size_3x3,
@@ -152,8 +150,8 @@ namespace AvalonUgh.Code.Editor.Tiles
 					this.Size_6x3,
 					this.Size_5x4,
 					this.Size_5x5,
-					this.Size_6x6,
-					this.Size_8x4,
+					//this.Size_6x6,
+					//this.Size_8x4,
 				};
 		}
 

@@ -135,7 +135,7 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone0_2x4.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone0_4x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone1_3x2.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\stone0_2x1.png" />
@@ -836,6 +836,11 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\White\9.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\ugh_music2.mp3" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bubble_sign0.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bubble_sign1.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bubble_sign2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bubble_sign4.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bubble_sign5.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.SocialLinks\Preview_FreeCell.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.SocialLinks\Preview_Mahjong.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.SocialLinks\Preview_Minesweeper.png" />

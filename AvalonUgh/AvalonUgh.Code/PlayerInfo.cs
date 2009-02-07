@@ -24,10 +24,21 @@ namespace AvalonUgh.Code
 		public PlayerIdentity Identity = new PlayerIdentity();
 
 
+		int InternalIdentityLocal;
 		/// <summary>
 		/// Each client can create multiple players for splitview game mode
 		/// </summary>
-		public int IdentityLocal;
+		public int IdentityLocal
+		{
+			get
+			{
+				return InternalIdentityLocal;
+			}
+			set
+			{
+				InternalIdentityLocal = value;
+			}
+		}
 
 
 

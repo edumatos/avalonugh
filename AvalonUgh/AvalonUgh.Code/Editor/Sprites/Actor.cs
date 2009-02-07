@@ -21,6 +21,62 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		// 1000...1999 tell where to, start walking
+		// 2000...2999 be confused, walk back and start idle
+		public int Memory_LogicState = 0;
+
+		public const int Memory_LogicState_Waiting = 0;
+		public const int Memory_LogicState_Boarding = 1;
+		public const int Memory_LogicState_BubbleLength = 120;
+
+		public const int Memory_LogicState_TalkStart = 1000;
+		public const int Memory_LogicState_TalkEnd = Memory_LogicState_TalkStart + Memory_LogicState_BubbleLength;
+
+		public const int Memory_LogicState_ConfusedStart = 2000;
+		public const int Memory_LogicState_ConfusedEnd = Memory_LogicState_ConfusedStart + Memory_LogicState_BubbleLength;
+
+		public bool Memory_LogicState_IsTalking
+		{
+			get
+			{
+				if (Memory_LogicState < Memory_LogicState_TalkStart)
+					return false;
+
+				if (Memory_LogicState > Memory_LogicState_TalkEnd)
+					return false;
+
+				return true;
+			}
+		}
+
+		public bool Memory_LogicState_IsConfused
+		{
+			get
+			{
+				if (Memory_LogicState < Memory_LogicState_ConfusedStart)
+					return false;
+
+				if (Memory_LogicState > Memory_LogicState_ConfusedEnd)
+					return false;
+
+				return true;
+			}
+		}
+
+		public bool Memory_LogicState_WouldBeConfusedIfVehicleLeft
+		{
+			get
+			{
+				if (Memory_LogicState_IsTalking)
+					return true;
+
+				if (Memory_LogicState == Actor.Memory_LogicState_Boarding)
+					return true;
+
+				return false;
+			}
+		}
+
 		public PlayerInput DefaultPlayerInput;
 
 		public Actor StartPosition;
@@ -222,7 +278,7 @@ namespace AvalonUgh.Code
 					this.PanicFrames.First().Show();
 
 				if (value == AnimationEnum.Talk)
-					this.TalkFrames.First().Show();
+					this.TalkFrames.FirstOrDefault().Apply(k => k.Show());
 
 				if (value == AnimationEnum.WalkLeft)
 					this.WalkLeftFrames.FirstOrDefault().Apply(k => k.Show());
@@ -477,7 +533,7 @@ namespace AvalonUgh.Code
 
 		public bool AIInputEnabled;
 
-		public double MaxVelocityX;
+		public double MaxVelocityX = 3.0;
 		public double AccelerationHandicap = 1.0;
 
 		public bool IsMaxVelocityXReached
