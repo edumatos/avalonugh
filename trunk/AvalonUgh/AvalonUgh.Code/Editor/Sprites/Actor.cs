@@ -487,7 +487,7 @@ namespace AvalonUgh.Code
 				if (this.MaxVelocityX == 0)
 					return false;
 
-				if (Math.Abs(this.VelocityX) < this.MaxVelocityX)
+				if (Math.Abs(this.VelocityX) > this.MaxVelocityX)
 					return true;
 
 				return false;

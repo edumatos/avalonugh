@@ -31,6 +31,7 @@ namespace AvalonUgh.Code
 
 		public Canvas Entities { get; set; }
 		public Canvas StartPositionsContainer { get; set; }
+		public Canvas BubbleContainer { get; set; }
 
 		public Canvas ContentExtendedContainer { get; set; }
 
@@ -166,7 +167,21 @@ namespace AvalonUgh.Code
 				Height = this.ContentActualHeight
 			}.AttachTo(this.Content);
 
+			this.StartPositionsContainer = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
+
+
+
 			this.Entities = new Canvas
+			{
+				Width = this.ContentActualWidth,
+				Height = this.ContentActualHeight
+			}.AttachTo(this.Content);
+
+			this.BubbleContainer = new Canvas
 			{
 				Width = this.ContentActualWidth,
 				Height = this.ContentActualHeight
@@ -180,6 +195,7 @@ namespace AvalonUgh.Code
 				Height = this.ContentExtendedHeight
 			}.AttachTo(this.Container);
 
+			
 			this.SnowContainer = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
@@ -237,7 +253,7 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownActors.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
-			this.Level.KnownActors.AttachTo(k => k.KnownBubbles, this.StartPositionsContainer);
+			this.Level.KnownActors.AttachTo(k => k.KnownBubbles, this.BubbleContainer);
 
 		
 

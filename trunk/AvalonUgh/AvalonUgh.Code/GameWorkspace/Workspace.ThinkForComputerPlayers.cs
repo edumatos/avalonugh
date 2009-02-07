@@ -21,8 +21,8 @@ namespace AvalonUgh.Code.GameWorkspace
 		private void ThinkForComputerPlayers(View view)
 		{
 
-			if (this.LocalIdentity.SyncFrame % 20 != 0)
-				return;
+			//if (this.LocalIdentity.SyncFrame % 20 != 0)
+			//    return;
 
 			// a player is created on a different platform
 			// if prvious actor has stopped walking and is at its 
@@ -75,10 +75,10 @@ namespace AvalonUgh.Code.GameWorkspace
 						SoundBoard.Default.talk0_00();
 
 						i.Passenger.KnownBubbles.Add(
-							
+
 							// show where shall we go
 
-							new Actor.Bubble(view.Level.Zoom)
+							new Actor.Bubble(view.Level.Zoom, 3)
 						);
 					}
 
@@ -87,14 +87,21 @@ namespace AvalonUgh.Code.GameWorkspace
 				{
 					i.Passenger.KnownBubbles.RemoveAll();
 
-					if (i.Passenger.Animation != Actor.AnimationEnum.Idle)
-						i.Passenger.Animation = Actor.AnimationEnum.Idle;
+					if (i.Passenger.VelocityX == 0)
+						if (i.Passenger.Animation != Actor.AnimationEnum.Idle)
+							i.Passenger.Animation = Actor.AnimationEnum.Idle;
 
 					if (i.PassengerObstacle.Intersects(i.Platform.WaitPosition))
-						i.Passenger.VelocityX *= 0.3;
-
-					i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.Platform.WaitPosition.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
-					i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.WaitPosition.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
+					{
+						i.Passenger.VelocityX = 0;
+						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
+					}
+					else
+					{
+						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.Platform.WaitPosition.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
+						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.WaitPosition.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
+					}
 
 				}
 			}
