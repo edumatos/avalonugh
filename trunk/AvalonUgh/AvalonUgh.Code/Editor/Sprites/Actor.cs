@@ -480,6 +480,19 @@ namespace AvalonUgh.Code
 		public double MaxVelocityX;
 		public double AccelerationHandicap = 1.0;
 
+		public bool IsMaxVelocityXReached
+		{
+			get
+			{
+				if (this.MaxVelocityX == 0)
+					return false;
+
+				if (Math.Abs(this.VelocityX) < this.MaxVelocityX)
+					return true;
+
+				return false;
+			}
+		}
 		public void AddAcceleration(PlayerInput e)
 		{
 			// if the AI is controlling this actor
@@ -500,7 +513,7 @@ namespace AvalonUgh.Code
 					this.Animation = AnimationEnum.WalkLeft;
 
 				// at some point we should not be able to accelerate
-				if (this.MaxVelocityX == 0 || Math.Abs(this.VelocityX) < this.MaxVelocityX)
+				if (!IsMaxVelocityXReached)
 					this.VelocityX -= this.Zoom * DefaultAcceleraton * AccelerationHandicap;
 			}
 			else if (e.Keyboard.IsPressedRight)
@@ -508,7 +521,7 @@ namespace AvalonUgh.Code
 				if (this.Animation != AnimationEnum.WalkRight)
 					this.Animation = AnimationEnum.WalkRight;
 
-				if (this.MaxVelocityX == 0 || Math.Abs(this.VelocityX) < this.MaxVelocityX)
+				if (!IsMaxVelocityXReached)
 					this.VelocityX += this.Zoom * DefaultAcceleraton * AccelerationHandicap;
 			}
 			else
