@@ -82,6 +82,8 @@ namespace AvalonUgh.Code.GameWorkspace
 						// we do not need to see the start position markers
 						// it is useful only in the editor
 						this.View.StartPositionsContainer.Hide();
+						//this.View.ContentInfoOverlay.Hide();
+
 					};
 
 
