@@ -57,7 +57,7 @@ namespace AvalonUgh.Code
 				return;
 
 			// y relative to water
-			var y = (twin.Y - this.Level.WaterTop) ;
+			var y = (twin.Y - this.Level.WaterTop);
 
 
 			// 0..1 how much volume is in air
@@ -65,11 +65,11 @@ namespace AvalonUgh.Code
 			var AirVolume = (-y / twin.HalfHeight).Min(1).Max(0);
 			var WaterVolume = ((y + twin.HalfHeight * twin.MassCenterModifier) / twin.HalfHeight).Min(1).Max(0);
 
-	
+
 
 			// add gravity
 			twin.VelocityY += Level.AttributeGravity.Value * 0.01 * AirVolume * AirVolume;
-			
+
 
 
 
@@ -119,28 +119,29 @@ namespace AvalonUgh.Code
 						);
 					}
 
-					this.Level.KnownActors.Where(k => k.CanBeHitByVehicle).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-						actor_ =>
-						{
-							actor_.CanBeHitByVehicle = false;
-							actor_.RespectPlatforms = false;
-							actor_.Animation = Actor.AnimationEnum.Panic;
+					if (veh.GetVelocity() > this.Level.Zoom)
+						this.Level.KnownActors.Where(k => k.CanBeHitByVehicle).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+							actor_ =>
+							{
+								actor_.CanBeHitByVehicle = false;
+								actor_.RespectPlatforms = false;
+								actor_.Animation = Actor.AnimationEnum.Panic;
 
-							//// we did hit an actor that repsects platforms
-							//// as such he cannot fall thro it to water
-							//if (actor_.RespectPlatforms)
-							//    return;
+								//// we did hit an actor that repsects platforms
+								//// as such he cannot fall thro it to water
+								//if (actor_.RespectPlatforms)
+								//    return;
 
-							//// we did will hit a tree
-							//actor_.Animation = Actor.AnimationEnum.Panic;
-						}
-					);
+								//// we did will hit a tree
+								//actor_.Animation = Actor.AnimationEnum.Panic;
+							}
+						);
 
 				}
 
 			bool DinoWindEnabled = true;
 
-		
+
 
 			var actor = twin as Actor;
 			if (actor != null)
@@ -286,7 +287,7 @@ namespace AvalonUgh.Code
 			}
 			else
 			{
-				
+
 				twin.VelocityX += Level.AttributeWind.Value * 0.1 * AirVolume * AirVolume;
 			}
 

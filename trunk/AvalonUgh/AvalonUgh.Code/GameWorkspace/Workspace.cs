@@ -452,7 +452,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 										// show where shall we go
 
-										new Actor.Bubble(DefaultZoom)
+										new Actor.Bubble(DefaultZoom, this.LocalIdentity.SyncFrame % 6 - 1)
 									);
 								}
 						};

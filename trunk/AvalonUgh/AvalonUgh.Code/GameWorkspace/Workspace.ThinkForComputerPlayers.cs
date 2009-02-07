@@ -57,8 +57,14 @@ namespace AvalonUgh.Code.GameWorkspace
 				let PassengerObstacle = Passenger.ToObstacle()
 				let Platform = view.Level.ToPlatformSnapshots().FirstOrDefault(k => k.IncludedSpace.Intersects(PassengerObstacle))
 				where Platform != null
-				let PickupArrived = PickupVehicles.Any(k => k.VehicleObstacle.Intersects(Platform.IncludedSpace))
-				select new { Passenger, PassengerObstacle, Platform, PickupArrived }
+				let NearestPickup = Enumerable.FirstOrDefault(
+					from k in PickupVehicles
+					where k.VehicleObstacle.Intersects(Platform.IncludedSpace)
+					orderby k.VehicleObstacle.X - PassengerObstacle.X 
+					select k 
+				)
+				let PickupArrived = NearestPickup != null
+				select new { Passenger, PassengerObstacle, Platform, PickupArrived, NearestPickup }
 			);
 
 
@@ -66,178 +72,111 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			foreach (var i in Passengers)
 			{
-				if (i.PickupArrived)
+				if (i.Passenger.Memory_LogicState_IsConfused)
 				{
-					if (i.Passenger.Animation != Actor.AnimationEnum.Talk)
+					i.Passenger.Memory_LogicState++;
+
+					if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_ConfusedEnd)
 					{
-						i.Passenger.Animation = Actor.AnimationEnum.Talk;
-
-						SoundBoard.Default.talk0_00();
-
-						i.Passenger.KnownBubbles.Add(
-
-							// show where shall we go
-
-							new Actor.Bubble(view.Level.Zoom, 3)
-						);
+						i.Passenger.KnownBubbles.RemoveAll();
+						i.Passenger.Animation = Actor.AnimationEnum.Idle;
+						i.Passenger.Memory_LogicState = Actor.Memory_LogicState_Waiting;
+						Console.WriteLine("Memory_LogicState_ConfusedEnd");
 					}
-
 				}
 				else
 				{
-					i.Passenger.KnownBubbles.RemoveAll();
-
-					if (i.Passenger.VelocityX == 0)
-						if (i.Passenger.Animation != Actor.AnimationEnum.Idle)
-							i.Passenger.Animation = Actor.AnimationEnum.Idle;
-
-					if (i.PassengerObstacle.Intersects(i.Platform.WaitPosition))
+					if (i.PickupArrived)
 					{
-						i.Passenger.VelocityX = 0;
-						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
-						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
-					}
-					else
-					{
-						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.Platform.WaitPosition.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
-						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.WaitPosition.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
-					}
-
-				}
-			}
-
-
-		}
-
-		private void ThinkForComputerPlayers_OldImplementation(Level level)
-		{
-			foreach (var p in level.KnownPassengers)
-			{
-				var p_AsObstacle = p.ToObstacle().ToPercision(
-					PrimitiveTile.Width * level.Zoom / 2
-				);
-
-				if (p.AIInputEnabled)
-				{
-					// yay, some other action needs to complete
-				}
-				else
-				{
-					p.FramesWaitedForNextAction++;
-
-					if (p.CurrentCave != null)
-					{
-						if (p.FramesWaitedForNextAction % 100 == 0)
+						if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_Boarding)
 						{
-							AIDirector.ActorExitCave(p);
-							p.FramesWaitedForNextAction = 0;
-						}
-					}
-					else
-					{
-						// we are out of the cave
-						// we shall slowly walk half or more way to the sign
-
-						// if there is no sign we will go back to the cave!!!
-
-						var SignFound = level.KnownSigns.FirstOrDefault(k => k.ToObstacle().Intersects(p_AsObstacle));
-
-						var ShouldStopWalking = false;
-
-						if (SignFound != null)
-						{
-							ShouldStopWalking = true;
-						}
-
-						if (p.VelocityY != 0)
-						{
-							ShouldStopWalking = true;
-						}
-
-						// where to?
-						// how far are we from the sign anyhow?
-
-						Func<ISupportsObstacle[], int, bool> Intersects =
-							(source, x) =>
-							{
-								var o = p_AsObstacle.WithOffset(level.Zoom * PrimitiveTile.Width * x, 0);
-
-								return source.Any(k => k.ToObstacle().Intersects(o));
-							};
-
-						var SignDistanceThisWay = Enumerable.FirstOrDefault(
-							from i in Enumerable.Range(0, 10)
-							where Intersects(level.KnownSigns.ToArray(), i)
-							select new { i }
-						);
-
-						var CaveDistanceTheOtherWay = Enumerable.FirstOrDefault(
-							from i in Enumerable.Range(0, 10)
-							where Intersects(level.KnownCaves.ToArray(), -i)
-							select new { i }
-						);
+							// walk to the vehicle
 
 
-						if (CaveDistanceTheOtherWay != null)
-							if (SignDistanceThisWay != null)
-								if (SignDistanceThisWay.i <= CaveDistanceTheOtherWay.i)
-									ShouldStopWalking = true;
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
 
-						if (ShouldStopWalking)
-						{
-							p.VelocityX *= 0.7;
 						}
 						else
 						{
-							if (SignDistanceThisWay == null)
+							if (i.Passenger.Memory_LogicState_IsTalking)
 							{
-								if (CaveDistanceTheOtherWay != null)
-									p.VelocityX = (p.VelocityX - 0.1).Max(-0.7);
+								i.Passenger.Memory_LogicState++;
+
+								if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_TalkEnd)
+								{
+									i.Passenger.KnownBubbles.RemoveAll();
+									i.Passenger.Animation = Actor.AnimationEnum.Idle;
+									i.Passenger.Memory_LogicState = Actor.Memory_LogicState_Boarding;
+									Console.WriteLine("Memory_LogicState_Boarding");
+
+								}
 							}
 							else
 							{
-								// get going!
-								p.VelocityX = (p.VelocityX + 0.1).Min(0.7);
+								Console.WriteLine("Memory_LogicState_TalkStart");
+
+
+								#region Memory_LogicState_TalkStart
+
+
+								SoundBoard.Default.talk0_00();
+
+								i.Passenger.KnownBubbles.Add(
+									new Actor.Bubble(view.Level.Zoom, 0)
+								);
+
+								i.Passenger.Memory_LogicState = Actor.Memory_LogicState_TalkStart;
+								i.Passenger.Animation = Actor.AnimationEnum.Talk;
+
+								#endregion
 							}
-
-
 						}
 
-						if (p.VelocityX > 0)
-							if (p.Animation != Actor.AnimationEnum.WalkRight)
-								p.Animation = Actor.AnimationEnum.WalkRight;
+					}
+					else
+					{
+						if (i.Passenger.Memory_LogicState_WouldBeConfusedIfVehicleLeft)
+						{
+							Console.WriteLine("Memory_LogicState_ConfusedStart");
 
+							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_ConfusedStart;
+							i.Passenger.Animation = Actor.AnimationEnum.Talk;
+							i.Passenger.VelocityX = 0;
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
 
-						if (p.VelocityX < 0)
-							if (p.Animation != Actor.AnimationEnum.WalkLeft)
-								p.Animation = Actor.AnimationEnum.WalkLeft;
+							i.Passenger.KnownBubbles.Add(
+								new Actor.Bubble(view.Level.Zoom, -1)
+							);
+						}
+						else
+						{
+							#region walk to waiting position
+							if (i.Passenger.VelocityX == 0)
+								if (i.Passenger.Animation != Actor.AnimationEnum.Idle)
+									i.Passenger.Animation = Actor.AnimationEnum.Idle;
 
+							if (Math.Abs(i.Platform.WaitPosition.X - i.Passenger.X) < i.Platform.WaitPosition.Width)
+							{
+								i.Passenger.VelocityX = 0;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
+							}
+							else
+							{
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.Platform.WaitPosition.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.WaitPosition.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
+							}
+							#endregion
 
-						if (p.VelocityX == 0)
-							if (p.VelocityY == 0)
-								if (p.Animation != Actor.AnimationEnum.Idle)
-									p.Animation = Actor.AnimationEnum.Idle;
-
-
+						}
 					}
 				}
 			}
 
-			if (level.KnownPassengers.Count > 0)
-				return;
 
-			if (level.KnownCaves.Count == 0)
-				return;
-
-			var c = level.KnownCaves.AtModulus(this.LocalIdentity.SyncFrame);
-
-			var a = new Actor.woman0(level.Zoom);
-
-			level.KnownPassengers.Add(a);
-
-			a.MoveTo(c.X, c.Y);
-			a.Animation = Actor.AnimationEnum.Hidden;
-			a.CurrentCave = c;
 		}
+
 	}
 }
