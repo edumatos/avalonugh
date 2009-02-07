@@ -19,17 +19,10 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		private void ThinkForComputerPlayers(View view)
 		{
-			// we cannot reevaluate the environment on each frame
-			// as it takes way much time
 
-			//if (this.LocalIdentity.SyncFrame % 20 != 0)
-			//    return;
+			if (this.LocalIdentity.SyncFrame % 20 != 0)
+				return;
 
-		
-
-			//ThinkForComputerPlayers_OldImplementation(level);
-
-			
 			// a player is created on a different platform
 			// if prvious actor has stopped walking and is at its 
 			// wait position
@@ -49,17 +42,27 @@ namespace AvalonUgh.Code.GameWorkspace
 			// we are just syncing the state of elements
 			// which should be stored as a few integers
 
+			var ComputerActors = Enumerable.ToArray(
+				from ComputerActor in view.Level.KnownComputerActors
+				let ComputerActorObstacle = ComputerActor.ToObstacle()
+				select new { ComputerActor, ComputerActorObstacle }
+			);
+
 			foreach (var p in view.Level.ToPlatformSnapshots())
 			{
+				var PlatformHasPassengers = ComputerActors.Any(k => k.ComputerActorObstacle.Intersects(p.IncludedSpace));
 
+				if (!PlatformHasPassengers)
+				{
+					var a = new Actor.woman0(view.Level.Zoom);
+
+					view.Level.KnownComputerActors.Add(a);
+
+					a.MoveTo(p.Cave.X, p.Cave.Y);
+					//a.Animation = Actor.AnimationEnum.Hidden;
+					//a.CurrentCave = c;
+				}
 			}
-
-			//foreach (var c in view.Level.KnownCaves)
-			//{
-			//    var s = PlatformSnapshot.Of(view, c);
-
-
-			//}
 
 
 		}

@@ -548,7 +548,13 @@ namespace AvalonUgh.Code.Editor
 							// clear any thought shapes
 							ContentInfoColoredShapes.ToArray().ForEach(k => ContentInfoColoredShapes.Remove(k));
 
-							return this.KnownCaves.ToArray(k => PlatformSnapshot.Of(this, k)).AsEnumerable();
+							var query = from k in this.KnownCaves
+										let p = PlatformSnapshot.Of(this, k)
+										where p.IncludedSpace != null
+										where p.WaitPosition != null
+										select p;
+
+							return query.ToArray().AsEnumerable();
 						}
 					);
 
@@ -766,12 +772,17 @@ namespace AvalonUgh.Code.Editor
 
 		public void AddToContentInfoColoredShapes(Obstacle o, Brush b)
 		{
+			AddToContentInfoColoredShapes(o, b, 0.4);
+		}
+
+		public void AddToContentInfoColoredShapes(Obstacle o, Brush b, double Opacity)
+		{
 			var r = new Rectangle
 			{
 				Fill = b,
 				Width = o.Width,
 				Height = o.Height,
-				Opacity = 0.4
+				Opacity = Opacity
 			}.MoveTo(
 				o.Left, // + this.ContentOffsetX,
 				o.Top // + this.ContentOffsetY

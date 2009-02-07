@@ -5,6 +5,7 @@ using System.Text;
 using AvalonUgh.Assets.Avalon;
 using ScriptCoreLib;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Code.Editor.Tiles;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -47,6 +48,15 @@ namespace AvalonUgh.Code.Editor
 				return;
 			}
 
+			if (Tile.Variation != null)
+			{
+				var NamedSelector = Selector as TileSelector.Named;
+				if (NamedSelector != null)
+				{
+					NamedSelector.Name.Index = Tile.Variation.Value;
+				}
+			}
+			
 			Selector.CreateTo(Level,
 				new View.SelectorPosition
 				{
