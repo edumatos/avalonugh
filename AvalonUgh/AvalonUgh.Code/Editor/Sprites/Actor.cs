@@ -162,8 +162,16 @@ namespace AvalonUgh.Code
 
 
 			this.KnownBubbles.ForEachNewOrExistingItem(
-				k => k.Image.MoveTo(this.X, this.Y - k.Image.Height)
-			); 
+				k => k.MoveContainerTo(this.X + k.OffsetX, this.Y + k.OffsetY)
+			);
+
+			this.LocationChanged +=
+				delegate
+				{
+					this.KnownBubbles.ForEachNewOrExistingItem(
+						k => k.MoveContainerTo(this.X + k.OffsetX, this.Y + k.OffsetY)
+					);
+				};
 
 		}
 
@@ -435,7 +443,6 @@ namespace AvalonUgh.Code
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 
-			this.KnownBubbles.ForEach(k => k.Image.MoveTo(x, y - k.Image.Height));
 
 
 			if (LocationChanged != null)

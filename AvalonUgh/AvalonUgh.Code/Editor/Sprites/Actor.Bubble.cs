@@ -21,16 +21,28 @@ namespace AvalonUgh.Code
 	partial class Actor
 	{
 		[Script]
-		public class Bubble
+		public class Bubble : ISupportsContainer
 		{
+			public Canvas Container { get; set; }
+
 			public readonly int CaveSign;
 
-			public readonly Image Image;
 
+			public readonly int OffsetX;
+			public readonly int OffsetY;
 
 			public Bubble(int Zoom)
 			{
-				this.Image = new NameFormat
+				this.OffsetX = 2 * Zoom;
+				this.OffsetY = -22 * Zoom;
+
+				this.Container = new Canvas
+				{
+					Width = 16 * Zoom,
+					Height = 24 * Zoom
+				};
+
+				new NameFormat
 				{
 					Path = KnownAssets.Path.Sprites,
 					Name = "bubble_question",
@@ -38,7 +50,8 @@ namespace AvalonUgh.Code
 
 					Extension = "png",
 					Zoom = Zoom
-				}.ToImage(16, 24);
+				}.ToImage(16, 24).AttachTo(this);
+
 			}
 		}
 
