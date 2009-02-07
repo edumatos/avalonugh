@@ -76,7 +76,7 @@ namespace AvalonUgh.Code.Editor
 					new BackgroundSelector(),
 
 					new Sprites.GoldSelector(),
-
+					new Sprites.PassengerSelector()
 				};
 
 			ParamsFunc<SelectorBase, Func<SelectorBase>> f =

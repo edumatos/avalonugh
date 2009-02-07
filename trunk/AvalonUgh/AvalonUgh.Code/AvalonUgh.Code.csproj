@@ -82,13 +82,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actor.cs" />
+    <Compile Include="Editor\Sprites\Actor.cs" />
     <Compile Include="ASCIIImage.cs" />
     <Compile Include="ASCIITileSizeInfo.cs" />
     <Compile Include="Editor\Sprites\Bird.cs" />
-    <Compile Include="Actor.man0.cs" />
-    <Compile Include="Actor.man1.cs" />
-    <Compile Include="Actor.woman0.cs" />
+    <Compile Include="Editor\Sprites\Actor.man0.cs" />
+    <Compile Include="Editor\Sprites\Actor.man1.cs" />
+    <Compile Include="Editor\Sprites\Actor.woman0.cs" />
     <Compile Include="Editor\Level.ToString.cs" />
     <Compile Include="Editor\Tiles\Cave.cs" />
     <Compile Include="Editor\Sprites\SignSelector.cs" />
@@ -149,6 +149,7 @@
     <Compile Include="Diagnostics\DOMDump.cs" />
     <Compile Include="Editor\CommonFileWindow.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
+    <Compile Include="Editor\Sprites\PassengerSelector.cs" />
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameSocialLinks.cs" />
     <Compile Include="GameWorkspace\PassangerAIDomain\PassangerAI.cs" />
@@ -181,7 +182,6 @@
     <Compile Include="Editor\Level.WaterHeight.cs" />
     <Compile Include="Editor\LevelReference.cs" />
     <Compile Include="Editor\LoadWindow.cs" />
-    <Compile Include="Editor\PlatformScan.cs" />
     <Compile Include="Editor\SelectorBase.cs" />
     <Compile Include="Editor\Sprites\Tryoperus.AnimationFrames.cs" />
     <Compile Include="Editor\Sprites\Dino.cs" />

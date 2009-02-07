@@ -64,7 +64,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Platform> KnownPlatforms = new BindingList<Platform>();
 		public readonly BindingList<Bridge> KnownBridges = new BindingList<Bridge>();
 
-		public readonly BindingList<Actor> KnownComputerActors = new BindingList<Actor>();
+		public readonly BindingList<Actor> KnownPassengers = new BindingList<Actor>();
 		public readonly BindingList<Actor> KnownActors = new BindingList<Actor>();
 		public readonly BindingList<Vehicle> KnownVehicles = new BindingList<Vehicle>();
 		public readonly BindingList<Tryoperus> KnownTryoperus = new BindingList<Tryoperus>();
@@ -153,7 +153,7 @@ namespace AvalonUgh.Code.Editor
 			//if (Selectors == null)
 			//    throw new ArgumentNullException();
 
-			this.KnownComputerActors.AttachTo(this.KnownActors);
+			this.KnownPassengers.AttachTo(this.KnownActors);
 
 			this.Physics = new Physics
 			{
@@ -548,6 +548,8 @@ namespace AvalonUgh.Code.Editor
 							// clear any thought shapes
 							ContentInfoColoredShapes.ToArray().ForEach(k => ContentInfoColoredShapes.Remove(k));
 
+							// regardless of us returning that snapshot
+							// it may have already be rendered
 							var query = from k in this.KnownCaves
 										let p = PlatformSnapshot.Of(this, k)
 										where p.IncludedSpace != null
@@ -688,6 +690,20 @@ namespace AvalonUgh.Code.Editor
 									delegate
 									{
 										this.KnownRocks.Remove(Entity);
+										Entity.Dispose();
+									}
+							}
+					)
+				).Concat(
+					this.KnownPassengers.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownPassengers.Remove(Entity);
 										Entity.Dispose();
 									}
 							}

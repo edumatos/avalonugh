@@ -26,7 +26,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			// a player is created on a different platform
 			// if prvious actor has stopped walking and is at its 
 			// wait position
-			
+
 			// if there is alreadysomeone waiting on the platform
 			// the passenger will not exit the cave
 
@@ -42,25 +42,40 @@ namespace AvalonUgh.Code.GameWorkspace
 			// we are just syncing the state of elements
 			// which should be stored as a few integers
 
-			var ComputerActors = Enumerable.ToArray(
-				from ComputerActor in view.Level.KnownComputerActors
-				let ComputerActorObstacle = ComputerActor.ToObstacle()
-				select new { ComputerActor, ComputerActorObstacle }
+			var PickupVehicles = Enumerable.ToArray(
+				from Vehicle in view.Level.KnownVehicles
+				where Vehicle.CurrentDriver != null
+				where Vehicle.GetVelocity() == 0
+				let VehicleObstacle = Vehicle.ToObstacle()
+				select new { Vehicle, VehicleObstacle }
 			);
 
-			foreach (var p in view.Level.ToPlatformSnapshots())
+			var Passengers = Enumerable.ToArray(
+				from Passenger in view.Level.KnownPassengers
+				where Passenger.VelocityY == 0
+				let PassengerObstacle = Passenger.ToObstacle()
+				let Platform = view.Level.ToPlatformSnapshots().FirstOrDefault(k => k.IncludedSpace.Intersects(PassengerObstacle))
+				where Platform != null
+				let PickupArrived = PickupVehicles.Any(k => k.VehicleObstacle.Intersects(Platform.IncludedSpace))
+				select new { Passenger, PassengerObstacle, Platform, PickupArrived }
+			);
+
+		
+
+
+			foreach (var i in Passengers)
 			{
-				var PlatformHasPassengers = ComputerActors.Any(k => k.ComputerActorObstacle.Intersects(p.IncludedSpace));
-
-				if (!PlatformHasPassengers)
+				if (i.PickupArrived)
 				{
-					var a = new Actor.woman0(view.Level.Zoom);
+					if (i.Passenger.Animation != Actor.AnimationEnum.Talk)
+						i.Passenger.Animation = Actor.AnimationEnum.Talk;
 
-					view.Level.KnownComputerActors.Add(a);
+				}
+				else
+				{
+					if (i.Passenger.Animation != Actor.AnimationEnum.Idle)
+						i.Passenger.Animation = Actor.AnimationEnum.Idle;
 
-					a.MoveTo(p.Cave.X, p.Cave.Y);
-					//a.Animation = Actor.AnimationEnum.Hidden;
-					//a.CurrentCave = c;
 				}
 			}
 
@@ -69,7 +84,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		private void ThinkForComputerPlayers_OldImplementation(Level level)
 		{
-			foreach (var p in level.KnownComputerActors)
+			foreach (var p in level.KnownPassengers)
 			{
 				var p_AsObstacle = p.ToObstacle().ToPercision(
 					PrimitiveTile.Width * level.Zoom / 2
@@ -181,7 +196,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				}
 			}
 
-			if (level.KnownComputerActors.Count > 0)
+			if (level.KnownPassengers.Count > 0)
 				return;
 
 			if (level.KnownCaves.Count == 0)
@@ -191,7 +206,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			var a = new Actor.woman0(level.Zoom);
 
-			level.KnownComputerActors.Add(a);
+			level.KnownPassengers.Add(a);
 
 			a.MoveTo(c.X, c.Y);
 			a.Animation = Actor.AnimationEnum.Hidden;
