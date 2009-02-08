@@ -56,13 +56,19 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
+		public event Action LocationChanged;
+
 		public void MoveTo(double x, double y)
 		{
 			this.X = x;
 			this.Y = y;
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
+
+			if (LocationChanged != null)
+				LocationChanged();
 		}
+
 
 		readonly Image[] AnimationFrames;
 		Image AnimationFrame;

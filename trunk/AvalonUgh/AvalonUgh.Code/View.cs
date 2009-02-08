@@ -8,6 +8,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Windows;
 
 namespace AvalonUgh.Code
 {
@@ -262,10 +263,18 @@ namespace AvalonUgh.Code
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownActors.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 			this.Level.KnownActors.AttachTo(k => k.KnownBubbles, this.BubbleContainer);
+			this.Level.KnownActors.WithEvents(this.LogicForInfoLabel);
+
+			this.Level.KnownVehicles.AttachTo(this.Entities);
+			this.Level.KnownVehicles.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
+			this.Level.KnownVehicles.WithEvents(this.LogicForInfoLabel);
+
+
+			this.Level.KnownRocks.AttachTo(this.Entities);
+			this.Level.KnownRocks.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
+			this.Level.KnownRocks.WithEvents(this.LogicForInfoLabel);
 
 		
-
-
 			this.Level.KnownDinos.AttachTo(this.Entities);
 
 			
@@ -274,12 +283,7 @@ namespace AvalonUgh.Code
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
 			this.Level.KnownTryoperus.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 
-			this.Level.KnownRocks.AttachTo(this.Entities);
-			this.Level.KnownRocks.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
-
-			this.Level.KnownVehicles.AttachTo(this.Entities);
-			this.Level.KnownVehicles.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
-
+		
 
 
 			this.Level.KnownStones.ForEachNewOrExistingItem(
@@ -543,5 +547,45 @@ namespace AvalonUgh.Code
 		}
 
 		#endregion
+
+		Action LogicForInfoLabel(ISupportsPhysics value)
+		{
+			var i = new TextBox
+			{
+				AcceptsReturn = true,
+				IsReadOnly = true,
+				Text = "info",
+				Background = Brushes.Transparent,
+				BorderThickness = new Thickness(0),
+				Foreground = Brushes.Yellow,
+				Width = 200,
+				Height = 200
+			};
+
+			i.AttachTo(this.BubbleContainer);
+
+			Action UpdateLocation =
+				delegate
+				{
+					i.Text =
+						"x: " + value.X + "\n" +
+						"y: " + value.Y + "\n" +
+						"vx: " + value.VelocityX + "\n" +
+						"vy: " + value.VelocityY;
+
+					i.MoveTo(
+						value.X,
+						value.Y
+					);
+				};
+
+			value.LocationChanged += UpdateLocation;
+
+			return delegate
+			{
+				value.LocationChanged -= UpdateLocation;
+				i.Orphanize();
+			};
+		}
 	}
 }

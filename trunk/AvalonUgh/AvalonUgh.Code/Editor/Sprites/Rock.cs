@@ -90,11 +90,17 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public double Density { get; set; }
 
-		public double VelocityX { get; set; }
-		public double VelocityY { get; set; }
+		public readonly RoundedDouble InternalVelocityX = new RoundedDouble();
+		public readonly RoundedDouble InternalVelocityY = new RoundedDouble();
+		public readonly RoundedDouble InternalX = new RoundedDouble();
+		public readonly RoundedDouble InternalY = new RoundedDouble();
 
-		public double X { get; set; }
-		public double Y { get; set; }
+
+		public double VelocityX { get { return InternalVelocityX.Value; } set { InternalVelocityX.Value = value; } }
+		public double VelocityY { get { return InternalVelocityY.Value; } set { InternalVelocityY.Value = value; } }
+
+		public double X { get { return InternalX.Value; } set { InternalX.Value = value; } }
+		public double Y { get { return InternalY.Value; } set { InternalY.Value = value; } }
 
 
 
@@ -118,12 +124,17 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
+		public event Action LocationChanged;
+
 		public void MoveTo(double x, double y)
 		{
 			this.X = x;
 			this.Y = y;
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
+
+			if (LocationChanged != null)
+				LocationChanged();
 		}
 
 		public bool IsSleeping { get; set; }

@@ -332,37 +332,16 @@ namespace AvalonUgh.Code
 				twin.LastWaterCollisionVelocity = 0;
 			}
 
-			if (twin.GetVelocity() < 0.01)
-			{
-				if (twin.Y < this.Level.WaterTop)
-				{
-					twin.Stability++;
-
-					// how stable must the object be?
-					if (twin.Stability >= 3)
-					{
-						if (twin.Stability == 3)
-						{
-							twin.StabilityReached();
-
-
-						}
-
-						twin.VelocityX = 0;
-						twin.VelocityY = 0;
-
-						//return;
-					}
-				}
-			}
-			else
-			{
-				twin.Stability = 0;
-			}
-
 			if (twin.VelocityX == 0)
 				if (twin.VelocityY == 0)
 					return;
+
+			if (Math.Abs(twin.VelocityX) < 0.01)
+				twin.VelocityX = 0;
+
+			if (Math.Abs(twin.VelocityY) < 0.01)
+				twin.VelocityY = 0;
+
 
 			newX = twin.X + twin.VelocityX;
 			newY = twin.Y + twin.VelocityY;
@@ -397,12 +376,12 @@ namespace AvalonUgh.Code
 	[Script]
 	public interface ISupportsMoveTo
 	{
-
-
 		int HalfHeight { get; }
 		int HalfWidth { get; }
 
 		void MoveTo(double x, double y);
+
+		event Action LocationChanged;
 	}
 
 	[Script]
