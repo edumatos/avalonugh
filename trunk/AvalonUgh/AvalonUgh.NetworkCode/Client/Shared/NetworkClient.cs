@@ -162,7 +162,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 									this.Content.LocalIdentity.SyncFrame = NextSyncFrame;
 
 									// unpause
-									this.Content.LocalIdentity.SyncFramePaused = false;
+									//this.Content.LocalIdentity.SyncFramePaused = false;
 								}
 							}
 						);
@@ -416,15 +416,40 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 					}
 				};
 
+			//var Checksum_Local = new List<PlayerIdentity.ChecksumHistoryItem>();
+			//var Checksum_Remote = new List<PlayerIdentity.ChecksumHistoryItem>();
 
+			//Action Checksum_DetectDesync =
+			//    delegate
+			//    {
+			//        var Checksum_Local_Delete = Checksum_Local.Where(k => k.SyncFrame < (this.Content.LocalIdentity.SyncFrame - this.Content.LocalIdentity.SyncFrameWindow)).ToArray();
+			//        var Checksum_Remote_Delete = Checksum_Remote.Where(k => k.SyncFrame < (this.Content.LocalIdentity.SyncFrame - this.Content.LocalIdentity.SyncFrameWindow)).ToArray();
+
+			//        Checksum_Local_Delete.ForEach(k => Checksum_Local.Remove(k));
+			//        Checksum_Remote_Delete.ForEach(k => Checksum_Remote.Remove(k));
+
+			//        if (Checksum_Remote.Count > 0)
+			//            if (Checksum_Local.Count > 0)
+			//            {
+			//                // we got something to compare to
+
+			//            }
+			//    };
 
 			#region broadcast current frame
 			this.Content.LocalIdentity.SyncFrameChanged +=
 				delegate
 				{
+					var c = this.Content.InternalChecksumHistory.LastOrDefault();
+					var crc = 0;
+
+					if (c != null)
+						crc = c.Checksum;
+
 					this.Messages.SyncFrame(
 						this.Content.LocalIdentity.SyncFrame,
-						0
+						0,
+						crc
 					);
 				};
 
@@ -450,7 +475,26 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						return;
 					}
 
-					c.SyncFrame = e.frame;
+					if (c.SyncFrame + 1 == e.frame)
+					{
+						c.SyncFrame = e.frame;
+
+						var NextChecksumItem = new Workspace.ChecksumItem
+						{
+							Checksum = e.crc,
+							NetworkNumber = e.user,
+							SyncFrame = e.frame
+						};
+
+						this.Content.ExternalChecksumHistory.Enqueue(NextChecksumItem);
+
+						if (this.Content.ExternalChecksumHistory.Count > this.Content.LocalIdentity.SyncFrameWindow)
+							this.Content.ExternalChecksumHistory.Dequeue();
+					}
+					else
+					{
+						c.SyncFrame = e.frame;
+					}
 
 
 					// if we are paused we will not try to recalculate our new limit

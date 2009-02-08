@@ -52,6 +52,8 @@ namespace AvalonUgh.NetworkCode.Shared
             UserMissionStartHint,
             Vehicalize,
             UserVehicalize,
+            SyncCheck,
+            UserSyncCheck,
         }
         #endregion
 
@@ -100,6 +102,8 @@ namespace AvalonUgh.NetworkCode.Shared
             event Action<RemoteEvents.UserMissionStartHintArguments> UserMissionStartHint;
             event Action<RemoteEvents.VehicalizeArguments> Vehicalize;
             event Action<RemoteEvents.UserVehicalizeArguments> UserVehicalize;
+            event Action<RemoteEvents.SyncCheckArguments> SyncCheck;
+            event Action<RemoteEvents.UserSyncCheckArguments> UserSyncCheck;
         }
         #endregion
 
@@ -329,31 +333,31 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
-            public void SyncFrame(int frame, int framerate)
+            public void SyncFrame(int frame, int framerate, int crc)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.SyncFrame, args = new object[] { frame, framerate } });
+                    Send(new SendArguments { i = Messages.SyncFrame, args = new object[] { frame, framerate, crc } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.SyncFrame(frame, framerate);
+                        Target__.SyncFrame(frame, framerate, crc);
                     }
                 }
             }
-            public void UserSyncFrame(int user, int frame, int framerate)
+            public void UserSyncFrame(int user, int frame, int framerate, int crc)
             {
                 if (this.Send != null)
                 {
-                    Send(new SendArguments { i = Messages.UserSyncFrame, args = new object[] { user, frame, framerate } });
+                    Send(new SendArguments { i = Messages.UserSyncFrame, args = new object[] { user, frame, framerate, crc } });
                 }
                 if (this.VirtualTargets != null)
                 {
                     foreach (var Target__ in this.VirtualTargets())
                     {
-                        Target__.UserSyncFrame(user, frame, framerate);
+                        Target__.UserSyncFrame(user, frame, framerate, crc);
                     }
                 }
             }
@@ -581,6 +585,34 @@ namespace AvalonUgh.NetworkCode.Shared
                     }
                 }
             }
+            public void SyncCheck(int frame, int value)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.SyncCheck, args = new object[] { frame, value } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.SyncCheck(frame, value);
+                    }
+                }
+            }
+            public void UserSyncCheck(int user, int frame, int value)
+            {
+                if (this.Send != null)
+                {
+                    Send(new SendArguments { i = Messages.UserSyncCheck, args = new object[] { user, frame, value } });
+                }
+                if (this.VirtualTargets != null)
+                {
+                    foreach (var Target__ in this.VirtualTargets())
+                    {
+                        Target__.UserSyncCheck(user, frame, value);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -648,6 +680,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.MouseMove += this.UserMouseMove;
                     value.MissionStartHint += this.UserMissionStartHint;
                     value.Vehicalize += this.UserVehicalize;
+                    value.SyncCheck += this.UserSyncCheck;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -665,6 +698,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.MouseMove -= this.UserMouseMove;
                     value.MissionStartHint -= this.UserMissionStartHint;
                     value.Vehicalize -= this.UserVehicalize;
+                    value.SyncCheck -= this.UserSyncCheck;
                 }
                 #endregion
 
@@ -687,7 +721,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 }
                 public void UserSyncFrame(SyncFrameArguments e)
                 {
-                    Target.UserSyncFrame(this.user, e.frame, e.framerate);
+                    Target.UserSyncFrame(this.user, e.frame, e.framerate, e.crc);
                 }
                 public void UserSyncFrameEcho(SyncFrameEchoArguments e)
                 {
@@ -720,6 +754,10 @@ namespace AvalonUgh.NetworkCode.Shared
                 public void UserVehicalize(VehicalizeArguments e)
                 {
                     Target.UserVehicalize(this.user, e.frame, e.local);
+                }
+                public void UserSyncCheck(SyncCheckArguments e)
+                {
+                    Target.UserSyncCheck(this.user, e.frame, e.value);
                 }
                 #endregion
             }
@@ -779,13 +817,13 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserEditorSelector(this.user, e.frame, e.port, e.type, e.size, e.x, e.y);
                 }
-                public void UserSyncFrame(int frame, int framerate)
+                public void UserSyncFrame(int frame, int framerate, int crc)
                 {
-                    this.Target.UserSyncFrame(this.user, frame, framerate);
+                    this.Target.UserSyncFrame(this.user, frame, framerate, crc);
                 }
                 public void UserSyncFrame(UserSyncFrameArguments e)
                 {
-                    this.Target.UserSyncFrame(this.user, e.frame, e.framerate);
+                    this.Target.UserSyncFrame(this.user, e.frame, e.framerate, e.crc);
                 }
                 public void UserSyncFrameEcho(int frame, int framerate)
                 {
@@ -851,6 +889,14 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     this.Target.UserVehicalize(this.user, e.frame, e.local);
                 }
+                public void UserSyncCheck(int frame, int value)
+                {
+                    this.Target.UserSyncCheck(this.user, frame, value);
+                }
+                public void UserSyncCheck(UserSyncCheckArguments e)
+                {
+                    this.Target.UserSyncCheck(this.user, e.frame, e.value);
+                }
                 #endregion
             }
             #endregion
@@ -879,6 +925,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserMouseMove += this.UserMouseMove;
                     value.UserMissionStartHint += this.UserMissionStartHint;
                     value.UserVehicalize += this.UserVehicalize;
+                    value.UserSyncCheck += this.UserSyncCheck;
                 }
 
                 public void RemoveDelegates(IEvents value)
@@ -898,6 +945,7 @@ namespace AvalonUgh.NetworkCode.Shared
                     value.UserMouseMove -= this.UserMouseMove;
                     value.UserMissionStartHint -= this.UserMissionStartHint;
                     value.UserVehicalize -= this.UserVehicalize;
+                    value.UserSyncCheck -= this.UserSyncCheck;
                 }
                 #endregion
 
@@ -942,7 +990,7 @@ namespace AvalonUgh.NetworkCode.Shared
                 {
                     var _target = this.Target(e.user);
                     if (_target == null) return;
-                    _target.UserSyncFrame(this.user, e.frame, e.framerate);
+                    _target.UserSyncFrame(this.user, e.frame, e.framerate, e.crc);
                 }
                 public void UserSyncFrameEcho(UserSyncFrameEchoArguments e)
                 {
@@ -991,6 +1039,12 @@ namespace AvalonUgh.NetworkCode.Shared
                     var _target = this.Target(e.user);
                     if (_target == null) return;
                     _target.UserVehicalize(this.user, e.frame, e.local);
+                }
+                public void UserSyncCheck(UserSyncCheckArguments e)
+                {
+                    var _target = this.Target(e.user);
+                    if (_target == null) return;
+                    _target.UserSyncCheck(this.user, e.frame, e.value);
                 }
                 #endregion
             }
@@ -1250,10 +1304,11 @@ namespace AvalonUgh.NetworkCode.Shared
             {
                 public int frame;
                 public int framerate;
+                public int crc;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", framerate = ").Append(this.framerate).Append(" }").ToString();
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", framerate = ").Append(this.framerate).Append(", crc = ").Append(this.crc).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1265,10 +1320,11 @@ namespace AvalonUgh.NetworkCode.Shared
             {
                 public int frame;
                 public int framerate;
+                public int crc;
                 [DebuggerHidden]
                 public override string ToString()
                 {
-                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", framerate = ").Append(this.framerate).Append(" }").ToString();
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", framerate = ").Append(this.framerate).Append(", crc = ").Append(this.crc).Append(" }").ToString();
                 }
             }
             #endregion
@@ -1511,6 +1567,36 @@ namespace AvalonUgh.NetworkCode.Shared
             }
             #endregion
             public event Action<UserVehicalizeArguments> UserVehicalize;
+            #region SyncCheckArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class SyncCheckArguments
+            {
+                public int frame;
+                public int value;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ frame = ").Append(this.frame).Append(", value = ").Append(this.value).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<SyncCheckArguments> SyncCheck;
+            #region UserSyncCheckArguments
+            [Script]
+            [CompilerGenerated]
+            public sealed partial class UserSyncCheckArguments : WithUserArguments
+            {
+                public int frame;
+                public int value;
+                [DebuggerHidden]
+                public override string ToString()
+                {
+                    return new StringBuilder().Append("{ user = ").Append(this.user).Append(", frame = ").Append(this.frame).Append(", value = ").Append(this.value).Append(" }").ToString();
+                }
+            }
+            #endregion
+            public event Action<UserSyncCheckArguments> UserSyncCheck;
             public RemoteEvents()
             {
                 DispatchTable = new Dictionary<Messages, Action<IDispatchHelper>>
@@ -1530,8 +1616,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserRemoveLocalPlayer, e => { UserRemoveLocalPlayer(new UserRemoveLocalPlayerArguments { user = e.GetInt32(0), frame = e.GetInt32(1), local = e.GetInt32(2) }); } },
                             { Messages.EditorSelector, e => { EditorSelector(new EditorSelectorArguments { frame = e.GetInt32(0), port = e.GetInt32(1), type = e.GetInt32(2), size = e.GetInt32(3), x = e.GetInt32(4), y = e.GetInt32(5) }); } },
                             { Messages.UserEditorSelector, e => { UserEditorSelector(new UserEditorSelectorArguments { user = e.GetInt32(0), frame = e.GetInt32(1), port = e.GetInt32(2), type = e.GetInt32(3), size = e.GetInt32(4), x = e.GetInt32(5), y = e.GetInt32(6) }); } },
-                            { Messages.SyncFrame, e => { SyncFrame(new SyncFrameArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1) }); } },
-                            { Messages.UserSyncFrame, e => { UserSyncFrame(new UserSyncFrameArguments { user = e.GetInt32(0), frame = e.GetInt32(1), framerate = e.GetInt32(2) }); } },
+                            { Messages.SyncFrame, e => { SyncFrame(new SyncFrameArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1), crc = e.GetInt32(2) }); } },
+                            { Messages.UserSyncFrame, e => { UserSyncFrame(new UserSyncFrameArguments { user = e.GetInt32(0), frame = e.GetInt32(1), framerate = e.GetInt32(2), crc = e.GetInt32(3) }); } },
                             { Messages.SyncFrameEcho, e => { SyncFrameEcho(new SyncFrameEchoArguments { frame = e.GetInt32(0), framerate = e.GetInt32(1) }); } },
                             { Messages.UserSyncFrameEcho, e => { UserSyncFrameEcho(new UserSyncFrameEchoArguments { user = e.GetInt32(0), frame = e.GetInt32(1), framerate = e.GetInt32(2) }); } },
                             { Messages.SetPaused, e => { SetPaused(new SetPausedArguments { frame = e.GetInt32(0) }); } },
@@ -1548,6 +1634,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserMissionStartHint, e => { UserMissionStartHint(new UserMissionStartHintArguments { user = e.GetInt32(0), frame = e.GetInt32(1), difficulty = e.GetInt32(2) }); } },
                             { Messages.Vehicalize, e => { Vehicalize(new VehicalizeArguments { frame = e.GetInt32(0), local = e.GetInt32(1) }); } },
                             { Messages.UserVehicalize, e => { UserVehicalize(new UserVehicalizeArguments { user = e.GetInt32(0), frame = e.GetInt32(1), local = e.GetInt32(2) }); } },
+                            { Messages.SyncCheck, e => { SyncCheck(new SyncCheckArguments { frame = e.GetInt32(0), value = e.GetInt32(1) }); } },
+                            { Messages.UserSyncCheck, e => { UserSyncCheck(new UserSyncCheckArguments { user = e.GetInt32(0), frame = e.GetInt32(1), value = e.GetInt32(2) }); } },
                         }
                 ;
                 DispatchTableDelegates = new Dictionary<Messages, Converter<object, Delegate>>
@@ -1585,6 +1673,8 @@ namespace AvalonUgh.NetworkCode.Shared
                             { Messages.UserMissionStartHint, e => UserMissionStartHint },
                             { Messages.Vehicalize, e => Vehicalize },
                             { Messages.UserVehicalize, e => UserVehicalize },
+                            { Messages.SyncCheck, e => SyncCheck },
+                            { Messages.UserSyncCheck, e => UserSyncCheck },
                         }
                 ;
             }
@@ -1769,18 +1859,18 @@ namespace AvalonUgh.NetworkCode.Shared
             }
 
             public event Action<RemoteEvents.SyncFrameArguments> SyncFrame;
-            void IMessages.SyncFrame(int frame, int framerate)
+            void IMessages.SyncFrame(int frame, int framerate, int crc)
             {
                 if(SyncFrame == null) return;
-                var v = new RemoteEvents.SyncFrameArguments { frame = frame, framerate = framerate };
+                var v = new RemoteEvents.SyncFrameArguments { frame = frame, framerate = framerate, crc = crc };
                 this.VirtualLatency(() => this.SyncFrame(v));
             }
 
             public event Action<RemoteEvents.UserSyncFrameArguments> UserSyncFrame;
-            void IMessages.UserSyncFrame(int user, int frame, int framerate)
+            void IMessages.UserSyncFrame(int user, int frame, int framerate, int crc)
             {
                 if(UserSyncFrame == null) return;
-                var v = new RemoteEvents.UserSyncFrameArguments { user = user, frame = frame, framerate = framerate };
+                var v = new RemoteEvents.UserSyncFrameArguments { user = user, frame = frame, framerate = framerate, crc = crc };
                 this.VirtualLatency(() => this.UserSyncFrame(v));
             }
 
@@ -1912,9 +2002,25 @@ namespace AvalonUgh.NetworkCode.Shared
                 this.VirtualLatency(() => this.UserVehicalize(v));
             }
 
+            public event Action<RemoteEvents.SyncCheckArguments> SyncCheck;
+            void IMessages.SyncCheck(int frame, int value)
+            {
+                if(SyncCheck == null) return;
+                var v = new RemoteEvents.SyncCheckArguments { frame = frame, value = value };
+                this.VirtualLatency(() => this.SyncCheck(v));
+            }
+
+            public event Action<RemoteEvents.UserSyncCheckArguments> UserSyncCheck;
+            void IMessages.UserSyncCheck(int user, int frame, int value)
+            {
+                if(UserSyncCheck == null) return;
+                var v = new RemoteEvents.UserSyncCheckArguments { user = user, frame = frame, value = value };
+                this.VirtualLatency(() => this.UserSyncCheck(v));
+            }
+
         }
         #endregion
     }
     #endregion
 }
-// 31.01.2009 16:49:39
+// 7.02.2009 21:46:08

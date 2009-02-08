@@ -106,6 +106,19 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
+		Actor InternalCurrentPassenger;
+		public Actor CurrentPassenger
+		{
+			get
+			{
+				return InternalCurrentPassenger;
+			}
+			set
+			{
+				InternalCurrentPassenger = value;
+			}
+		}
+
 		public bool ExitIsBlocked;
 
 		public int UnscaledX
@@ -161,11 +174,18 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public bool IsAnimated { get; set; }
 
-		public double VelocityX { get; set; }
-		public double VelocityY { get; set; }
+		public readonly RoundedDouble InternalVelocityX = new RoundedDouble();
+		public readonly RoundedDouble InternalVelocityY = new RoundedDouble();
+		public readonly RoundedDouble InternalX = new RoundedDouble();
+		public readonly RoundedDouble InternalY = new RoundedDouble();
 
-		public double X { get; set; }
-		public double Y { get; set; }
+
+		public double VelocityX { get { return InternalVelocityX.Value; } set { InternalVelocityX.Value = value; } }
+		public double VelocityY { get { return InternalVelocityY.Value; } set { InternalVelocityY.Value = value; } }
+
+		public double X { get { return InternalX.Value; } set { InternalX.Value = value; } }
+		public double Y { get { return InternalY.Value; } set { InternalY.Value = value; } }
+
 
 		public event Action LocationChanged;
 

@@ -149,10 +149,12 @@
     <Compile Include="Diagnostics\DOMDump.cs" />
     <Compile Include="Editor\CommonFileWindow.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
+    <Compile Include="Editor\RoundedDouble.cs" />
     <Compile Include="Editor\Sprites\Actor.Bubble.cs" />
     <Compile Include="Editor\Sprites\PassengerSelector.cs" />
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameSocialLinks.cs" />
+    <Compile Include="GameWorkspace\Workspace.InitializeSplashCredits.cs" />
     <Compile Include="GameWorkspace\PassangerAIDomain\PassangerAI.cs" />
     <Compile Include="Editor\PlatformSnapshot.cs" />
     <Compile Include="GameWorkspace\Workspace.ThinkForComputerPlayers.cs" />
