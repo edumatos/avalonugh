@@ -9,7 +9,7 @@ namespace AvalonUgh.Code.Editor
 	[Script]
 	public class RoundedDouble
 	{
-		public double DoubleToIntegerScale = 1000.0;
+		public double DoubleToIntegerScale = 100.0;
 
 		public int StoredValue;
 
@@ -21,7 +21,7 @@ namespace AvalonUgh.Code.Editor
 			}
 			set
 			{
-				StoredValue = Convert.ToInt32(value * DoubleToIntegerScale);
+				StoredValue = (int)Math.Round(value * DoubleToIntegerScale);
 			}
 		}
 	}

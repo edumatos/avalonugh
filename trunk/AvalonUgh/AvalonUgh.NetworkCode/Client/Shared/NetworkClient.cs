@@ -162,7 +162,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 									this.Content.LocalIdentity.SyncFrame = NextSyncFrame;
 
 									// unpause
-									//this.Content.LocalIdentity.SyncFramePaused = false;
+									this.Content.LocalIdentity.SyncFramePaused = false;
 								}
 							}
 						);
@@ -321,6 +321,22 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 								// send our positions
 								// and resume...
 
+								this.Content.Console.WriteLine("send UserTeleportTo: " + new {
+									this.Content.LocalIdentity.SyncFrame,
+
+									Local.IdentityLocal,
+
+									// which port are our local players in?
+									this.Content.CurrentPort.PortIdentity,
+
+									Local.Actor.X,
+									Local.Actor.Y,
+									Local.Actor.VelocityX,
+									Local.Actor.VelocityY
+								
+								});
+
+
 								this.Messages.UserTeleportTo(e.user,
 									this.Content.LocalIdentity.SyncFrame,
 
@@ -440,16 +456,16 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Content.LocalIdentity.SyncFrameChanged +=
 				delegate
 				{
-					var c = this.Content.InternalChecksumHistory.LastOrDefault();
-					var crc = 0;
+					//var c = this.Content.InternalChecksumHistory.LastOrDefault();
+					//var crc = 0;
 
-					if (c != null)
-						crc = c.Checksum;
+					//if (c != null)
+					//    crc = c.Checksum;
 
 					this.Messages.SyncFrame(
 						this.Content.LocalIdentity.SyncFrame,
 						0,
-						crc
+						0
 					);
 				};
 
@@ -475,26 +491,26 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 						return;
 					}
 
-					if (c.SyncFrame + 1 == e.frame)
-					{
+					//if (c.SyncFrame + 1 == e.frame)
+					//{
+					//    c.SyncFrame = e.frame;
+
+					//    var NextChecksumItem = new Workspace.ChecksumItem
+					//    {
+					//        Checksum = e.crc,
+					//        NetworkNumber = e.user,
+					//        SyncFrame = e.frame
+					//    };
+
+					//    this.Content.ExternalChecksumHistory.Enqueue(NextChecksumItem);
+
+					//    if (this.Content.ExternalChecksumHistory.Count > this.Content.LocalIdentity.SyncFrameWindow)
+					//        this.Content.ExternalChecksumHistory.Dequeue();
+					//}
+					//else
+					//{
 						c.SyncFrame = e.frame;
-
-						var NextChecksumItem = new Workspace.ChecksumItem
-						{
-							Checksum = e.crc,
-							NetworkNumber = e.user,
-							SyncFrame = e.frame
-						};
-
-						this.Content.ExternalChecksumHistory.Enqueue(NextChecksumItem);
-
-						if (this.Content.ExternalChecksumHistory.Count > this.Content.LocalIdentity.SyncFrameWindow)
-							this.Content.ExternalChecksumHistory.Dequeue();
-					}
-					else
-					{
-						c.SyncFrame = e.frame;
-					}
+					//}
 
 
 					// if we are paused we will not try to recalculate our new limit
@@ -681,6 +697,8 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 			this.Events.UserTeleportTo +=
 				e =>
 				{
+					this.Content.Console.WriteLine("UserTeleportTo: " + e);
+
 					var c = this[e.user];
 
 					if (c == null)
@@ -711,6 +729,9 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 							Sync_TeleportTo(user, port, local, x, y, vx, vy);
 						}
 					);
+
+					this.Content.Console.WriteLine("TeleportTo: " + new { FutureFrame, local, port, x, y, vx, vy });
+
 
 					// we cannot teleoprt other player locals
 					this.Messages.TeleportTo(FutureFrame, local, port, x, y, vx, vy);

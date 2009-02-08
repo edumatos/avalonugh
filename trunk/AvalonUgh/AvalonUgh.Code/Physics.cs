@@ -336,10 +336,10 @@ namespace AvalonUgh.Code
 				if (twin.VelocityY == 0)
 					return;
 
-			if (Math.Abs(twin.VelocityX) < 0.01)
+			if (Math.Abs(twin.VelocityX) < 0.1)
 				twin.VelocityX = 0;
 
-			if (Math.Abs(twin.VelocityY) < 0.01)
+			if (Math.Abs(twin.VelocityY) < 0.1)
 				twin.VelocityY = 0;
 
 

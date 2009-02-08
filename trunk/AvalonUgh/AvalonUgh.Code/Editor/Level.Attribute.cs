@@ -158,7 +158,7 @@ namespace AvalonUgh.Code.Editor
 					);
 				}
 
-				public double DoubleToIntegerScale = 1000.0;
+				public double DoubleToIntegerScale = 100.0;
 
 
 
