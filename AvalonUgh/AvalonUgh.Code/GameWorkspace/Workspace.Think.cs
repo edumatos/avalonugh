@@ -7,6 +7,7 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib;
 using AvalonUgh.Code.Editor;
 using ScriptCoreLib.Shared.Lambda;
+using System.Collections.Generic;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -61,12 +62,15 @@ namespace AvalonUgh.Code.GameWorkspace
 			ThinkTimer = (1000 / DefaultFramerate).AtInterval(
 				delegate
 				{
+
 					StatusText.Text = new
 					{
 						Frame = this.LocalIdentity.SyncFrame,
 						Paused = this.LocalIdentity.SyncFramePaused,
 						Limit = this.LocalIdentity.SyncFrameLimit,
+						Checksum = Checksum
 					}.ToString();
+
 					Think();
 				}
 			);
@@ -99,8 +103,62 @@ namespace AvalonUgh.Code.GameWorkspace
 			if (this.Ports.Any(k => k.IsLoading))
 				return;
 
+			// here we should check for desync
+			var CurrentFrame = this.LocalIdentity.SyncFrame;
+			var CurrentChecksum = this.Checksum;
 
+			// do we have an history item, eg the last frame?
+			var InternalLastChecksumHistoryItem = this.InternalChecksumHistory.LastOrDefault();
+			if (InternalLastChecksumHistoryItem != null)
+			{
+				if (InternalLastChecksumHistoryItem.SyncFrame == CurrentFrame)
+				{
+					// we are goin to continue the next frame shortly
 
+					// now we need to step backwards in time to see
+					// if one of our peers had reported a wrong checksum
+
+					foreach (var ExternalHistoryFrame in Enumerable.Range(0, this.LocalIdentity.SyncFrameWindow).SelectMany(k => this.ExternalChecksumHistory.Where(j => j.SyncFrame == CurrentFrame - k)))
+					{
+						var InternalHistoryFrame = this.InternalChecksumHistory.Single(k => k.SyncFrame == ExternalHistoryFrame.SyncFrame);
+
+						if (ExternalHistoryFrame.Checksum != InternalHistoryFrame.Checksum)
+						{
+							// we have found a desync
+							this.LocalIdentity.SyncFramePaused = true;
+							this.Console.BringContainerToFront();
+							this.Console.AnimatedTop = 0;
+							this.Console.WriteLine("desync: " + 
+								new
+								{
+									ExternalHistoryFrame.SyncFrame,
+									ExternalHistoryFrame.NetworkNumber,
+									ecrc = ExternalHistoryFrame.Checksum,
+									icrc = InternalHistoryFrame.Checksum
+								}
+							);
+
+						}
+
+					}
+				}
+				else
+				{
+					// there was a time warp?
+				}
+			}
+
+			if (this.LocalIdentity.SyncFramePaused)
+			{
+				if (this.LocalIdentity.SyncFramePausedSkip)
+				{
+					this.LocalIdentity.SyncFramePausedSkip = false;
+				}
+				else
+				{
+					return;
+				}
+			}
 
 			//// we could pause the game here
 			foreach (var p in Players)
@@ -137,11 +195,51 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					p.Level.Physics.Apply();
 
-					
+
 				}
 			}
 
-			this.LocalIdentity.SyncFrame++;
+			var NextFrame = this.LocalIdentity.SyncFrame + 1;
+
+			var NextChecksumItem = new ChecksumItem
+			{
+				NetworkNumber = this.LocalIdentity.NetworkNumber,
+				Checksum = Checksum,
+				SyncFrame = NextFrame
+			};
+
+			this.InternalChecksumHistory.Enqueue(NextChecksumItem);
+
+			if (this.InternalChecksumHistory.Count > this.LocalIdentity.SyncFrameWindow)
+				this.InternalChecksumHistory.Dequeue();
+
+			this.LocalIdentity.SyncFrame = NextFrame;
+		}
+
+		[Script]
+		public class ChecksumItem
+		{
+			public int NetworkNumber;
+
+			public int Checksum;
+
+			/// <summary>
+			/// This frame will begin with this checksum
+			/// </summary>
+			public int SyncFrame;
+		}
+
+		public readonly Queue<ChecksumItem> InternalChecksumHistory = new Queue<ChecksumItem>();
+		public readonly Queue<ChecksumItem> ExternalChecksumHistory = new Queue<ChecksumItem>();
+
+		public int Checksum
+		{
+			get
+			{
+				var x = this.AllPlayers.Aggregate(0, (seed, value) => seed ^ value.Checksum.Checksum);
+
+				return x;
+			}
 		}
 
 	}

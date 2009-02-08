@@ -164,6 +164,17 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Music.Enabled = !this.Music.Enabled;
 			}
 
+			if (args.Key == Key.C)
+			{
+				this.LocalIdentity.Locals.ForEach(
+					k =>
+					{
+						k.Actor.VelocityY = -12;
+					}
+				);
+			}
+
+
 			if (args.Key == Key.P)
 			{
 				this.Sync_SetPause(true, "you");

@@ -336,6 +336,9 @@ namespace AvalonUgh.Code
 				if (CurrentVehicle != null)
 					return true;
 
+				if (CurrentPassengerVehicle != null)
+					return true;
+
 				if (CurrentCave != null)
 					return true;
 
@@ -476,11 +479,17 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public double VelocityX { get; set; }
-		public double VelocityY { get; set; }
+		public readonly RoundedDouble InternalVelocityX = new RoundedDouble();
+		public readonly RoundedDouble InternalVelocityY = new RoundedDouble();
+		public readonly RoundedDouble InternalX = new RoundedDouble();
+		public readonly RoundedDouble InternalY = new RoundedDouble();
 
-		public double X { get; set; }
-		public double Y { get; set; }
+
+		public double VelocityX { get { return InternalVelocityX.Value; } set { InternalVelocityX.Value = value; } }
+		public double VelocityY { get { return InternalVelocityY.Value; } set { InternalVelocityY.Value = value; } }
+
+		public double X { get { return InternalX.Value; } set { InternalX.Value = value; } }
+		public double Y { get { return InternalY.Value; } set { InternalY.Value = value; } }
 
 		public Point Location
 		{
@@ -732,5 +741,7 @@ namespace AvalonUgh.Code
 				return Convert.ToInt32(X / Zoom);
 			}
 		}
+
+		public Vehicle CurrentPassengerVehicle;
 	}
 }

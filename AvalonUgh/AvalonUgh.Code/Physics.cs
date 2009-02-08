@@ -49,7 +49,10 @@ namespace AvalonUgh.Code
 			this.Level.KnownRocks.ForEach(Apply);
 			this.Level.KnownActors.ForEach(Apply);
 			this.Level.KnownTryoperus.ForEach(Apply);
+
+
 		}
+
 
 		void Apply(ISupportsPhysics twin)
 		{
@@ -105,22 +108,27 @@ namespace AvalonUgh.Code
 			if (veh != null)
 				if (!veh.IsUnmanned)
 				{
-					Obstacles = Obstacles.Concat(this.Level.KnownVehicles.Where(k => k != twin).Where(k => !k.IsUnmanned).Select(k => k.ToObstacle()));
+
+					//Obstacles = Obstacles.Concat(this.Level.KnownVehicles.Where(k => k != twin).Where(k => !k.IsUnmanned).Select(k => k.ToObstacle()));
 
 					if (veh.CurrentWeapon == null)
-					{
-						// we can pickup a rock for our weapon now
+						if (veh.CurrentPassenger == null)
+						{
+							// we can pickup a rock for our weapon now
 
-						this.Level.KnownRocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-							rock_ =>
-							{
-								veh.CurrentWeapon = rock_;
-							}
-						);
-					}
+							this.Level.KnownRocks.Where(k => k.ReadyForPickup).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+								rock_ =>
+								{
+									veh.CurrentWeapon = rock_;
+								}
+							);
+						}
 
 					if (veh.GetVelocity() > this.Level.Zoom)
-						this.Level.KnownActors.Where(k => k.CanBeHitByVehicle).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+						this.Level.KnownActors.
+							Where(k => !k.PhysicsDisabled).
+							Where(k => k.CanBeHitByVehicle).
+							Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 							actor_ =>
 							{
 								actor_.CanBeHitByVehicle = false;

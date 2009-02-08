@@ -191,5 +191,47 @@ namespace AvalonUgh.Code
 
 			this.SyncFrameChanged += SyncFrameChanged;
 		}
+
+		public ChecksumHistoryItem Checksum
+		{
+			get
+			{
+				var c = 0;
+
+				foreach (var x in this.Locals)
+				{
+					if (x.Actor.CurrentVehicle == null)
+					{
+						c ^= x.Actor.InternalX.StoredValue;
+						c ^= x.Actor.InternalY.StoredValue;
+						c ^= x.Actor.InternalVelocityX.StoredValue;
+						c ^= x.Actor.InternalVelocityY.StoredValue;
+					}
+					else
+					{
+						c ^= x.Actor.CurrentVehicle.InternalX.StoredValue;
+						c ^= x.Actor.CurrentVehicle.InternalY.StoredValue;
+						c ^= x.Actor.CurrentVehicle.InternalVelocityX.StoredValue;
+						c ^= x.Actor.CurrentVehicle.InternalVelocityY.StoredValue;
+					}
+				}
+
+				return new ChecksumHistoryItem { Checksum = c, NetworkNumber = NetworkNumber };
+			}
+		}
+
+		[Script]
+		public class ChecksumHistoryItem
+		{
+			public int NetworkNumber;
+			public int Checksum;
+
+			public override string ToString()
+			{
+				return new { NetworkNumber, Checksum }.ToString();
+			}
+		}
+
+
 	}
 }

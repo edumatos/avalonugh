@@ -46,6 +46,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			var PickupVehicles = Enumerable.ToArray(
 				from Vehicle in view.Level.KnownVehicles
 				where Vehicle.CurrentDriver != null
+				where Vehicle.CurrentPassenger == null
 				where Vehicle.GetVelocity() == 0
 				let VehicleObstacle = Vehicle.ToObstacle()
 				select new { Vehicle, VehicleObstacle }
@@ -60,8 +61,8 @@ namespace AvalonUgh.Code.GameWorkspace
 				let NearestPickup = Enumerable.FirstOrDefault(
 					from k in PickupVehicles
 					where k.VehicleObstacle.Intersects(Platform.IncludedSpace)
-					orderby k.VehicleObstacle.X - PassengerObstacle.X 
-					select k 
+					orderby k.VehicleObstacle.X - PassengerObstacle.X
+					select k
 				)
 				let PickupArrived = NearestPickup != null
 				select new { Passenger, PassengerObstacle, Platform, PickupArrived, NearestPickup }
@@ -70,7 +71,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 
-			foreach (var i in Passengers)
+			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle == null))
 			{
 				if (i.Passenger.Memory_LogicState_IsConfused)
 				{
@@ -92,9 +93,20 @@ namespace AvalonUgh.Code.GameWorkspace
 						{
 							// walk to the vehicle
 
+							if (i.PassengerObstacle.Intersects(i.NearestPickup.VehicleObstacle))
+							{
+								i.Passenger.Animation = Actor.AnimationEnum.Hidden;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
 
-							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
-							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
+								i.NearestPickup.Vehicle.CurrentPassenger = i.Passenger;
+								i.Passenger.CurrentPassengerVehicle = i.NearestPickup.Vehicle;
+							}
+							else
+							{
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
+							}
 
 						}
 						else
@@ -139,6 +151,9 @@ namespace AvalonUgh.Code.GameWorkspace
 						if (i.Passenger.Memory_LogicState_WouldBeConfusedIfVehicleLeft)
 						{
 							Console.WriteLine("Memory_LogicState_ConfusedStart");
+
+							SoundBoard.Default.talk0_01();
+
 
 							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_ConfusedStart;
 							i.Passenger.Animation = Actor.AnimationEnum.Talk;

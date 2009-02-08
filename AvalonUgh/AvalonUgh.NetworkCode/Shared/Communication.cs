@@ -36,8 +36,8 @@ namespace AvalonUgh.NetworkCode.Shared
 			void EditorSelector(int frame, int port, int type, int size, int x, int y);
 			void UserEditorSelector(int user, int frame, int port, int type, int size, int x, int y);
 
-			void SyncFrame(int frame, int framerate);
-			void UserSyncFrame(int user, int frame, int framerate);
+			void SyncFrame(int frame, int framerate, int crc);
+			void UserSyncFrame(int user, int frame, int framerate, int crc);
 
 			void SyncFrameEcho(int frame, int framerate);
 			void UserSyncFrameEcho(int user, int frame, int framerate);
@@ -64,6 +64,11 @@ namespace AvalonUgh.NetworkCode.Shared
 
 			void Vehicalize(int frame, int local);
 			void UserVehicalize(int user, int frame, int local);
+
+
+			void SyncCheck(int frame, int value);
+			void UserSyncCheck(int user, int frame, int value);
+
 		}
 
 
