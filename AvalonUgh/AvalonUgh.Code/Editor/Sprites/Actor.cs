@@ -508,8 +508,6 @@ namespace AvalonUgh.Code
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
 
-
-
 			if (LocationChanged != null)
 				LocationChanged();
 		}

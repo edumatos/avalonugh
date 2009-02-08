@@ -61,13 +61,19 @@ namespace AvalonUgh.Code.Editor.Sprites
 		}
 
 
+		public event Action LocationChanged;
+
 		public void MoveTo(double x, double y)
 		{
 			this.X = x;
 			this.Y = y;
 
 			this.Container.MoveTo(x - HalfWidth, y - HalfHeight);
+
+			if (LocationChanged != null)
+				LocationChanged();
 		}
+
 
 		public void MoveToTile(double x, double y)
 		{
