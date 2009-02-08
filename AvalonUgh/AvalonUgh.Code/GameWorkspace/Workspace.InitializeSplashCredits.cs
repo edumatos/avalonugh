@@ -35,11 +35,11 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							 Action done = () => Lobby.Window.ColorOverlay.Opacity = 0;
 
-#if DEBUG
+//#if DEBUG
 							 done(); 
-#else
-							 ShowSplashCredit(TextContainers, done);
-#endif
+//#else
+//                             ShowSplashCredit(TextContainers, done);
+//#endif
 
 
 						 }

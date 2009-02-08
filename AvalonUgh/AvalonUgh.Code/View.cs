@@ -569,9 +569,8 @@ namespace AvalonUgh.Code
 				{
 					i.Text =
 						"x: " + value.X + "\n" +
-						"y: " + value.Y + "\n" +
-						"vx: " + value.VelocityX + "\n" +
-						"vy: " + value.VelocityY;
+						"y: " + value.Y;
+		
 
 					i.MoveTo(
 						value.X,
@@ -579,6 +578,7 @@ namespace AvalonUgh.Code
 					);
 				};
 
+			
 			value.LocationChanged += UpdateLocation;
 
 			return delegate

@@ -325,7 +325,11 @@ namespace AvalonUgh.Code.GameWorkspace
 										this.Sync_TeleportTo(
 											this.LocalIdentity.NetworkNumber,
 											this.Editor.PortIdentity,
-											p.IdentityLocal, t.x, t.y, 0, 0
+											p.IdentityLocal, 
+											t.x, 
+											t.y, 
+											0, 
+											0
 										);
 									}
 
