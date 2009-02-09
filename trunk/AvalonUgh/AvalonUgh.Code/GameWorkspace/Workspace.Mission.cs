@@ -158,15 +158,15 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					// look, a time line! in code!
 					this.LocalIdentity.HandleFutureFrameInTime(
-						300 * 1, () => SetCounter(2)
+						400 * 1, () => SetCounter(2)
 					);
 
 					this.LocalIdentity.HandleFutureFrameInTime(
-						300 * 2, () => SetCounter(1)
+						400 * 2, () => SetCounter(1)
 					);
 
 					this.LocalIdentity.HandleFutureFrameInTime(
-						300 * 3,
+						400 * 3,
 						delegate
 						{
 							SetCounter(0);
@@ -180,7 +180,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					// will tell others what level to load
 
 					this.LocalIdentity.HandleFutureFrameInTime(
-						300 * 4,
+						400 * 5,
 						delegate
 						{
 							if (user == this.LocalIdentity.NetworkNumber)
@@ -283,6 +283,26 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			}
 
+			var Caves = this.PrimaryMission.Level.KnownCaves.ToArray(Cave => new { Cave, Obstacle = Cave.ToObstacle() });
+ 
+			this.PrimaryMission.Level.KnownPassengers.ForEach(
+				(Passenger, index) =>
+				{
+					var PassengerObstacle = Passenger.ToObstacle();
+
+					var PassengerCave = Caves.FirstOrDefault(k => k.Obstacle.Intersects(PassengerObstacle));
+
+					if (PassengerCave != null)
+					{
+						Passenger.CurrentCave = PassengerCave.Cave;
+						Passenger.Animation = Actor.AnimationEnum.Hidden;
+
+						if (index > 0)
+							Passenger.Memory_LogicState = Actor.Memory_LogicState_CaveLifeEnd - 1;
+					}
+				}
+			);
+
 			(KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
 
 			// user is indicating we are ready to play.
@@ -334,15 +354,20 @@ namespace AvalonUgh.Code.GameWorkspace
 							PrimaryMission.WhenLoaded(
 								delegate
 								{
-									PrimaryMission.Window.ColorOverlay.SetOpacity(1,
+									2000.AtDelay(
 										delegate
 										{
-											PrimaryMission.Intro.Hide();
+											PrimaryMission.Window.ColorOverlay.SetOpacity(1,
+												delegate
+												{
+													PrimaryMission.Intro.Hide();
 
 
 
 
-											PrimaryMission.Window.ColorOverlay.Opacity = 0;
+													PrimaryMission.Window.ColorOverlay.Opacity = 0;
+												}
+											);
 										}
 									);
 								}

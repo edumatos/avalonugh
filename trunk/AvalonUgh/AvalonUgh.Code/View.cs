@@ -550,6 +550,12 @@ namespace AvalonUgh.Code
 
 		Action LogicForInfoLabel(ISupportsPhysics value)
 		{
+			if (this.StartPositionsContainer.Visibility == Visibility.Hidden)
+				return delegate
+				{
+					// do nothing
+				};
+
 			var i = new TextBox
 			{
 				AcceptsReturn = true,
@@ -562,7 +568,7 @@ namespace AvalonUgh.Code
 				Height = 200
 			};
 
-			i.AttachTo(this.BubbleContainer);
+			i.AttachTo(this.StartPositionsContainer);
 
 			Action UpdateLocation =
 				delegate

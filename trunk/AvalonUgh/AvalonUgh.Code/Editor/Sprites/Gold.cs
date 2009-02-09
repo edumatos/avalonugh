@@ -18,6 +18,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 	{
 		public double MassCenterModifier { get; set; }
 
+
+		public double LastVelocity { get; set; }
 		public double LastCollisionVelocity { get; set; }
 		public double LastWaterCollisionVelocity { get; set; }
 

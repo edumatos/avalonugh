@@ -52,8 +52,12 @@ namespace AvalonUgh.Code.GameWorkspace
 				select new { Vehicle, VehicleObstacle }
 			);
 
+			var KnownPassengers = view.Level.KnownPassengers.ToArray();
+
 			var Passengers = Enumerable.ToArray(
-				from Passenger in view.Level.KnownPassengers
+				from Passenger in KnownPassengers
+				where !Passenger.Memory_CaveAction
+				where Passenger.CurrentCave == null
 				where Passenger.VelocityY == 0
 				let PassengerObstacle = Passenger.ToObstacle()
 				let Platform = view.Level.ToPlatformSnapshots().FirstOrDefault(k => k.IncludedSpace.Intersects(PassengerObstacle))
@@ -93,7 +97,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						{
 							// walk to the vehicle
 
-							if (i.PassengerObstacle.Intersects(i.NearestPickup.VehicleObstacle))
+							if (Math.Abs(i.PassengerObstacle.X - i.NearestPickup.VehicleObstacle.X) <= view.Level.Zoom)
 							{
 								i.Passenger.Animation = Actor.AnimationEnum.Hidden;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
@@ -177,6 +181,7 @@ namespace AvalonUgh.Code.GameWorkspace
 								i.Passenger.VelocityX = 0;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
+								i.Passenger.Memory_FirstWait = true;
 							}
 							else
 							{
@@ -190,7 +195,46 @@ namespace AvalonUgh.Code.GameWorkspace
 				}
 			}
 
+			// simulate cave life
 
+			var NextPassengerToWalkOutOfTheCave = KnownPassengers.FirstOrDefault(k => k.CurrentCave != null);
+
+			if (NextPassengerToWalkOutOfTheCave != null)
+			{
+				if (!NextPassengerToWalkOutOfTheCave.Memory_LogicState_IsCaveLife)
+				{
+					// start the cave life
+					NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_CaveLifeStart;
+				}
+				else
+				{
+					if (NextPassengerToWalkOutOfTheCave.Memory_LogicState == Actor.Memory_LogicState_CaveLifeEnd)
+					{
+						// passanger is ready to come out
+
+						if (KnownPassengers.First() == NextPassengerToWalkOutOfTheCave)
+						{
+							// we dont have to wait for the previous passanger to stand still
+							AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
+							NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
+						}
+						else
+						{
+							var PreviousPassanger = KnownPassengers.Previous(k => k == NextPassengerToWalkOutOfTheCave);
+
+							if (PreviousPassanger.Memory_FirstWait)
+							{
+								AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
+								NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
+							}
+						}
+					}
+					else
+					{
+						NextPassengerToWalkOutOfTheCave.Memory_LogicState++;
+					}
+				}
+			}
 		}
 
 	}

@@ -87,14 +87,20 @@ namespace AvalonUgh.Code.Editor.Sprites
 			//this.VelocityX = this.VelocityX.Max(-2 * Zoom).Min(2 * Zoom);
 			//this.VelocityY = this.VelocityY.Max(-2 * Zoom).Min(2 * Zoom);
 
-			if (this.VelocityY == 0)
-				this.VelocityX *= 0.7;
+			//if (this.VelocityY == 0)
+			//{
+			//    this.VelocityX *= 0.85;
+
+			//    if (this.VelocityX <= 0.03)
+			//        this.VelocityX = 0;
+			//}
 
 			if (!ExitIsBlocked)
 				if (e.Keyboard.IsPressedEnter)
-				{
-					this.CurrentDriver.CurrentVehicle = null;
-				}
+					if (this.CurrentPassenger == null)
+					{
+						this.CurrentDriver.CurrentVehicle = null;
+					}
 
 			if (e.Keyboard.IsPressedDrop)
 			{

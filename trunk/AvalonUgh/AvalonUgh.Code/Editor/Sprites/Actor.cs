@@ -24,6 +24,10 @@ namespace AvalonUgh.Code
 		// 1000...1999 tell where to, start walking
 		// 2000...2999 be confused, walk back and start idle
 		public int Memory_LogicState = 0;
+		public int Memory_NextCave;
+
+		public bool Memory_CaveAction;
+		public bool Memory_FirstWait;
 
 		public const int Memory_LogicState_Waiting = 0;
 		public const int Memory_LogicState_Boarding = 1;
@@ -34,6 +38,10 @@ namespace AvalonUgh.Code
 
 		public const int Memory_LogicState_ConfusedStart = 2000;
 		public const int Memory_LogicState_ConfusedEnd = Memory_LogicState_ConfusedStart + Memory_LogicState_BubbleLength;
+
+		public const int Memory_LogicState_CaveLifeStart = 3000;
+		public const int Memory_LogicState_CaveLifeEnd = Memory_LogicState_CaveLifeStart + 240;
+
 
 		public bool Memory_LogicState_IsTalking
 		{
@@ -57,6 +65,20 @@ namespace AvalonUgh.Code
 					return false;
 
 				if (Memory_LogicState > Memory_LogicState_ConfusedEnd)
+					return false;
+
+				return true;
+			}
+		}
+
+		public bool Memory_LogicState_IsCaveLife
+		{
+			get
+			{
+				if (Memory_LogicState < Memory_LogicState_CaveLifeStart)
+					return false;
+
+				if (Memory_LogicState > Memory_LogicState_CaveLifeEnd)
 					return false;
 
 				return true;
@@ -93,6 +115,7 @@ namespace AvalonUgh.Code
 
 		public double MassCenterModifier { get; set; }
 
+		public double LastVelocity { get; set; }
 		public double LastCollisionVelocity { get; set; }
 		public double LastWaterCollisionVelocity { get; set; }
 
@@ -127,7 +150,7 @@ namespace AvalonUgh.Code
 
 				if (InternalCurrentVehicle == null)
 				{
-					this.AIInputEnabled = false;
+					this.Memory_CaveAction = false;
 
 					this.MoveTo(v.X, v.Y - this.ToObstacle().Height / 2);
 
@@ -142,7 +165,7 @@ namespace AvalonUgh.Code
 				else
 				{
 
-					this.AIInputEnabled = true;
+					this.Memory_CaveAction = true;
 					this.Hide();
 
 					if (InternalCurrentVehicle.CurrentDriver != this)
@@ -288,6 +311,8 @@ namespace AvalonUgh.Code
 			}
 		}
 
+		public Action NextAnimationFrame;
+
 		public void PlayAnimation(AnimationEnum value, Action done)
 		{
 			this.Animation = value;
@@ -299,13 +324,16 @@ namespace AvalonUgh.Code
 					{
 						Frame.Show();
 
-						this.CaveEnterInterval.AtDelay(
-							delegate
-							{
-								Frame.Hide();
-								SignalNext();
-							}
-						);
+
+						this.NextAnimationFrame = 
+							LambdaExtensions.WhereCounter(
+								delegate
+								{
+									NextAnimationFrame = null;
+									Frame.Hide();
+									SignalNext();
+								}, 
+							3);
 					}
 				)(done);
 			}
@@ -317,13 +345,15 @@ namespace AvalonUgh.Code
 					{
 						Frame.Show();
 
-						this.CaveEnterInterval.AtDelay(
-							delegate
-							{
-								Frame.Hide();
-								SignalNext();
-							}
-						);
+						this.NextAnimationFrame =
+							LambdaExtensions.WhereCounter(
+								delegate
+								{
+									NextAnimationFrame = null;
+									Frame.Hide();
+									SignalNext();
+								},
+							3);
 					}
 				)(done);
 			}
@@ -538,7 +568,6 @@ namespace AvalonUgh.Code
 
 		public const double DefaultAcceleraton = 0.06;
 
-		public bool AIInputEnabled;
 
 		public double MaxVelocityX = 3.0;
 		public double AccelerationHandicap = 1.0;
@@ -563,7 +592,7 @@ namespace AvalonUgh.Code
 			// just looking at the keyboard keys anymore
 
 
-			if (AIInputEnabled)
+			if (Memory_CaveAction)
 				return;
 
 			// we are hidden inside a cave
@@ -572,8 +601,7 @@ namespace AvalonUgh.Code
 
 			if (e.Keyboard.IsPressedLeft)
 			{
-				if (this.Animation != AnimationEnum.WalkLeft)
-					this.Animation = AnimationEnum.WalkLeft;
+	
 
 				// at some point we should not be able to accelerate
 				if (!IsMaxVelocityXReached)
@@ -581,8 +609,7 @@ namespace AvalonUgh.Code
 			}
 			else if (e.Keyboard.IsPressedRight)
 			{
-				if (this.Animation != AnimationEnum.WalkRight)
-					this.Animation = AnimationEnum.WalkRight;
+			
 
 				if (!IsMaxVelocityXReached)
 					this.VelocityX += this.Zoom * DefaultAcceleraton * AccelerationHandicap;
@@ -590,20 +617,39 @@ namespace AvalonUgh.Code
 			else
 			{
 
-				if (this.VelocityY == 0)
-				{
+				//if (this.VelocityY == 0)
+				//{
+				//    this.VelocityX *= 0.85;
 
-					this.VelocityX *= 0.85;
-				}
+				//    if (this.VelocityX <= 0.03)
+				//        this.VelocityX = 0;
+				//}
 			}
 
-			if (Math.Abs(this.VelocityX) < Zoom * 0.1)
+			if (this.Animation != AnimationEnum.Hidden)
 			{
-				if (this.Animation == AnimationEnum.WalkLeft)
-					this.Animation = AnimationEnum.Idle;
+				if (this.VelocityX == 0)
+				{
+					if (this.Animation == AnimationEnum.WalkLeft)
+						this.Animation = AnimationEnum.Idle;
 
-				if (this.Animation == AnimationEnum.WalkRight)
-					this.Animation = AnimationEnum.Idle;
+					if (this.Animation == AnimationEnum.WalkRight)
+						this.Animation = AnimationEnum.Idle;
+				}
+				else
+				{
+					if (this.VelocityX < 0)
+					{
+						if (this.Animation != AnimationEnum.WalkLeft)
+							this.Animation = AnimationEnum.WalkLeft;
+
+					}
+					else
+					{
+						if (this.Animation != AnimationEnum.WalkRight)
+							this.Animation = AnimationEnum.WalkRight;
+					}
+				}
 			}
 
 			if (e.Keyboard.IsPressedUp)

@@ -46,12 +46,6 @@ namespace AvalonUgh.Code.GameWorkspace
 			}
 		}
 
-		/// <summary>
-		/// This will reflect the clients name and number,
-		/// We could be in control of none or multiple actors or vehicles
-		/// within multiple views and levels
-		/// </summary>
-		public readonly PlayerIdentity LocalIdentity;
 
 
 		const int PortIdentity_Lobby = 1000;
@@ -153,6 +147,9 @@ namespace AvalonUgh.Code.GameWorkspace
 							NewPort.Level.Physics.CollisionAtVelocity +=
 								Velocity =>
 								{
+									if (Velocity < 0.1)
+										return;
+
 									var Volume = (Velocity / (NewPort.Level.Zoom * 3.0) + 0.3).Max(0).Min(1);
 
 
@@ -483,7 +480,12 @@ namespace AvalonUgh.Code.GameWorkspace
 							{
 								// can we drop a rock?
 
-								CurrentVehicle.CurrentWeapon = null;
+								if (CurrentVehicle.CurrentWeapon != null)
+								{
+									CurrentVehicle.CurrentWeapon.VelocityX = CurrentVehicle.VelocityX;
+									CurrentVehicle.CurrentWeapon.VelocityY = 0.1;
+									CurrentVehicle.CurrentWeapon = null;
+								}
 							}
 						};
 
