@@ -167,6 +167,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				p.AddAcceleration();
 			}
 
+
 			foreach (var p in this.Ports)
 			{
 				if (p.Level != null)
@@ -186,6 +187,12 @@ namespace AvalonUgh.Code.GameWorkspace
 					foreach (var t in p.Level.KnownTryoperus)
 					{
 						t.Think();
+					}
+
+					foreach (var t in p.Level.KnownActors)
+					{
+						if (t.NextAnimationFrame != null)
+							t.NextAnimationFrame();
 					}
 
 					foreach (var t in p.Level.KnownPassengers)

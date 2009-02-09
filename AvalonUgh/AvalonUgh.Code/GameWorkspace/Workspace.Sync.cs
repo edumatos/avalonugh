@@ -66,15 +66,7 @@ namespace AvalonUgh.Code.GameWorkspace
 		public DelegateVehicalize Sync_Vehicalize;
 
 
-		public BindingList<PlayerIdentity> CoPlayers;
-
-		public IEnumerable<PlayerIdentity> AllPlayers
-		{
-			get
-			{
-				return CoPlayers.ConcatSingle(this.LocalIdentity);
-			}
-		}
+	
 
 		public void InitializeSync()
 		{

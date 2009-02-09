@@ -39,6 +39,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public Rock StartPosition;
 
+		public double LastVelocity { get; set; }
 		public double LastCollisionVelocity { get; set; }
 		public double LastWaterCollisionVelocity { get; set; }
  
@@ -64,21 +65,23 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public void StabilityReached()
 		{
-			if (this.IsSleeping)
-				5000.AtDelay(
-					delegate
-					{
-						this.IsSleeping = false;
-						this.UpdateFrame();
-					}
-				);
+		
 		}
 
 		public bool ReadyForPickup
 		{
 			get
 			{
-				return Stability > 10;
+				if (this.VelocityX != 0)
+					return false;
+
+				if (this.VelocityY != 0)
+					return false;
+
+				if (this.IsSleeping)
+					return false;
+
+				return true;
 			}
 		}
 

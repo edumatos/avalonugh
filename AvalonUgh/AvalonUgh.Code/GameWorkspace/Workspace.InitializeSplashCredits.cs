@@ -25,7 +25,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						 delegate
 						 {
 							 // we will default to 1 local player
-							 //this.Lobby.Menu.Players = 1;
+							 this.Lobby.Menu.Players = 1;
 
 							 Console.WriteLine("lobby loaded");
 
@@ -35,11 +35,11 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							 Action done = () => Lobby.Window.ColorOverlay.Opacity = 0;
 
-//#if DEBUG
+#if DEBUG
 							 done(); 
-//#else
-//                             ShowSplashCredit(TextContainers, done);
-//#endif
+#else
+							 ShowSplashCredit(TextContainers, done);
+#endif
 
 
 						 }

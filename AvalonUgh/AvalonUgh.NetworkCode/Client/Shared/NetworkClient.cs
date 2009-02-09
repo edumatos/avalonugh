@@ -227,7 +227,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 				e =>
 				{
 					//Content.Console.WriteLine("Server_UserJoined " + new { e, this.Content.LocalIdentity.SyncFrame });
-					var EgoIsPrimate = this.Content.AllPlayers.Min(k => k.NetworkNumber) == this.Content.LocalIdentity.NetworkNumber;
+					var EgoIsPrimate = this.Content.LocalIdentityIsPrimate;
 
 					this.Messages.UserHello(
 						e.user,

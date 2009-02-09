@@ -64,7 +64,14 @@ namespace AvalonUgh.Code.GameWorkspace
 					Height = 96
 				}.MoveTo(args.Width - 96, args.Height - 96).AttachTo(this.Window.OverlayContainer);
 
+				this.Loaded +=
+					delegate
+					{
+						// we do not need to see the start position markers
+						// it is useful only in the editor
+						this.View.StartPositionsContainer.Hide();
 
+					};
 
 				this.AttachSocialLinks();
 

@@ -25,6 +25,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public double MassCenterModifier { get; set; }
 		public Vehicle StartPosition;
 
+		public double LastVelocity { get; set; }
 		public double LastCollisionVelocity { get; set; }
 		public double LastWaterCollisionVelocity { get; set; }
 
@@ -106,6 +107,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
+		public event Action CurrentPassengerChanged;
 		Actor InternalCurrentPassenger;
 		public Actor CurrentPassenger
 		{
@@ -116,6 +118,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 			set
 			{
 				InternalCurrentPassenger = value;
+				if (CurrentPassengerChanged != null)
+					CurrentPassengerChanged();
+
 			}
 		}
 

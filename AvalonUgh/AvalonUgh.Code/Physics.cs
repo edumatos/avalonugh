@@ -174,7 +174,7 @@ namespace AvalonUgh.Code
 					}
 				}
 
-				if (actor.AIInputEnabled)
+				if (actor.Memory_CaveAction)
 					DinoWindEnabled = false;
 
 			}
@@ -248,13 +248,13 @@ namespace AvalonUgh.Code
 			var ObstacleX = Obstacles.FirstOrDefault(k => k.Intersects(vehX));
 			var ObstacleY = Obstacles.FirstOrDefault(k => k.Intersects(vehY));
 
-			var CollisionAtVelocity = 0.0;
+			RoundedDouble CollisionAtVelocity = new RoundedDouble { Value = 0.0 };
 			var CollisionAtVelocityEnabled = false;
 
 			if (ObstacleX != null)
 			{
 				CollisionAtVelocityEnabled = true;
-				CollisionAtVelocity += Math.Pow(twin.VelocityX * 0.5, 2);
+				CollisionAtVelocity.Value += Math.Pow(twin.VelocityX * 0.5, 2);
 
 				if (ObstacleX.SupportsVelocity != null)
 				{
@@ -277,7 +277,7 @@ namespace AvalonUgh.Code
 			if (ObstacleY != null)
 			{
 				CollisionAtVelocityEnabled = true;
-				CollisionAtVelocity += Math.Pow(twin.VelocityY * 0.5, 2);
+				CollisionAtVelocity.Value += Math.Pow(twin.VelocityY * 0.5, 2);
 
 				if (ObstacleY.SupportsVelocity != null)
 				{
@@ -292,6 +292,8 @@ namespace AvalonUgh.Code
 					else
 						twin.VelocityY *= -0.5;
 				}
+
+
 			}
 			else
 			{
@@ -301,13 +303,28 @@ namespace AvalonUgh.Code
 
 			if (CollisionAtVelocityEnabled)
 			{
-				CollisionAtVelocity = Math.Sqrt(CollisionAtVelocity);
+				CollisionAtVelocity.Value = Math.Sqrt(CollisionAtVelocity.Value);
 
-				if (CollisionAtVelocity != twin.LastCollisionVelocity)
+				if (CollisionAtVelocity.Value != twin.LastCollisionVelocity)
 					if (this.CollisionAtVelocity != null)
-						this.CollisionAtVelocity(CollisionAtVelocity);
+						this.CollisionAtVelocity(CollisionAtVelocity.Value);
 
-				twin.LastCollisionVelocity = CollisionAtVelocity;
+
+				if (ObstacleY != null)
+				{
+					if (twin.VelocityY == 0)
+					{
+						if (twin.LastVelocity >= twin.GetVelocity())
+						{
+							twin.VelocityX *= 0.7;
+
+							if (Math.Abs(twin.VelocityX) <= 0.03)
+								twin.VelocityX = 0;
+						}
+					}
+				}
+
+				twin.LastCollisionVelocity = CollisionAtVelocity.Value;
 
 			}
 
@@ -332,15 +349,12 @@ namespace AvalonUgh.Code
 				twin.LastWaterCollisionVelocity = 0;
 			}
 
+			twin.LastVelocity = twin.GetVelocity();
+
 			if (twin.VelocityX == 0)
 				if (twin.VelocityY == 0)
 					return;
 
-			if (Math.Abs(twin.VelocityX) < 0.1)
-				twin.VelocityX = 0;
-
-			if (Math.Abs(twin.VelocityY) < 0.1)
-				twin.VelocityY = 0;
 
 
 			newX = twin.X + twin.VelocityX;
@@ -396,6 +410,7 @@ namespace AvalonUgh.Code
 
 		double Density { get; set; }
 
+		double LastVelocity { get; set; }
 		double LastCollisionVelocity { get; set; }
 		double LastWaterCollisionVelocity { get; set; }
 	}

@@ -15,7 +15,9 @@ namespace AvalonUgh.Code
 
 		public static void WalkActorToTheCaveAndEnter(Actor a, Cave c, Action done)
 		{
-			a.AIInputEnabled = true;
+			Console.WriteLine("WalkActorToTheCaveAndEnter");
+
+			a.Memory_CaveAction = true;
 
 			Func<double> DistanceToCave = () => (c.Location - a.Location).Length / a.Zoom;
 
@@ -39,7 +41,7 @@ namespace AvalonUgh.Code
 								// setting this field indicates that the
 								// actor is inside this cave
 								a.CurrentCave = c;
-								a.AIInputEnabled = false;
+								a.Memory_CaveAction = false;
 
 								Console.WriteLine("inside the cave!");
 
@@ -76,14 +78,14 @@ namespace AvalonUgh.Code
 
 		public static void ActorExitCave(Actor a)
 		{
-			a.AIInputEnabled = true;
+			a.Memory_CaveAction = true;
 			a.MoveTo(a.CurrentCave.X, a.CurrentCave.Y);
 			a.CurrentCave = null;
 
 			a.PlayAnimation(Actor.AnimationEnum.CaveExit,
 				delegate
 				{
-					a.AIInputEnabled = false;
+					a.Memory_CaveAction = false;
 					a.Animation = Actor.AnimationEnum.Idle;
 				}
 			);
@@ -91,7 +93,7 @@ namespace AvalonUgh.Code
 
 		public static void ActorExitAnyCave(Actor a, Cave c)
 		{
-			a.AIInputEnabled = true;
+			a.Memory_CaveAction = true;
 			a.MoveTo(c.X, c.Y);
 
 
@@ -106,7 +108,7 @@ namespace AvalonUgh.Code
 		public static void ActorExitCaveFast(Actor a)
 		{
 			a.CurrentCave = null;
-			a.AIInputEnabled = false;
+			a.Memory_CaveAction = false;
 			a.Animation = Actor.AnimationEnum.Idle;
 		}
 	}
