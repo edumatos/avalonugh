@@ -10,6 +10,10 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Avalon.Tween;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
+using System.Windows.Input;
+using System.Windows.Controls;
+using AvalonUgh.Code.Editor.Sprites;
+using AvalonUgh.Code.Diagnostics;
 namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
@@ -59,7 +63,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				this.LoadWindow = new LoadWindow();
 
-				
+
 
 				this.LoadWindow.EmbeddedLevels.Items.MirrorTo(args.EmbeddedLevels);
 				this.LoadWindow.SavedLevels.Items.MirrorTo(args.SavedLevels);
@@ -119,12 +123,26 @@ namespace AvalonUgh.Code.GameWorkspace
 					{
 						this.View.EditorSelectorNextSize += () => this.Toolbar.EditorSelectorNextSize();
 						this.View.EditorSelectorPreviousSize += () => this.Toolbar.EditorSelectorPreviousSize();
+						this.View.EditorSelector = this.Toolbar.EditorSelector;
 
 						this.Window.ColorOverlay.Opacity = 0;
 
 
 						this.Arrows.ForEach(k => k.OrphanizeContainer().AttachContainerTo(this.View.ContentInfoOverlay));
 
+						this.View.EditorSelectorApplied +=
+							(Selector, Position, EditorSelectorApplied_args) =>
+							{
+								var Index = KnownSelectors.Index.Of(Selector, this.Selectors);
+
+								if (this.Selectors.Types[Index.Type] == this.Selectors.Arrow)
+								{
+									// did we click on something useful?
+
+									if (ArrowClick != null)
+										ArrowClick(Position, EditorSelectorApplied_args);
+								}
+							};
 					};
 
 
@@ -140,6 +158,9 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 			}
+
+			public event Action<View.SelectorPosition, MouseEventArgs> ArrowClick;
+
 
 			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)
 			{
@@ -223,7 +244,6 @@ namespace AvalonUgh.Code.GameWorkspace
 									 this.Editor.BringContainerToFront();
 									 this.Editor.Toolbar.BringContainerToFront();
 									 this.Editor.Toolbar.Show();
-
 									 this.Editor.Window.ColorOverlay.Opacity = 0;
 
 
@@ -354,6 +374,53 @@ namespace AvalonUgh.Code.GameWorkspace
 				};
 			#endregion
 
+			var CurrentTravelWindow = default(Window);
+			var CurrentTravelWindowAnimation = default(AnimatedOpacity<Canvas>);
+
+			this.Editor.ArrowClick +=
+				(Position, args) =>
+				{
+					if (CurrentTravelWindow != null)
+					{
+						var CurrentTravelWindow_ = CurrentTravelWindow;
+
+						CurrentTravelWindowAnimation.SetOpacity(0, () => CurrentTravelWindow_.OrphanizeContainer());
+						CurrentTravelWindowAnimation = null;
+						CurrentTravelWindow = null;
+					}
+
+					var x = Position.ContentX * DefaultZoom;
+					var y = Position.ContentY * DefaultZoom;
+
+					var Passanger = this.Editor.Level.KnownPassengers.FirstOrDefault(k => k.ToObstacle().Contains(x, y));
+
+					if (Passanger != null)
+					{
+						// show a dialog for travel order
+
+						CurrentTravelWindow = new RouteWindow
+						{
+							DragContainer = this.Container
+						};
+
+						
+						//CurrentTravelWindow.ContentContainer.Background = Brushes.Red;
+
+						//CurrentTravelWindow.Container.WriteTreeToConsoleOnClick();
+
+
+						CurrentTravelWindowAnimation = CurrentTravelWindow.Container.ToAnimatedOpacity();
+						CurrentTravelWindow.AttachContainerTo(this);
+
+						var p = args.GetPosition(this.Container);
+
+						CurrentTravelWindow.MoveContainerTo(p.X + 4, p.Y + 4);
+
+						CurrentTravelWindowAnimation.Opacity = 0;
+						CurrentTravelWindow.Show();
+						CurrentTravelWindowAnimation.Opacity = 1;
+					}
+				};
 		}
 
 

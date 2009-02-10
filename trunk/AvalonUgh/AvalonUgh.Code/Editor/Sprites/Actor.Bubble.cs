@@ -48,6 +48,11 @@ namespace AvalonUgh.Code
 					Height = 24 * Zoom
 				};
 
+				CreateBubbleImage(Zoom, CaveSign).AttachTo(this);
+			}
+
+			public static Image CreateBubbleImage(int Zoom, int CaveSign)
+			{
 				var Image = new NameFormat
 				{
 					Path = KnownAssets.Path.Sprites,
@@ -68,8 +73,7 @@ namespace AvalonUgh.Code
 					Image.Index = CaveSign;
 				}
 
-				Image.ToImage(16, 24).AttachTo(this);
-
+				return Image.ToImage(16, 24);
 			}
 		}
 
