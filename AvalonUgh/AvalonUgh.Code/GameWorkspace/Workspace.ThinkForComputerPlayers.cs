@@ -142,8 +142,12 @@ namespace AvalonUgh.Code.GameWorkspace
 									new Actor.Bubble(view.Level.Zoom, 0)
 								);
 
+								i.Passenger.Memory_FirstWait = true;
 								i.Passenger.Memory_LogicState = Actor.Memory_LogicState_TalkStart;
 								i.Passenger.Animation = Actor.AnimationEnum.Talk;
+								i.Passenger.VelocityX = 0;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
 
 								#endregion
 							}
