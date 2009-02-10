@@ -7,14 +7,16 @@ if %ConfigurationName%==Debug (
 )
 
 :: Dll name
-@call :jsc %1
+@call :jsc %1 
 
 if '%ERRORLEVEL%' == '-1' (
     echo jsc failed.
     goto :eof
 )
 :: Namespace name, type name
-@call :mxmlc AvalonUgh/Labs/ActionScript LabsFlash
+if %ConfigurationName%==Release (
+  @call :mxmlc AvalonUgh/Labs/ActionScript LabsFlash
+)
 
 goto :eof
 
@@ -22,7 +24,15 @@ goto :eof
 pushd ..\bin\%ConfigurationName%
 
 ::call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as -js
-call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as
+
+if %ConfigurationName%==Release (
+  call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as
+)
+
+if %ConfigurationName%==ReleaseWithJavaScript (
+  call c:\util\jsc\bin\jsc.exe %TargetFileName%  -js
+)
+
 ::call c:\util\jsc\bin\jsc.exe %TargetFileName%  -as 
 
 
