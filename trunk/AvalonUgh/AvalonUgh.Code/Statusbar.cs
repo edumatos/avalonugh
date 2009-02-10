@@ -123,7 +123,7 @@ namespace AvalonUgh.Code
 			f(33, "00");
 			f(114, "000000");
 			f(169, "00");
-			f(232, "0000");
+			ScoreTextBox = f(232, "0000");
 			f(305, "00");
 
 
@@ -137,6 +137,25 @@ namespace AvalonUgh.Code
             // E0EC98
         }
 
+		public readonly DialogTextBox ScoreTextBox;
+
+		public int InternalScore;
+		public int Score
+		{
+			set
+			{
+				InternalScore = value;
+
+				var x = value % 10000;
+				var s = x.ToString();
+
+				ScoreTextBox.Text = new string('0', 4 - s.Length) + s;
+			}
+			get
+			{
+				return InternalScore;
+			}
+		}
      
     }
 }

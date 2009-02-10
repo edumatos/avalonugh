@@ -84,8 +84,24 @@ namespace AvalonUgh.Code.GameWorkspace
 						this.View.StartPositionsContainer.Hide();
 						//this.View.ContentInfoOverlay.Hide();
 
-					};
+						this.View.Level.KnownVehicles.WithEvents(
+							vehicle =>
+							{
+								Action CurrentPassengerChanged =
+									delegate
+									{
+										Statusbar.Score = 9999;
+									};
 
+								vehicle.CurrentPassengerChanged += CurrentPassengerChanged;
+
+								return delegate
+								{
+									vehicle.CurrentPassengerChanged -= CurrentPassengerChanged;
+								};
+							}
+						);
+					};
 
 
 
