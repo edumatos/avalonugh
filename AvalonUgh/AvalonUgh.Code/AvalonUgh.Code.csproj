@@ -157,6 +157,7 @@
     <Compile Include="Editor\CommonFileWindow.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="Editor\RoundedDouble.cs" />
+    <Compile Include="Editor\RouteWindow.cs" />
     <Compile Include="Editor\Sprites\Actor.Bubble.cs" />
     <Compile Include="Editor\Sprites\PassengerSelector.cs" />
     <Compile Include="GameMenu.cs" />

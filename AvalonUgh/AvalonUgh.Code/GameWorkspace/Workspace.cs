@@ -184,7 +184,7 @@ namespace AvalonUgh.Code.GameWorkspace
 							NewPort.View.EditorSelectorDisabled = true;
 
 							NewPort.View.EditorSelectorApplied +=
-								(Selector, Position) =>
+								(Selector, Position, EditorSelectorApplied_args) =>
 								{
 									if (Selector.Width > 0)
 									{
@@ -196,6 +196,8 @@ namespace AvalonUgh.Code.GameWorkspace
 									var Index = KnownSelectors.Index.Of(Selector, this.Selectors);
 
 									this.Sync_EditorSelector(NewPort.PortIdentity, Index.Type, Index.Size, Position.ContentX, Position.ContentY);
+
+							
 								};
 						};
 

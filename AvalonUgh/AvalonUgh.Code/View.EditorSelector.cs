@@ -154,7 +154,7 @@ namespace AvalonUgh.Code
 								Selector.CreateTo(this.Level, p);
 
 							if (EditorSelectorApplied != null)
-								EditorSelectorApplied(Selector, p);
+								EditorSelectorApplied(Selector, p, args);
 						}
 					);
 				};
@@ -170,7 +170,7 @@ namespace AvalonUgh.Code
 		public bool EditorSelectorDisabled;
 
 		// to be used for syncing
-		public event Action<SelectorInfo, SelectorPosition> EditorSelectorApplied;
+		public event Action<SelectorInfo, SelectorPosition, MouseEventArgs> EditorSelectorApplied;
 		public event Action EditorSelectorNextSize;
 		public event Action EditorSelectorPreviousSize;
 
