@@ -86,18 +86,30 @@ namespace AvalonUgh.Code.Editor
 								// remove all following buttons
 								var i = Buttons.IndexOf(NewButton);
 
-								foreach (var v in Buttons.Where((k, j) => j > i).ToArray())
+								var ButtonsToBeDeleted = Buttons.Select((k, j) => new { k, j }).Where(k => k.j > i).Select(k => k.k).ToArray();
+
+								foreach (var v in ButtonsToBeDeleted)
 								{
 									Buttons.Remove(v);
+								}
+
+								for (int j = i; j < InternalCurrentRoute.Elements.Length; j++)
+								{
+									InternalCurrentRoute.Elements[j] = 0;
 								}
 							}
 							else
 							{
-								if (Buttons.Last() == NewButton)
-								{
-									new DestinationButton { SignValue = -1 }.AddTo(Buttons);
-								}
+								if (Buttons.Count < 10)
+									if (Buttons.Last() == NewButton)
+									{
+										new DestinationButton { SignValue = -1 }.AddTo(Buttons);
+									}
+
+								this.InternalCurrentRoute.Elements[Buttons.IndexOf(NewButton)] = (uint)(NewButton.SignValue + 1);
 							}
+
+
 						};
 
 					NewButton.AttachContainerTo(this.OverlayContainer);
@@ -117,12 +129,40 @@ namespace AvalonUgh.Code.Editor
 				}
 			);
 
-			new DestinationButton { SignValue = 0 }.AddTo(Buttons);
-			new DestinationButton { SignValue = -1 }.AddTo(Buttons);
+			//this.CurrentRoute = (2 << (3 * 2)) + (3 << (3 * 1)) + 4;
 
 
+		}
+
+		PackedInt32 InternalCurrentRoute = new PackedInt32(3);
+
+		public PackedInt32 CurrentRoute
+		{
+			get
+			{
+				return InternalCurrentRoute;
+			}
+			set
+			{
+				InternalCurrentRoute = value;
+
+				this.Buttons.RemoveAll();
+
+				InternalCurrentRoute.Elements.ToFlaggable().ForEach(
+					k =>
+					{
+						new DestinationButton { SignValue = (int)k.Current - 1 }.AddTo(Buttons);
+
+						if (k.Current == 0)
+						{
+							k.Stream.SkipElements = true;
+						}
+					}
+				);
+				
 
 
+			}
 		}
 	}
 }
