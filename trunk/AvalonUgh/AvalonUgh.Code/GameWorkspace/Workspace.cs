@@ -386,7 +386,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					NewPlayer.Actor = new Actor.man0(DefaultZoom)
 					{
 						RespectPlatforms = true,
-						CanBeHitByVehicle = false,
+						Memory_CanBeHitByVehicle = false,
 					};
 
 					NewPlayer.Actor.Jumping +=

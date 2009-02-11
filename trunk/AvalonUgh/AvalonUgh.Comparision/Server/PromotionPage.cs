@@ -73,24 +73,24 @@ namespace AvalonUgh.Comparision.Server
 			Console.WriteLine("<table border='0' cellspacing='0' cellpadding='0'>");
 			Console.WriteLine(@"
 		<tr>
-			<td style='width: 27px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_left.png' style='width: 27px; height: 53px;' /></td>
-			<td style='width: 840px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_span.png' style='width: 840px; height: 53px;' /></td>
-			<td style='width: 27px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_right.png' style='width: 27px; height: 53px;' /></td>
+			<td style='width: 27px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_left.png' border='0' style='width: 27px; height: 53px;' /></td>
+			<td style='width: 840px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_span.png' border='0' style='width: 840px; height: 53px;' /></td>
+			<td style='width: 27px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_right.png' border='0' style='width: 27px; height: 53px;' /></td>
 		</tr>
 			");
 
-			Console.WriteLine("<tr><td><img src='assets/AvalonUgh.Comparision/layout_middle_left.png' style='width: 27px; height: 400px;' /></td><td>");
+			Console.WriteLine("<tr><td><img src='assets/AvalonUgh.Comparision/layout_middle_left.png' border='0' style='width: 27px; height: 400px;' /></td><td>");
 
 			
 			Console.WriteLine("<object width='840' height='400'><param name='movie' value='http://nonoba.com/zproxy/avalon-ugh/embed'></param><param name='allowScriptAccess' value='always' ></param><param name='allowNetworking' value='all' ></param><embed src='http://nonoba.com/zproxy/avalon-ugh/embed' allowNetworking='all' allowScriptAccess='always' type='application/x-shockwave-flash' width='840' height='400'></embed></object>");
 
-			Console.WriteLine("</td><td><img src='assets/AvalonUgh.Comparision/layout_middle_right.png' style='width: 27px; height: 400px;' /></td></tr>");
+			Console.WriteLine("</td><td><img src='assets/AvalonUgh.Comparision/layout_middle_right.png' border='0' style='width: 27px; height: 400px;' /></td></tr>");
 
 			Console.WriteLine(@"
 		<tr>
-			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_left.png' style='width: 27px; height: 53px;' /></td>
-			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_span.png' style='width: 840px; height: 53px;' /></td>
-			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_right.png' style='width: 27px; height: 53px;' /></td>
+			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_left.png' border='0' style='width: 27px; height: 53px;' /></td>
+			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_span.png' border='0' style='width: 840px; height: 53px;' /></td>
+			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_right.png' border='0' style='width: 27px; height: 53px;' /></td>
 		</tr>
 			");
 			

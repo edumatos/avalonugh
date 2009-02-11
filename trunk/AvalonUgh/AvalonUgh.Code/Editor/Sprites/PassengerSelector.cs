@@ -126,6 +126,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				a.Animation = Actor.AnimationEnum.Idle;
 				a.StartPosition = g;
+				
+				a.Memory_Route.Value = (uint)source.Value[8];
 
 				if (ForSync == 1)
 				{

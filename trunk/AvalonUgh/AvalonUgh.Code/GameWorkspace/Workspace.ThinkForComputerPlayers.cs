@@ -45,6 +45,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			var PickupVehicles = Enumerable.ToArray(
 				from Vehicle in view.Level.KnownVehicles
+				where Vehicle.CurrentWeapon == null
 				where Vehicle.CurrentDriver != null
 				where Vehicle.CurrentPassenger == null
 				where Vehicle.GetVelocity() == 0
@@ -56,6 +57,8 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			var Passengers = Enumerable.ToArray(
 				from Passenger in KnownPassengers
+				// if we dont know where to go we wont even talk to taxi
+				where Passenger.Memory_Route_NextCave > -1
 				where !Passenger.Memory_CaveAction
 				where Passenger.CurrentCave == null
 				where Passenger.VelocityY == 0
@@ -74,11 +77,30 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 
+			
 
 			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle == null))
 			{
-				if (i.Passenger.Memory_LogicState_IsConfused)
+				if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_LastMile)
 				{
+					// go to the cave dude
+
+					if (Math.Abs(i.PassengerObstacle.X - i.Platform.Cave.X) <= view.Level.Zoom)
+					{
+						i.Passenger.CurrentCave = i.Platform.Cave;
+						i.Passenger.Memory_CaveAction = false;
+						i.Passenger.PlayAnimation(Actor.AnimationEnum.CaveEnter, null);
+						i.Passenger.Memory_LogicState = Actor.Memory_LogicState_CaveLifeStart;
+					}
+					else
+					{
+						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.Platform.Cave.X - i.Passenger.X) > view.Level.Zoom;
+						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.Cave.X - i.Passenger.X) < -view.Level.Zoom;
+					}
+				}
+				else if (i.Passenger.Memory_LogicState_IsConfused)
+				{
+					#region Memory_LogicState_IsConfused > Memory_LogicState_ConfusedEnd
 					i.Passenger.Memory_LogicState++;
 
 					if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_ConfusedEnd)
@@ -88,6 +110,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						i.Passenger.Memory_LogicState = Actor.Memory_LogicState_Waiting;
 						Console.WriteLine("Memory_LogicState_ConfusedEnd");
 					}
+					#endregion
 				}
 				else
 				{
@@ -95,10 +118,13 @@ namespace AvalonUgh.Code.GameWorkspace
 					{
 						if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_Boarding)
 						{
+							#region Memory_LogicState_Boarding
 							// walk to the vehicle
 
 							if (Math.Abs(i.PassengerObstacle.X - i.NearestPickup.VehicleObstacle.X) <= view.Level.Zoom)
 							{
+								// enter the vehicle
+
 								i.Passenger.Animation = Actor.AnimationEnum.Hidden;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
@@ -108,15 +134,16 @@ namespace AvalonUgh.Code.GameWorkspace
 							}
 							else
 							{
-								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) > i.Platform.WaitPosition.Width;
-								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) > view.Level.Zoom;
+								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) < -view.Level.Zoom;
 							}
-
+							#endregion
 						}
 						else
 						{
 							if (i.Passenger.Memory_LogicState_IsTalking)
 							{
+								#region Memory_LogicState_IsTalking > Memory_LogicState_Boarding
 								i.Passenger.Memory_LogicState++;
 
 								if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_TalkEnd)
@@ -127,6 +154,8 @@ namespace AvalonUgh.Code.GameWorkspace
 									Console.WriteLine("Memory_LogicState_Boarding");
 
 								}
+								#endregion
+
 							}
 							else
 							{
@@ -139,7 +168,7 @@ namespace AvalonUgh.Code.GameWorkspace
 								SoundBoard.Default.talk0_00();
 
 								i.Passenger.KnownBubbles.Add(
-									new Actor.Bubble(view.Level.Zoom, 0)
+									new Actor.Bubble(view.Level.Zoom, i.Passenger.Memory_Route_NextCave)
 								);
 
 								i.Passenger.Memory_FirstWait = true;
@@ -158,6 +187,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					{
 						if (i.Passenger.Memory_LogicState_WouldBeConfusedIfVehicleLeft)
 						{
+							#region Memory_LogicState_ConfusedStart
 							Console.WriteLine("Memory_LogicState_ConfusedStart");
 
 							SoundBoard.Default.talk0_01();
@@ -172,6 +202,8 @@ namespace AvalonUgh.Code.GameWorkspace
 							i.Passenger.KnownBubbles.Add(
 								new Actor.Bubble(view.Level.Zoom, -1)
 							);
+							#endregion
+
 						}
 						else
 						{
@@ -199,6 +231,43 @@ namespace AvalonUgh.Code.GameWorkspace
 				}
 			}
 
+			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle != null))
+			{
+				if (i.Passenger.CurrentPassengerVehicle.GetVelocity() == 0)
+				{
+					// if we are at the correct platform
+					// we could release the passenger...
+					var CurrentPassengerVehicle = i.Passenger.CurrentPassengerVehicle.ToObstacle();
+
+					var CurrentPlatform = view.Level.ToPlatformSnapshots().FirstOrDefault(
+						k => k.IncludedSpace.Intersects(CurrentPassengerVehicle)
+					);
+
+					if (CurrentPlatform != null)
+					{
+						var Memory_Route_NextCave = i.Passenger.Memory_Route_NextCave;
+
+
+
+						if (CurrentPlatform.CaveSigns.Any(k => k.Value == Memory_Route_NextCave))
+						{
+							i.Passenger.Memory_Route.Pop();
+							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_LastMile;
+							i.Passenger.Animation = Actor.AnimationEnum.Idle;
+							i.Passenger.MoveTo(
+								i.Passenger.CurrentPassengerVehicle.X,
+								i.Passenger.CurrentPassengerVehicle.Y - 2 * view.Level.Zoom
+							);
+							i.Passenger.VelocityX = 0;
+							i.Passenger.VelocityY = 0;
+							i.Passenger.CurrentPassengerVehicle.CurrentPassenger = null;
+							i.Passenger.CurrentPassengerVehicle = null;
+							i.Passenger.Memory_CanBeHitByVehicle = false;
+						}
+					}
+				}
+			}
+
 			// simulate cave life
 
 			var NextPassengerToWalkOutOfTheCave = KnownPassengers.FirstOrDefault(k => k.CurrentCave != null);
@@ -221,6 +290,7 @@ namespace AvalonUgh.Code.GameWorkspace
 							// we dont have to wait for the previous passanger to stand still
 							AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
 							NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
+							NextPassengerToWalkOutOfTheCave.Memory_CanBeHitByVehicle = true;
 						}
 						else
 						{
@@ -230,6 +300,7 @@ namespace AvalonUgh.Code.GameWorkspace
 							{
 								AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
 								NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
+								NextPassengerToWalkOutOfTheCave.Memory_CanBeHitByVehicle = true;
 							}
 						}
 					}
