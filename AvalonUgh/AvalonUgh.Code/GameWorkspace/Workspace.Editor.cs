@@ -400,7 +400,8 @@ namespace AvalonUgh.Code.GameWorkspace
 
 						CurrentTravelWindow = new RouteWindow
 						{
-							DragContainer = this.Container
+							DragContainer = this.Container,
+							CurrentRoute = Passanger.Memory_Route
 						};
 
 						

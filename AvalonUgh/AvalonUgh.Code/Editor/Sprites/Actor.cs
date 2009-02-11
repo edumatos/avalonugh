@@ -24,7 +24,8 @@ namespace AvalonUgh.Code
 		// 1000...1999 tell where to, start walking
 		// 2000...2999 be confused, walk back and start idle
 		public int Memory_LogicState = 0;
-		public int Memory_NextCave;
+
+		public readonly PackedInt32 Memory_Route = new PackedInt32(3);
 
 		public bool Memory_CaveAction;
 		public bool Memory_FirstWait;
