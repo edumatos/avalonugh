@@ -398,6 +398,8 @@ namespace AvalonUgh.Code.GameWorkspace
 					{
 						// show a dialog for travel order
 
+						this.Console.WriteLine("Memory_Route: " + Passanger.Memory_Route.Value);
+
 						CurrentTravelWindow = new RouteWindow
 						{
 							DragContainer = this.Container,
