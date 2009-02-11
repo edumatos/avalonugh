@@ -19,7 +19,24 @@ namespace AvalonUgh.Code
 		[Script]
 		public class Button : Window
 		{
-			public readonly Image ButtonImage;
+			Image InternalButtonImage;
+			public Image ButtonImage
+			{
+				get
+				{
+					return InternalButtonImage;
+				}
+				set
+				{
+					if (InternalButtonImage != null)
+						InternalButtonImage.Orphanize();
+
+					InternalButtonImage = value;
+
+					if (InternalButtonImage != null)
+						InternalButtonImage.MoveTo(4, 4).AttachTo(this.ContentContainer);
+				}
+			}
 			public readonly TextBox ButtonText;
 
 			public string Text
@@ -48,16 +65,15 @@ namespace AvalonUgh.Code
 
 			public Button(Image ButtonImage, int ImageWidth, int ImageSize)
 			{
-				this.ButtonImage = ButtonImage;
 
 				this.Padding = 1;
 				this.ClientWidth = ImageWidth + 8;
-				this.ClientHeight = ImageSize + 8; 
+				this.ClientHeight = ImageSize + 8;
 
 
+				this.ButtonImage = ButtonImage;
 
-				if (ButtonImage != null)
-					ButtonImage.MoveTo(4, 4).AttachTo(this.ContentContainer);
+			
 
 				this.ButtonText = new TextBox
 				{
