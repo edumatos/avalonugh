@@ -66,3 +66,6 @@
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/060.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/061.png]
  # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/062.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/063.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/064.png]
+ # [http://avalonugh.googlecode.com/svn/trunk/AvalonUgh/Screenshots/065.png]
