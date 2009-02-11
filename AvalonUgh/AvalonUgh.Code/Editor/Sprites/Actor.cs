@@ -21,6 +21,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		// fields prefixed by Memory_ need to be synced
+
 		// 1000...1999 tell where to, start walking
 		// 2000...2999 be confused, walk back and start idle
 		public int Memory_LogicState = 0;
@@ -29,9 +31,13 @@ namespace AvalonUgh.Code
 
 		public bool Memory_CaveAction;
 		public bool Memory_FirstWait;
+		public bool Memory_CanBeHitByVehicle;
+
 
 		public const int Memory_LogicState_Waiting = 0;
 		public const int Memory_LogicState_Boarding = 1;
+		public const int Memory_LogicState_LastMile = 2;
+
 		public const int Memory_LogicState_BubbleLength = 120;
 
 		public const int Memory_LogicState_TalkStart = 1000;
@@ -43,6 +49,13 @@ namespace AvalonUgh.Code
 		public const int Memory_LogicState_CaveLifeStart = 3000;
 		public const int Memory_LogicState_CaveLifeEnd = Memory_LogicState_CaveLifeStart + 240;
 
+		public int Memory_Route_NextCave
+		{
+			get
+			{
+				return (int)this.Memory_Route.Elements[0] - 1;
+			}
+		}
 
 		public bool Memory_LogicState_IsTalking
 		{
@@ -184,7 +197,6 @@ namespace AvalonUgh.Code
 
 		public Cave CurrentCave;
 
-		public bool CanBeHitByVehicle;
 
 
 		public double Density { get; set; }
@@ -225,7 +237,7 @@ namespace AvalonUgh.Code
 
 		public Actor(int Zoom)
 		{
-			this.CanBeHitByVehicle = true;
+			this.Memory_CanBeHitByVehicle = true;
 			this.RespectPlatforms = true;
 
 			this.Density = 0.3;

@@ -127,11 +127,11 @@ namespace AvalonUgh.Code
 					if (veh.GetVelocity() > this.Level.Zoom)
 						this.Level.KnownActors.
 							Where(k => !k.PhysicsDisabled).
-							Where(k => k.CanBeHitByVehicle).
+							Where(k => k.Memory_CanBeHitByVehicle).
 							Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 							actor_ =>
 							{
-								actor_.CanBeHitByVehicle = false;
+								actor_.Memory_CanBeHitByVehicle = false;
 								actor_.RespectPlatforms = false;
 								actor_.Animation = Actor.AnimationEnum.Panic;
 

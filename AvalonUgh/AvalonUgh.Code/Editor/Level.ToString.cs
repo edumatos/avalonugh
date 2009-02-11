@@ -263,6 +263,8 @@ namespace AvalonUgh.Code.Editor
 			StartPosition.X = a[6];
 			StartPosition.Y = a[7];
 
+			a.Value[8] = (int)i.Memory_Route.Value;
+
 			return a;
 		}
 
