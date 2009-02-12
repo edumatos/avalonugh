@@ -112,7 +112,7 @@ namespace AvalonUgh.Code
 					//Obstacles = Obstacles.Concat(this.Level.KnownVehicles.Where(k => k != twin).Where(k => !k.IsUnmanned).Select(k => k.ToObstacle()));
 
 					if (veh.CurrentWeapon == null)
-						if (veh.CurrentPassenger == null)
+						if (veh.CurrentPassengers.Count == 0)
 						{
 							// we can pickup a rock for our weapon now
 

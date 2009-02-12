@@ -18,7 +18,7 @@ namespace AvalonUgh.Code.GameWorkspace
 	partial class Workspace
 	{
 		[Script]
-		public class MissionPort : Port
+		public partial class MissionPort : Port
 		{
 			public readonly LevelIntroDialog Intro;
 			public readonly Dialog Fail;
@@ -32,9 +32,11 @@ namespace AvalonUgh.Code.GameWorkspace
 				public int Zoom;
 			}
 
+			public readonly Statusbar Statusbar;
+
 			public MissionPort(ConstructorArguments args)
 			{
-				var Statusbar = new Statusbar(
+				this.Statusbar = new Statusbar(
 					  new Statusbar.ConstructorArguments
 					  {
 						  Zoom = args.Zoom
@@ -79,33 +81,31 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Loaded +=
 					delegate
 					{
+						this.View.Memory_ScoreChanged +=
+							delegate
+							{
+								this.Statusbar.HighScore = this.View.Memory_Score;
+							};
+
+						this.View.Memory_ScoreMultiplierChanged +=
+							delegate
+							{
+								//this.Statusbar.HighScore = this.View.Memory_Score;
+							};
+
 						// we do not need to see the start position markers
 						// it is useful only in the editor
 						this.View.StartPositionsContainer.Hide();
 						//this.View.ContentInfoOverlay.Hide();
 
-						this.View.Level.KnownVehicles.WithEvents(
-							vehicle =>
-							{
-								Action CurrentPassengerChanged =
-									delegate
-									{
-										Statusbar.Score = 9999;
-									};
-
-								vehicle.CurrentPassengerChanged += CurrentPassengerChanged;
-
-								return delegate
-								{
-									vehicle.CurrentPassengerChanged -= CurrentPassengerChanged;
-								};
-							}
-						);
+						ReinitializeStatusbar();
 					};
 
 
 
 			}
+
+	
 
 			public Tuple GetRandomEntrypointForVehicle<Tuple>(Func<double, double, Tuple> CreateTuple)
 			{
@@ -295,8 +295,6 @@ namespace AvalonUgh.Code.GameWorkspace
 				);
 
 				this.Sync_Vehicalize(this.LocalIdentity.NetworkNumber, i.IdentityLocal);
-
-
 			}
 
 			var Caves = this.PrimaryMission.Level.KnownCaves.ToArray(Cave => new { Cave, Obstacle = Cave.ToObstacle() });
@@ -310,9 +308,13 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					if (PassengerCave != null)
 					{
+						// move the passangers into the cave
 						Passenger.CurrentCave = PassengerCave.Cave;
 						Passenger.Animation = Actor.AnimationEnum.Hidden;
 
+						// only the first passanger will have to wait some frames
+						// others will wait for their previous neighbour to reach
+						// waiting point
 						if (index > 0)
 							Passenger.Memory_LogicState = Actor.Memory_LogicState_CaveLifeEnd - 1;
 					}

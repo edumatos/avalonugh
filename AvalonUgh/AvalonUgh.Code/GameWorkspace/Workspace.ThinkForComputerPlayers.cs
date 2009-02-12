@@ -47,7 +47,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				from Vehicle in view.Level.KnownVehicles
 				where Vehicle.CurrentWeapon == null
 				where Vehicle.CurrentDriver != null
-				where Vehicle.CurrentPassenger == null
+				where Vehicle.CurrentPassengers.Count == 0
 				where Vehicle.GetVelocity() == 0
 				let VehicleObstacle = Vehicle.ToObstacle()
 				select new { Vehicle, VehicleObstacle }
@@ -127,8 +127,8 @@ namespace AvalonUgh.Code.GameWorkspace
 								i.Passenger.Animation = Actor.AnimationEnum.Hidden;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
-
-								i.NearestPickup.Vehicle.CurrentPassenger = i.Passenger;
+								i.Passenger.Memory_LogicState = Actor.Memory_LogicState_FareMax;
+								i.NearestPickup.Vehicle.CurrentPassengers.Add(i.Passenger);
 								i.Passenger.CurrentPassengerVehicle = i.NearestPickup.Vehicle;
 							}
 							else
@@ -232,6 +232,12 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle != null))
 			{
+				if (i.Passenger.Memory_LogicState_IsFare)
+				{
+					if (i.Passenger.Memory_LogicState != Actor.Memory_LogicState_FareMin)
+						i.Passenger.Memory_LogicState = Math.Max(i.Passenger.Memory_LogicState - 9, Actor.Memory_LogicState_FareMin);
+				}
+
 				if (i.Passenger.CurrentPassengerVehicle.GetVelocity() == 0)
 				{
 					// if we are at the correct platform
@@ -251,7 +257,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						if (CurrentPlatform.CaveSigns.Any(k => k.Value == Memory_Route_NextCave))
 						{
 							i.Passenger.Memory_Route.Pop();
-							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_LastMile;
+
 							i.Passenger.Animation = Actor.AnimationEnum.Idle;
 							i.Passenger.MoveTo(
 								i.Passenger.CurrentPassengerVehicle.X,
@@ -259,8 +265,16 @@ namespace AvalonUgh.Code.GameWorkspace
 							);
 							i.Passenger.VelocityX = 0;
 							i.Passenger.VelocityY = 0;
-							i.Passenger.CurrentPassengerVehicle.CurrentPassenger = null;
+							i.Passenger.CurrentPassengerVehicle.CurrentPassengers.Remove(i.Passenger);
 							i.Passenger.CurrentPassengerVehicle = null;
+
+							// add the fare to the highscore
+							// this action will be done in sync in all clients
+
+							view.Memory_Score += (i.Passenger.Memory_LogicState - Actor.Memory_LogicState_FareBase) * view.Memory_ScoreMultiplier;
+
+							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_LastMile;
+
 							i.Passenger.Memory_CanBeHitByVehicle = false;
 						}
 					}

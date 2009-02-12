@@ -97,7 +97,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			if (!ExitIsBlocked)
 				if (e.Keyboard.IsPressedEnter)
-					if (this.CurrentPassenger == null)
+					if (this.CurrentPassengers.Count == 0)
 					{
 						this.CurrentDriver.CurrentVehicle = null;
 					}

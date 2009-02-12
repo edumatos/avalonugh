@@ -159,9 +159,11 @@
     <Compile Include="Editor\RoundedDouble.cs" />
     <Compile Include="Editor\RouteWindow.cs" />
     <Compile Include="Editor\Sprites\Actor.Bubble.cs" />
+    <Compile Include="Editor\Sprites\Actor.Memory.cs" />
     <Compile Include="Editor\Sprites\PassengerSelector.cs" />
     <Compile Include="GameMenu.cs" />
     <Compile Include="GameSocialLinks.cs" />
+    <Compile Include="GameWorkspace\Workspace.Mission.ReinitializeStatusbar.cs" />
     <Compile Include="GameWorkspace\Workspace.AllPlayers.cs" />
     <Compile Include="GameWorkspace\Workspace.InitializeSplashCredits.cs" />
     <Compile Include="GameWorkspace\PassangerAIDomain\PassangerAI.cs" />

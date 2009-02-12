@@ -87,7 +87,7 @@ namespace AvalonUgh.Code
 
 		public const int MaxShakeSize = 4;
 
-	
+
 
 		public View(int width, int height, Level level)
 		{
@@ -201,7 +201,7 @@ namespace AvalonUgh.Code
 				Height = this.ContentExtendedHeight
 			}.AttachTo(this.Container);
 
-			
+
 			this.SnowContainer = new Canvas
 			{
 				Width = this.ContentExtendedWidth,
@@ -274,16 +274,16 @@ namespace AvalonUgh.Code
 			this.Level.KnownRocks.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 			this.Level.KnownRocks.WithEvents(this.LogicForInfoLabel);
 
-		
+
 			this.Level.KnownDinos.AttachTo(this.Entities);
 
-			
-			
+
+
 
 			this.Level.KnownTryoperus.AttachTo(this.Entities);
 			this.Level.KnownTryoperus.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 
-		
+
 
 
 			this.Level.KnownStones.ForEachNewOrExistingItem(
@@ -369,7 +369,7 @@ namespace AvalonUgh.Code
 
 			var CurrentSnow = new Snow(
 				this
-				
+
 			).AttachContainerTo(this.SnowContainer);
 
 			if (!Level.AttributeSnow.BooleanValue)
@@ -576,7 +576,7 @@ namespace AvalonUgh.Code
 					i.Text =
 						"x: " + value.X + "\n" +
 						"y: " + value.Y;
-		
+
 
 					i.MoveTo(
 						value.X,
@@ -584,7 +584,7 @@ namespace AvalonUgh.Code
 					);
 				};
 
-			
+
 			value.LocationChanged += UpdateLocation;
 
 			return delegate
@@ -592,6 +592,38 @@ namespace AvalonUgh.Code
 				value.LocationChanged -= UpdateLocation;
 				i.Orphanize();
 			};
+		}
+
+		public event Action Memory_ScoreChanged;
+		int InternalMemory_Score;
+		public int Memory_Score
+		{
+			get
+			{
+				return InternalMemory_Score;
+			}
+			set
+			{
+				InternalMemory_Score = value;
+				if (Memory_ScoreChanged != null)
+					Memory_ScoreChanged();
+			}
+		}
+
+		public event Action Memory_ScoreMultiplierChanged;
+		int InternalMemory_ScoreMultiplier = 1;
+		public int Memory_ScoreMultiplier
+		{
+			get
+			{
+				return InternalMemory_ScoreMultiplier;
+			}
+			set
+			{
+				InternalMemory_ScoreMultiplier = value;
+				if (Memory_ScoreMultiplierChanged != null)
+					Memory_ScoreMultiplierChanged();
+			}
 		}
 	}
 }
