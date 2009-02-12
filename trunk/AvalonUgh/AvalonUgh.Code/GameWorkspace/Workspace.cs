@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using AvalonUgh.Assets.Avalon;
 using AvalonUgh.Code.Dialogs;
 using AvalonUgh.Code.Editor;
+using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Input;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
-using AvalonUgh.Code.Editor.Sprites;
-using System.Diagnostics;
-using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -378,6 +378,26 @@ namespace AvalonUgh.Code.GameWorkspace
 			// players contain all locals and external players
 			this.LocalIdentity.Locals.AttachTo(this.Players);
 
+			this.Ports.ForEachNewOrExistingItem(
+				p =>
+				{
+					p.Loaded +=
+						delegate
+						{
+							p.Level.KnownPassengers.ForEachNewOrExistingItem(
+								k =>
+								{
+									k.CurrentPassengerVehicleChanged +=
+										delegate
+										{
+											SoundBoard.Default.enter();
+										};
+								}
+							);
+						};
+				}
+			);
+
 			this.Players.ForEachNewOrExistingItem(
 				NewPlayer =>
 				{
@@ -411,7 +431,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					NewPlayer.Actor.CurrentVehicleChanged +=
 						delegate
 						{
-							(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
+							SoundBoard.Default.enter();
 						};
 
 
