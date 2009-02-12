@@ -121,9 +121,9 @@ namespace AvalonUgh.Code
 			//}.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
 
 			f(33, "00");
-			f(114, "000000");
+			HighScoreTextBox = f(114, "000000");
 			f(169, "00");
-			ScoreTextBox = f(232, "0000");
+			CurrentFareScoreTextBox = f(232, "0000");
 			f(305, "00");
 
 
@@ -137,23 +137,41 @@ namespace AvalonUgh.Code
             // E0EC98
         }
 
-		public readonly DialogTextBox ScoreTextBox;
-
-		public int InternalScore;
-		public int Score
+		public readonly DialogTextBox CurrentFareScoreTextBox;
+		public int InternalCurrentFareScore;
+		public int CurrentFareScore
 		{
 			set
 			{
-				InternalScore = value;
+				InternalCurrentFareScore = value;
 
 				var x = value % 10000;
 				var s = x.ToString();
 
-				ScoreTextBox.Text = new string('0', 4 - s.Length) + s;
+				CurrentFareScoreTextBox.Text = new string('0', 4 - s.Length) + s;
 			}
 			get
 			{
-				return InternalScore;
+				return InternalCurrentFareScore;
+			}
+		}
+
+		public readonly DialogTextBox HighScoreTextBox;
+		public int InternalHighScore;
+		public int HighScore
+		{
+			set
+			{
+				InternalHighScore = value;
+
+				var x = value % 1000000;
+				var s = x.ToString();
+
+				HighScoreTextBox.Text = new string('0', 6 - s.Length) + s;
+			}
+			get
+			{
+				return InternalHighScore;
 			}
 		}
      

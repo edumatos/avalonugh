@@ -14,6 +14,7 @@ using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Avalon;
+using System.ComponentModel;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
@@ -107,22 +108,24 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
-		public event Action CurrentPassengerChanged;
-		Actor InternalCurrentPassenger;
-		public Actor CurrentPassenger
-		{
-			get
-			{
-				return InternalCurrentPassenger;
-			}
-			set
-			{
-				InternalCurrentPassenger = value;
-				if (CurrentPassengerChanged != null)
-					CurrentPassengerChanged();
+		//public event Action CurrentPassengerChanged;
 
-			}
-		}
+		public readonly BindingList<Actor> CurrentPassengers = new BindingList<Actor>();
+
+		//public Actor CurrentPassenger
+		//{
+		//    get
+		//    {
+		//        return InternalCurrentPassenger;
+		//    }
+		//    set
+		//    {
+		//        InternalCurrentPassenger = value;
+		//        if (CurrentPassengerChanged != null)
+		//            CurrentPassengerChanged();
+
+		//    }
+		//}
 
 		public bool ExitIsBlocked;
 
