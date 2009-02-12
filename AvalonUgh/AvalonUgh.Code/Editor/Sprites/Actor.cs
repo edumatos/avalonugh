@@ -709,6 +709,20 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public Vehicle CurrentPassengerVehicle;
+		public event Action CurrentPassengerVehicleChanged;
+		Vehicle InternalCurrentPassengerVehicle;
+		public Vehicle CurrentPassengerVehicle
+		{
+			get
+			{
+				return InternalCurrentPassengerVehicle;
+			}
+			set
+			{
+				InternalCurrentPassengerVehicle = value;
+				if (CurrentPassengerVehicleChanged != null)
+					CurrentPassengerVehicleChanged();
+			}
+		}
 	}
 }

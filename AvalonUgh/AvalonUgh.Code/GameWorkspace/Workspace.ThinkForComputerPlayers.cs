@@ -299,23 +299,41 @@ namespace AvalonUgh.Code.GameWorkspace
 					{
 						// passanger is ready to come out
 
+						var ThePlatform = view.Level.ToPlatformSnapshots().Single(k => k.Cave == NextPassengerToWalkOutOfTheCave.CurrentCave);
 
-						if (KnownPassengers.First() == NextPassengerToWalkOutOfTheCave)
+						if (Enumerable.Any(
+								from AnotherPassanger in KnownPassengers
+								where AnotherPassanger.CurrentCave == null
+								where AnotherPassanger.CurrentPassengerVehicle == null
+								where AnotherPassanger.ToObstacle().Intersects(ThePlatform.IncludedSpace)
+								select AnotherPassanger
+							))
 						{
-							// we dont have to wait for the previous passanger to stand still
-							AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
-							NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
-							NextPassengerToWalkOutOfTheCave.Memory_CanBeHitByVehicle = true;
+							// there is someone already waiting
+
+							// we will stay indoors for some time and check again
+							NextPassengerToWalkOutOfTheCave.Memory_LogicState -= 10;
 						}
 						else
 						{
-							var PreviousPassanger = KnownPassengers.Previous(k => k == NextPassengerToWalkOutOfTheCave);
 
-							if (PreviousPassanger.Memory_FirstWait)
+							if (KnownPassengers.First() == NextPassengerToWalkOutOfTheCave)
 							{
+								// we dont have to wait for the previous passanger to stand still
 								AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
 								NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
 								NextPassengerToWalkOutOfTheCave.Memory_CanBeHitByVehicle = true;
+							}
+							else
+							{
+								var PreviousPassanger = KnownPassengers.Previous(k => k == NextPassengerToWalkOutOfTheCave);
+
+								if (PreviousPassanger.Memory_FirstWait)
+								{
+									AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
+									NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
+									NextPassengerToWalkOutOfTheCave.Memory_CanBeHitByVehicle = true;
+								}
 							}
 						}
 					}
