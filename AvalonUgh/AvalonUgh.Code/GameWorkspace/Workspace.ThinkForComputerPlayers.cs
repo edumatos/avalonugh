@@ -57,8 +57,6 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			var Passengers = Enumerable.ToArray(
 				from Passenger in KnownPassengers
-				// if we dont know where to go we wont even talk to taxi
-				where Passenger.Memory_Route_NextCave > -1
 				where !Passenger.Memory_CaveAction
 				where Passenger.CurrentCave == null
 				where Passenger.VelocityY == 0
@@ -67,6 +65,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				where Platform != null
 				let NearestPickup = Enumerable.FirstOrDefault(
 					from k in PickupVehicles
+					where Passenger.Memory_Route_NextCave >= 0
 					where k.VehicleObstacle.Intersects(Platform.IncludedSpace)
 					orderby k.VehicleObstacle.X - PassengerObstacle.X
 					select k
@@ -77,7 +76,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 
-			
+
 
 			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle == null))
 			{
@@ -270,7 +269,8 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			// simulate cave life
 
-			var NextPassengerToWalkOutOfTheCave = KnownPassengers.FirstOrDefault(k => k.CurrentCave != null);
+			var NextPassengerToWalkOutOfTheCave = KnownPassengers.Where(k => k.Memory_Route_NextCave >= 0).FirstOrDefault(k => k.CurrentCave != null);
+			// if the dude doesnt have anywhere to go anymore, it stays inside the cave
 
 			if (NextPassengerToWalkOutOfTheCave != null)
 			{
@@ -284,6 +284,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					if (NextPassengerToWalkOutOfTheCave.Memory_LogicState == Actor.Memory_LogicState_CaveLifeEnd)
 					{
 						// passanger is ready to come out
+
 
 						if (KnownPassengers.First() == NextPassengerToWalkOutOfTheCave)
 						{
