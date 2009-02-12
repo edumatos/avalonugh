@@ -68,33 +68,22 @@ namespace AvalonUgh.Comparision.Server
 
 			Console.WriteLine("</p>");
 
+
+		
 			Console.WriteLine("<center>");
 
-			Console.WriteLine("<table border='0' cellspacing='0' cellpadding='0'>");
-			Console.WriteLine(@"
-		<tr>
-			<td style='width: 27px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_left.png' border='0' style='width: 27px; height: 53px;' /></td>
-			<td style='width: 840px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_span.png' border='0' style='width: 840px; height: 53px;' /></td>
-			<td style='width: 27px; height: 53px;'><img src='assets/AvalonUgh.Comparision/layout_top_right.png' border='0' style='width: 27px; height: 53px;' /></td>
-		</tr>
-			");
+			var i = new FlashContainer();
 
-			Console.WriteLine("<tr><td><img src='assets/AvalonUgh.Comparision/layout_middle_left.png' border='0' style='width: 27px; height: 400px;' /></td><td>");
+			i.EmbedContent.URL = "http://nonoba.com/zproxy/avalon-ugh/embed";
+			i.ContentWidth = 840;
+			i.ContentHeight = 400;
 
-			
-			Console.WriteLine("<object width='840' height='400'><param name='movie' value='http://nonoba.com/zproxy/avalon-ugh/embed'></param><param name='allowScriptAccess' value='always' ></param><param name='allowNetworking' value='all' ></param><embed src='http://nonoba.com/zproxy/avalon-ugh/embed' allowNetworking='all' allowScriptAccess='always' type='application/x-shockwave-flash' width='840' height='400'></embed></object>");
+			//i.EmbedContent.URL = "file:///C:/work/code.google/avalonugh/AvalonUgh/Public/LabsFlash.swf";
+		
+			Console.WriteLine(i.Container.ToString());
 
-			Console.WriteLine("</td><td><img src='assets/AvalonUgh.Comparision/layout_middle_right.png' border='0' style='width: 27px; height: 400px;' /></td></tr>");
 
-			Console.WriteLine(@"
-		<tr>
-			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_left.png' border='0' style='width: 27px; height: 53px;' /></td>
-			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_span.png' border='0' style='width: 840px; height: 53px;' /></td>
-			<td><img src='assets/AvalonUgh.Comparision/layout_bottom_right.png' border='0' style='width: 27px; height: 53px;' /></td>
-		</tr>
-			");
-			
-			Console.WriteLine("</table>");
+
 
 			Console.WriteLine("</center>");
 
