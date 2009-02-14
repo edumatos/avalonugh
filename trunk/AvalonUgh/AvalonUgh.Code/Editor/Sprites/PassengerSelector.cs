@@ -59,6 +59,10 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				Func<Actor> Constructor = () => new Actor.man0(Level.Zoom);
 
+				var g = Constructor();
+
+				g.MoveTo(x, y);
+				g.Container.Opacity = 0.5;
 
 				{
 					// the stone next to a cave has a window
@@ -75,14 +79,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 						else if (trigger is Actor.woman0)
 							Constructor = () => new Actor.man1(Level.Zoom);
 
+						if (trigger.StartPosition != null)
+							g.MoveTo(trigger.StartPosition.X, trigger.StartPosition.Y);
+
 						Level.KnownPassengers.Remove(trigger);
 					}
 				}
 
-				var g = Constructor();
-
-				g.MoveTo(x, y);
-				g.Container.Opacity = 0.5;
+				
 				//g.Animation = Tryoperus.AnimationEnum.Left_Hit;
 
 
@@ -109,12 +113,14 @@ namespace AvalonUgh.Code.Editor.Sprites
 				var gx = source[6];
 				var gy = source[7];
 
-				var g = new Actor.man0(level.Zoom);
+				var ActorType = source.Value[9];
+
+				var g = Actor.CreateFromType(ActorType, level.Zoom);
 
 				g.MoveTo(gx, gy);
 
 
-				var a = new Actor.man0(level.Zoom);
+				var a = Actor.CreateFromType(ActorType, level.Zoom);
 
 				a.AccelerationHandicap = 0.6;
 				a.MaxVelocityX = 1;

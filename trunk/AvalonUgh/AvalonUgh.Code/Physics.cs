@@ -7,6 +7,8 @@ using ScriptCoreLib.Shared.Lambda;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Editor;
+using AvalonUgh.Assets.Shared;
+using System.Windows.Media;
 
 namespace AvalonUgh.Code
 {
@@ -45,16 +47,19 @@ namespace AvalonUgh.Code
 
 		public void Apply()
 		{
-			this.Level.KnownVehicles.ForEach(Apply);
-			this.Level.KnownRocks.ForEach(Apply);
-			this.Level.KnownActors.ForEach(Apply);
-			this.Level.KnownTryoperus.ForEach(Apply);
+			var Obstacles = this.Level.ToObstacles();
+
+			foreach (var i in this.Level.PhysicsObjects)
+			{
+				Apply(i, Obstacles);
+			}
+
 
 
 		}
 
 
-		void Apply(ISupportsPhysics twin)
+		void Apply(ISupportsPhysics twin, IEnumerable<Obstacle> Obstacles)
 		{
 			if (twin.PhysicsDisabled)
 				return;
@@ -102,7 +107,7 @@ namespace AvalonUgh.Code
 			var vehX = twin.ToObstacle(newX, twin.Y);
 			var vehY = twin.ToObstacle(twin.X, newY);
 
-			var Obstacles = this.Level.ToObstacles();
+
 
 			var veh = twin as Vehicle;
 			if (veh != null)
@@ -349,18 +354,66 @@ namespace AvalonUgh.Code
 				twin.LastWaterCollisionVelocity = 0;
 			}
 
-			twin.LastVelocity = twin.GetVelocity();
 
+			if (twin.LastVelocity != 0)
+				if (twin.VelocityX == 0)
+					if (twin.VelocityY == 0)
+					{
+
+						if (veh != null)
+						{
+							ApplyBounceRule(veh);
+						}
+
+
+
+					}
+
+			twin.LastVelocity = twin.GetVelocity();
 			if (twin.VelocityX == 0)
 				if (twin.VelocityY == 0)
+				{
 					return;
-
+				}
 
 
 			newX = twin.X + twin.VelocityX;
 			newY = twin.Y + twin.VelocityY;
 
 			twin.MoveTo(newX, newY);
+
+		}
+
+		public void ApplyBounceRule(Vehicle veh)
+		{
+			var a = new Obstacle
+			{
+				Left = veh.X - PrimitiveTile.Width * Level.Zoom,
+				Top = veh.Y + PrimitiveTile.Heigth * Level.Zoom,
+				Width = PrimitiveTile.Width * Level.Zoom,
+				Height = PrimitiveTile.Heigth * Level.Zoom
+			};
+
+			var b = new Obstacle
+			{
+				Left = veh.X,
+				Top = veh.Y + PrimitiveTile.Heigth * Level.Zoom,
+				Width = PrimitiveTile.Width * Level.Zoom,
+				Height = PrimitiveTile.Heigth * Level.Zoom
+			};
+
+			var a_Platform = Level.KnownLandingTiles.FirstOrDefault(k => k.ToObstacle().Intersects(a));
+			var b_Platform = Level.KnownLandingTiles.FirstOrDefault(k => k.ToObstacle().Intersects(b));
+
+			if (a_Platform != null)
+				if (b_Platform != null)
+					return;
+
+
+
+			veh.VelocityY -= 0.6 * Level.Zoom;
+
+
 
 		}
 

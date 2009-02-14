@@ -104,9 +104,11 @@ namespace AvalonUgh.Code.Editor
 				delegate
 				{
 					if (Buttons.Count < this.CurrentRoute.Elements.Length)
-						Buttons.Add(
-							new DestinationButton { SignValue = 1 }
-						);
+					{
+						this.CurrentRoute.Elements[Buttons.Count] = 1;
+
+						new DestinationButton().AddTo(Buttons).PlatformIndex = 0;
+					}
 				};
 
 			Buttons.WithEvents(
@@ -164,7 +166,11 @@ namespace AvalonUgh.Code.Editor
 
 							var i = Buttons.IndexOf(NewButton);
 
-							this.CurrentRoute.Elements[i] = (uint)(NewButton.PlatformIndex + 1);
+							var value = (uint)(NewButton.PlatformIndex + 1);
+
+
+							this.CurrentRoute.Elements[i] = value;
+
 						};
 
 					NewButton.AttachContainerTo(this.OverlayContainer);

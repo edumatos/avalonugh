@@ -23,6 +23,25 @@ namespace AvalonUgh.Code
 	{
 		public int AvailableFare;
 
+		public virtual int GetActorType()
+		{
+			return -1;
+		}
+
+		public static Actor CreateFromType(int Type, int Zoom)
+		{
+			if (Type == 0)
+				return new Actor.man0(Zoom);
+
+			if (Type == 1)
+				return new Actor.woman0(Zoom);
+
+			if (Type == 2)
+				return new Actor.man1(Zoom);
+
+			throw new NotSupportedException();
+		}
+
 		public PlayerInput DefaultPlayerInput;
 
 		public Actor StartPosition;

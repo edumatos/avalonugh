@@ -5,13 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Threading;
+using AvalonUgh.Assets.Avalon;
 using AvalonUgh.Assets.Shared;
 using AvalonUgh.Code.Editor;
-using AvalonUgh.Code.GameWorkspace.PassangerAIDomain;
 using ScriptCoreLib;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
-using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -59,6 +58,9 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			var KnownPassengers = view.Level.KnownPassengers.ToArray();
 
+			if (KnownPassengers.Length == 0)
+				return;
+
 			var Passengers = Enumerable.ToArray(
 				from Passenger in KnownPassengers
 				where !Passenger.Memory_CaveAction
@@ -90,6 +92,11 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					if (Math.Abs(i.PassengerObstacle.X - i.Platform.Cave.X) <= view.Level.Zoom)
 					{
+						i.Passenger.Memory_Route.Pop();
+
+						if (i.Passenger.Memory_Route_NextPlatformIndex < 0)
+							view.Level.AttributeHeadCount.Value = (view.Level.AttributeHeadCount.Value - 1).Max(0);
+
 						i.Passenger.CurrentCave = i.Platform.Cave;
 						i.Passenger.Memory_CaveAction = false;
 						i.Passenger.PlayAnimation(Actor.AnimationEnum.CaveEnter, null);
@@ -256,7 +263,7 @@ namespace AvalonUgh.Code.GameWorkspace
 					var CurrentPlatform = view.Level.ToPlatformSnapshots().AtModulus(i.Passenger.Memory_Route_NextPlatformIndex);
 					if (CurrentPlatform.IncludedSpace.Intersects(CurrentPassengerVehicle))
 					{
-						i.Passenger.Memory_Route.Pop();
+
 
 						i.Passenger.Animation = Actor.AnimationEnum.Idle;
 						i.Passenger.MoveTo(
@@ -318,7 +325,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							if (KnownPassengers.First() == NextPassengerToWalkOutOfTheCave)
 							{
-								// we dont have to wait for the previous passanger to stand still
+								//we dont have to wait for the previous passanger to stand still
 								AIDirector.ActorExitCave(NextPassengerToWalkOutOfTheCave);
 								NextPassengerToWalkOutOfTheCave.Memory_LogicState = Actor.Memory_LogicState_Waiting;
 								NextPassengerToWalkOutOfTheCave.Memory_CanBeHitByVehicle = true;

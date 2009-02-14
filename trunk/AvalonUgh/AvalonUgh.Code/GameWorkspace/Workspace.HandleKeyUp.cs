@@ -175,6 +175,12 @@ namespace AvalonUgh.Code.GameWorkspace
 			}
 
 
+			if (args.Key == Key.V)
+			{
+				if (this.PrimaryMission.Level != null)
+					this.PrimaryMission.Level.AttributeHeadCount.Value = 0;
+			}
+
 			if (args.Key == Key.P)
 			{
 				this.Sync_SetPause(true, "you");
@@ -227,11 +233,11 @@ namespace AvalonUgh.Code.GameWorkspace
 										var p = this.Lobby.GetRandomEntrypoint((x, y) => new { x, y });
 
 										this.Sync_TeleportTo(
-											this.LocalIdentity.NetworkNumber, 
-											this.Lobby.PortIdentity, 
+											this.LocalIdentity.NetworkNumber,
+											this.Lobby.PortIdentity,
 											k.IdentityLocal,
-											p.x, 
-											p.y, 
+											p.x,
+											p.y,
 											0, 0
 										);
 									}

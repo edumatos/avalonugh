@@ -247,7 +247,7 @@ namespace AvalonUgh.Code
 			set
 			{
 				InternalLevelTime = value.Max(0).Min(32);
-				LevelTimeRectangle.Width = value;
+				LevelTimeRectangle.Width = value * Arguments.Zoom;
 			}
 			get
 			{

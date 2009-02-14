@@ -1,6 +1,7 @@
 # generated map
 # text: Introducing platforms
 # code: CAVITY
+# nextcode: FIRSTCOMMUNION
 # autoscroll: 0
 # water: 32
 # water-rise: 0

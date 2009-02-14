@@ -39,6 +39,7 @@ namespace AvalonUgh.Code.Editor
 				WriteAttribute.AsParamsAction()(
 					AttributeText,
 					AttributeCode,
+					AttributeNextCode,
 					AttributeAutoscroll,
 					AttributeWater,
 					AttributeWaterRise,
@@ -265,6 +266,7 @@ namespace AvalonUgh.Code.Editor
 			StartPosition.Y = a[7];
 
 			a.Value[8] = (int)i.Memory_Route.Value;
+			a.Value[9] = (int)i.GetActorType();
 
 			return a;
 		}

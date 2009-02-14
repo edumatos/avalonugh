@@ -166,7 +166,6 @@
     <Compile Include="GameWorkspace\Workspace.Mission.ReinitializeStatusbar.cs" />
     <Compile Include="GameWorkspace\Workspace.AllPlayers.cs" />
     <Compile Include="GameWorkspace\Workspace.InitializeSplashCredits.cs" />
-    <Compile Include="GameWorkspace\PassangerAIDomain\PassangerAI.cs" />
     <Compile Include="Editor\PlatformSnapshot.cs" />
     <Compile Include="GameWorkspace\Workspace.ThinkForComputerPlayers.cs" />
     <Compile Include="GameWorkspace\Workspace.Lobby.cs" />
