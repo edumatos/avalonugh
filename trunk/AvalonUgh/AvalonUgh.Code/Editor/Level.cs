@@ -549,44 +549,44 @@ namespace AvalonUgh.Code.Editor
 
 
 
-		Func<IEnumerable<ISupportsPhysics>> ToPhysicsObjects_Cache;
-		public IEnumerable<ISupportsPhysics> ToPhysicsObjects()
-		{
-			// we will recalculate tile obstacles only when they actually change
-			if (ToPhysicsObjects_Cache == null)
-			{
-				var Source =
-					new IBindingList[]
-					{
-						KnownVehicles,
-						KnownRocks,
-						KnownActors,
-						KnownTryoperus,
-					};
+		//Func<IEnumerable<ISupportsPhysics>> ToPhysicsObjects_Cache;
+		//public IEnumerable<ISupportsPhysics> ToPhysicsObjects()
+		//{
+		//    // we will recalculate tile obstacles only when they actually change
+		//    if (ToPhysicsObjects_Cache == null)
+		//    {
+		//        var Source =
+		//            new IBindingList[]
+		//            {
+		//                KnownVehicles,
+		//                KnownRocks,
+		//                KnownActors,
+		//                KnownTryoperus,
+		//            };
 
-				ToPhysicsObjects_Cache =
-					Source.WhereListChanged(
-						delegate
-						{
-							Console.WriteLine("Level.ToPhysicsObjects");
+		//        ToPhysicsObjects_Cache =
+		//            Source.WhereListChanged(
+		//                delegate
+		//                {
+		//                    Console.WriteLine("Level.ToPhysicsObjects");
 
-							var a = new List<ISupportsPhysics>();
+		//                    var a = new List<ISupportsPhysics>();
 
-							foreach (var i in Source)
-							{
-								foreach (var j in i)
-								{
-									a.Add((ISupportsPhysics)j);
-								}
-							}
+		//                    foreach (var i in Source)
+		//                    {
+		//                        foreach (var j in i)
+		//                        {
+		//                            a.Add((ISupportsPhysics)j);
+		//                        }
+		//                    }
 
-							return a.AsEnumerable();
-						}
-					);
-			}
+		//                    return a.AsEnumerable();
+		//                }
+		//            );
+		//    }
 
-			return ToPhysicsObjects_Cache();
-		}
+		//    return ToPhysicsObjects_Cache();
+		//}
 
 
 

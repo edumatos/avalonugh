@@ -49,10 +49,12 @@ namespace AvalonUgh.Code
 		{
 			var Obstacles = this.Level.ToObstacles();
 
-			foreach (var i in this.Level.ToPhysicsObjects())
-			{
-				Apply(i, Obstacles);
-			}
+			this.Level.KnownVehicles.ForEach(k => Apply(k, Obstacles));
+			this.Level.KnownRocks.ForEach(k => Apply(k, Obstacles));
+			this.Level.KnownActors.ForEach(k => Apply(k, Obstacles));
+			this.Level.KnownTryoperus.ForEach(k => Apply(k, Obstacles));
+
+
 
 
 
@@ -424,7 +426,7 @@ namespace AvalonUgh.Code
 
 			veh.VelocityY -= 0.6 * Level.Zoom;
 
-			
+
 
 
 
