@@ -259,6 +259,7 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownSigns.AttachTo(this.Entities);
 			this.Level.KnownTrees.AttachTo(this.Entities);
+			this.Level.KnownBirds.AttachTo(this.Entities);
 
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownActors.AttachTo(k => k.StartPosition, this.StartPositionsContainer);

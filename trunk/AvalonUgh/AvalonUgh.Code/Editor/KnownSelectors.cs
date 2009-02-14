@@ -25,6 +25,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly Sprites.SignSelector Sign = new Sprites.SignSelector();
 		public readonly Sprites.DinoSelector Dino = new Sprites.DinoSelector();
 		public readonly Sprites.TreeSelector Tree = new Sprites.TreeSelector();
+		public readonly Sprites.BirdSelector Bird = new Sprites.BirdSelector();
 
 		public readonly Tiles.StoneSelector Stone = new Tiles.StoneSelector();
 		public readonly Tiles.RidgeSelector Ridge = new Tiles.RidgeSelector();
@@ -55,7 +56,7 @@ namespace AvalonUgh.Code.Editor
 					Arrow,
 
 					Tree,
-					
+					Bird,
 				
 					Rock,
 					Vehicle,
@@ -91,7 +92,7 @@ namespace AvalonUgh.Code.Editor
 				{ Key.D2, f(this.Ridge, this.RidgeTree) },
 				{ Key.D3, f(this.Platform, this.Bridge) },
 				{ Key.D4, f(this.Sign, this.Tree, this.Rock) },
-				{ Key.D5, f(this.Dino, this.Tryoperus) },
+				{ Key.D5, f(this.Dino, this.Tryoperus, this.Bird) },
 				{ Key.D6, f(this.WaterLevel, this.Arrow) },
 			};
 		}

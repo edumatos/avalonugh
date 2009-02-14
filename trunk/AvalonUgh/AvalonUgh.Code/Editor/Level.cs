@@ -65,6 +65,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Fence> KnownFences = new BindingList<Fence>();
 		public readonly BindingList<Platform> KnownPlatforms = new BindingList<Platform>();
 		public readonly BindingList<Bridge> KnownBridges = new BindingList<Bridge>();
+		public readonly BindingList<Bird> KnownBirds = new BindingList<Bird>();
 
 		public readonly BindingList<Actor> KnownPassengers = new BindingList<Actor>();
 		public readonly BindingList<Actor> KnownActors = new BindingList<Actor>();
