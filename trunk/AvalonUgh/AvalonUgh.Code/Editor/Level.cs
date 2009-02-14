@@ -152,6 +152,7 @@ namespace AvalonUgh.Code.Editor
 		{
 			//if (Selectors == null)
 			//    throw new ArgumentNullException();
+			this.LevelTime = 32;
 
 			this.KnownPassengers.AttachTo(this.KnownActors);
 
@@ -561,7 +562,7 @@ namespace AvalonUgh.Code.Editor
 							Console.WriteLine("Level.ToPlatformSnapshots");
 
 							// clear any thought shapes
-							ContentInfoColoredShapes.ToArray().ForEach(k => ContentInfoColoredShapes.Remove(k));
+							ContentInfoColoredShapes.RemoveAll();
 
 							// regardless of us returning that snapshot
 							// it may have already be rendered
@@ -801,12 +802,12 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly BindingList<Rectangle> ContentInfoColoredShapes = new BindingList<Rectangle>();
 
-		public void AddToContentInfoColoredShapes(Obstacle o, Brush b)
+		public Rectangle AddToContentInfoColoredShapes(Obstacle o, Brush b)
 		{
-			AddToContentInfoColoredShapes(o, b, 0.4);
+			return AddToContentInfoColoredShapes(o, b, 0.4);
 		}
 
-		public void AddToContentInfoColoredShapes(Obstacle o, Brush b, double Opacity)
+		public Rectangle AddToContentInfoColoredShapes(Obstacle o, Brush b, double Opacity)
 		{
 			var r = new Rectangle
 			{
@@ -820,7 +821,25 @@ namespace AvalonUgh.Code.Editor
 			);
 
 			r.AddTo(this.ContentInfoColoredShapes);
+
+			return r;
 		}
 
+
+		int InternalLevelTime;
+		public event Action LevelTimeChanged;
+		public int LevelTime
+		{
+			get
+			{
+				return InternalLevelTime;
+			}
+			set
+			{
+				InternalLevelTime = value;
+				if (LevelTimeChanged != null)
+					LevelTimeChanged();
+			}
+		}
 	}
 }

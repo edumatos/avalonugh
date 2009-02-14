@@ -103,7 +103,6 @@ namespace AvalonUgh.Code
 
 		public bool EnterVehicleBlocked;
 
-		//public int FramesWaitedForNextAction;
 
 		public Cave CurrentCave;
 

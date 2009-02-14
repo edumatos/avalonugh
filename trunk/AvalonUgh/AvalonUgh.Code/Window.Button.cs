@@ -57,6 +57,8 @@ namespace AvalonUgh.Code
 			}
 
 			public event Action Click;
+			public event Action MouseEnter;
+			public event Action MouseLeave;
 
 			public Button(Image ButtonImage)
 				: this(ButtonImage, 92, 16)
@@ -89,7 +91,7 @@ namespace AvalonUgh.Code
 					delegate
 					{
 						this.ButtonText.Width = (this.ClientWidth - this.ClientHeight - 1).Max(0);
-						this.ButtonText.Height = this.ClientHeight - 4;
+						this.ButtonText.Height = (this.ClientHeight - 4).Max(0);
 					};
 
 				this.ButtonText.MoveTo(ImageSize + 4, 2).AttachTo(this.ContentContainer);
@@ -110,13 +112,22 @@ namespace AvalonUgh.Code
 						this.ThreeD_Top.Fill = Brushes.LightGreen;
 
 						this.ButtonText.Foreground = Brushes.Black;
+
+
+						if (this.MouseLeave != null)
+							this.MouseLeave();
+
 					};
 
 				this.ColorOverlay.Element.MouseEnter +=
 					delegate
 					{
-
+						
 						this.ButtonText.Foreground = Brushes.Yellow;
+
+						if (this.MouseEnter != null)
+							this.MouseEnter();
+
 					};
 
 				this.ColorOverlay.Element.MouseLeftButtonDown +=

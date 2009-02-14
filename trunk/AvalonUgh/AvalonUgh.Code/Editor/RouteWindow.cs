@@ -8,6 +8,9 @@ using AvalonUgh.Assets.Avalon;
 using AvalonUgh.Assets.Shared;
 using ScriptCoreLib.Shared.Lambda;
 using System.ComponentModel;
+using System.Windows.Shapes;
+using System.Windows.Media;
+using AvalonUgh.Code.Editor.Tiles;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -17,7 +20,7 @@ namespace AvalonUgh.Code.Editor
 		[Script]
 		public class DestinationButton : Window.Button
 		{
-			int InternalSignValue = -2;
+			int InternalSignValue = -1;
 			public int SignValue
 			{
 				get
@@ -55,14 +58,35 @@ namespace AvalonUgh.Code.Editor
 
 				}
 			}
+
+			public event Action PlatformIndexChanged;
+			int InternalPlatformIndex;
+			public int PlatformIndex
+			{
+				get
+				{
+					return InternalPlatformIndex;
+				}
+				set
+				{
+					InternalPlatformIndex = value;
+					if (PlatformIndexChanged != null)
+						PlatformIndexChanged();
+				}
+			}
+
 			public DestinationButton()
 				: base(null, PrimitiveTile.Width * 2, PrimitiveTile.Heigth * 2)
 			{
 				this.Text = "";
+
+
 			}
 		}
 
 		public readonly BindingList<DestinationButton> Buttons = new BindingList<DestinationButton>();
+
+		public Level CurrentLevel;
 
 		public RouteWindow()
 		{
@@ -70,46 +94,77 @@ namespace AvalonUgh.Code.Editor
 			this.ClientWidth = 200;
 			this.ClientHeight = PrimitiveTile.Heigth * 2 + 10;
 
+			var AddStopButton = new Window.Button(null, PrimitiveTile.Width * 2, PrimitiveTile.Heigth * 2)
+			{
+				Text = ""
+			};
+
+			AddStopButton.AttachContainerTo(this.OverlayContainer);
+			AddStopButton.Click +=
+				delegate
+				{
+					if (Buttons.Count < this.CurrentRoute.Elements.Length)
+						Buttons.Add(
+							new DestinationButton { SignValue = 1 }
+						);
+				};
+
 			Buttons.WithEvents(
 				NewButton =>
 				{
+					var SelectedCaves = new BindingList<Cave>();
+
+					SelectedCaves.WithEvents(
+						TargetCave =>
+						{
+							var TargetCaveRect = CurrentLevel.AddToContentInfoColoredShapes(
+								TargetCave.ToObstacle(), Brushes.Yellow
+							);
+
+							return delegate
+							{
+								this.CurrentLevel.ContentInfoColoredShapes.Remove(TargetCaveRect);
+							};
+						}
+					);
+
+					NewButton.MouseEnter +=
+						delegate
+						{
+							SelectedCaves.Add(
+								this.CurrentLevel.ToPlatformSnapshots().AtModulus(NewButton.PlatformIndex).Cave
+							);
+
+						};
+
+					NewButton.MouseLeave +=
+						delegate
+						{
+							SelectedCaves.RemoveAll();
+						};
+
+					NewButton.PlatformIndexChanged +=
+						delegate
+						{
+							var p = this.CurrentLevel.ToPlatformSnapshots().AtModulus(NewButton.PlatformIndex);
+
+							NewButton.SignValue = p.CaveSigns.First().Value;
+						};
+
 					// add number increment rule
 					NewButton.Click +=
 						delegate
 						{
-							NewButton.SignValue++;
+							NewButton.PlatformIndex = (NewButton.PlatformIndex + 1) % this.CurrentLevel.ToPlatformSnapshots().Count();
 
-							if (NewButton.SignValue == 6)
-							{
-								NewButton.SignValue = -1;
+							var p = this.CurrentLevel.ToPlatformSnapshots().AtModulus(NewButton.PlatformIndex);
 
-								// remove all following buttons
-								var i = Buttons.IndexOf(NewButton);
+							SelectedCaves.RemoveAll();
+							SelectedCaves.Add(p.Cave);
 
-								var ButtonsToBeDeleted = Buttons.Select((k, j) => new { k, j }).Where(k => k.j > i).Select(k => k.k).ToArray();
+							var i = Buttons.IndexOf(NewButton);
 
-								foreach (var v in ButtonsToBeDeleted)
-								{
-									Buttons.Remove(v);
-								}
-
-								for (int j = i; j < InternalCurrentRoute.Elements.Length; j++)
-								{
-									InternalCurrentRoute.Elements[j] = 0;
-								}
-							}
-							else
-							{
-								if (Buttons.Count < 10)
-									if (Buttons.Last() == NewButton)
-									{
-										new DestinationButton { SignValue = -1 }.AddTo(Buttons);
-									}
-
-								this.InternalCurrentRoute.Elements[Buttons.IndexOf(NewButton)] = (uint)(NewButton.SignValue + 1);
-							}
-
-
+							this.CurrentRoute.Elements[i] = (uint)(NewButton.PlatformIndex + 1);
 						};
 
 					NewButton.AttachContainerTo(this.OverlayContainer);
@@ -119,12 +174,50 @@ namespace AvalonUgh.Code.Editor
 					);
 
 
-					this.ClientWidth = Buttons.Count * NewButton.Width;
+					this.ClientWidth = (Buttons.Count + 1) * NewButton.Width + Padding;
+					AddStopButton.MoveContainerTo((Buttons.Count) * NewButton.Width + Padding, 0);
+
+					#region RemoveNewButton
+					var RemoveNewButton = new Window.Button
+						{
+							BackgroundColor = Colors.Red,
+							ClientWidth = 6,
+							ClientHeight = 6,
+							Text = ""
+						}.AttachContainerTo(this.OverlayContainer);
+
+					RemoveNewButton.MoveContainerTo(
+						Buttons.IndexOf(NewButton) * NewButton.Width + NewButton.Width - RemoveNewButton.Width, 0
+					);
+
+					RemoveNewButton.Click +=
+						delegate
+						{
+							// remove all following buttons
+							var i = Buttons.IndexOf(NewButton);
+
+							var ButtonsToBeDeleted = Buttons.Select((k, j) => new { k, j }).Where(k => k.j >= i).Select(k => k.k).ToArray();
+
+							foreach (var v in ButtonsToBeDeleted)
+							{
+								Buttons.Remove(v);
+							}
+
+							for (int j = i; j < InternalCurrentRoute.Elements.Length; j++)
+							{
+								InternalCurrentRoute.Elements[j] = 0;
+							}
+						};
+
+					#endregion
 
 					return delegate
 					{
+						RemoveNewButton.OrphanizeContainer();
 						NewButton.OrphanizeContainer();
-						this.ClientWidth = Buttons.Count * NewButton.Width;
+
+						this.ClientWidth = (Buttons.Count + 1) * NewButton.Width + Padding;
+						AddStopButton.MoveContainerTo((Buttons.Count) * NewButton.Width + Padding, 0);
 					};
 				}
 			);
@@ -134,7 +227,9 @@ namespace AvalonUgh.Code.Editor
 
 		}
 
-		PackedInt32 InternalCurrentRoute = new PackedInt32(3);
+
+
+		PackedInt32 InternalCurrentRoute = new PackedInt32(4);
 
 		public PackedInt32 CurrentRoute
 		{
@@ -151,15 +246,20 @@ namespace AvalonUgh.Code.Editor
 				InternalCurrentRoute.Elements.ToFlaggable().ForEach(
 					k =>
 					{
-						new DestinationButton { SignValue = (int)k.Current - 1 }.AddTo(Buttons);
+						var PlatformIndex = (int)k.Current - 1;
+
 
 						if (k.Current == 0)
 						{
 							k.Stream.SkipElements = true;
 						}
+						else
+						{
+							new DestinationButton().AddTo(Buttons).PlatformIndex = PlatformIndex;
+						}
 					}
 				);
-				
+
 
 
 			}

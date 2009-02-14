@@ -9,102 +9,103 @@ using AvalonUgh.Assets.Avalon;
 using System.Windows.Media;
 using AvalonUgh.Code.Dialogs;
 using System.Windows.Shapes;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
-    [Script]
-    public class Statusbar : ISupportsContainer
-    {
-        public Canvas Container { get; set; }
+	[Script]
+	public class Statusbar : ISupportsContainer
+	{
+		public Canvas Container { get; set; }
 
-        public int Width
-        {
-            get
-            {
-                return 320 * Arguments.Zoom;
-            }
-        }
+		public int Width
+		{
+			get
+			{
+				return 320 * Arguments.Zoom;
+			}
+		}
 
-        public int Height
-        {
-            get
-            {
-                return 7 * Arguments.Zoom;
-            }
-        }
+		public int Height
+		{
+			get
+			{
+				return 7 * Arguments.Zoom;
+			}
+		}
 
-        [Script]
-        public class StatusbarWindow : Window
-        {
-            public readonly Statusbar Statusbar = new Statusbar();
+		[Script]
+		public class StatusbarWindow : Window
+		{
+			public readonly Statusbar Statusbar = new Statusbar();
 
-            public StatusbarWindow()
-            {
-                ClientWidth = Statusbar.Width;
-                ClientHeight = Statusbar.Height;
+			public StatusbarWindow()
+			{
+				ClientWidth = Statusbar.Width;
+				ClientHeight = Statusbar.Height;
 
-                Statusbar.AttachContainerTo(this.ContentContainer);
+				Statusbar.AttachContainerTo(this.ContentContainer);
 
-                DraggableArea.BringToFront();
+				DraggableArea.BringToFront();
 
-                this.BackgroundColor = Colors.Black;
-            }
-        }
+				this.BackgroundColor = Colors.Black;
+			}
+		}
 
-        public Statusbar()
-            : this(null)
-        {
+		public Statusbar()
+			: this(null)
+		{
 
-        }
+		}
 
-        [Script]
-        public class ConstructorArguments
-        {
-            public int Zoom = 2;
-        }
+		[Script]
+		public class ConstructorArguments
+		{
+			public int Zoom = 2;
+		}
 
-        public readonly ConstructorArguments Arguments;
-        public Statusbar(ConstructorArguments Arguments)
-        {
-            if (Arguments == null)
-                Arguments = new ConstructorArguments();
+		public readonly ConstructorArguments Arguments;
+		public Statusbar(ConstructorArguments Arguments)
+		{
+			if (Arguments == null)
+				Arguments = new ConstructorArguments();
 
-            this.Arguments = Arguments;
+			this.Arguments = Arguments;
 
-            this.Container = new Canvas
-            {
-                Width = Width,
-                Height = Height
-            };
+			this.Container = new Canvas
+			{
+				Width = Width,
+				Height = Height
+			};
 
-            var BackgroundSolo = new Image
-            {
-                Width = Width,
-                Height = Height,
-                Stretch = System.Windows.Media.Stretch.Fill,
-                Source = new NameFormat
-                {
-                    Path = Assets.Shared.KnownAssets.Path.Statusbar,
-                    Name = "duo",
-                    Index = 0,
-                    Extension = "png"
-                }
-            };
+			var BackgroundSolo = new Image
+			{
+				Width = Width,
+				Height = Height,
+				Stretch = System.Windows.Media.Stretch.Fill,
+				Source = new NameFormat
+				{
+					Path = Assets.Shared.KnownAssets.Path.Statusbar,
+					Name = "duo",
+					Index = 0,
+					Extension = "png"
+				}
+			};
 
-            BackgroundSolo.AttachTo(this);
+			BackgroundSolo.AttachTo(this);
 
-            Func<int, string, DialogTextBox> f =
-                (x, text) =>
-                {
-                    return new DialogTextBox
-                    {
-                        FontWidth = 5,
-                        FontHeigth = 5,
-                        Zoom = Arguments.Zoom,
-                        Color = Colors.White,
-                        Text = text,
-                    }.AttachContainerTo(this).MoveContainerTo(x * Arguments.Zoom, 1 * Arguments.Zoom);
-                };
+			Func<int, string, DialogTextBox> f =
+				(x, text) =>
+				{
+					return new DialogTextBox
+					{
+						FontWidth = 5,
+						FontHeigth = 5,
+						Zoom = Arguments.Zoom,
+						Color = Colors.White,
+						Text = text,
+					}.AttachContainerTo(this).MoveContainerTo(x * Arguments.Zoom, 1 * Arguments.Zoom);
+				};
 
 			//f(33, "00");
 			//f(118, "000000");
@@ -134,16 +135,33 @@ namespace AvalonUgh.Code
 				Height = 3 * Arguments.Zoom
 			}.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
 
-            // E0EC98
-        }
+			// E0EC98
+		}
 
-		public readonly Rectangle LevelTimeRectangle;
+		public bool DesignMode
+		{
+			set
+			{
+				HighScoreTextBox.Show(!value);
+				CurrentFareScoreTextBox.Show(!value);
+				LevelTimeRectangle.Show(!value);
+			}
+		}
+		readonly Rectangle LevelTimeRectangle;
+		int InternalLevelTime;
 		public int LevelTime
 		{
 			set
 			{
+				InternalLevelTime = value.Max(0).Min(32);
+				LevelTimeRectangle.Width = value;
+			}
+			get
+			{
+				return InternalLevelTime;
 			}
 		}
+
 		public readonly DialogTextBox CurrentFareScoreTextBox;
 		public int InternalCurrentFareScore;
 		public int CurrentFareScore
@@ -181,6 +199,6 @@ namespace AvalonUgh.Code
 				return InternalHighScore;
 			}
 		}
-     
-    }
+
+	}
 }

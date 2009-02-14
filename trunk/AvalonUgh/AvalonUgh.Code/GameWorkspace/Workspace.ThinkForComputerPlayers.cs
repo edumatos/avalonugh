@@ -43,6 +43,9 @@ namespace AvalonUgh.Code.GameWorkspace
 			// we are just syncing the state of elements
 			// which should be stored as a few integers
 
+			if (this.LocalIdentity.SyncFrame % 200 == 0)
+				view.Level.LevelTime = (view.Level.LevelTime - 1).Max(0);
+
 			var PickupVehicles = Enumerable.ToArray(
 				from Vehicle in view.Level.KnownVehicles
 				where Vehicle.CurrentWeapon == null
@@ -65,7 +68,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				where Platform != null
 				let NearestPickup = Enumerable.FirstOrDefault(
 					from k in PickupVehicles
-					where Passenger.Memory_Route_NextCave >= 0
+					where Passenger.Memory_Route_NextPlatformIndex >= 0
 					where k.VehicleObstacle.Intersects(Platform.IncludedSpace)
 					orderby k.VehicleObstacle.X - PassengerObstacle.X
 					select k
@@ -127,7 +130,7 @@ namespace AvalonUgh.Code.GameWorkspace
 								i.Passenger.Animation = Actor.AnimationEnum.Hidden;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
-								
+
 								i.Passenger.Memory_LogicState = Actor.Memory_LogicState_FareBase + i.Passenger.AvailableFare;
 
 								i.NearestPickup.Vehicle.CurrentPassengers.Add(i.Passenger);
@@ -169,7 +172,9 @@ namespace AvalonUgh.Code.GameWorkspace
 								SoundBoard.Default.talk0_00();
 
 								i.Passenger.KnownBubbles.Add(
-									new Actor.Bubble(view.Level.Zoom, i.Passenger.Memory_Route_NextCave)
+									new Actor.Bubble(view.Level.Zoom,
+										view.Level.ToPlatformSnapshots().AtModulus(i.Passenger.Memory_Route_NextPlatformIndex).CaveSigns.First().Value
+									)
 								);
 
 								i.Passenger.Memory_FirstWait = true;
@@ -236,8 +241,9 @@ namespace AvalonUgh.Code.GameWorkspace
 			{
 				if (i.Passenger.Memory_LogicState_IsFare)
 				{
-					if (i.Passenger.Memory_LogicState != Actor.Memory_LogicState_FareMin)
-						i.Passenger.Memory_LogicState = Math.Max(i.Passenger.Memory_LogicState - 9, Actor.Memory_LogicState_FareMin);
+					if (this.LocalIdentity.SyncFrame % 2 == 0)
+						if (i.Passenger.Memory_LogicState != Actor.Memory_LogicState_FareMin)
+							i.Passenger.Memory_LogicState = Math.Max(i.Passenger.Memory_LogicState - 4, Actor.Memory_LogicState_FareMin);
 				}
 
 				if (i.Passenger.CurrentPassengerVehicle.GetVelocity() == 0)
@@ -246,46 +252,36 @@ namespace AvalonUgh.Code.GameWorkspace
 					// we could release the passenger...
 					var CurrentPassengerVehicle = i.Passenger.CurrentPassengerVehicle.ToObstacle();
 
-					var CurrentPlatform = view.Level.ToPlatformSnapshots().FirstOrDefault(
-						k => k.IncludedSpace.Intersects(CurrentPassengerVehicle)
-					);
-
-					if (CurrentPlatform != null)
+					var CurrentPlatform = view.Level.ToPlatformSnapshots().AtModulus(i.Passenger.Memory_Route_NextPlatformIndex);
+					if (CurrentPlatform.IncludedSpace.Intersects(CurrentPassengerVehicle))
 					{
-						var Memory_Route_NextCave = i.Passenger.Memory_Route_NextCave;
+						i.Passenger.Memory_Route.Pop();
 
+						i.Passenger.Animation = Actor.AnimationEnum.Idle;
+						i.Passenger.MoveTo(
+							i.Passenger.CurrentPassengerVehicle.X,
+							i.Passenger.CurrentPassengerVehicle.Y - 2 * view.Level.Zoom
+						);
+						i.Passenger.VelocityX = 0;
+						i.Passenger.VelocityY = 0;
+						i.Passenger.CurrentPassengerVehicle.CurrentPassengers.Remove(i.Passenger);
+						i.Passenger.CurrentPassengerVehicle = null;
 
+						// add the fare to the highscore
+						// this action will be done in sync in all clients
 
-						if (CurrentPlatform.CaveSigns.Any(k => k.Value == Memory_Route_NextCave))
-						{
-							i.Passenger.Memory_Route.Pop();
+						view.Memory_Score += (i.Passenger.Memory_LogicState - Actor.Memory_LogicState_FareBase) * view.Memory_ScoreMultiplier;
 
-							i.Passenger.Animation = Actor.AnimationEnum.Idle;
-							i.Passenger.MoveTo(
-								i.Passenger.CurrentPassengerVehicle.X,
-								i.Passenger.CurrentPassengerVehicle.Y - 2 * view.Level.Zoom
-							);
-							i.Passenger.VelocityX = 0;
-							i.Passenger.VelocityY = 0;
-							i.Passenger.CurrentPassengerVehicle.CurrentPassengers.Remove(i.Passenger);
-							i.Passenger.CurrentPassengerVehicle = null;
+						i.Passenger.Memory_LogicState = Actor.Memory_LogicState_LastMile;
 
-							// add the fare to the highscore
-							// this action will be done in sync in all clients
-
-							view.Memory_Score += (i.Passenger.Memory_LogicState - Actor.Memory_LogicState_FareBase) * view.Memory_ScoreMultiplier;
-
-							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_LastMile;
-
-							i.Passenger.Memory_CanBeHitByVehicle = false;
-						}
+						i.Passenger.Memory_CanBeHitByVehicle = false;
 					}
 				}
 			}
 
 			// simulate cave life
 
-			var NextPassengerToWalkOutOfTheCave = KnownPassengers.Where(k => k.Memory_Route_NextCave >= 0).FirstOrDefault(k => k.CurrentCave != null);
+			var NextPassengerToWalkOutOfTheCave = KnownPassengers.Where(k => k.Memory_Route_NextPlatformIndex >= 0).FirstOrDefault(k => k.CurrentCave != null);
 			// if the dude doesnt have anywhere to go anymore, it stays inside the cave
 
 			if (NextPassengerToWalkOutOfTheCave != null)
