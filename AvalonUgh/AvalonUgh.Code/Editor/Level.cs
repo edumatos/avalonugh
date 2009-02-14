@@ -71,16 +71,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Vehicle> KnownVehicles = new BindingList<Vehicle>();
 		public readonly BindingList<Tryoperus> KnownTryoperus = new BindingList<Tryoperus>();
 
-		public IEnumerable<ISupportsPhysics> PhysicsObjects
-		{
-			get
-			{
-				return KnownVehicles.Select(k => (ISupportsPhysics)k).
-					Concat(this.KnownRocks.Select(k => (ISupportsPhysics)k)).
-					Concat(this.KnownActors.Select(k => (ISupportsPhysics)k)).
-					Concat(this.KnownTryoperus.Select(k => (ISupportsPhysics)k));
-			}
-		}
+
 
 		public IEnumerable<Tile> KnownLandingTiles
 		{
@@ -553,6 +544,49 @@ namespace AvalonUgh.Code.Editor
 
 			return ToObstacles_Cache();
 		}
+
+
+
+
+		Func<IEnumerable<ISupportsPhysics>> ToPhysicsObjects_Cache;
+		public IEnumerable<ISupportsPhysics> ToPhysicsObjects()
+		{
+			// we will recalculate tile obstacles only when they actually change
+			if (ToPhysicsObjects_Cache == null)
+			{
+				var Source =
+					new IBindingList[]
+					{
+						KnownVehicles,
+						KnownRocks,
+						KnownActors,
+						KnownTryoperus,
+					};
+
+				ToPhysicsObjects_Cache =
+					Source.WhereListChanged(
+						delegate
+						{
+							Console.WriteLine("Level.ToPhysicsObjects");
+
+							var a = new List<ISupportsPhysics>();
+
+							foreach (var i in Source)
+							{
+								foreach (var j in i)
+								{
+									a.Add((ISupportsPhysics)j);
+								}
+							}
+
+							return a.AsEnumerable();
+						}
+					);
+			}
+
+			return ToPhysicsObjects_Cache();
+		}
+
 
 
 		Func<IEnumerable<PlatformSnapshot>> ToPlatformSnapshots_Cache;
