@@ -108,24 +108,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
-		//public event Action CurrentPassengerChanged;
 
 		public readonly BindingList<Actor> CurrentPassengers = new BindingList<Actor>();
 
-		//public Actor CurrentPassenger
-		//{
-		//    get
-		//    {
-		//        return InternalCurrentPassenger;
-		//    }
-		//    set
-		//    {
-		//        InternalCurrentPassenger = value;
-		//        if (CurrentPassengerChanged != null)
-		//            CurrentPassengerChanged();
-
-		//    }
-		//}
 
 		public bool ExitIsBlocked;
 

@@ -51,6 +51,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				where Vehicle.CurrentWeapon == null
 				where Vehicle.CurrentDriver != null
 				where Vehicle.CurrentPassengers.Count == 0
+				where Vehicle.LastVelocity == 0
 				where Vehicle.GetVelocity() == 0
 				let VehicleObstacle = Vehicle.ToObstacle()
 				select new { Vehicle, VehicleObstacle }

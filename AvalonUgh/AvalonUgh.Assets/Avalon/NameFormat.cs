@@ -56,6 +56,15 @@ namespace AvalonUgh.Assets.Avalon
 			return c;
 		}
 
+		public NameFormat ToName(string Name)
+		{
+			var c = this.Clone();
+
+			c.Name = Name;
+
+			return c;
+		}
+
 		public NameFormat ToAnimationFrame(string AnimationFrameName)
 		{
 			var c = this.Clone();
