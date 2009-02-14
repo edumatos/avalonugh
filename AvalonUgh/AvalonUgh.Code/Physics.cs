@@ -409,9 +409,22 @@ namespace AvalonUgh.Code
 				if (b_Platform != null)
 					return;
 
+			if (a_Platform == null)
+				if (b_Platform == null)
+				{
+
+					var a_Obstacle = Level.ToObstacles().FirstOrDefault(k => k.Intersects(a));
+					var b_Obstacle = Level.ToObstacles().FirstOrDefault(k => k.Intersects(a));
+
+					if (a_Obstacle == null)
+						if (b_Obstacle == null)
+							return;
+				}
 
 
 			veh.VelocityY -= 0.6 * Level.Zoom;
+
+			
 
 
 
