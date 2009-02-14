@@ -36,7 +36,7 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public readonly PackedInt32 Memory_Route = new PackedInt32(3);
+		public readonly PackedInt32 Memory_Route = new PackedInt32(4);
 
 		public bool Memory_CaveAction;
 		public bool Memory_FirstWait;
@@ -62,7 +62,9 @@ namespace AvalonUgh.Code
 		public const int Memory_LogicState_FareMax = 19999;
 		public const int Memory_LogicState_FareMin = 10250;
 
-		public int Memory_Route_NextCave
+
+
+		public int Memory_Route_NextPlatformIndex
 		{
 			get
 			{

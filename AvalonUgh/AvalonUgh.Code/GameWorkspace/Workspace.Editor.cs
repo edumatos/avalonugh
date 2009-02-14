@@ -24,6 +24,9 @@ namespace AvalonUgh.Code.GameWorkspace
 			[Script]
 			public class ConstructorArguments
 			{
+				public int Height;
+				public int Zoom;
+
 				public KnownSelectors Selectors;
 
 				public BindingList<LevelReference> EmbeddedLevels;
@@ -50,10 +53,24 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			public readonly BindingList<Arrow> Arrows = new BindingList<Arrow>();
 
+			readonly Statusbar Statusbar;
 
 			public EditorPort(ConstructorArguments args)
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
+
+				this.Statusbar = new Statusbar(
+					new Statusbar.ConstructorArguments
+					{
+						Zoom = DefaultZoom
+					}
+				)
+				{
+					DesignMode = true
+				};
+
+				Statusbar.MoveContainerTo(0, args.Height - Statusbar.Height - 1 * args.Zoom);
+				Statusbar.AttachContainerTo(this.Window.ContentContainer);
 
 
 
@@ -403,7 +420,8 @@ namespace AvalonUgh.Code.GameWorkspace
 						CurrentTravelWindow = new RouteWindow
 						{
 							DragContainer = this.Container,
-							CurrentRoute = Passanger.Memory_Route
+							CurrentLevel = this.Editor.Level,
+							CurrentRoute = Passanger.Memory_Route,
 						};
 
 						

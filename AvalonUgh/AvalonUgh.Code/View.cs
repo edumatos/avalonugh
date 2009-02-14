@@ -263,16 +263,16 @@ namespace AvalonUgh.Code
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownActors.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 			this.Level.KnownActors.AttachTo(k => k.KnownBubbles, this.BubbleContainer);
-			this.Level.KnownActors.WithEvents(this.LogicForInfoLabel);
+			//this.Level.KnownActors.WithEvents(this.LogicForInfoLabel);
 
 			this.Level.KnownVehicles.AttachTo(this.Entities);
 			this.Level.KnownVehicles.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
-			this.Level.KnownVehicles.WithEvents(this.LogicForInfoLabel);
+			//this.Level.KnownVehicles.WithEvents(this.LogicForInfoLabel);
 
 
 			this.Level.KnownRocks.AttachTo(this.Entities);
 			this.Level.KnownRocks.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
-			this.Level.KnownRocks.WithEvents(this.LogicForInfoLabel);
+			//this.Level.KnownRocks.WithEvents(this.LogicForInfoLabel);
 
 
 			this.Level.KnownDinos.AttachTo(this.Entities);

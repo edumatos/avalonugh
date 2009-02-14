@@ -282,6 +282,9 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Editor = new EditorPort(
 				new EditorPort.ConstructorArguments
 				{
+					Height = args.PortHeight,
+					Zoom = DefaultZoom,
+
 					Selectors = this.Selectors,
 					EmbeddedLevels = this.EmbeddedLevels,
 					SavedLevels = this.SavedLevels,
@@ -416,7 +419,8 @@ namespace AvalonUgh.Code.GameWorkspace
 					NewPlayer.Actor.Jumping +=
 						delegate
 						{
-							(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
+							SoundBoard.Default.jump();
+
 						};
 
 					// every actor could act differently on gold collected
@@ -424,7 +428,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						gold =>
 						{
 							// play the sound only if it is in the same port
-							(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
+							SoundBoard.Default.treasure();
 
 							// the yellow flash shall be displayed for local players only
 						}

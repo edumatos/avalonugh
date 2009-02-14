@@ -21,6 +21,9 @@ namespace AvalonUgh.Code.GameWorkspace
 		{
 			private void ReinitializeStatusbar()
 			{
+				this.View.Level.LevelTimeChanged +=
+					() => this.Statusbar.LevelTime = this.View.Level.LevelTime;
+
 				this.View.Level.KnownVehicles.WithEvents(
 					  vehicle =>
 					  {
