@@ -49,7 +49,7 @@ namespace AvalonUgh.Code
 		{
 			var Obstacles = this.Level.ToObstacles();
 
-			foreach (var i in this.Level.PhysicsObjects)
+			foreach (var i in this.Level.ToPhysicsObjects())
 			{
 				Apply(i, Obstacles);
 			}
