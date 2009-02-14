@@ -35,10 +35,24 @@ namespace AvalonUgh.Code.GameWorkspace
 
 						  // while passanger onboard listen state changed event
 
+						  vehicle.CurrentWeaponChanged +=
+							  delegate
+							  {
+								  if (vehicle.CurrentWeapon == null)
+									  Statusbar.SetLeftSign(-2);
+								  else
+									  Statusbar.SetLeftSign(-1);
+
+							  };
+
 						  var passangers = vehicle.CurrentPassengers.WithEvents(
 							  passanger =>
 							  {
 								  // passanger has entered our vehicle
+
+								  Statusbar.SetLeftSign(
+									  Level.ToPlatformSnapshots().AtModulus(passanger.Memory_Route_NextPlatformIndex).CaveSigns.First().Value
+								  );
 
 								  Action Memory_LogicStateChanged =
 									  delegate
@@ -55,6 +69,8 @@ namespace AvalonUgh.Code.GameWorkspace
 								  return delegate
 								  {
 									  // passanger has exited our vehicle
+
+									  Statusbar.SetLeftSign(-2);
 
 									  passanger.Memory_LogicStateChanged -= Memory_LogicStateChanged;
 

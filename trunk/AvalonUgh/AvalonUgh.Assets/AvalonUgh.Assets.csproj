@@ -844,6 +844,9 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\ugh_music2.mp3" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\talk0_01.mp3" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\sign0.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\question0.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\sign5.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\sign1.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\sign2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Statusbar\sign3.png" />

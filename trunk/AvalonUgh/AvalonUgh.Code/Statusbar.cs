@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
-using ScriptCoreLib;
 using System.Windows.Controls;
-using ScriptCoreLib.Shared.Avalon.Extensions;
-using AvalonUgh.Assets.Avalon;
-using System.Windows.Media;
-using AvalonUgh.Code.Dialogs;
-using System.Windows.Shapes;
-using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using AvalonUgh.Assets.Avalon;
+using AvalonUgh.Assets.Shared;
 using AvalonUgh.Code.Diagnostics;
+using AvalonUgh.Code.Dialogs;
+using ScriptCoreLib;
+using ScriptCoreLib.Shared.Avalon.Extensions;
+using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
@@ -146,9 +148,57 @@ namespace AvalonUgh.Code
 				Height = 3 * Arguments.Zoom
 			}.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
 
+			var SignTemplate = new NameFormat
+			{
+				Path = KnownAssets.Path.Statusbar,
+				Extension = "png",
+				Zoom = 2
+			};
+			Func<int, int, Action<int>> BuildSetSign =
+				(x, y) =>
+				{
+					var cache = new Dictionary<int, Image>
+					{
+						{-1, SignTemplate.ToName("question").ToImage(12, 6)},
+						{0, SignTemplate.ToName("sign").ToIndex(0).ToImage(12, 6)},
+						{1, SignTemplate.ToName("sign").ToIndex(1).ToImage(12, 6)},
+						{2, SignTemplate.ToName("sign").ToIndex(2).ToImage(12, 6)},
+						{3, SignTemplate.ToName("sign").ToIndex(3).ToImage(12, 6)},
+						{4, SignTemplate.ToName("sign").ToIndex(4).ToImage(12, 6)},
+						{5, SignTemplate.ToName("sign").ToIndex(5).ToImage(12, 6)}
+					};
+
+					var selection = new BindingList<Image>().WithEvents(
+						i =>
+						{
+							i.AttachTo(this);
+
+							return delegate
+							{
+								i.Orphanize();
+							};
+						}
+					);
+
+					return
+						value =>
+						{
+							selection.Source.RemoveAll();
+
+							if (cache.ContainsKey(value))
+								cache[value].MoveTo(x * Arguments.Zoom, y * Arguments.Zoom).AddTo(selection.Source);
+						};
+				};
+
+			this.SetLeftSign = BuildSetSign(199, 0);
+			this.SetRightSign = BuildSetSign(275, 0);
+
 			// E0EC98
 
 		}
+
+		public Action<int> SetLeftSign;
+		public Action<int> SetRightSign;
 
 		public readonly DialogTextBox LivesTextBox;
 		public readonly DialogTextBox MultiplierTextBox;
