@@ -17,6 +17,9 @@ namespace AvalonUgh.Code.Editor
 		[Script]
 		public class Tab
 		{
+			public event Action Activated;
+			public event Action Deactivated;
+
 			public CommonFileWindow Parent;
 
 			public readonly BindingList<LevelReference> Items = new BindingList<LevelReference>();
@@ -31,6 +34,21 @@ namespace AvalonUgh.Code.Editor
 			public event Action<LevelReference> MouseLeave;
 			public event Action<LevelReference, MiniLevelWindow> Click;
 
+			public void Show(bool value)
+			{
+				this.PreviewContainer.Show(value);
+
+				if (value)
+				{
+					if (Activated != null)
+						Activated();
+				}
+				else
+				{
+					if (Deactivated != null)
+						Deactivated();
+				}
+			}
 			public Tab()
 			{
 				this.Button = new Window.Button
@@ -185,6 +203,7 @@ namespace AvalonUgh.Code.Editor
 		public Action CurrentLevelChanged;
 		public LevelReference CurrentLevel;
 
+
 		public CommonFileWindow()
 		{
 			this.BackgroundColor = Colors.DarkGreen;
@@ -218,7 +237,7 @@ namespace AvalonUgh.Code.Editor
 					value.Button.Click +=
 						delegate
 						{
-							this.Tabs.ForEach(k => k.PreviewContainer.Show(k == value));
+							this.Tabs.ForEach(k => k.Show(k == value));
 
 						};
 
@@ -274,11 +293,14 @@ namespace AvalonUgh.Code.Editor
 
 
 			XCancelButton.Click += this.Hide;
+
+			CancelButton = XCancelButton;
 			#endregion
 
 
 
 		}
 
+		public Window.Button CancelButton;
 	}
 }

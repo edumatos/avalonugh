@@ -93,7 +93,7 @@ namespace AvalonUgh.Code.Editor
 				TouchOverlay.MoveTo(x, y);
 			}
 
-		
+
 		}
 
 		public readonly KnownSelectors Selectors;
@@ -115,13 +115,23 @@ namespace AvalonUgh.Code.Editor
 				this.Buttons.FirstOrDefault(k => k.SelectorType == value).Apply(k => k.RaiseClick());
 			}
 		}
-		public EditorToolbar( KnownSelectors Selectors)
+
+		int ButtonsWidth
+		{
+			get
+			{
+				return
+					Padding + Convert.ToInt32(Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
+			}
+		}
+
+		public EditorToolbar(KnownSelectors Selectors)
 		{
 			this.Selectors = Selectors;
 			this.Padding = 8;
 
+			InitializeAnimatedOpacity();
 
-		
 
 
 			// how to turn off arrow key tabbing? 
@@ -133,17 +143,8 @@ namespace AvalonUgh.Code.Editor
 
 
 
-			this.LevelText = new TextBox
-			{
-				FontFamily = new FontFamily("Courier New"),
-				FontSize = 12,
-				AcceptsReturn = true,
-				Background = Brushes.Transparent,
-				BorderThickness = new Thickness(0)
-			};
 
-			
-			Func<int> ButtonsWidth = () => Padding + Convert.ToInt32(Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
+
 
 			// non-selectors: load save
 
@@ -153,7 +154,7 @@ namespace AvalonUgh.Code.Editor
 					var x = Padding + Convert.ToInt32(index / 2) * (PrimitiveTile.Width * 2 + Padding);
 					var y = Padding;
 
-					if (index  % 2 == 1)
+					if (index % 2 == 1)
 						y += PrimitiveTile.Heigth * 2 + Padding;
 
 					value.MoveTo(
@@ -182,7 +183,7 @@ namespace AvalonUgh.Code.Editor
 					}
 				);
 
-		
+
 			ButtonLoad.Click +=
 				delegate
 				{
@@ -209,75 +210,48 @@ namespace AvalonUgh.Code.Editor
 				}
 			);
 
-			ButtonSave.Click +=
-				delegate
-				{
+			ButtonSave.Click += RaiseSaveClicked;
 
-					if (SaveClicked != null)
-						SaveClicked();
-				};
 
 
 			ButtonSave.AddTo(Buttons);
 
-			CreateButtons(ButtonsWidth);
+			CreateButtons();
 
-			this.Width = ButtonsWidth() + (PrimitiveTile.Width * 2 + Padding);
-			this.Height = this.Width * 2 / 3;
+			this.ClientWidth = ButtonsWidth + (PrimitiveTile.Width * 2);
+			this.ClientHeight = PrimitiveTile.Heigth * 2 * 2 + Padding;
 
-	
+
 
 			this.Update();
 
-			#region LevelText
-
-
-			var LevelTextBackground = new Rectangle
-			{
-				Fill = Brushes.LightGreen,
-				Opacity = 0.2
-			}.AttachTo(this)
-			.SizeTo(
-				Width - Padding * 2,
-				Height - PrimitiveTile.Heigth * 4 - Padding * 4
-			).MoveTo(Padding, PrimitiveTile.Heigth * 4 + Padding * 3);
-
-			var WaterMark = new TextBox
-			{
-				FontFamily = new FontFamily("Courier New"),
-				FontSize = 12,
-				Background = Brushes.Transparent,
-				BorderThickness = new Thickness(0),
-				Text = "Avalon Ugh",
-				Foreground = Brushes.DarkGreen,
-				TextAlignment = TextAlignment.Right
-			}.AttachTo(this).SizeTo(
-				Width - Padding * 2,
-				15
-			).MoveTo(Padding, Height - 15 - Padding);
-
-			this.LevelText.AttachTo(this)
-			.SizeTo(
-				Width - Padding * 2,
-				Height - PrimitiveTile.Heigth * 4 - Padding * 4
-			).MoveTo(Padding, PrimitiveTile.Heigth * 4 + Padding * 3);
 
 
 
-			this.LevelText.GotFocus += delegate
-			{
-				LevelTextBackground.Opacity = 0.7;
 
-				// now we should serialize 
-			};
 
-			LevelText.LostFocus += delegate { LevelTextBackground.Opacity = 0.2; };
-			#endregion
 		}
 
-		public readonly TextBox LevelText;
+		private void RaiseSaveClicked()
+		{
+			if (SaveClicked != null)
+				SaveClicked();
+		}
 
-		private void CreateButtons(Func<int> ButtonsWidth)
+		private void InitializeAnimatedOpacity()
+		{
+			var AnimatedOpacity = this.BackgroundContainer.ToAnimatedOpacity();
+			var DelayedMouseEvents = this.Container.ToDelayedMouseEvents();
+
+			AnimatedOpacity.Opacity = 0.4;
+
+			DelayedMouseEvents.MouseEnter += () => AnimatedOpacity.Opacity = 0.9;
+			DelayedMouseEvents.MouseLeave += () => AnimatedOpacity.Opacity = 0.4;
+		}
+
+		//public readonly TextBox LevelText;
+
+		private void CreateButtons()
 		{
 			var SelectionMarker = new Rectangle
 			{
@@ -308,7 +282,7 @@ namespace AvalonUgh.Code.Editor
 					if (h == 0)
 						h = Selector.ToolbarImage.Height * PrimitiveTile.Heigth;
 
-					var x = ButtonsWidth();
+					var x = ButtonsWidth;
 					var y = Padding;
 
 					if (Buttons.Count % 2 == 1)
@@ -327,7 +301,7 @@ namespace AvalonUgh.Code.Editor
 					var Sizes = Selector.Sizes;
 					var EditorSelectorDefault = Sizes.FirstOrDefault();
 
-			
+
 
 
 					Action Select =
@@ -379,12 +353,7 @@ namespace AvalonUgh.Code.Editor
 						Select();
 
 
-						// first button shall be default
-						this.LevelText.GotFocus +=
-							delegate
-							{
-								Select();
-							};
+
 					}
 
 					btn.AddTo(Buttons);

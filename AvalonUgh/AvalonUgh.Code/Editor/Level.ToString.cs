@@ -44,7 +44,8 @@ namespace AvalonUgh.Code.Editor
 					AttributeWaterRise,
 					AttributeWind,
 					AttributeSnow,
-					AttributeBackground
+					AttributeBackground,
+					AttributeHeadCount
 				);
 
 				s.WriteLine(new string('#', w));

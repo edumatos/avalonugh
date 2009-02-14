@@ -10,6 +10,8 @@ using System.Windows.Media;
 using AvalonUgh.Code.Dialogs;
 using System.Windows.Shapes;
 using ScriptCoreLib.Shared.Lambda;
+using System.Windows.Input;
+using AvalonUgh.Code.Diagnostics;
 
 namespace AvalonUgh.Code
 {
@@ -97,14 +99,20 @@ namespace AvalonUgh.Code
 			Func<int, string, DialogTextBox> f =
 				(x, text) =>
 				{
-					return new DialogTextBox
+					var t = new DialogTextBox
 					{
 						FontWidth = 5,
 						FontHeigth = 5,
 						Zoom = Arguments.Zoom,
 						Color = Colors.White,
 						Text = text,
-					}.AttachContainerTo(this).MoveContainerTo(x * Arguments.Zoom, 1 * Arguments.Zoom);
+					};
+
+					t.AttachContainerTo(this);
+					t.MoveContainerTo(x * Arguments.Zoom, 1 * Arguments.Zoom);
+					t.TouchOverlay.MoveTo(x * Arguments.Zoom, 1 * Arguments.Zoom);
+
+					return t;
 				};
 
 			//f(33, "00");
@@ -121,11 +129,14 @@ namespace AvalonUgh.Code
 			//    Height = 3 * Arguments.Zoom
 			//}.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
 
-			f(33, "00");
+			LivesTextBox = f(33, "00");
 			HighScoreTextBox = f(114, "000000");
-			f(169, "00");
+			HeadCountTextBox = f(169, "00");
+
+			HeadCountTextBox.HoverBehaviorEnabled = false;
+
 			CurrentFareScoreTextBox = f(232, "0000");
-			f(305, "00");
+			MultiplierTextBox = f(305, "00");
 
 
 			this.LevelTimeRectangle = new Rectangle
@@ -136,17 +147,49 @@ namespace AvalonUgh.Code
 			}.AttachTo(this).MoveTo(64 * Arguments.Zoom, 2 * Arguments.Zoom);
 
 			// E0EC98
+
+		}
+
+		public readonly DialogTextBox LivesTextBox;
+		public readonly DialogTextBox MultiplierTextBox;
+
+
+		public readonly DialogTextBox HeadCountTextBox;
+		int InternalHeadCount;
+		public int HeadCount
+		{
+			set
+			{
+				InternalHeadCount = value;
+
+				var x = value % 100;
+				var s = x.ToString();
+
+				HeadCountTextBox.Text = new string('0', 2 - s.Length) + s;
+			}
+			get
+			{
+				return InternalHeadCount;
+			}
 		}
 
 		public bool DesignMode
 		{
 			set
 			{
+				LivesTextBox.Show(!value);
 				HighScoreTextBox.Show(!value);
 				CurrentFareScoreTextBox.Show(!value);
 				LevelTimeRectangle.Show(!value);
+				MultiplierTextBox.Show(!value);
+
+				HeadCountTextBox.TouchOverlay.Orphanize();
+
+				if (value)
+					HeadCountTextBox.TouchOverlay.AttachTo(this);
 			}
 		}
+
 		readonly Rectangle LevelTimeRectangle;
 		int InternalLevelTime;
 		public int LevelTime

@@ -55,7 +55,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Editor.SaveWindow.PropertyText.Value,
 				this.Editor.SaveWindow.PropertyCode.Value,
 				this.Editor.SaveWindow.PropertyNextLevelCode.Value,
-				this.Editor.Toolbar.LevelText
+				this.Editor.SaveWindow.LevelScriptTextBox
 			);
 
 

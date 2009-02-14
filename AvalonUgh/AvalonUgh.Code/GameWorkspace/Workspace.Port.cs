@@ -41,6 +41,8 @@ namespace AvalonUgh.Code.GameWorkspace
 					// we need to update this if the level changes
 					// in size
 
+					//Background = Brushes.Purple,
+					//Opacity = 0.5
 				}.AttachTo(this.Window.OverlayContainer);
 			}
 
