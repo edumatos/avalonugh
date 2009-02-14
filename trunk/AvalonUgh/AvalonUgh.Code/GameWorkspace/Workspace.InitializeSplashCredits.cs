@@ -10,6 +10,8 @@ using ScriptCoreLib.Shared.Avalon.Extensions;
 using System.Collections.Generic;
 using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Dialogs;
+using AvalonUgh.Assets.Avalon;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -35,11 +37,13 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							 Action done = () => Lobby.Window.ColorOverlay.Opacity = 0;
 
-#if DEBUG
-							 done(); 
-#else
-							 ShowSplashCredit(TextContainers, done);
-#endif
+
+							 ShowSplashCreditLogo(
+								 delegate
+								 {
+									 ShowSplashCredit(TextContainers, done);
+								 }
+							 );
 
 
 						 }
@@ -60,6 +64,82 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 				};
+		}
+
+		void ShowSplashCredit(List<Dialog> TextContainers, Action done)
+		{
+			this.LocalIdentity.HandleFutureFrameInTime(500,
+				 delegate
+				 {
+
+
+					 var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.OverlayContainer);
+
+					 // we could show credits in the meantime!
+					 Lobby.Window.ColorOverlay.Opacity = 0;
+
+
+					 this.LocalIdentity.HandleFutureFrameInTime(1500,
+						 delegate
+						 {
+							 Lobby.Window.ColorOverlay.Opacity = 1;
+
+
+							 this.LocalIdentity.HandleFutureFrameInTime(400,
+								 delegate
+								 {
+									 CurrentCredit.OrphanizeContainer();
+
+									 done();
+
+								 }
+							 );
+						 }
+					 );
+				 }
+			 );
+		}
+
+		void ShowSplashCreditLogo(Action done)
+		{
+			this.LocalIdentity.HandleFutureFrameInTime(500,
+				 delegate
+				 {
+
+
+					 var CurrentCredit =
+						 new NameFormat
+						 {
+							 Path = KnownAssets.Path.Backgrounds,
+							 Name = "003",
+							 Index = -1,
+							 Extension = "png"
+						 }.ToImage(Arguments.PortWidth, Arguments.PortHeight).AttachTo(this.Lobby.Window.OverlayContainer);
+
+
+					 // we could show credits in the meantime!
+					 Lobby.Window.ColorOverlay.Opacity = 0;
+
+
+					 this.LocalIdentity.HandleFutureFrameInTime(1500,
+						 delegate
+						 {
+							 Lobby.Window.ColorOverlay.Opacity = 1;
+
+
+							 this.LocalIdentity.HandleFutureFrameInTime(400,
+								 delegate
+								 {
+									 CurrentCredit.Orphanize();
+
+									 done();
+
+								 }
+							 );
+						 }
+					 );
+				 }
+			 );
 		}
 
 

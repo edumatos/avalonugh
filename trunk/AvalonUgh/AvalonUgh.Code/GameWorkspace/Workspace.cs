@@ -748,40 +748,6 @@ namespace AvalonUgh.Code.GameWorkspace
 			InitializeSplashCredits(TextContainers);
 		}
 
-		void ShowSplashCredit(List<Dialog> TextContainers, Action done)
-		{
-			this.LocalIdentity.HandleFutureFrameInTime(500,
-				 delegate
-				 {
-
-
-					 var CurrentCredit = TextContainers.Random().AttachContainerTo(this.Lobby.Window.OverlayContainer);
-
-					 // we could show credits in the meantime!
-					 Lobby.Window.ColorOverlay.Opacity = 0;
-
-
-					 this.LocalIdentity.HandleFutureFrameInTime(2000,
-						 delegate
-						 {
-							 Lobby.Window.ColorOverlay.Opacity = 1;
-
-
-							 this.LocalIdentity.HandleFutureFrameInTime(400,
-								 delegate
-								 {
-									 CurrentCredit.OrphanizeContainer();
-
-									 done();
-
-								 }
-							 );
-						 }
-					 );
-				 }
-			 );
-		}
-
 
 		Dialog InternalActiveDialog;
 		public Dialog ActiveDialog
