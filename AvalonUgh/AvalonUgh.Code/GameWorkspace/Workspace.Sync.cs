@@ -31,6 +31,7 @@ namespace AvalonUgh.Code.GameWorkspace
 		[Script]
 		public delegate void DelegateLoadLevel(int port, int level, string custom);
 		public DelegateLoadLevel Sync_LoadLevel;
+		public DelegateLoadLevel Local_LoadLevel;
 
 		public void Sync_LoadLevelEx(Port port, LevelReference level)
 		{
@@ -224,6 +225,9 @@ namespace AvalonUgh.Code.GameWorkspace
 					}
 
 				};
+
+			this.Local_LoadLevel = this.Sync_LoadLevel;
+
 			#endregion
 
 		}

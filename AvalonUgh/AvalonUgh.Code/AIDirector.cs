@@ -13,68 +13,68 @@ namespace AvalonUgh.Code
 	public class AIDirector
 	{
 
-		public static void WalkActorToTheCaveAndEnter(Actor a, Cave c, Action done)
-		{
-			Console.WriteLine("WalkActorToTheCaveAndEnter");
+		//public static void WalkActorToTheCaveAndEnter(Actor a, Cave c, Action done)
+		//{
+		//    Console.WriteLine("WalkActorToTheCaveAndEnter");
 
-			a.Memory_CaveAction = true;
+		//    a.Memory_CaveAction = true;
 
-			Func<double> DistanceToCave = () => (c.Location - a.Location).Length / a.Zoom;
+		//    Func<double> DistanceToCave = () => (c.Location - a.Location).Length / a.Zoom;
 
 
 
-			Action AreWeClouseEnough = null;
+		//    Action AreWeClouseEnough = null;
 
-			AreWeClouseEnough =
-				delegate
-				{
-					if (DistanceToCave() <= a.Zoom)
-					{
-						Console.WriteLine("we are in front of that cave");
+		//    AreWeClouseEnough =
+		//        delegate
+		//        {
+		//            if (DistanceToCave() <= a.Zoom)
+		//            {
+		//                Console.WriteLine("we are in front of that cave");
 
-						a.LocationChanged -= AreWeClouseEnough;
+		//                a.LocationChanged -= AreWeClouseEnough;
 
-						// we need to play this onetime animation ourselves
-						a.PlayAnimation(Actor.AnimationEnum.CaveEnter,
-							delegate
-							{
-								// setting this field indicates that the
-								// actor is inside this cave
-								a.CurrentCave = c;
-								a.Memory_CaveAction = false;
+		//                // we need to play this onetime animation ourselves
+		//                a.PlayAnimation(Actor.AnimationEnum.CaveEnter,
+		//                    delegate
+		//                    {
+		//                        // setting this field indicates that the
+		//                        // actor is inside this cave
+		//                        a.CurrentCave = c;
+		//                        a.Memory_CaveAction = false;
 
-								Console.WriteLine("inside the cave!");
+		//                        Console.WriteLine("inside the cave!");
 
-								if (done != null)
-									done();
-							}
-						);
+		//                        if (done != null)
+		//                            done();
+		//                    }
+		//                );
 
-						// we stop and start entering the cave
-						a.VelocityX = 0;
+		//                // we stop and start entering the cave
+		//                a.VelocityX = 0;
 
-						return;
-					}
+		//                return;
+		//            }
 
-					a.VelocityX += Math.Sign(c.X - a.X) * Actor.DefaultAcceleraton * a.Zoom;
+		//            a.VelocityX += Math.Sign(c.X - a.X) * Actor.DefaultAcceleraton * a.Zoom;
 
-					if (a.VelocityX > 0)
-					{
-						if (a.Animation != Actor.AnimationEnum.WalkRight)
-							a.Animation = Actor.AnimationEnum.WalkRight;
-					}
-					else
-						if (a.Animation != Actor.AnimationEnum.WalkLeft)
-							a.Animation = Actor.AnimationEnum.WalkLeft;
+		//            if (a.VelocityX > 0)
+		//            {
+		//                if (a.Animation != Actor.AnimationEnum.WalkRight)
+		//                    a.Animation = Actor.AnimationEnum.WalkRight;
+		//            }
+		//            else
+		//                if (a.Animation != Actor.AnimationEnum.WalkLeft)
+		//                    a.Animation = Actor.AnimationEnum.WalkLeft;
 
-					Console.WriteLine("AI: that cave is at distance of " + DistanceToCave());
+		//            Console.WriteLine("AI: that cave is at distance of " + DistanceToCave());
 
-				};
+		//        };
 
-			a.LocationChanged += AreWeClouseEnough;
+		//    a.LocationChanged += AreWeClouseEnough;
 
-			AreWeClouseEnough();
-		}
+		//    AreWeClouseEnough();
+		//}
 
 		public static void ActorExitCave(Actor a)
 		{

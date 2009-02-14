@@ -26,6 +26,7 @@ namespace AvalonUgh.Code.Editor
 		///  the code to unlock this level
 		/// </summary>
 		public readonly Attribute.String AttributeCode = "code";
+		public readonly Attribute.String AttributeNextCode = "nextcode";
 
 		public readonly Attribute.String AttributeBackground = "background";
 
@@ -70,6 +71,16 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Vehicle> KnownVehicles = new BindingList<Vehicle>();
 		public readonly BindingList<Tryoperus> KnownTryoperus = new BindingList<Tryoperus>();
 
+		public IEnumerable<ISupportsPhysics> PhysicsObjects
+		{
+			get
+			{
+				return KnownVehicles.Select(k => (ISupportsPhysics)k).
+					Concat(this.KnownRocks.Select(k => (ISupportsPhysics)k)).
+					Concat(this.KnownActors.Select(k => (ISupportsPhysics)k)).
+					Concat(this.KnownTryoperus.Select(k => (ISupportsPhysics)k));
+			}
+		}
 
 		public IEnumerable<Tile> KnownLandingTiles
 		{
@@ -164,7 +175,7 @@ namespace AvalonUgh.Code.Editor
 
 			this.AttributeGravity.Value = 20;
 			this.AttributeWind.Value = 0;
-			
+
 			// the water shall be deep enough to enable diving
 			this.AttributeBorderBottom.Value = 96;
 			this.AttributeBackgroundWidth.Value = 320;
@@ -186,7 +197,7 @@ namespace AvalonUgh.Code.Editor
 				Sign = (Attribute.Int32_Int32)"sign",
 			};
 
-		
+
 
 			Create.tryo.Assigned +=
 				x =>
@@ -248,7 +259,7 @@ namespace AvalonUgh.Code.Editor
 					Console.WriteLine("passenger");
 
 					Selectors.Passenger.Size_2x2.CreateTo(this, SyncAttributePassenger);
-					
+
 				};
 
 			Create.Dino.Assigned +=
@@ -287,7 +298,7 @@ namespace AvalonUgh.Code.Editor
 					}.AddTo(KnownGold).MoveBaseTo(x, y);
 				};
 
-		
+
 			Create.Sign.Assigned +=
 				(x_, SignValue) =>
 				{
@@ -304,7 +315,7 @@ namespace AvalonUgh.Code.Editor
 				};
 
 
-		
+
 
 			var Commands = new AttributeDictonary
 			{
@@ -331,6 +342,7 @@ namespace AvalonUgh.Code.Editor
 				AttributeBackgroundWidth,
 				AttributeBackgroundHeight,
 				AttributeCode,
+				AttributeNextCode,
 				AttributeText,
 				AttributeBackground,
 
@@ -472,7 +484,7 @@ namespace AvalonUgh.Code.Editor
 				this.KnownVehicles,
 				this.KnownPassengers
 			);
-			
+
 		}
 
 		public bool IsDirty;
@@ -741,7 +753,7 @@ namespace AvalonUgh.Code.Editor
 									}
 							}
 					)
-		
+
 				).Concat(
 					this.KnownSigns.Select(
 						Entity =>

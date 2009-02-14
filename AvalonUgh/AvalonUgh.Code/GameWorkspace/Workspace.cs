@@ -452,17 +452,17 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							if (NearbyCave != null)
 							{
-								AIDirector.WalkActorToTheCaveAndEnter(NewPlayer.Actor, NearbyCave,
-									delegate
-									{
-										this.LocalIdentity.HandleFutureFrameInTime(1000,
-											delegate
-											{
-												AIDirector.ActorExitCave(NewPlayer.Actor);
-											}
-										);
-									}
-								);
+								//AIDirector.WalkActorToTheCaveAndEnter(NewPlayer.Actor, NearbyCave,
+								//    delegate
+								//    {
+								//        this.LocalIdentity.HandleFutureFrameInTime(1000,
+								//            delegate
+								//            {
+								//                AIDirector.ActorExitCave(NewPlayer.Actor);
+								//            }
+								//        );
+								//    }
+								//);
 
 								return;
 							}

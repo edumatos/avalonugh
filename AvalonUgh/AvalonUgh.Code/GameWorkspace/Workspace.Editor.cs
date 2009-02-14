@@ -132,6 +132,11 @@ namespace AvalonUgh.Code.GameWorkspace
 						if (this.SaveWindow.Visibility == Visibility.Hidden)
 						{
 							this.SaveWindow.BringContainerToFront();
+
+							this.SaveWindow.PropertyCode.ValueText = this.Level.AttributeCode.Value;
+							this.SaveWindow.PropertyNextLevelCode.ValueText = this.Level.AttributeNextCode.Value;
+							this.SaveWindow.PropertyText.ValueText = this.Level.AttributeText.Value;
+
 							this.SaveWindow.Preview.LevelReference = new LevelReference
 							{
 								Data = this.Level.ToString()

@@ -34,6 +34,8 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			public readonly Statusbar Statusbar;
 
+			public event Action LevelComplete;
+
 			public MissionPort(ConstructorArguments args)
 			{
 				this.Statusbar = new Statusbar(
@@ -82,10 +84,21 @@ namespace AvalonUgh.Code.GameWorkspace
 					delegate
 					{
 						this.Statusbar.HeadCount = this.Level.AttributeHeadCount.Value;
+
 						this.Level.AttributeHeadCount.Assigned +=
 							delegate
 							{
 								this.Statusbar.HeadCount = this.Level.AttributeHeadCount.Value;
+
+								if (this.Level.AttributeHeadCount.Value == 0)
+								{
+									// end of level
+
+
+									if (LevelComplete != null)
+										LevelComplete();
+
+								}
 							};
 
 
@@ -113,7 +126,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			}
 
-	
+
 
 			public Tuple GetRandomEntrypointForVehicle<Tuple>(Func<double, double, Tuple> CreateTuple)
 			{
@@ -149,6 +162,49 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		void InitializePlayButton()
 		{
+			this.PrimaryMission.LevelComplete +=
+				delegate
+				{
+					this.PrimaryMission.Window.ColorOverlay.Opacity = 1;
+
+
+					this.LocalIdentity.HandleFutureFrameInTime(
+						300,
+						delegate
+						{
+							if (this.LocalIdentityIsPrimate)
+							{
+								// MissionStartHint continues here
+								// only the initiator knows about the level to be loaded
+
+								var NextCode = this.PrimaryMission.Level.AttributeNextCode.Value.ToLower();
+
+								var NextLevel2 = this.LoadableLevels.FirstOrDefault(k => k.Code.ToLower() == NextCode);
+
+								if (NextLevel2 == null)
+								{
+									// game over?
+									NextLevel2 = this.KnownLevels.DefaultMissionLevel;
+								}
+
+								this.Sync_LoadLevelEx(this.PrimaryMission, NextLevel2);
+							}
+
+							this.PrimaryMission.WhenLoaded(
+								delegate
+								{
+									this.Console.WriteLine("ready for next mission at frame " + this.LocalIdentity.SyncFrame);
+
+									this.PrimaryMission.Window.ColorOverlay.Opacity = 0;
+
+									EnterMission();
+								}
+							);
+						}
+					);
+
+				};
+
 			this.Sync_MissionStartHint =
 				(int user, int difficulty) =>
 				{
@@ -306,7 +362,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			}
 
 			var Caves = this.PrimaryMission.Level.KnownCaves.ToArray(Cave => new { Cave, Obstacle = Cave.ToObstacle() });
- 
+
 			this.PrimaryMission.Level.KnownPassengers.ForEach(
 				(Passenger, index) =>
 				{
@@ -325,11 +381,19 @@ namespace AvalonUgh.Code.GameWorkspace
 						// waiting point
 						if (index > 0)
 							Passenger.Memory_LogicState = Actor.Memory_LogicState_CaveLifeEnd - 1;
+
+						Console.WriteLine("passanger # " + index + " inside cave");
+					}
+					else
+					{
+						Console.WriteLine("passanger # " + index + " not in cave");
 					}
 				}
 			);
 
-			(KnownAssets.Path.Audio + "/newlevel.mp3").PlaySound();
+
+			SoundBoard.Default.newlevel();
+
 
 			// user is indicating we are ready to play.
 
@@ -401,11 +465,11 @@ namespace AvalonUgh.Code.GameWorkspace
 						}
 					);
 				}
-			); 
+			);
 			#endregion
-		
-		
-			
+
+
+
 
 		}
 	}

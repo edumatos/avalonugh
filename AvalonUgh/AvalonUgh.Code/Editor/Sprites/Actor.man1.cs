@@ -15,6 +15,11 @@ namespace AvalonUgh.Code
 		[Script]
 		public class man1 : Actor
 		{
+			public override int GetActorType()
+			{
+				return 2;
+			}
+
 			public man1(int Zoom): base(Zoom)
 			{
 				this.AvailableFare = 2599;
