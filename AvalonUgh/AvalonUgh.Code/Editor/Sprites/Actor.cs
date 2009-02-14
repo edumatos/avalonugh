@@ -21,7 +21,7 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
-		
+		public int AvailableFare;
 
 		public PlayerInput DefaultPlayerInput;
 
@@ -103,7 +103,7 @@ namespace AvalonUgh.Code
 
 		public bool EnterVehicleBlocked;
 
-		public int FramesWaitedForNextAction;
+		//public int FramesWaitedForNextAction;
 
 		public Cave CurrentCave;
 

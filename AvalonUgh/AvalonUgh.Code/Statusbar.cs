@@ -127,7 +127,7 @@ namespace AvalonUgh.Code
 			f(305, "00");
 
 
-			new Rectangle
+			this.LevelTimeRectangle = new Rectangle
 			{
 				Fill = new SolidColorBrush(Color.FromRgb(0xe0, 0xec, 0x98)),
 				Width = 32 * Arguments.Zoom,
@@ -137,6 +137,13 @@ namespace AvalonUgh.Code
             // E0EC98
         }
 
+		public readonly Rectangle LevelTimeRectangle;
+		public int LevelTime
+		{
+			set
+			{
+			}
+		}
 		public readonly DialogTextBox CurrentFareScoreTextBox;
 		public int InternalCurrentFareScore;
 		public int CurrentFareScore

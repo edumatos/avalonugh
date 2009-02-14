@@ -18,6 +18,9 @@ namespace AvalonUgh.Code
 		{
 			public woman0(int Zoom): base(Zoom)
 			{
+				this.AvailableFare = 1599;
+
+
 				Func<int, Image> ToFrame =
 									index =>
 										new Image

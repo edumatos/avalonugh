@@ -378,6 +378,10 @@ namespace AvalonUgh.Code.GameWorkspace
 			// players contain all locals and external players
 			this.LocalIdentity.Locals.AttachTo(this.Players);
 
+
+			// for every port whenever a level is loaded
+			// for everypassanger whenever a passanger vehicle changes
+			// play a sound
 			this.Ports.ForEachNewOrExistingItem(
 				p =>
 				{

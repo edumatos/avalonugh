@@ -17,6 +17,8 @@ namespace AvalonUgh.Code
 		{
 			public man1(int Zoom): base(Zoom)
 			{
+				this.AvailableFare = 2599;
+
 				Func<int, Image> ToFrame =
 					index =>
 						new Image

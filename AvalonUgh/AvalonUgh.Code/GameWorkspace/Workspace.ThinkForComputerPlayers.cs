@@ -127,7 +127,9 @@ namespace AvalonUgh.Code.GameWorkspace
 								i.Passenger.Animation = Actor.AnimationEnum.Hidden;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
-								i.Passenger.Memory_LogicState = Actor.Memory_LogicState_FareMax;
+								
+								i.Passenger.Memory_LogicState = Actor.Memory_LogicState_FareBase + i.Passenger.AvailableFare;
+
 								i.NearestPickup.Vehicle.CurrentPassengers.Add(i.Passenger);
 								i.Passenger.CurrentPassengerVehicle = i.NearestPickup.Vehicle;
 							}
