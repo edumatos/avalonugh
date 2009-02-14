@@ -36,6 +36,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly Attribute.Int32 AttributeSnow = "snow";
 		public readonly Attribute.Int32 AttributeGravity = "gravity";
 		public readonly Attribute.Int32 AttributeWaterRise = "water-rise";
+		public readonly Attribute.Int32 AttributeHeadCount = "headcount";
 
 		public readonly Attribute.Int32 AttributeBorderTop = "border-top";
 		public readonly Attribute.Int32 AttributeBorderLeft = "border-left";
@@ -339,7 +340,9 @@ namespace AvalonUgh.Code.Editor
 				AttributeBorderBottom,
 
 				AttributeFlashlightOpacity,
-				AttributeAutoscroll
+				AttributeAutoscroll,
+
+				AttributeHeadCount
 			};
 
 

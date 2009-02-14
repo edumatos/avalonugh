@@ -14,7 +14,8 @@ namespace AvalonUgh.Code.Editor
 	[Script]
 	public class SaveWindow : CommonFileWindow
 	{
-		public readonly Tab SavedLevels = "Saved levels";
+		public readonly Tab TabSavedLevels = "Saved levels";
+		public readonly Tab TabLevelScript = "Level Script";
 
 		public event Action<LevelReference> Click;
 
@@ -86,7 +87,10 @@ namespace AvalonUgh.Code.Editor
 
 		public SaveWindow()
 		{
-			this.Tabs.AddRange(SavedLevels);
+			this.Tabs.AddRange(
+				TabSavedLevels,
+				TabLevelScript
+			);
 
 			var PreviewArguments =
 				new MiniLevelWindow.ConstructorArgumentsInfo
@@ -99,7 +103,7 @@ namespace AvalonUgh.Code.Editor
 			this.Preview = new MiniLevelWindow(PreviewArguments);
 
 			var PreviewContainer_Height = (PreviewArguments.ClientHeight + Padding) * VisibleRows;
-		
+
 
 			Items.Add(PropertyText);
 			Items.Add(PropertyCode);
@@ -119,7 +123,7 @@ namespace AvalonUgh.Code.Editor
 				}
 			);
 
-		
+
 
 			var XSaveButton = new Window.Button(
 				new Image
@@ -151,7 +155,7 @@ namespace AvalonUgh.Code.Editor
 
 
 
-			
+
 
 			Preview.ThreeD_Bottom.Fill = Brushes.LightGreen;
 			Preview.ThreeD_Right.Fill = Brushes.LightGreen;
@@ -159,13 +163,63 @@ namespace AvalonUgh.Code.Editor
 			Preview.ThreeD_Top.Fill = Brushes.DarkGreen;
 			Preview.ThreeD_Left.Fill = Brushes.DarkGreen;
 
-			Preview.
-				AttachContainerTo(this.OverlayContainer).
-				MoveContainerTo(0,  this.ClientHeight - Preview.Height);
+
 
 			// text
 			// code
 			// nextcode 
+
+			LevelScriptTextBox = new TextBox
+			{
+				FontFamily = new FontFamily("Courier New"),
+				FontSize = 12,
+				AcceptsReturn = true,
+				BorderThickness = new Thickness(0),
+				Background = Brushes.Black,
+				Foreground = Brushes.GreenYellow
+			};
+
+			LevelScriptTextBox.MoveTo(0, 24 + Padding);
+			LevelScriptTextBox.SizeTo(ClientWidth, ClientHeight - 24 - Padding - this.CancelButton.Height - Padding);
+
+			Preview.
+				AttachContainerTo(this.OverlayContainer).
+				MoveContainerTo(0, this.ClientHeight - Preview.Height);
+
+			this.TabLevelScript.Activated +=
+				delegate
+				{
+					XSaveButton.Hide();
+					LevelScriptTextBox.AttachTo(this.OverlayContainer);
+					LevelScriptTextBox.Focus();
+					Preview.Hide();
+
+					this.Items.ForEach(
+						k =>
+						{
+							k.Key.Hide();
+							k.Value.Hide();
+						}
+					);
+				};
+
+			this.TabLevelScript.Deactivated +=
+				delegate
+				{
+					XSaveButton.Show();
+					LevelScriptTextBox.Orphanize();
+					Preview.Show();
+
+					this.Items.ForEach(
+						k =>
+						{
+							k.Key.Show();
+							k.Value.Show();
+						}
+					);
+				};
 		}
+
+		public readonly TextBox LevelScriptTextBox;
 	}
 }

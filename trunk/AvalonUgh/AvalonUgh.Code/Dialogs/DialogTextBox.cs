@@ -16,8 +16,8 @@ namespace AvalonUgh.Code.Dialogs
 	[Script]
 	public class DialogTextBox : ISupportsContainer
 	{
-        public int FontWidth = PrimitiveFont.Width;
-        public int FontHeigth = PrimitiveFont.Heigth;
+		public int FontWidth = PrimitiveFont.Width;
+		public int FontHeigth = PrimitiveFont.Heigth;
 
 		public Canvas Container { get; set; }
 
@@ -78,6 +78,8 @@ namespace AvalonUgh.Code.Dialogs
 			this.TouchOverlay.Show(value);
 		}
 
+		public bool HoverBehaviorEnabled = true;
+
 		public DialogTextBox()
 		{
 			this.Container = new Canvas
@@ -96,13 +98,15 @@ namespace AvalonUgh.Code.Dialogs
 			this.TouchOverlay.MouseEnter +=
 				delegate
 				{
-					this.Color = Colors.Blue;
+					if (HoverBehaviorEnabled)
+						this.Color = Colors.Blue;
 				};
 
 			this.TouchOverlay.MouseLeave +=
 				delegate
 				{
-					this.Color = Colors.Brown;
+					if (HoverBehaviorEnabled)
+						this.Color = Colors.Brown;
 				};
 
 			this.TouchOverlay.MouseLeftButtonUp +=
@@ -135,8 +139,8 @@ namespace AvalonUgh.Code.Dialogs
 			if (this.Color == Colors.Blue)
 				FontPath = Assets.Shared.KnownAssets.Path.Fonts.Blue;
 
-            if (this.Color == Colors.White)
-                FontPath = Assets.Shared.KnownAssets.Path.Fonts.White;
+			if (this.Color == Colors.White)
+				FontPath = Assets.Shared.KnownAssets.Path.Fonts.White;
 
 
 			var a = new List<string>();
@@ -231,8 +235,8 @@ namespace AvalonUgh.Code.Dialogs
 			if (this.AutoSize)
 				this._Width = Convert.ToInt32(_Width);
 
-            this.Container.SizeTo(_Width, _Height);
-            this.TouchOverlay.SizeTo(_Width, _Height);
+			this.Container.SizeTo(_Width, _Height);
+			this.TouchOverlay.SizeTo(_Width, _Height);
 		}
 
 		public Visibility Visibility

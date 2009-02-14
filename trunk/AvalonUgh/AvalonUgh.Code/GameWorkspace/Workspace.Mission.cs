@@ -81,6 +81,14 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Loaded +=
 					delegate
 					{
+						this.Statusbar.HeadCount = this.Level.AttributeHeadCount.Value;
+						this.Level.AttributeHeadCount.Assigned +=
+							delegate
+							{
+								this.Statusbar.HeadCount = this.Level.AttributeHeadCount.Value;
+							};
+
+
 						this.View.Memory_ScoreChanged +=
 							delegate
 							{

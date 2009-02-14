@@ -59,6 +59,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
 
+				#region Statusbar
 				this.Statusbar = new Statusbar(
 					new Statusbar.ConstructorArguments
 					{
@@ -69,13 +70,24 @@ namespace AvalonUgh.Code.GameWorkspace
 					DesignMode = true
 				};
 
-				Statusbar.MoveContainerTo(0, args.Height - Statusbar.Height - 1 * args.Zoom);
-				Statusbar.AttachContainerTo(this.Window.ContentContainer);
+				this.Statusbar.HeadCountTextBox.Click +=
+					delegate
+					{
+						this.Statusbar.HeadCount = ((this.Statusbar.HeadCount + 1) % (this.Level.KnownPassengers.Count + 1)).Max(1);
+						this.Level.AttributeHeadCount.Value = this.Statusbar.HeadCount;
+					};
+
+
+				this.Statusbar.MoveContainerTo(0, args.Height - Statusbar.Height - 1 * args.Zoom);
+				this.Statusbar.AttachContainerTo(this.Window.OverlayContainer);
+				this.StatusbarHeight = 18;
+
+				#endregion
 
 
 
 				this.SaveWindow = new SaveWindow();
-				this.SaveWindow.SavedLevels.Items.MirrorTo(args.SavedLevels);
+				this.SaveWindow.TabSavedLevels.Items.MirrorTo(args.SavedLevels);
 
 
 				this.LoadWindow = new LoadWindow();
@@ -88,17 +100,9 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 				this.Selectors = args.Selectors;
-				this.StatusbarHeight = 18;
 
 				// serialize current level
-				this.Toolbar.LevelText.GotFocus +=
-					delegate
-					{
-						if (this.Level == null)
-							return;
 
-						this.Toolbar.LevelText.Text = this.Level.ToString();
-					};
 
 				this.Toolbar.EditorSelectorChanged +=
 					delegate
@@ -116,17 +120,25 @@ namespace AvalonUgh.Code.GameWorkspace
 						this.LoadWindow.Show(this.LoadWindow.Visibility == Visibility.Hidden);
 					};
 
+				this.SaveWindow.LevelScriptTextBox.GotFocus +=
+					delegate
+					{
+						this.SaveWindow.LevelScriptTextBox.Text = this.Level.ToString();
+					};
+
 				this.Toolbar.SaveClicked +=
 					delegate
 					{
 						if (this.SaveWindow.Visibility == Visibility.Hidden)
 						{
 							this.SaveWindow.BringContainerToFront();
-							this.SaveWindow.Show();
 							this.SaveWindow.Preview.LevelReference = new LevelReference
 							{
 								Data = this.Level.ToString()
 							};
+
+							this.SaveWindow.Show();
+
 						}
 						else
 						{
@@ -138,6 +150,14 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Loaded +=
 					delegate
 					{
+						this.Statusbar.HeadCount = this.Level.AttributeHeadCount.Value;
+						this.Level.AttributeHeadCount.Assigned +=
+							delegate
+							{
+								this.Statusbar.HeadCount = this.Level.AttributeHeadCount.Value;
+							};
+
+
 						this.View.EditorSelectorNextSize += () => this.Toolbar.EditorSelectorNextSize();
 						this.View.EditorSelectorPreviousSize += () => this.Toolbar.EditorSelectorPreviousSize();
 						this.View.EditorSelector = this.Toolbar.EditorSelector;
@@ -215,7 +235,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			// move it to bottom center
 			this.Editor.Toolbar.MoveContainerTo(
 				(this.Arguments.DefaultWidth - this.Editor.Toolbar.Width) / 2,
-				this.Arguments.DefaultHeight - this.Editor.Toolbar.Padding * 3 - PrimitiveTile.Heigth * 4
+				-1
 			);
 
 			Lobby.Menu.Editor +=
@@ -362,10 +382,10 @@ namespace AvalonUgh.Code.GameWorkspace
 										this.Sync_TeleportTo(
 											this.LocalIdentity.NetworkNumber,
 											this.Editor.PortIdentity,
-											p.IdentityLocal, 
-											t.x, 
-											t.y, 
-											0, 
+											p.IdentityLocal,
+											t.x,
+											t.y,
+											0,
 											0
 										);
 									}
@@ -424,7 +444,7 @@ namespace AvalonUgh.Code.GameWorkspace
 							CurrentRoute = Passanger.Memory_Route,
 						};
 
-						
+
 						//CurrentTravelWindow.ContentContainer.Background = Brushes.Red;
 
 						//CurrentTravelWindow.Container.WriteTreeToConsoleOnClick();
