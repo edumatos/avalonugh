@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using ScriptCoreLib.Shared.Avalon.Tween;
+using System.Windows.Threading;
 
 namespace AvalonUgh.Code
 {
@@ -46,7 +47,7 @@ namespace AvalonUgh.Code
 
 			var Shaker = new Random();
 
-			(1000 / 20).AtInterval(
+			AnimationTimer_FilmScratchEffect = (1000 / 20).AtInterval(
 				delegate
 				{
 					if (this.IsFilmScratchEffectEnabled)
@@ -73,7 +74,11 @@ namespace AvalonUgh.Code
 			);
 		}
 
-	
+
+		DispatcherTimer AnimationTimer_FilmScratchEffect;
+
+
+
 		public event Action IsFilmScratchEffectEnabledChanged;
 		bool _IsFilmScratchEffectEnabled;
 		public bool IsFilmScratchEffectEnabled

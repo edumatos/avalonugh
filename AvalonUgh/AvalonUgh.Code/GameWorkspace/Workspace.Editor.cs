@@ -424,56 +424,48 @@ namespace AvalonUgh.Code.GameWorkspace
 				};
 			#endregion
 
-			var CurrentTravelWindow = default(Window);
-			var CurrentTravelWindowAnimation = default(AnimatedOpacity<Canvas>);
+			var CurrentTravelWindows = new BindingList<Window>().AttachTo(this.Container);
+
 
 			this.Editor.ArrowClick +=
 				(Position, args) =>
 				{
-					if (CurrentTravelWindow != null)
-					{
-						var CurrentTravelWindow_ = CurrentTravelWindow;
+					CurrentTravelWindows.RemoveAll();
 
-						CurrentTravelWindowAnimation.SetOpacity(0, () => CurrentTravelWindow_.OrphanizeContainer());
-						CurrentTravelWindowAnimation = null;
-						CurrentTravelWindow = null;
-					}
 
 					var x = Position.ContentX * DefaultZoom;
 					var y = Position.ContentY * DefaultZoom;
 
-					var Passanger = this.Editor.Level.KnownPassengers.FirstOrDefault(k => k.ToObstacle().Contains(x, y));
-
-					if (Passanger != null)
-					{
-						// show a dialog for travel order
-
-						this.Console.WriteLine("Memory_Route: " + Passanger.Memory_Route.Value);
-
-						CurrentTravelWindow = new RouteWindow
+					this.Editor.Level.KnownPassengers.Where(k => k.ToObstacle().Contains(x, y)).ForEach(
+						(Actor Passanger, int index) =>
 						{
-							DragContainer = this.Container,
-							CurrentLevel = this.Editor.Level,
-							CurrentRoute = Passanger.Memory_Route,
-						};
 
 
-						//CurrentTravelWindow.ContentContainer.Background = Brushes.Red;
+							// show a dialog for travel order
 
-						//CurrentTravelWindow.Container.WriteTreeToConsoleOnClick();
+							this.Console.WriteLine("Memory_Route: " + Passanger.Memory_Route.Value);
+
+							var CurrentTravelWindow = new RouteWindow
+							{
+								DragContainer = this.Container,
+								CurrentLevel = this.Editor.Level,
+								CurrentRoute = Passanger.Memory_Route,
+							};
 
 
-						CurrentTravelWindowAnimation = CurrentTravelWindow.Container.ToAnimatedOpacity();
-						CurrentTravelWindow.AttachContainerTo(this);
+							//CurrentTravelWindow.ContentContainer.Background = Brushes.Red;
 
-						var p = args.GetPosition(this.Container);
+							//CurrentTravelWindow.Container.WriteTreeToConsoleOnClick();
 
-						CurrentTravelWindow.MoveContainerTo(p.X + 4, p.Y + 4);
 
-						CurrentTravelWindowAnimation.Opacity = 0;
-						CurrentTravelWindow.Show();
-						CurrentTravelWindowAnimation.Opacity = 1;
-					}
+
+							var p = args.GetPosition(this.Container);
+
+							CurrentTravelWindow.MoveContainerTo(p.X + 4, p.Y + 4 + CurrentTravelWindow.Height * index);
+							CurrentTravelWindow.AddTo(CurrentTravelWindows);
+
+						}
+					);
 				};
 		}
 

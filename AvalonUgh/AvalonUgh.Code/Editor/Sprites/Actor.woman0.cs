@@ -68,7 +68,7 @@ namespace AvalonUgh.Code
 				this.CaveEnterFrames = Enumerable.Range(60, 8).ToArray(ToFrame);
 				this.CaveExitFrames = Enumerable.Range(50, 9).ToArray(ToFrame);
 
-				Initialize();
+				InitializeAnimation();
 			}
 		}
 	}

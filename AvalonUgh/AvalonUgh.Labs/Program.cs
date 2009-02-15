@@ -18,11 +18,18 @@ namespace AvalonUgh.Labs
 		[STAThread]
 		static public void Main(string[] args)
 		{
+			TimerEventTracer.Trace(
+				delegate
+				{
+					var w = new LabsCanvas(false).ToWindow();
+
+					w.ShowDialog();
+				}
+			);
 			
 
-			var w = new LabsCanvas(false).ToWindow();
-
-			w.ShowDialog();
+			Console.WriteLine("press any key!");
+			Console.ReadKey();
 		}
 	}
 }

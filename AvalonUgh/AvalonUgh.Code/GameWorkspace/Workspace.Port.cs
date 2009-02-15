@@ -113,11 +113,11 @@ namespace AvalonUgh.Code.GameWorkspace
 				}
 				set
 				{
-					if (Level != null)
-						Level.Clear();
-
 					if (View != null)
+					{
 						View.OrphanizeContainer();
+						View.Dispose();
+					}
 
 
 					Level = null;
