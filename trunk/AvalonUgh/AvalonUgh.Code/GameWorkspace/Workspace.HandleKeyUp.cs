@@ -161,7 +161,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			if (args.Key == Key.M)
 			{
-				this.Music.Enabled = !this.Music.Enabled;
+				this.Audio_Music.Enabled = !this.Audio_Music.Enabled;
 			}
 
 			if (args.Key == Key.C)
@@ -244,7 +244,7 @@ namespace AvalonUgh.Code.GameWorkspace
 								);
 
 								this.CurrentPort = this.Lobby;
-								Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3");
+								Audio_Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3");
 
 
 								this.Lobby.Window.BringContainerToFront();

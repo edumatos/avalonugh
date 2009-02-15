@@ -1,31 +1,40 @@
 # generated map
 # text: Introducing funny water
 # code: FIGURATIVETHEATRE
+# nextcode: BURNTOFFERINGS
 # autoscroll: 0
-# water: 21
+# water: 8
+# water-rise: 1
+# wind: 0
+# snow: 0
+# background:
+# headcount: 3
 ######################
 S-                    
 | S-S-S-S-SS-SS-SR-R--
 | | | | C-|| || || |  
-| | | | |  S-S| S-R-R-
+| | | | |1 S-S| S-R-R-
 # sign: 168;4
 S--S--| P--| || | | | 
 |  |  S-|  | S-S| SR- 
  S-SS-SR-RR-C-S-| ||  
 # rock: 256
- | || || R--| |  S--R-
+ | || || R--|1|  S--R-
 # sign: 264;3
  | S| R--|  BBBBB|  | 
 # tree: 80
  S--P-|  RR-SS-S-S-R- 
  |  SS--C-| || | | |  
- S- ||  | FR-| | | R- 
+ S- ||  |0FR-| | | R- 
 # sign: 56;2
 P-BBBP-P--PR-S-| SS-R-
 | SS-| |  R| SS-SS-S| 
 R-|| R-R--R-S-| || C-R
-| S| | |  | | |  | | R
+| S| | |  | | |  | |0R
 # sign: 264;1
  R-| SR-RSR--BBBPBBBBP
  |   ||  ||           
 ######################
+# passenger: 0;0;0;0;0;0;64000;36000;1;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;28800;26400;1;1;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;41600;16800;1;0;0;0;0;0;0;0
