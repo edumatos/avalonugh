@@ -85,6 +85,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 			frames.AsCyclicEnumerable().ForEach(
 				(Image value, Action SignalNext) =>
 				{
+					if (IsDisposed)
+						return;
+
 					value.Visibility = Visibility.Visible;
 
 					(1000 / 30).AtDelay(
@@ -154,8 +157,12 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		#region IDisposable Members
 
+		public bool IsDisposed;
+
 		public void Dispose()
 		{
+			IsDisposed = true;
+
 		}
 
 		#endregion

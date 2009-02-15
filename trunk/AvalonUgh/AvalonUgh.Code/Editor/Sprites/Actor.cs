@@ -14,6 +14,7 @@ using AvalonUgh.Code.Editor.Tiles;
 using AvalonUgh.Code.Editor.Sprites;
 using System.ComponentModel;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace AvalonUgh.Code
 {
@@ -266,14 +267,14 @@ namespace AvalonUgh.Code
 						Frame.Show();
 
 
-						this.NextAnimationFrame = 
+						this.NextAnimationFrame =
 							LambdaExtensions.WhereCounter(
 								delegate
 								{
 									NextAnimationFrame = null;
 									Frame.Hide();
 									SignalNext();
-								}, 
+								},
 							3);
 					}
 				)(done);
@@ -319,9 +320,15 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		protected void Initialize()
+		DispatcherTimer AnimationTimer_Idle;
+		DispatcherTimer AnimationTimer_Talk;
+		DispatcherTimer AnimationTimer_WalkLeft;
+		DispatcherTimer AnimationTimer_WalkRight;
+		DispatcherTimer AnimationTimer_Panic;
+
+		protected void InitializeAnimation()
 		{
-			this.IdleInterval.AtIntervalWithCounter(
+			AnimationTimer_Idle = this.IdleInterval.AtIntervalWithCounter(
 				i =>
 				{
 					if (Animation != AnimationEnum.Idle)
@@ -339,7 +346,7 @@ namespace AvalonUgh.Code
 				}
 			);
 
-			this.TalkInterval.AtIntervalWithCounter(
+			AnimationTimer_Talk = this.TalkInterval.AtIntervalWithCounter(
 				i =>
 				{
 					if (Animation != AnimationEnum.Talk)
@@ -357,7 +364,7 @@ namespace AvalonUgh.Code
 				}
 			);
 
-			this.WalkLeftInterval.AtIntervalWithCounter(
+			AnimationTimer_WalkLeft = this.WalkLeftInterval.AtIntervalWithCounter(
 				i =>
 				{
 					if (Animation != AnimationEnum.WalkLeft)
@@ -375,7 +382,7 @@ namespace AvalonUgh.Code
 				}
 			);
 
-			this.WalkRightInterval.AtIntervalWithCounter(
+			AnimationTimer_WalkRight = this.WalkRightInterval.AtIntervalWithCounter(
 				i =>
 				{
 					if (Animation != AnimationEnum.WalkRight)
@@ -393,7 +400,7 @@ namespace AvalonUgh.Code
 				}
 			);
 
-			this.PanicInterval.AtIntervalWithCounter(
+			AnimationTimer_Panic = this.PanicInterval.AtIntervalWithCounter(
 				i =>
 				{
 					if (Animation != AnimationEnum.Panic)
@@ -542,7 +549,7 @@ namespace AvalonUgh.Code
 
 			if (e.Keyboard.IsPressedLeft)
 			{
-	
+
 
 				// at some point we should not be able to accelerate
 				if (!IsMaxVelocityXReached)
@@ -550,7 +557,7 @@ namespace AvalonUgh.Code
 			}
 			else if (e.Keyboard.IsPressedRight)
 			{
-			
+
 
 				if (!IsMaxVelocityXReached)
 					this.VelocityX += this.Zoom * DefaultAcceleraton * AccelerationHandicap;
@@ -646,7 +653,12 @@ namespace AvalonUgh.Code
 
 		public void Dispose()
 		{
-			this.Animation = AnimationEnum.Hidden;
+			this.AnimationTimer_Idle.Stop();
+			this.AnimationTimer_Panic.Stop();
+			this.AnimationTimer_Talk.Stop();
+			this.AnimationTimer_WalkLeft.Stop();
+			this.AnimationTimer_WalkRight.Stop();
+
 			this.Container.Orphanize();
 
 		}

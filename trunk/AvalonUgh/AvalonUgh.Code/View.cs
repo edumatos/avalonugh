@@ -547,6 +547,11 @@ namespace AvalonUgh.Code
 		public void Dispose()
 		{
 			// we need to kill the timers
+
+			AnimationTimer_FilmScratchEffect.Stop();
+
+			if (this.Level != null)
+				this.Level.Dispose();
 		}
 
 		#endregion

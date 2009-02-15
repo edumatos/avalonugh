@@ -1,21 +1,28 @@
 # generated map
 # text: Introducing dino
 # code: BURNTOFFERINGS
+# nextcode: MYSTERIUMINQUITATIS
 # autoscroll: 0
 # water: 26
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background: 
+# headcount: 1
 ######################
  S-S  S-         S    
  | |S-| S-SS-S-S-|RR--
  SS-S-| | || | | R-|  
  || | S--C-| | R-| R- 
-S-| | |  | |  R-R--|  
+S-| | |  |0|  R-R--|  
 # tree: 112
 # sign: 216;1
 S-S--PP-PP-P--| |  R--
 | |  S-C-| |  SS--S|  
-SS-S | | R-R-C-|  S-R-
+SS-S | |1R-R-C-|  S-R-
 # sign: 72;2
-|| P-P-P-| RF|  S-| | 
+# rock: 80
+|| P-P-P-| RF|0 S-| | 
 # sign: 248;3
  | S-S-R-R--P--P| | S-
  | S-| | |  |  S| S-| 
@@ -28,3 +35,5 @@ S-S-SS-|  | | S-S--R-
 | | S| S-S| | | |  |  
   | || |              
 ######################
+# passenger: 0;0;0;0;0;0;25600;16800;8978;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;25600;16800;12579;0;0;0;0;0;0;0

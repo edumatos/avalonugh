@@ -241,17 +241,19 @@ namespace AvalonUgh.Code.Editor
 
 		}
 
-		public void Clear()
-		{
-			foreach (var k in this.GetRemovableEntities().ToArray())
-			{
-				k.Dispose();
-			}
+		//public void Clear()
+		//{
+		//    foreach (var k in this.GetRemovableEntities().ToArray())
+		//    {
+		//        k.Dispose();
+		//    }
 
-			foreach (var k in this.GetRemovablePlatforms().ToArray())
-			{
-				k.Dispose();
-			}
-		}
+		//    foreach (var k in this.GetRemovablePlatforms().ToArray())
+		//    {
+		//        k.Dispose();
+		//    }
+		//}
+
+
 	}
 }
