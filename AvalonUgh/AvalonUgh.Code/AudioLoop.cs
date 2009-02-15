@@ -59,6 +59,9 @@ namespace AvalonUgh.Code
 			}
 			set
 			{
+				if (InternalEnabled == value)
+					return;
+
 				InternalEnabled = value;
 				Update();
 			}

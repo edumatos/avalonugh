@@ -247,7 +247,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			Lobby.Menu.Editor +=
 				 delegate
 				 {
-					 Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/highscore_music.mp3");
+					 Audio_Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/highscore_music.mp3");
 
 					 if (this.Editor.LevelReference == null)
 					 {

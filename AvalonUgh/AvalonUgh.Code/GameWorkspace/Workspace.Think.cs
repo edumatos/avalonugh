@@ -168,6 +168,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				p.AddAcceleration();
 			}
 
+			this.Audio_WaterRise.Enabled = this.Ports.Where(k => k.Level != null).Where(k => k.Level.AttributeWaterRise.BooleanValue).Any();
 
 			foreach (var p in this.Ports)
 			{
@@ -175,7 +176,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				{
 					this.ThinkForComputerPlayers(p.View);
 
-					if (this.LocalIdentity.SyncFrame % 30 == 0)
+					if (this.LocalIdentity.SyncFrame % 80 == 0)
 						if (p.Level.AttributeWaterRise.BooleanValue)
 							p.Level.AttributeWater.Value++;
 
@@ -201,7 +202,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						t.AddAcceleration(t.DefaultPlayerInput);
 					}
 
-					if (this.LocalIdentity.SyncFrame % 20 == 0)
+					if (this.LocalIdentity.SyncFrame % 10 == 0)
 						if (p.Level.KnownBirds.Count > 0)
 							SoundBoard.Default.wings1();
 

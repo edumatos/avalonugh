@@ -77,7 +77,9 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		public readonly ConstructorArguments Arguments;
 
-		readonly AudioLoop Music;
+		readonly AudioLoop Audio_Music;
+		readonly AudioLoop Audio_WaterRise;
+		readonly AudioLoop Audio_Snore;
 
 
 		public Workspace(ConstructorArguments args)
@@ -92,12 +94,28 @@ namespace AvalonUgh.Code.GameWorkspace
 			};
 
 
-			this.Music = new AudioLoop
+			this.Audio_Music = new AudioLoop
 			{
 				Volume = 0.6,
 				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/ugh_music.mp3"),
 				
 			};
+
+			this.Audio_WaterRise = new AudioLoop
+			{
+
+				Volume = 0.5,
+				Start = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise_start.mp3"),
+				Stop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise_stop.mp3"),
+				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/water_raise2.mp3")
+			};
+
+			this.Audio_Snore = new AudioLoop
+			{
+				Volume = 0.4,
+				Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/snore1.mp3"),
+			};
+
 
 			this.EmbeddedLevels.AddRange(
 				KnownLevels.Levels
