@@ -9,11 +9,12 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using System.Windows;
 using AvalonUgh.Assets.Shared;
+using AvalonUgh.Code.Editor;
 
-namespace AvalonUgh.Code
+namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
-	public class Bird : ISupportsContainer, ISupportsObstacle
+	public class Bird : ISupportsContainer, ISupportsObstacle, ISupportsPhysics, IDisposable
 	{
 		// PTERODACTYL
 		//-----------
@@ -21,6 +22,7 @@ namespace AvalonUgh.Code
 		//WILL CRASH AT ONCE. JUST BEFORE PTERODACTYL APPEARS YOU WILL HEAR A CRY
 		//AS SOON AS YOU HEAR THIS UNUSUAL NOISE, GET READY TO TAKE EVASIVE ACTION.
 
+		public Bird StartPosition;
 
 		public Canvas Container { get; set; }
 
@@ -28,10 +30,6 @@ namespace AvalonUgh.Code
 
 		public readonly int Width;
 		public readonly int Height;
-
-
-		public double X { get; set; }
-		public double Y { get; set; }
 
 
 		public int HalfHeight
@@ -111,5 +109,55 @@ namespace AvalonUgh.Code
 				//SupportsVelocity = this
 			};
 		}
+
+		#region ISupportsPhysics Members
+
+		public int Stability { get; set; }
+
+
+		public void StabilityReached()
+		{
+		}
+
+		public bool PhysicsDisabled { get; set; }
+
+		public double MassCenterModifier { get; set; }
+
+
+		public double Density { get; set; }
+
+		public double LastVelocity { get; set; }
+		public double LastCollisionVelocity { get; set; }
+		public double LastWaterCollisionVelocity { get; set; }
+
+		#endregion
+
+		public readonly RoundedDouble InternalVelocityX = new RoundedDouble();
+		public readonly RoundedDouble InternalVelocityY = new RoundedDouble();
+		public readonly RoundedDouble InternalX = new RoundedDouble();
+		public readonly RoundedDouble InternalY = new RoundedDouble();
+
+
+		public double VelocityX { get { return InternalVelocityX.Value; } set { InternalVelocityX.Value = value; } }
+		public double VelocityY { get { return InternalVelocityY.Value; } set { InternalVelocityY.Value = value; } }
+
+		public double X { get { return InternalX.Value; } set { InternalX.Value = value; } }
+		public double Y { get { return InternalY.Value; } set { InternalY.Value = value; } }
+
+
+		#region ISupportsMoveTo Members
+
+
+		public event Action LocationChanged;
+
+		#endregion
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+		}
+
+		#endregion
 	}
 }

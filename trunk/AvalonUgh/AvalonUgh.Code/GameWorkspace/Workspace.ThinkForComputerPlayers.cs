@@ -19,6 +19,16 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		private void ThinkForComputerPlayers(View view)
 		{
+			foreach (var bird in view.Level.KnownBirds)
+			{
+				bird.VelocityY = -0.1 * view.Level.Zoom;
+				bird.VelocityX = -1.5 * view.Level.Zoom;
+
+				if (bird.X < -bird.Width)
+					bird.X = view.ContentActualWidth;
+			}
+
+			
 
 			//if (this.LocalIdentity.SyncFrame % 20 != 0)
 			//    return;

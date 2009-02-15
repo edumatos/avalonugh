@@ -37,13 +37,19 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							 Action done = () => Lobby.Window.ColorOverlay.Opacity = 0;
 
-
-							 ShowSplashCreditLogo(
-								 delegate
-								 {
-									 ShowSplashCredit(TextContainers, done);
-								 }
-							 );
+							 if (this.Arguments.ShowCredits)
+							 {
+								 ShowSplashCreditLogo(
+									 delegate
+									 {
+										 ShowSplashCredit(TextContainers, done);
+									 }
+								 );
+							 }
+							 else
+							 {
+								 done();
+							 }
 
 
 						 }

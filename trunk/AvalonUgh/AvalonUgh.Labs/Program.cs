@@ -20,7 +20,7 @@ namespace AvalonUgh.Labs
 		{
 			
 
-			var w = new LabsCanvas().ToWindow();
+			var w = new LabsCanvas(false).ToWindow();
 
 			w.ShowDialog();
 		}

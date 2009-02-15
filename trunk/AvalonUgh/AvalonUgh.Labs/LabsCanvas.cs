@@ -41,7 +41,7 @@ namespace AvalonUgh.Labs.Shared
 #endif
 
 
-		public LabsCanvas()
+		public LabsCanvas(bool ShowCredits)
 		{
 			Width = DefaultWidth;
 			Height = DefaultHeight;
@@ -56,7 +56,9 @@ namespace AvalonUgh.Labs.Shared
 					PortHeight = PortHeight,
 
 					DefaultWidth = DefaultWidth,
-					DefaultHeight = DefaultHeight
+					DefaultHeight = DefaultHeight,
+
+					ShowCredits = ShowCredits
 				}
 			);
 

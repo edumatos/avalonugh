@@ -13,6 +13,8 @@ namespace AvalonUgh.Assets.Avalon
 	{
 		public static readonly SoundBoard Default = new SoundBoard();
 
+		public readonly Action bird_cry = f("bird_cry");
+		public readonly Action wings1 = f("wings1");
 		public readonly Action newlevel = f("newlevel");
 		public readonly Action treasure = f("treasure");
 		public readonly Action jump = f("jump");

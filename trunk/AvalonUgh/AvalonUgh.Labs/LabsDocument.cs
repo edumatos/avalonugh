@@ -43,7 +43,7 @@ namespace AvalonUgh.Labs.JavaScript
 					c.style.overflow = ScriptCoreLib.JavaScript.DOM.IStyle.OverflowEnum.hidden;
 
 					//// wpf here
-					new TargetCanvas().AttachToContainer(c);
+					new TargetCanvas(true).AttachToContainer(c);
 				}
 			).AttachToDocument();
 
