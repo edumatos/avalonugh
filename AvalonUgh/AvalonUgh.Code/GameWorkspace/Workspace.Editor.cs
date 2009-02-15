@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using AvalonUgh.Code.Editor.Sprites;
 using AvalonUgh.Code.Diagnostics;
+using AvalonUgh.Assets.Avalon;
 namespace AvalonUgh.Code.GameWorkspace
 {
 	partial class Workspace
@@ -323,6 +324,13 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Editor.Loaded +=
 				delegate
 				{
+					this.Editor.Level.KnownBirds.ForEachNewOrExistingItem(
+						NewBird =>
+						{
+							SoundBoard.Default.bird_cry();
+						}
+					);
+
 					this.Editor.View.TouchOverlay.MouseMove +=
 						(_sender, _args) =>
 						{

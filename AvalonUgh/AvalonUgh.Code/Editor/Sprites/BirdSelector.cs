@@ -14,6 +14,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class BirdSelector : SelectorBase
 	{
+		public readonly SelectorSize_2x3 Size_2x3 = new SelectorSize_2x3();
 
 		public BirdSelector()
 		{
@@ -33,18 +34,18 @@ namespace AvalonUgh.Code.Editor.Sprites
 			this.Sizes =
 				new[]
 				{
-					new Size_2x2()
+					Size_2x3
 				};
 		}
 
 
 		[Script]
-		public class Size_2x2 : SpriteSelector
+		public class SelectorSize_2x3 : SpriteSelector
 		{
-			public Size_2x2()
+			public SelectorSize_2x3()
 			{
 				Width = PrimitiveTile.Width * 2;
-				Height = PrimitiveTile.Heigth * 2;
+				Height = PrimitiveTile.Heigth * 3;
 				PercisionX = PrimitiveTile.Width / 2;
 				PercisionY = PrimitiveTile.Heigth;
 			}
@@ -62,11 +63,83 @@ namespace AvalonUgh.Code.Editor.Sprites
 				//    Level.KnownTrees.Remove(k => k.ToObstacle().Intersects(TriggerObstacle));
 				//}
 
+				var g = new Bird(Level.Zoom)
+				{
+					//Selector = this
+				};
+				g.MoveTo(x, y);
+				g.Container.Opacity = 0.5;
+
 				new Bird(Level.Zoom)
 				{
+					StartPosition = g
 					//Selector = this
 				}.AddTo(Level.KnownBirds).MoveTo(x, y);
 			}
+
+
+			public static Level.Attribute.Int32_Array SerializeBird(Bird i, Level.ToStringMode Mode)
+			{
+				var StartPosition = i.StartPosition;
+
+				Level.Attribute.Int32_Array a = "bird";
+
+				if (Mode == Level.ToStringMode.ForSync)
+				{
+					a.Value[0] = 1;
+
+					a[1] = i.X;
+					a[2] = i.Y;
+					a[3] = i.VelocityX;
+					a[4] = i.VelocityY;
+				}
+
+				a[6] = StartPosition.X;
+				a[7] = StartPosition.Y;
+
+				return a;
+			}
+
+			public void CreateTo(Level level, Level.Attribute.Int32_Array source)
+			{
+				var ForSync = source.Value[0];
+
+				var gx = source[6];
+				var gy = source[7];
+
+				var g = new Bird(level.Zoom);
+
+				g.Container.Opacity = 0.5;
+				g.MoveTo(gx, gy);
+
+
+				var a = new Bird(level.Zoom);
+			
+				a.StartPosition = g;
+
+
+				if (ForSync == 1)
+				{
+
+					var zx = source[1];
+					var zy = source[2];
+					var zvx = source[3];
+					var zvy = source[4];
+
+					a.VelocityX = zvx;
+					a.VelocityY = zvy;
+					a.MoveTo(zx, zy);
+
+				}
+				else
+				{
+
+					a.MoveTo(gx, gy);
+				}
+
+				a.AddTo(level.KnownBirds);
+			}
+
 
 		}
 

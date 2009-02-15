@@ -9,6 +9,7 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Media;
 using System.IO;
 using AvalonUgh.Code.Editor.Tiles;
+using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code.Editor
 {
@@ -198,6 +199,11 @@ namespace AvalonUgh.Code.Editor
 					WriteAttribute(SerializePassenger(i, Mode));
 				}
 
+				foreach (var i in this.KnownBirds)
+				{
+					WriteAttribute( BirdSelector.SelectorSize_2x3.SerializeBird(i, Mode));
+				}
+
 				return s.ToString();
 			}
 		}
@@ -235,6 +241,7 @@ namespace AvalonUgh.Code.Editor
 		}
 
 
+
 		private Attribute.Int32_Array SerializePassenger(AvalonUgh.Code.Actor i, ToStringMode Mode)
 		{
 			var StartPosition = i.StartPosition;
@@ -262,8 +269,7 @@ namespace AvalonUgh.Code.Editor
 			a[6] = StartPosition.X;
 			a[7] = StartPosition.Y;
 
-			StartPosition.X = a[6];
-			StartPosition.Y = a[7];
+			
 
 			a.Value[8] = (int)i.Memory_Route.Value;
 			a.Value[9] = (int)i.GetActorType();

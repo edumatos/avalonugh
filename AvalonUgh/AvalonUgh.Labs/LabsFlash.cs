@@ -29,7 +29,7 @@ namespace AvalonUgh.Labs.ActionScript
 
 
 			// spawn the wpf control
-			AvalonExtensions.AttachToContainer(new TargetCanvas(), this);
+			AvalonExtensions.AttachToContainer(new TargetCanvas(true), this);
 		}
 
 		static LabsFlash()

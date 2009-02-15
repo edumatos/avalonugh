@@ -71,6 +71,8 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			public int DefaultWidth;
 			public int DefaultHeight;
+
+			public bool ShowCredits;
 		}
 
 		public readonly ConstructorArguments Arguments;

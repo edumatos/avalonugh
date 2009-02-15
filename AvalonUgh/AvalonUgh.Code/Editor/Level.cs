@@ -248,9 +248,18 @@ namespace AvalonUgh.Code.Editor
 			SyncAttributePassenger.Assigned +=
 				delegate
 				{
-					Console.WriteLine("passenger");
 
 					Selectors.Passenger.Size_2x2.CreateTo(this, SyncAttributePassenger);
+
+				};
+
+
+			Attribute.Int32_Array SyncAttributeBird = "bird";
+			SyncAttributeBird.Assigned +=
+				delegate
+				{
+
+					Selectors.Bird.Size_2x3.CreateTo(this, SyncAttributeBird);
 
 				};
 
@@ -323,6 +332,7 @@ namespace AvalonUgh.Code.Editor
 				SyncAttributeVehicle,
 				SyncAttributeRock,
 				SyncAttributePassenger,
+				SyncAttributeBird,
 
 				AttributeWind,
 				AttributeSnow,
@@ -549,44 +559,6 @@ namespace AvalonUgh.Code.Editor
 
 
 
-		//Func<IEnumerable<ISupportsPhysics>> ToPhysicsObjects_Cache;
-		//public IEnumerable<ISupportsPhysics> ToPhysicsObjects()
-		//{
-		//    // we will recalculate tile obstacles only when they actually change
-		//    if (ToPhysicsObjects_Cache == null)
-		//    {
-		//        var Source =
-		//            new IBindingList[]
-		//            {
-		//                KnownVehicles,
-		//                KnownRocks,
-		//                KnownActors,
-		//                KnownTryoperus,
-		//            };
-
-		//        ToPhysicsObjects_Cache =
-		//            Source.WhereListChanged(
-		//                delegate
-		//                {
-		//                    Console.WriteLine("Level.ToPhysicsObjects");
-
-		//                    var a = new List<ISupportsPhysics>();
-
-		//                    foreach (var i in Source)
-		//                    {
-		//                        foreach (var j in i)
-		//                        {
-		//                            a.Add((ISupportsPhysics)j);
-		//                        }
-		//                    }
-
-		//                    return a.AsEnumerable();
-		//                }
-		//            );
-		//    }
-
-		//    return ToPhysicsObjects_Cache();
-		//}
 
 
 
@@ -843,6 +815,37 @@ namespace AvalonUgh.Code.Editor
 										Entity.Dispose();
 									}
 							}
+					)
+				).Concat(
+					this.KnownBirds.SelectMany(
+						Entity =>
+						{
+							return new[]
+							{
+								new RemovableObject
+								{
+									Obstacle = Entity.ToObstacle(),
+									Dispose =
+										delegate
+										{
+											this.KnownBirds.Remove(Entity);
+											Entity.Dispose();
+										}
+								},
+									new RemovableObject
+								{
+									Obstacle = Entity.StartPosition.ToObstacle(),
+									Dispose =
+										delegate
+										{
+											this.KnownBirds.Remove(Entity);
+											Entity.Dispose();
+										}
+								}
+								// jsc bug: array should be converted to enumerable
+							}.AsEnumerable();
+
+						}
 					)
 				);
 		}

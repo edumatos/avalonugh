@@ -53,6 +53,7 @@ namespace AvalonUgh.Code
 			this.Level.KnownRocks.ForEach(k => Apply(k, Obstacles));
 			this.Level.KnownActors.ForEach(k => Apply(k, Obstacles));
 			this.Level.KnownTryoperus.ForEach(k => Apply(k, Obstacles));
+			this.Level.KnownBirds.ForEach(k => Apply(k, Obstacles));
 
 
 
@@ -157,6 +158,11 @@ namespace AvalonUgh.Code
 			bool DinoWindEnabled = true;
 
 
+			var AsBird = twin as Bird;
+			if (AsBird != null)
+			{
+				Obstacles = new Obstacle[0].AsEnumerable();
+			}
 
 			var actor = twin as Actor;
 			if (actor != null)

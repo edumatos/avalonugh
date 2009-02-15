@@ -8,6 +8,7 @@ using ScriptCoreLib;
 using AvalonUgh.Code.Editor;
 using ScriptCoreLib.Shared.Lambda;
 using System.Collections.Generic;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code.GameWorkspace
 {
@@ -200,6 +201,9 @@ namespace AvalonUgh.Code.GameWorkspace
 						t.AddAcceleration(t.DefaultPlayerInput);
 					}
 
+					if (this.LocalIdentity.SyncFrame % 20 == 0)
+						if (p.Level.KnownBirds.Count > 0)
+							SoundBoard.Default.wings1();
 
 					p.Level.Physics.Apply();
 

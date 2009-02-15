@@ -190,7 +190,7 @@ namespace AvalonUgh.Code.Editor
 				delegate
 				{
 					XSaveButton.Hide();
-					LevelScriptTextBox.AttachTo(this.OverlayContainer);
+					LevelScriptTextBox.Orphanize().AttachTo(this.OverlayContainer);
 					LevelScriptTextBox.Focus();
 					Preview.Hide();
 
