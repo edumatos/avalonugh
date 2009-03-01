@@ -587,7 +587,7 @@ namespace AvalonUgh.Code.Editor
 							Console.WriteLine("Level.ToPlatformSnapshots");
 
 							// clear any thought shapes
-							ContentInfoColoredShapes.RemoveAll();
+							//ContentInfoColoredShapes.RemoveAll();
 
 							// regardless of us returning that snapshot
 							// it may have already be rendered

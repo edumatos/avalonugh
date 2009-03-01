@@ -32,6 +32,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public readonly int Height;
 
 
+		public bool IsSleeping { get; set; }
+
 		public int HalfHeight
 		{
 			get
@@ -58,6 +60,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		public Bird(int Zoom)
 		{
+			this.Density = 3;
 			this.Zoom = Zoom;
 
 			this.Width = PrimitiveTile.Width * Zoom * 2;
@@ -69,36 +72,77 @@ namespace AvalonUgh.Code.Editor.Sprites
 				Height = this.Height
 			};
 
-
-			var frames = Enumerable.Range(0, 13).ToArray(
-				index =>
-					new Image
-					{
-						Source = (Assets.Shared.KnownAssets.Path.Sprites + "/bird0_" + ("" + index).PadLeft(2, '0') + "_2x3.png").ToSource(),
-						Stretch = Stretch.Fill,
-						Width = this.Width,
-						Height = this.Height,
-						Visibility = Visibility.Hidden
-					}.AttachTo(this.Container)
-			);
-
-			frames.AsCyclicEnumerable().ForEach(
-				(Image value, Action SignalNext) =>
-				{
-					if (IsDisposed)
-						return;
-
-					value.Visibility = Visibility.Visible;
-
-					(1000 / 30).AtDelay(
-						delegate
+			{
+				var frames = Enumerable.Range(0, 13).ToArray(
+					index =>
+						new Image
 						{
-							value.Visibility = Visibility.Hidden;
-							SignalNext();
-						}
-					);
-				}
-			);
+							Source = (Assets.Shared.KnownAssets.Path.Sprites + "/bird0_" + ("" + index).PadLeft(2, '0') + "_2x3.png").ToSource(),
+							Stretch = Stretch.Fill,
+							Width = this.Width,
+							Height = this.Height,
+							Visibility = Visibility.Hidden
+						}.AttachTo(this.Container)
+				);
+
+				frames.AsCyclicEnumerable().ForEach(
+					(Image value, Action SignalNext) =>
+					{
+						if (IsDisposed)
+							return;
+
+						if (!IsSleeping)
+							if (this.VelocityX <= 0)
+								value.Visibility = Visibility.Visible;
+
+						(1000 / 30).AtDelay(
+							delegate
+							{
+								if (!IsSleeping)
+									value.Visibility = Visibility.Hidden;
+
+								SignalNext();
+							}
+						);
+					}
+				);
+			}
+
+			{
+				var frames = Enumerable.Range(0, 13).ToArray(
+					index =>
+						new Image
+						{
+							Source = (Assets.Shared.KnownAssets.Path.Sprites + "/bird0_" + ("" + (40 + index)).PadLeft(2, '0') + "_2x3.png").ToSource(),
+							Stretch = Stretch.Fill,
+							Width = this.Width,
+							Height = this.Height,
+							Visibility = Visibility.Hidden
+						}.AttachTo(this.Container)
+				);
+
+				frames.AsCyclicEnumerable().ForEach(
+					(Image value, Action SignalNext) =>
+					{
+						if (IsDisposed)
+							return;
+
+						if (!IsSleeping)
+							if (this.VelocityX > 0)
+								value.Visibility = Visibility.Visible;
+
+						(1000 / 30).AtDelay(
+							delegate
+							{
+								if (!IsSleeping)
+									value.Visibility = Visibility.Hidden;
+
+								SignalNext();
+							}
+						);
+					}
+				);
+			}
 		}
 
 		public Obstacle ToObstacle(double x, double y)

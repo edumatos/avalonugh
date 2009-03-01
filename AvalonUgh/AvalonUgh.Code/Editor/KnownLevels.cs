@@ -16,17 +16,21 @@ namespace AvalonUgh.Code.Editor
 		public readonly LevelReference DefaultLobbyLevel;
 		public readonly LevelReference DefaultMissionLevel;
 		public readonly LevelReference DefaultCaveLevel;
+		public readonly int DefaultEditorLevel = 5;
 
 		public KnownLevels()
 		{
 			var a = new List<LevelReference>();
 
-			this.DefaultLobbyLevel = new LevelReference(0);
-			this.DefaultMissionLevel = new LevelReference(1);
+			//this.DefaultLobbyLevel = new LevelReference(0);
+			//this.DefaultMissionLevel = new LevelReference(1);
 
-			a.Add(this.DefaultLobbyLevel);
-			a.Add(this.DefaultMissionLevel);
-			a.AddRange(Enumerable.Range(2, 68).Select(i => new LevelReference(i)));
+			//a.Add(this.DefaultLobbyLevel);
+			//a.Add(this.DefaultMissionLevel);
+			a.AddRange(Enumerable.Range(0, 70).Select(i => new LevelReference(i)));
+
+			this.DefaultLobbyLevel = a[0];
+			this.DefaultMissionLevel = a[5];
 
 			this.DefaultCaveLevel =
 				new LevelReference(

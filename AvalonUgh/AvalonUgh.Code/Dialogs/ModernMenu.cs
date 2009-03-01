@@ -196,8 +196,7 @@ namespace AvalonUgh.Code.Dialogs
 			Options_Play.Click +=
 				delegate
 				{
-					if (this.Play != null)
-						this.Play();
+					RaisePlay();
 				};
 
 
@@ -428,6 +427,12 @@ namespace AvalonUgh.Code.Dialogs
 
 			Options.Click += Options_Click;
 
+		}
+
+		public void RaisePlay()
+		{
+			if (this.Play != null)
+				this.Play();
 		}
 
 		public Action EnteringPassword;

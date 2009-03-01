@@ -19,16 +19,143 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		private void ThinkForComputerPlayers(View view)
 		{
-			foreach (var bird in view.Level.KnownBirds)
-			{
-				bird.VelocityY = -0.1 * view.Level.Zoom;
-				bird.VelocityX = -1.5 * view.Level.Zoom;
+			var PickupVehicles = Enumerable.ToArray(
+				from Vehicle in view.Level.KnownVehicles
+				where Vehicle.CurrentWeapon == null
+				where Vehicle.CurrentDriver != null
+				where Vehicle.CurrentPassengers.Count == 0
+				where Vehicle.LastVelocity == 0
+				where Vehicle.GetVelocity() == 0
+				let VehicleObstacle = Vehicle.ToObstacle()
+				select new { Vehicle, VehicleObstacle }
+			);
 
-				if (bird.X < -bird.Width)
-					bird.X = view.ContentActualWidth;
+			const double TryoSpeed = 1.5;
+
+			foreach (var CurrentTryo in view.Level.KnownTryoperus)
+			{
+				if (CurrentTryo.VelocityY == 0)
+				{
+					var CurrentPlatform = view.Level.ToPlatformSnapshots().FirstOrDefault(k => k.IncludedSpace.Intersects(CurrentTryo.ToObstacle()));
+
+					if (CurrentPlatform == null)
+					{
+						CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Stand;
+					}
+					else
+					{
+						var CurrentPickup = PickupVehicles.FirstOrDefault(k => k.VehicleObstacle.Intersects(CurrentPlatform.IncludedSpace));
+
+						if (CurrentPickup != null)
+						{
+							//if (CurrentPickup.VehicleObstacle.X < CurrentTryo.X)
+								CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Stare;
+							//else
+							//    CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Right_Stare;
+						}
+						else
+						{
+							#region just walk around
+							if (CurrentTryo.VelocityX > 0)
+							{
+								if (CurrentTryo.ToObstacle(CurrentTryo.X + TryoSpeed, CurrentTryo.Y).Right < CurrentPlatform.IncludedSpace.Right)
+								{
+									CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Right_Walk;
+									CurrentTryo.VelocityX = TryoSpeed;
+								}
+								else
+								{
+									CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Right_Stand;
+									CurrentTryo.VelocityX = -TryoSpeed;
+								}
+							}
+							else
+							{
+								if (CurrentTryo.ToObstacle(CurrentTryo.X - TryoSpeed, CurrentTryo.Y).Left > CurrentPlatform.IncludedSpace.Left)
+								{
+									CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Walk;
+									CurrentTryo.VelocityX = -TryoSpeed;
+								}
+								else
+								{
+									CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Stand;
+									CurrentTryo.VelocityX = TryoSpeed;
+								}
+							}
+							#endregion
+
+						}
+					}
+				}
+				else
+				{
+					CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Hit;
+				}
 			}
 
-			
+			#region bird
+			foreach (var bird in view.Level.KnownBirds)
+			{
+				if (bird.IsSleeping)
+				{
+					if (bird.Y > view.ContentExtendedHeight)
+					{
+						// bird has dorwned
+
+						view.Level.KnownVehicles.Where(k => k.CurrentDriver != null).FirstOrDefault().Apply(k => bird.Y = k.Y);
+
+
+						bird.Y = view.ContentActualHeight / 2;
+						bird.X = -bird.Width;
+						bird.VelocityX = 1.5 * view.Level.Zoom;
+						bird.VelocityY = -0.1 * view.Level.Zoom;
+						bird.IsSleeping = false;
+
+						SoundBoard.Default.bird_cry();
+					}
+				}
+				else
+				{
+					bird.VelocityY = -0.1 * view.Level.Zoom;
+
+					if (bird.VelocityX <= 0)
+					{
+						bird.VelocityX = -1.5 * view.Level.Zoom;
+
+						if (bird.X < -bird.Width)
+						{
+							view.Level.KnownVehicles.Where(k => k.CurrentDriver != null).FirstOrDefault().Apply(k => bird.Y = k.Y);
+
+
+							bird.X = -bird.Width;
+							bird.VelocityX = 1.5 * view.Level.Zoom;
+
+							SoundBoard.Default.bird_cry();
+
+						}
+					}
+					else
+					{
+						bird.VelocityX = 1.5 * view.Level.Zoom;
+
+						if (bird.X > (view.ContentExtendedWidth + bird.Width))
+						{
+							view.Level.KnownVehicles.Where(k => k.CurrentDriver != null).FirstOrDefault().Apply(k => bird.Y = k.Y);
+
+							bird.X = (view.ContentExtendedWidth + bird.Width);
+							bird.VelocityX = -1.5 * view.Level.Zoom;
+
+
+							SoundBoard.Default.bird_cry();
+						}
+					}
+
+				}
+
+			}
+			#endregion
+
+
 
 			//if (this.LocalIdentity.SyncFrame % 20 != 0)
 			//    return;
@@ -55,16 +182,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			if (this.LocalIdentity.SyncFrame % 200 == 0)
 				view.Level.LevelTime = (view.Level.LevelTime - 1).Max(0);
 
-			var PickupVehicles = Enumerable.ToArray(
-				from Vehicle in view.Level.KnownVehicles
-				where Vehicle.CurrentWeapon == null
-				where Vehicle.CurrentDriver != null
-				where Vehicle.CurrentPassengers.Count == 0
-				where Vehicle.LastVelocity == 0
-				where Vehicle.GetVelocity() == 0
-				let VehicleObstacle = Vehicle.ToObstacle()
-				select new { Vehicle, VehicleObstacle }
-			);
+
 
 			var KnownPassengers = view.Level.KnownPassengers.ToArray();
 
@@ -186,8 +304,15 @@ namespace AvalonUgh.Code.GameWorkspace
 
 								#region Memory_LogicState_TalkStart
 
-
-								SoundBoard.Default.talk0_00();
+								if (i.Passenger is Actor.woman0)
+								{
+									// woman will sound a little different than the males
+									SoundBoard.Default.talk0_02();
+								}
+								else
+								{
+									SoundBoard.Default.talk0_00();
+								}
 
 								i.Passenger.KnownBubbles.Add(
 									new Actor.Bubble(view.Level.Zoom,

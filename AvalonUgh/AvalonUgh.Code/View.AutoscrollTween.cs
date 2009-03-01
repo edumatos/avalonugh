@@ -45,6 +45,12 @@ namespace AvalonUgh.Code
 				AutoscrollTween = NumericEmitter.Of(
 					(ax_, ay_) =>
 					{
+						if (!AutoscrollEnabled)
+							return;
+
+						if (this.LocationTracker.Target == null)
+							return;
+
 						var a = new
 						{
 							x = ax_ / (double)TweenPercision,

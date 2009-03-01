@@ -87,7 +87,7 @@ namespace AvalonUgh.Code
 
 		public const int MaxShakeSize = 4;
 
-
+		public Water CurrentWater;
 
 		public View(int width, int height, Level level)
 		{
@@ -270,7 +270,17 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownVehicles.AttachTo(this.Entities);
 			this.Level.KnownVehicles.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
-			//this.Level.KnownVehicles.WithEvents(this.LogicForInfoLabel);
+			this.Level.KnownVehicles.WithEvents(
+				value =>
+				{
+					value.CurrentLevel = this.Level;
+
+					return delegate
+					{
+						value.CurrentLevel = null;
+					};
+				}
+			);
 
 
 			this.Level.KnownRocks.AttachTo(this.Entities);
@@ -356,7 +366,7 @@ namespace AvalonUgh.Code
 
 
 
-			var CurrentWater = new Water(
+			this.CurrentWater = new Water(
 				new Water.Info
 				{
 					DefaultWidth = this.ContentExtendedWidth,
@@ -410,11 +420,7 @@ namespace AvalonUgh.Code
 
 			this.LocationTracker = new LocationTracker();
 
-			// center bottom
-			this.MoveContentTo(
-				(width - ContentActualWidth) / 2,
-				(height - ContentActualHeight) / 2 + 1
-			);
+			MovetToContainerCenter();
 
 			this.Flashlight = new Flashlight(
 				this.Level.Zoom,
@@ -481,6 +487,19 @@ namespace AvalonUgh.Code
 			};
 
 			this.Level.ContentInfoColoredShapes.AttachToFrameworkElement(this.StartPositionsContainer);
+
+
+			this.Level.AddToContentInfoColoredShapes(
+				new Obstacle { Left = 100, Top = 100, Width = 100, Height = 100 }, Brushes.Cyan
+				);
+		}
+
+		public void MovetToContainerCenter()
+		{
+			this.MoveContentTo(
+						 (this.ContainerWidth - ContentActualWidth) / 2,
+						 (this.ContainerHeight - ContentActualHeight) / 2 + 1
+					 );
 		}
 
 
@@ -541,12 +560,17 @@ namespace AvalonUgh.Code
 			);
 		}
 
-
 		#region IDisposable Members
 
 		public void Dispose()
 		{
 			// we need to kill the timers
+
+			this.CurrentWater.Dispose();
+			this.CurrentWater = null;
+
+			this.AttachEditorSelector_RectangleAnimator.Stop();
+			this.AttachEditorSelector_RectangleAnimator = null;
 
 			AnimationTimer_FilmScratchEffect.Stop();
 

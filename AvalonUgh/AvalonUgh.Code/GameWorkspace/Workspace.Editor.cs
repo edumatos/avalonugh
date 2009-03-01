@@ -56,6 +56,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			readonly Statusbar Statusbar;
 
+
 			public EditorPort(ConstructorArguments args)
 			{
 				this.Toolbar = new EditorToolbar(args.Selectors);
@@ -221,6 +222,28 @@ namespace AvalonUgh.Code.GameWorkspace
 			}
 		}
 
+		[Script]
+		public class MouseLocation : ISupportsLocationChanged
+		{
+			public double X { get; set; }
+			public double Y { get; set; }
+
+			#region ISupportsLocationChanged Members
+
+
+			public event Action LocationChanged;
+
+			#endregion
+
+			public void RaiseLocationChanged()
+			{
+				if (this.LocationChanged != null)
+					this.LocationChanged();
+			}
+		}
+
+		public readonly MouseLocation Editor_LocalKnownMouseLocation = new MouseLocation();
+
 
 		private void InitializeMenuEditorButton()
 		{
@@ -312,7 +335,7 @@ namespace AvalonUgh.Code.GameWorkspace
 							 {
 								 this.Sync_LoadLevel(
 									 // load default editor level
-									 this.Editor.PortIdentity, 1, ""
+									 this.Editor.PortIdentity, KnownLevels.DefaultEditorLevel, ""
 								 );
 							 }
 						 }
@@ -335,6 +358,14 @@ namespace AvalonUgh.Code.GameWorkspace
 						(_sender, _args) =>
 						{
 							var p = _args.GetPosition(this.Editor.View.TouchOverlay);
+
+							// cursor has moved
+							// if the view is followng the mouse
+							// it should just do that
+
+							this.Editor_LocalKnownMouseLocation.X = p.X;
+							this.Editor_LocalKnownMouseLocation.Y = p.Y;
+							this.Editor_LocalKnownMouseLocation.RaiseLocationChanged();
 
 							if (this.Sync_RemoteOnly_MouseMove != null)
 								this.Sync_RemoteOnly_MouseMove(this.Editor.PortIdentity, p.X, p.Y);
@@ -430,13 +461,43 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Editor.ArrowClick +=
 				(Position, args) =>
 				{
-					CurrentTravelWindows.RemoveAll();
+					
 
 
 					var x = Position.ContentX * DefaultZoom;
 					var y = Position.ContentY * DefaultZoom;
 
-					this.Editor.Level.KnownPassengers.Where(k => k.ToObstacle().Contains(x, y)).ForEach(
+					var SelectedPassangers = this.Editor.Level.KnownPassengers.Where(k => k.ToObstacle().Contains(x, y));
+					
+					if (CurrentTravelWindows.Count == 0)
+						if (!SelectedPassangers.Any())
+						{
+							// if we did not click on an actor
+							// we are probably wanting to change the follow mode
+							// from fixed to center to follow the mouse mode
+
+							if (this.Editor.View.AutoscrollEnabled)
+							{
+								this.Editor.View.AutoscrollEnabled = false;
+								this.Editor.View.LocationTracker.Target = null;
+
+								this.Editor.View.MovetToContainerCenter();
+
+							}
+							else
+							{
+								this.Editor.View.AutoscrollEnabled = true;
+								this.Editor.View.LocationTracker.Target = this.Editor_LocalKnownMouseLocation;
+
+								this.Editor_LocalKnownMouseLocation.RaiseLocationChanged();
+							}
+
+							return;
+						}
+
+					CurrentTravelWindows.RemoveAll();
+
+					SelectedPassangers.ForEach(
 						(Actor Passanger, int index) =>
 						{
 

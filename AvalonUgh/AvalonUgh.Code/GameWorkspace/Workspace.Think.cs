@@ -169,6 +169,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			}
 
 			this.Audio_WaterRise.Enabled = this.Ports.Where(k => k.Level != null).Where(k => k.Level.AttributeWaterRise.BooleanValue).Any();
+			this.Audio_Snore.Enabled = this.Ports.Where(k => k.Level != null).Where(k => k.Level.KnownDinos.Count > 0).Any();
 
 			foreach (var p in this.Ports)
 			{
@@ -186,10 +187,10 @@ namespace AvalonUgh.Code.GameWorkspace
 						dino.Animate(this.LocalIdentity.SyncFrame);
 					}
 
-					foreach (var t in p.Level.KnownTryoperus)
-					{
-						t.Think();
-					}
+					//foreach (var t in p.Level.KnownTryoperus)
+					//{
+					//    t.Think();
+					//}
 
 					foreach (var t in p.Level.KnownActors)
 					{
@@ -202,7 +203,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						t.AddAcceleration(t.DefaultPlayerInput);
 					}
 
-					if (this.LocalIdentity.SyncFrame % 10 == 0)
+					if (this.LocalIdentity.SyncFrame % 20 == 0)
 						if (p.Level.KnownBirds.Count > 0)
 							SoundBoard.Default.wings1();
 
