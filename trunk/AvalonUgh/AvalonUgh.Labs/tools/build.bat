@@ -47,6 +47,7 @@ pushd ..\bin\%ConfigurationName%\web
 
 call :build %1 %2
 :: to upload to nonoba and to reference in tests
+echo coping to public...
 copy "*.swf" "../../../../Public/"
 
 popd

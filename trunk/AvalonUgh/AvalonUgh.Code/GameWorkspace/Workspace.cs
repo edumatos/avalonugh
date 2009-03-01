@@ -20,6 +20,7 @@ namespace AvalonUgh.Code.GameWorkspace
 	[Script]
 	public partial class Workspace : ISupportsContainer, IDisposable
 	{
+		// todo: xxx
 
 		// workspace contains
 		// multiple views to multiple concurrent
@@ -236,28 +237,6 @@ namespace AvalonUgh.Code.GameWorkspace
 			#endregion
 
 
-			// the ingame status bar can support 1 or 2 players. The third player cannot be show ant this time.
-			this.SupportedKeyboardInputs = new[]
-			{
-				new KeyboardInput(
-					new KeyboardInput.Arguments.Arrows
-					{
-						InputControl = this.Container
-					}
-				),
-				new KeyboardInput(
-					new KeyboardInput.Arguments.WASD
-					{
-						InputControl = this.Container
-					}
-				),
-				new KeyboardInput(
-					new KeyboardInput.Arguments.IJKL
-					{
-						InputControl = this.Container
-					}
-				),
-			};
 
 			this.PrimaryMission =
 				new MissionPort(
@@ -395,7 +374,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			this.Ports.Add(Lobby);
 
-			this.Lobby.Menu.MaxPlayers = SupportedKeyboardInputs.Length;
+			
 
 			// each actor in players moves on each sync frame
 			// players contain all locals and external players
@@ -761,6 +740,32 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
+
+
+			// the ingame status bar can support 1 or 2 players. The third player cannot be show ant this time.
+			this.SupportedKeyboardInputs = new[]
+			{
+				new KeyboardInput(
+					new KeyboardInput.Arguments.Arrows
+					{
+						InputControl = this.Container
+					}
+				),
+				new KeyboardInput(
+					new KeyboardInput.Arguments.WASD
+					{
+						InputControl = this.Container
+					}
+				),
+				new KeyboardInput(
+					new KeyboardInput.Arguments.IJKL
+					{
+						InputControl = this.Container
+					}
+				),
+			};
+
+			this.Lobby.Menu.MaxPlayers = SupportedKeyboardInputs.Length;
 
 			this.StartThinking();
 

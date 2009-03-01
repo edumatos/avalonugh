@@ -196,7 +196,7 @@ namespace AvalonUgh.Code
 			var rock = twin as Rock;
 			if (rock != null)
 			{
-				if (rock.Stability < 10)
+				if (rock.LastVelocity != 0)
 				{
 					if (!rock.IsSleeping)
 					{
@@ -204,6 +204,9 @@ namespace AvalonUgh.Code
 							this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
 						);
 
+						Obstacles = Obstacles.Concat(
+							this.Level.KnownBirds.WhereNot(k => k.IsSleeping).Select(k => k.ToObstacle()).ToArray()
+						);
 
 
 						this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
@@ -235,14 +238,15 @@ namespace AvalonUgh.Code
 						//    this.Birds.Select(k => k.ToObstacle()).ToArray()
 						//);
 
-						//this.Birds.Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
-						//    bird =>
-						//    {
-						//        // we did will hit a tree
-						//        //tree.GoToSleep();
-						//        rock.GoToSleep();
-						//    }
-						//);
+						this.Level.KnownBirds.Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
+							bird =>
+							{
+								// we did will hit a tree
+								//tree.GoToSleep();
+								bird.IsSleeping = true;
+								rock.GoToSleep();
+							}
+						);
 					}
 
 				}

@@ -166,6 +166,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			if (args.Key == Key.C)
 			{
+				// this is a cheat
 				this.LocalIdentity.Locals.ForEach(
 					k =>
 					{
@@ -174,6 +175,12 @@ namespace AvalonUgh.Code.GameWorkspace
 				);
 			}
 
+			if (args.Key == Key.R)
+			{
+				// this is a cheat
+				// reload current port
+				this.CurrentPort.LevelReference = this.CurrentPort.LevelReference;
+			}
 
 			if (args.Key == Key.V)
 			{
@@ -207,6 +214,16 @@ namespace AvalonUgh.Code.GameWorkspace
 			if (this.Selectors.DefaultKeyShortcut.ContainsKey(args.Key))
 			{
 				this.Editor.Toolbar.SelectorType = this.Selectors.DefaultKeyShortcut[args.Key]();
+			}
+
+			if (args.Key == Key.Enter)
+			{
+				// if are we at the lobby and we are pressing
+				// enter we will want the game to begin
+				if (this.CurrentPort == this.Lobby)
+				{
+					this.Lobby.Menu.RaisePlay();
+				}
 			}
 
 			if (args.Key == Key.Escape)

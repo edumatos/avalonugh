@@ -21,6 +21,7 @@ namespace AvalonUgh.Assets.Avalon
 		public readonly Action enter = f("enter");
 		public readonly Action talk0_00 = f("talk0_00");
 		public readonly Action talk0_01 = f("talk0_01");
+		public readonly Action talk0_02 = f("talk0_02");
 
 		static Action f(string e)
 		{

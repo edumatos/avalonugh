@@ -13,7 +13,7 @@ using System.Windows;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Water : ISupportsContainer
+	public class Water : ISupportsContainer, IDisposable
 	{
 		public Canvas Container { get; set; }
 
@@ -129,6 +129,9 @@ namespace AvalonUgh.Code
 					{
 						value.Visibility = Visibility.Visible;
 
+						if (IsDisposed)
+							return;
+
 						(120).AtDelay(
 							delegate
 							{
@@ -141,5 +144,16 @@ namespace AvalonUgh.Code
 			}
 			#endregion
 		}
+
+		public bool IsDisposed;
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			IsDisposed = true;
+		}
+
+		#endregion
 	}
 }

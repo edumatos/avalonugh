@@ -12,11 +12,14 @@ using ScriptCoreLib.Shared.Lambda;
 using System.Windows.Input;
 using AvalonUgh.Code.Editor;
 using AvalonUgh.Assets.Shared;
+using System.Windows.Threading;
 
 namespace AvalonUgh.Code
 {
 	partial class View
 	{
+		DispatcherTimer AttachEditorSelector_RectangleAnimator;
+
 		public void AttachEditorSelector()
 		{
 			this.EditorSelectorRectangle = new Rectangle
@@ -32,7 +35,7 @@ namespace AvalonUgh.Code
 			}.MoveTo(64, 64).AttachTo(this.PlatformsInfoOverlay);
 
 
-			(1000 / 10).AtIntervalWithCounter(
+			this.AttachEditorSelector_RectangleAnimator = (1000 / 10).AtIntervalWithCounter(
 				c =>
 				{
 					this.EditorSelectorRectangle.Opacity = (Math.Sin(c * 0.5) + 1.0) / 2.0 * 0.3 + 0.2;
