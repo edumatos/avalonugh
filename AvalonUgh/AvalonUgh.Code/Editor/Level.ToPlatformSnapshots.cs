@@ -50,6 +50,15 @@ namespace AvalonUgh.Code.Editor
 			return ToPlatformSnapshots_Cache();
 		}
 
+		public event Action<string> WriteLineEvent;
+
+		private void WriteLine(string e)
+		{
+			if (WriteLineEvent != null)
+				WriteLineEvent(e);
+		}
+
+
 		private IEnumerable<PlatformSnapshot> ToPlatformSnapshotImplementation()
 		{
 			Console.WriteLine("Level.ToPlatformSnapshots");
@@ -61,6 +70,10 @@ namespace AvalonUgh.Code.Editor
 				this.Map.Height
 			);
 
+			// actionscript did not zero the values
+			lookup.ForEach(
+				(x, y) => lookup[x, y] = SpawnLocationTag.Unknown
+			);
 
 			// clear any thought shapes
 			ContentInfoColoredShapes_PlatformSnapshots.RemoveAll();
@@ -76,6 +89,7 @@ namespace AvalonUgh.Code.Editor
 					select p
 				);
 
+			WriteLine("platforms: " + platforms.Length);
 
 			// each time the platforms change we will be able to recalculate
 			// travel space
@@ -105,6 +119,9 @@ namespace AvalonUgh.Code.Editor
 				).ToArray();
 
 
+			WriteLine("StartupLocations: " + StartupLocations.Length);
+
+
 			var WhereToLookNext =
 				LambdaExtensions.ToConcatStream(
 					from j in StartupLocations
@@ -122,13 +139,18 @@ namespace AvalonUgh.Code.Editor
 
 
 
+			var CountValid = 0;
+			var CountReentry = 0;
 
 			foreach (var p in WhereToLookNext)
 			{
-				Console.WriteLine(new { p.x, p.y });
+				//Console.WriteLine(new { p.x, p.y });
 
 				if (p.lookup[p.x, p.y] != SpawnLocationTag.Unknown)
+				{
+					CountReentry++;
 					continue;
+				}
 
 				var h = this.ToObstacles().Any(k => k.Intersects(p.o));
 
@@ -141,6 +163,7 @@ namespace AvalonUgh.Code.Editor
 				else
 				{
 					p.lookup[p.x, p.y] = SpawnLocationTag.Valid;
+					CountValid++;
 
 					// this space is ok to spawn a vehicle in it.
 					ContentInfoColoredShapes_PlatformSnapshots.Add(p.o, Brushes.YellowGreen, 0.3);
@@ -176,6 +199,8 @@ namespace AvalonUgh.Code.Editor
 				}
 			}
 
+			WriteLine("CountValid: " + CountValid);
+			WriteLine("CountReentry: " + CountReentry);
 
 
 			//ContentInfoColoredShapes_PlatformSnapshots.Add(
