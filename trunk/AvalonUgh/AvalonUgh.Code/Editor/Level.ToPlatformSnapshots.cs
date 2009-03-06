@@ -58,6 +58,18 @@ namespace AvalonUgh.Code.Editor
 				WriteLineEvent(e);
 		}
 
+		public Array2D<SpawnLocationTag> SpawnPointLookup
+		{
+			get
+			{
+				// trigger update
+				ToPlatformSnapshots();
+
+				return ToPlatformSnapshotImplementation_lookup;
+			}
+		}
+
+		Array2D<SpawnLocationTag>  ToPlatformSnapshotImplementation_lookup;
 
 		private IEnumerable<PlatformSnapshot> ToPlatformSnapshotImplementation()
 		{
@@ -69,6 +81,8 @@ namespace AvalonUgh.Code.Editor
 				this.Map.Width,
 				this.Map.Height
 			);
+
+			ToPlatformSnapshotImplementation_lookup = lookup;
 
 			// actionscript did not zero the values
 			lookup.ForEach(
@@ -166,7 +180,7 @@ namespace AvalonUgh.Code.Editor
 					CountValid++;
 
 					// this space is ok to spawn a vehicle in it.
-					ContentInfoColoredShapes_PlatformSnapshots.Add(p.o, Brushes.YellowGreen, 0.3);
+					ContentInfoColoredShapes_PlatformSnapshots.Add(p.o, Brushes.YellowGreen, 0.05);
 
 					// continue search
 					Action<int, int> DistinctAdd =

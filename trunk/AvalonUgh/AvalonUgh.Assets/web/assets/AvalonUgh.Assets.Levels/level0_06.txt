@@ -1,12 +1,18 @@
 # generated map
 # text: Introducing diving
 # code: DREAMFORMOTHER
+# nextcode: UNCERTAINJOURNEY
 # autoscroll: 0
-# water: 50
+# water: 25
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background:
+# headcount: 1
 ######################
     S-                
  S--| C-S-R-SC-S-S-S- 
- |  S | | | ||  S| |  
+ |  S |0| | ||1 S| |  
 # sign: 88;1
 # sign: 248;2
  S-S|P--PBBBBP-P-| |  
@@ -15,7 +21,7 @@
  S-R-|| S-SS-| | R-|| 
  | | S| | || | | | S| 
  SS-R-| | S| S--R-SS- 
- || | S-| S-S|  | || 
+ || | S-| S-S|  | ||  
 S-| SR-S--| S-SR-S-|  
 | | || |  | | || | |  
 S--S-SR-S-S-| R-S| S--
@@ -26,3 +32,4 @@ S--S-SR-S-S-| R-S| S--
  | | | | S--| | |  |  
        | |  | |       
 ######################
+# passenger: 0;0;0;0;0;0;22400;4800;530;1;0;0;0;0;0;0
