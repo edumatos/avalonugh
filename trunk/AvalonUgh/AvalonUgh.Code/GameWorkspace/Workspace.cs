@@ -158,6 +158,9 @@ namespace AvalonUgh.Code.GameWorkspace
 							// if we are displaying loading, we shall hide it now
 							this.BackgroundLoading.Hide();
 
+							NewPort.Level.WriteLineEvent +=
+								e => this.Console.WriteLine("level: " + e);
+
 							NewPort.Level.KnownTryoperus.ForEachNewOrExistingItem(
 								NewTryo =>
 								{
