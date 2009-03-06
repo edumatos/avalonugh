@@ -846,6 +846,7 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\wings1.mp3" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\talk0_02.mp3" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets\btn_waterrise.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_40_2x3.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_41_2x3.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\bird0_42_2x3.png" />

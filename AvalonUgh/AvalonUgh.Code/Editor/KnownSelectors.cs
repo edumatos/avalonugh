@@ -16,6 +16,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly ArrowSelector Arrow = new ArrowSelector();
 		public readonly WaterLevelSelector WaterLevel = new WaterLevelSelector();
+		public readonly WaterRiseSelector WaterRise = new WaterRiseSelector();
 
 		public readonly Sprites.PassengerSelector Passenger = new Sprites.PassengerSelector();
 
@@ -75,6 +76,7 @@ namespace AvalonUgh.Code.Editor
 					
 					new DemolishSelector(),
 					WaterLevel,
+					WaterRise,
 					new SnowSelector(),
 					new BackgroundSelector(),
 

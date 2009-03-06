@@ -157,6 +157,7 @@
     <Compile Include="ColoredRectangleList.cs" />
     <Compile Include="Diagnostics\DOMDump.cs" />
     <Compile Include="Editor\CommonFileWindow.cs" />
+    <Compile Include="Editor\WaterRiseSelector.cs" />
     <Compile Include="Editor\Level.ToPlatformSnapshots.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="Editor\RoundedDouble.cs" />

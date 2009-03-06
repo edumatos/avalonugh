@@ -476,7 +476,13 @@ namespace AvalonUgh.Code
 
 			AttachFilmScratchEffect();
 
-			this.IsShakerEnabled = (Convert.ToBoolean(this.Level.AttributeWaterRise.Value));
+			this.Level.AttributeWaterRise.Assigned +=
+				delegate
+				{
+					this.IsShakerEnabled = this.Level.AttributeWaterRise.BooleanValue;
+				};
+
+			this.IsShakerEnabled = this.Level.AttributeWaterRise.BooleanValue;
 
 			AttachEditorSelector();
 

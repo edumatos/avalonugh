@@ -179,7 +179,16 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					if (this.LocalIdentity.SyncFrame % 80 == 0)
 						if (p.Level.AttributeWaterRise.BooleanValue)
-							p.Level.AttributeWater.Value++;
+						{
+							if (p == this.Editor)
+							{
+								// we wont raise water for editor!
+							}
+							else
+							{
+								p.Level.AttributeWater.Value++;
+							}
+						}
 
 					// some animations need to be synced by frame
 					foreach (var dino in p.Level.KnownDinos)
