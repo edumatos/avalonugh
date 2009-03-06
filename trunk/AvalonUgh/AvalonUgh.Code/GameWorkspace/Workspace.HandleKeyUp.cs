@@ -226,6 +226,18 @@ namespace AvalonUgh.Code.GameWorkspace
 				}
 			}
 
+
+			if (args.Key == Key.E)
+			{
+				// if are we at the lobby and we are pressing
+				// enter we will want the game to begin
+				if (this.CurrentPort == this.Lobby)
+				{
+					this.Lobby.Menu.RaiseEditor();
+				}
+			}
+
+
 			if (args.Key == Key.Escape)
 			{
 				args.Handled = true;

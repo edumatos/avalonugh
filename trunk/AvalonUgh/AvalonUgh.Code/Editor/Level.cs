@@ -565,45 +565,7 @@ namespace AvalonUgh.Code.Editor
 
 
 
-		Func<IEnumerable<PlatformSnapshot>> ToPlatformSnapshots_Cache;
-		public IEnumerable<PlatformSnapshot> ToPlatformSnapshots()
-		{
-			// we will recalculate tile obstacles only when they actually change
-			if (ToPlatformSnapshots_Cache == null)
-				ToPlatformSnapshots_Cache =
-					new IBindingList[]
-					{
-						KnownCaves,
-						KnownSigns,
-						KnownStones,
-						KnownFences,
-						KnownBridges,
-						KnownPlatforms,
-						KnownRidges,
-						KnownRidgeTrees,
-					}.WhereListChanged(
-						delegate
-						{
-							Console.WriteLine("Level.ToPlatformSnapshots");
-
-							// clear any thought shapes
-							//ContentInfoColoredShapes.RemoveAll();
-
-							// regardless of us returning that snapshot
-							// it may have already be rendered
-							var query = from k in this.KnownCaves
-										let p = PlatformSnapshot.Of(this, k)
-										where p.IncludedSpace != null
-										where p.WaitPosition != null
-										select p;
-
-							return query.ToArray().AsEnumerable();
-						}
-					);
-
-			return ToPlatformSnapshots_Cache();
-		}
-
+	
 		[Script]
 		public class RemovableObject
 		{
@@ -856,34 +818,16 @@ namespace AvalonUgh.Code.Editor
 
 
 
-		public readonly BindingList<Rectangle> ContentInfoColoredShapes = new BindingList<Rectangle>();
+		public readonly ColoredRectangleList ContentInfoColoredShapes_PlatformSnapshots = new ColoredRectangleList();
 
-		public Rectangle AddToContentInfoColoredShapes(Obstacle o, Brush b)
-		{
-			return AddToContentInfoColoredShapes(o, b, 0.4);
-		}
 
-		public Rectangle AddToContentInfoColoredShapes(Obstacle o, Brush b, double Opacity)
-		{
-			var r = new Rectangle
-			{
-				Fill = b,
-				Width = o.Width,
-				Height = o.Height,
-				Opacity = Opacity
-			}.MoveTo(
-				o.Left, // + this.ContentOffsetX,
-				o.Top // + this.ContentOffsetY
-			);
-
-			r.AddTo(this.ContentInfoColoredShapes);
-
-			return r;
-		}
 
 
 		int InternalLevelTime;
 		public event Action LevelTimeChanged;
+		/// <summary>
+		/// The remaining time of the level will be shown on the status bar
+		/// </summary>
 		public int LevelTime
 		{
 			get
