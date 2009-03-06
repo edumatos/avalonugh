@@ -3,6 +3,7 @@ using ScriptCoreLib.Shared;
 
 using System.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace AvalonUgh.Code
 {
@@ -38,6 +39,18 @@ namespace AvalonUgh.Code
 			this.items = new T[x * y];
 		}
 
+		[Script]
+		public class Tuple
+		{
+			public int X;
+			public int Y;
+		}
+
+		public IEnumerable<Tuple> ToIndicies()
+		{
+			return Enumerable.Range(0, this._XLength).SelectMany(x => Enumerable.Range(0, this._YLength).Select(y => new Tuple { X = x, Y = y }));
+		}
+
 		public void ForEach(Action<int, int> a)
 		{
 			for (int i = 0; i < this._XLength; i++)
@@ -52,6 +65,14 @@ namespace AvalonUgh.Code
 		}
 
 		public readonly T EmptyValue;
+
+		public T this[Tuple i]
+		{
+			get
+			{
+				return this[i.X, i.Y];
+			}
+		}
 
 		public T this[int x, int y]
 		{

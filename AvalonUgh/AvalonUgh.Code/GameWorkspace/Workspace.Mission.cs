@@ -133,15 +133,12 @@ namespace AvalonUgh.Code.GameWorkspace
 				if (this.Level == null)
 					throw new Exception("Level has to be loaded before you can teleport into it");
 
-				var s = LambdaExtensions.Random(
-					from k in this.Level.KnownStones
-					where k.Selector.PrimitiveTileCountX >= 2
-					where k.Selector.PrimitiveTileCountY >= 2
-					where k.Y < this.Level.WaterTop
-					select k
-				);
+				var s = this.Level.SpawnPointLookup.ToIndicies().Random(k => this.Level.SpawnPointLookup[k] == Level.SpawnLocationTag.Valid);
 
-				return CreateTuple(s.X, s.Y);
+				return CreateTuple(
+					s.X * PrimitiveTile.Width * this.Level.Zoom, 
+					s.Y * PrimitiveTile.Heigth * this.Level.Zoom
+				);
 			}
 
 			public Tuple GetRandomEntrypoint<Tuple>(Func<double, double, Tuple> CreateTuple)
