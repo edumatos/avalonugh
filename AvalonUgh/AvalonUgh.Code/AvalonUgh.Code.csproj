@@ -152,9 +152,12 @@
   <ItemGroup>
     <Compile Include="AIDirector.cs" />
     <Compile Include="AnimationDictionary.cs" />
+    <Compile Include="Array2D.cs" />
     <Compile Include="AudioLoop.cs" />
+    <Compile Include="ColoredRectangleList.cs" />
     <Compile Include="Diagnostics\DOMDump.cs" />
     <Compile Include="Editor\CommonFileWindow.cs" />
+    <Compile Include="Editor\Level.ToPlatformSnapshots.cs" />
     <Compile Include="Editor\MiniLevelWindow.cs" />
     <Compile Include="Editor\RoundedDouble.cs" />
     <Compile Include="Editor\RouteWindow.cs" />

@@ -119,13 +119,13 @@ namespace AvalonUgh.Code.Editor
 					SelectedCaves.WithEvents(
 						TargetCave =>
 						{
-							var TargetCaveRect = CurrentLevel.AddToContentInfoColoredShapes(
+							var TargetCaveRect = CurrentLevel.ContentInfoColoredShapes_PlatformSnapshots.Add(
 								TargetCave.ToObstacle(), Brushes.Yellow
 							);
 
 							return delegate
 							{
-								this.CurrentLevel.ContentInfoColoredShapes.Remove(TargetCaveRect);
+								this.CurrentLevel.ContentInfoColoredShapes_PlatformSnapshots.Remove(TargetCaveRect);
 							};
 						}
 					);

@@ -486,12 +486,12 @@ namespace AvalonUgh.Code
 				OffsetY = ContentOffsetY,
 			};
 
-			this.Level.ContentInfoColoredShapes.AttachToFrameworkElement(this.StartPositionsContainer);
+			this.Level.ContentInfoColoredShapes_PlatformSnapshots.AttachToFrameworkElement(this.StartPositionsContainer);
 
 
-			this.Level.AddToContentInfoColoredShapes(
-				new Obstacle { Left = 100, Top = 100, Width = 100, Height = 100 }, Brushes.Cyan
-				);
+			//this.Level.ContentInfoColoredShapes_PlatformSnapshots.Add(
+			//    new Obstacle { Left = 100, Top = 100, Width = 100, Height = 100 }, Brushes.Cyan
+			//);
 		}
 
 		public void MovetToContainerCenter()

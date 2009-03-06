@@ -34,6 +34,13 @@ namespace AvalonUgh.Code.Dialogs
 		public event Action Play;
 		public event Action Editor;
 
+		public void RaiseEditor()
+		{
+			if (this.Editor != null)
+				this.Editor();
+
+		}
+
 		public int DifficultyLevel;
 
 		public int MaxPlayers = 3;

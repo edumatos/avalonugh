@@ -26,6 +26,8 @@ namespace AvalonUgh.Code.Editor
 		/// </summary>
 		public readonly List<Sign> CaveSigns = new List<Sign>();
 
+		public int TotalValidSteps;
+
 		public Obstacle WaitPosition;
 
 		public Obstacle IncludedSpace;
@@ -69,7 +71,7 @@ namespace AvalonUgh.Code.Editor
 			var p = new PlatformSnapshot { Cave = Cave };
 
 
-			Action<A> CheckPath =
+			Func<A, bool> CheckPath =
 				e =>
 				{
 					var LandingTile = e.GetObstacleAtHeight(0);
@@ -79,7 +81,7 @@ namespace AvalonUgh.Code.Editor
 					if (LandingTileReference == null)
 					{
 						e.StopSearch();
-						return;
+						return false;
 					}
 
 					// we got platform
@@ -91,9 +93,9 @@ namespace AvalonUgh.Code.Editor
 					if (SpaceOnLandingTileObstacle != null)
 					{
 						// we got platform
-						Level.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Red);
+						Level.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.Red);
 						e.StopSearch();
-						return;
+						return false;
 					}
 
 					if (p.IncludedSpace == null)
@@ -110,19 +112,19 @@ namespace AvalonUgh.Code.Editor
 					if (AnotherCave != null)
 					{
 						e.StopSearch();
-						Level.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.White);
-						return;
+						Level.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.White);
+						return false;
 					}
 
 					var TheSign = Signs.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
 					if (TheSign != null)
 					{
-						Level.AddToContentInfoColoredShapes(SpaceOnLandingTile, Brushes.Cyan);
+						Level.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.Cyan);
 						TheSign.DistinctAddTo(p.CaveSigns);
 					}
 
 
-
+					return true;
 				};
 
 			//var TheFoundSign = default(Sign);
@@ -155,11 +157,16 @@ namespace AvalonUgh.Code.Editor
 
 
 
-				CheckPath(z);
+				if (CheckPath(z))
+				{
+					p.TotalValidSteps++;
+					
+					// a step in current direction was valid.
+				}
 			}
 
 			if (p.IncludedSpace != null)
-				Level.AddToContentInfoColoredShapes(p.IncludedSpace, Brushes.Green, 0.2);
+				Level.ContentInfoColoredShapes_PlatformSnapshots.Add(p.IncludedSpace, Brushes.Green, 0.2);
 
 			#region find WaitPosition
 			p.CaveSigns.FirstOrDefault().Apply(
@@ -183,7 +190,7 @@ namespace AvalonUgh.Code.Editor
 						Bottom = TheFirstSignAsObstacle.Bottom
 					};
 
-					Level.AddToContentInfoColoredShapes(p.WaitPosition, Brushes.GreenYellow);
+					Level.ContentInfoColoredShapes_PlatformSnapshots.Add(p.WaitPosition, Brushes.GreenYellow);
 				}
 			);
 			#endregion
