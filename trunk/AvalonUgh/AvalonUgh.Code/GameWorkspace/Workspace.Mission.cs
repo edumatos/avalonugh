@@ -138,8 +138,8 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Level.WriteLine(new { s.X, s.Y }.ToString());
 
 				return CreateTuple(
-					s.X * PrimitiveTile.Width * this.Level.Zoom, 
-					s.Y * PrimitiveTile.Heigth * this.Level.Zoom
+					(s.X + 1) * PrimitiveTile.Width * this.Level.Zoom, 
+					(s.Y + 1) * PrimitiveTile.Heigth * this.Level.Zoom
 				);
 			}
 
