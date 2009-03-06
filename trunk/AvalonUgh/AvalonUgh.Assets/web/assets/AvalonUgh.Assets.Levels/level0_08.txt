@@ -1,31 +1,38 @@
 # generated map
 # text: Funny water but you will make it
 # code: SPIRITUALCRAMP
+# nextcode: ROMEOSDISTRESS
 # autoscroll: 0
 # water: 15
 # water-rise: 1
+# wind: 0
+# snow: 0
+# background: 
+# headcount: 1
 ######################
-    SS-  S-S-S        
- SS-|| S-| | |S--R-R- 
- || C-S| | SS-|  | |  
- S| | ||  S-| SS-SS-R-
+S-S-SS-S-S-S-SS-S-   R
+SSS-|| S-| | |S--R-R-|
+S|| C-S| | SS-|  | | |
+|S| |0||  S-| SS-SS-R-
 # sign: 152;1
 PP-P-BBBBP-PS--| |C-| 
- | R-S-S-| S|  |  | R-
+R| R-S-S-| S|  |  |0R-
 # sign: 280;2
- R-| | | SS-SS-P-P-P- 
- | S-| SS-| || S-| |  
- | FC-S|| SS-| | R-|  
- R-F| | | || S-| | R- 
+|R-| | | SS-SS-P-P-P-R
+|| S-| SS-| || S-| | |
+R| FC-S|| SS-| | R-| |
+|R-F|1| | || S-| | R-R
 # sign: 120;3
- | P-P-BBP-| | | S-R--
- | | R-S-| | S-S-| |  
- R--S--| | S-S-| S-S-R
-R|  |  | S-| | | | C-R
-RC-S-S-| | | | S | | R
+R| P-P-BBP-| | | S-R--
+|| | R-S-| | S-S-| |  
+|R--S--| | S-S-| S-S-R
+R|  |  | S-| | | | C-|
+|C-S-S-| | | | S | |1|
 # sign: 264;4
-R| | |  S| S--BBBBBP-R
+||0| |  S| S--BBBBBP-R
 # sign: 120;5
-P---P---|S-|  S-S--|  
-         |    | |     
+P---P---|S-|  S-S--| |
+S-S-S-S-S| SS-| |  S-|
 ######################
+# passenger: 0;0;0;0;0;0;6400;36000;4659;1;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;64000;33600;2;2;0;0;0;0;0;0
