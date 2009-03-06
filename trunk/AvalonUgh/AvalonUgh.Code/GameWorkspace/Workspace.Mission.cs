@@ -135,6 +135,8 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				var s = this.Level.SpawnPointLookup.ToIndicies().Random(k => this.Level.SpawnPointLookup[k] == Level.SpawnLocationTag.Valid);
 
+				this.Level.WriteLine(new { s.X, s.Y }.ToString());
+
 				return CreateTuple(
 					s.X * PrimitiveTile.Width * this.Level.Zoom, 
 					s.Y * PrimitiveTile.Heigth * this.Level.Zoom
