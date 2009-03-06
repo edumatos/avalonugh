@@ -52,7 +52,7 @@ namespace AvalonUgh.Code.Editor
 
 		public event Action<string> WriteLineEvent;
 
-		private void WriteLine(string e)
+		public void WriteLine(string e)
 		{
 			if (WriteLineEvent != null)
 				WriteLineEvent(e);
