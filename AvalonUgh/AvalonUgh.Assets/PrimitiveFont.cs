@@ -14,6 +14,9 @@ namespace AvalonUgh.Assets.Shared
 
 		public static string ToFileName(string s)
 		{
+			if (s == "!")
+				return "_Exclamation";
+
 			if (s == "#")
 				return "_Hash";
 

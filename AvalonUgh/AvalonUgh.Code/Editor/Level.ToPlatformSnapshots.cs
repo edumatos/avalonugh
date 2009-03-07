@@ -107,7 +107,9 @@ namespace AvalonUgh.Code.Editor
 					let p = PlatformSnapshot.Of(this, k)
 					where p.IncludedSpace != null
 					where p.WaitPosition != null
+					orderby p.Cave.Y, p.Cave.X 
 					select p
+					
 				);
 
 			WriteLine("platforms: " + platforms.Length);
