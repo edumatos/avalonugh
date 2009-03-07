@@ -115,6 +115,41 @@ namespace AvalonUgh.Code.Editor.Sprites
 		int _Value;
 		public int Value { get { return _Value; } set { _Value = value; UpdateFrame(); } }
 
+		public enum WaitPositionPreferences
+		{
+			// enum values will be used in multiplication
+
+			OtherSideAtCave = -1,
+
+			BeforeCave = 0,
+
+			AtCave = 1,
+			NearCave = 2,
+			Middle = 3,
+			NearSign = 4,
+			AtSign = 5,
+
+			// this will give us double enum
+			_DivideBy = AtSign
+		}
+
+		WaitPositionPreferences InternalWaitPositionPreference;
+		public Action WaitPositionPreferenceChanged;
+
+		public WaitPositionPreferences WaitPositionPreference
+		{
+			get
+			{
+				return InternalWaitPositionPreference;
+			}
+			set
+			{
+				InternalWaitPositionPreference = value;
+				if (WaitPositionPreferenceChanged != null)
+					WaitPositionPreferenceChanged();
+			}
+		}
+
 		readonly Action UpdateFrame;
 
 		public Obstacle ToObstacle(double x, double y)

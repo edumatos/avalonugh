@@ -128,18 +128,16 @@ namespace AvalonUgh.Code.Editor
 							select new Attribute.Int32 { Key = "tree", Value = tree.UnscaledX }
 						);
 
-
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownSigns
+							where i.BaseY == index
+							select SignSelector.SerializeSign(i)
+						);
 
 						WriteAttribute.InvokeAsEnumerable(
 							from i in this.KnownGold
 							where i.BaseY == index
 							select new Attribute.Int32 { Key = "gold", Value = i.UnscaledX }
-						);
-
-						WriteAttribute.InvokeAsEnumerable(
-							from i in this.KnownSigns
-							where i.BaseY == index
-							select new Attribute.Int32_Int32 { Key = "sign", Value0 = i.UnscaledX, Value1 = i.Value }
 						);
 
 						if (Mode == ToStringMode.ForSavedLevel)
@@ -153,6 +151,7 @@ namespace AvalonUgh.Code.Editor
 								select new Attribute.Int32 { Key = "vehicle", Value = StartPosition.UnscaledX }
 							);
 
+							// try is missing in ForSync? 
 							WriteAttribute.InvokeAsEnumerable(
 								from i in this.KnownTryoperus
 								let StartPosition = i.StartPosition
@@ -203,6 +202,10 @@ namespace AvalonUgh.Code.Editor
 				{
 					WriteAttribute( BirdSelector.SelectorSize_2x3.SerializeBird(i, Mode));
 				}
+
+
+			
+
 
 				return s.ToString();
 			}

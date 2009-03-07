@@ -150,7 +150,11 @@ namespace AvalonUgh.Code.Editor
 
 									for (int i = 0; i < k.Value.Length; i++)
 									{
-										k.Value[i] = int.Parse(p[i]);
+										// if the file does not have all the elements
+										if (i < p.Length)
+											k.Value[i] = int.Parse(p[i]);
+										else
+											k.Value[i] = 0;
 									}
 
 									k.Assigned(k.Value);
