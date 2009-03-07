@@ -1,5 +1,5 @@
 # generated map
-# text: Introducing triopterus
+# text: Introducing triopterus!
 # code: MYSTERIUMINQUITATIS
 # nextcode: DREAMFORMOTHER
 # autoscroll: 0
@@ -7,30 +7,30 @@
 # water-rise: 0
 # wind: 0
 # snow: 0
-# background:
-# headcount: 0
+# background: 
+# headcount: 1
 ######################
     SS-  S-S-S--   S- 
  SS-|| S-| | |  SS-|  
  || C-S| | SS-SS-| S- 
  S| |1||  S-| || S-|  
-# sign: 152;1
+# sign: 152;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0
 PP-P-BBBBP-PS--| | |  
  | R-S-S-| S|  | | S- 
  R-| | | SS-S-S-S-SS- 
  | S-| SS-S-| C-| ||  
  R-| S-|| | | |1S- |  
-# sign: 296;2
+# sign: 296;2;3;0;0;0;0;0;0;0;0;0;0;0;0;0
  | C-| S| SP-PP-BBBP-P
  R-|0 S-SS-SS-| S-S|  
 # tree: 112
-# sign: 88;3
+# sign: 88;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 112
  | P-PP-|| || S-| |S- 
 S-SS-S-S-| S-S| | S|  
 | || S-| | | C-S--SS- 
  S-| | | S | |0|  ||  
-# sign: 168;4
+# sign: 168;4;3;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 128
  | S--P-P-PP-PP-SS-|  
  | |  S-| R-R-| S| |  
