@@ -189,7 +189,7 @@ namespace AvalonUgh.Code.Editor
 				Dino = (Attribute.Int32)"dino",
 				Tree = (Attribute.Int32)"tree",
 				Gold = (Attribute.Int32)"gold",
-				Sign = (Attribute.Int32_Int32)"sign",
+				//Sign = (Attribute.Int32_Int32)"sign",
 			};
 
 
@@ -303,20 +303,16 @@ namespace AvalonUgh.Code.Editor
 				};
 
 
-			Create.Sign.Assigned +=
-				(x_, SignValue) =>
+			Attribute.Int32_Array SyncAttributeSign = "sign";
+			SyncAttributeSign.Assigned +=
+				delegate
 				{
-					Console.WriteLine("sign");
 
+					Selectors.Sign.Size_1x1.CreateTo(this, SyncAttributeSign, this.TileRowsProcessed);
 
-					var x = x_ * Zoom;
-					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
-
-					new Sign(Zoom)
-					{
-						Value = SignValue
-					}.AddTo(KnownSigns).MoveBaseTo(x, y);
 				};
+
+		
 
 
 
@@ -325,7 +321,10 @@ namespace AvalonUgh.Code.Editor
 			{
 				Create.Dino,
 				Create.Gold,
-				Create.Sign,
+				
+				SyncAttributeSign,
+
+				//Create.Sign,
 				Create.Tree,
 				
 				Create.tryo,

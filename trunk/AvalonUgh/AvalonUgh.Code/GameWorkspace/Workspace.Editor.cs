@@ -455,81 +455,10 @@ namespace AvalonUgh.Code.GameWorkspace
 				};
 			#endregion
 
-			var CurrentTravelWindows = new BindingList<Window>().AttachTo(this.Container);
-
-
-			this.Editor.ArrowClick +=
-				(Position, args) =>
-				{
-					
-
-
-					var x = Position.ContentX * DefaultZoom;
-					var y = Position.ContentY * DefaultZoom;
-
-					var SelectedPassangers = this.Editor.Level.KnownPassengers.Where(k => k.ToObstacle().Contains(x, y));
-					
-					if (CurrentTravelWindows.Count == 0)
-						if (!SelectedPassangers.Any())
-						{
-							// if we did not click on an actor
-							// we are probably wanting to change the follow mode
-							// from fixed to center to follow the mouse mode
-
-							if (this.Editor.View.AutoscrollEnabled)
-							{
-								this.Editor.View.AutoscrollEnabled = false;
-								this.Editor.View.LocationTracker.Target = null;
-
-								this.Editor.View.MovetToContainerCenter();
-
-							}
-							else
-							{
-								this.Editor.View.AutoscrollEnabled = true;
-								this.Editor.View.LocationTracker.Target = this.Editor_LocalKnownMouseLocation;
-
-								this.Editor_LocalKnownMouseLocation.RaiseLocationChanged();
-							}
-
-							return;
-						}
-
-					CurrentTravelWindows.RemoveAll();
-
-					SelectedPassangers.ForEach(
-						(Actor Passanger, int index) =>
-						{
-
-
-							// show a dialog for travel order
-
-							this.Console.WriteLine("Memory_Route: " + Passanger.Memory_Route.Value);
-
-							var CurrentTravelWindow = new RouteWindow
-							{
-								DragContainer = this.Container,
-								CurrentLevel = this.Editor.Level,
-								CurrentRoute = Passanger.Memory_Route,
-							};
-
-
-							//CurrentTravelWindow.ContentContainer.Background = Brushes.Red;
-
-							//CurrentTravelWindow.Container.WriteTreeToConsoleOnClick();
-
-
-
-							var p = args.GetPosition(this.Container);
-
-							CurrentTravelWindow.MoveContainerTo(p.X + 4, p.Y + 4 + CurrentTravelWindow.Height * index);
-							CurrentTravelWindow.AddTo(CurrentTravelWindows);
-
-						}
-					);
-				};
+			InitializeEditorArrowClick();
 		}
 
+	
 
 	}
 }

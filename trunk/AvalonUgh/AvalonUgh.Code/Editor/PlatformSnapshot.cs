@@ -160,7 +160,7 @@ namespace AvalonUgh.Code.Editor
 				if (CheckPath(z))
 				{
 					p.TotalValidSteps++;
-					
+
 					// a step in current direction was valid.
 				}
 			}
@@ -176,11 +176,26 @@ namespace AvalonUgh.Code.Editor
 
 					var x = 0.0;
 
-					if (Cave.X < TheFirstSignAsObstacle.X)
-						x = o.Right + (TheFirstSignAsObstacle.Left - o.Right) / 2;
-					else
-						x = o.Left + (TheFirstSignAsObstacle.Right - o.Left) / 2;
+					if (TheFirstSign.WaitPositionPreference != Sign.WaitPositionPreferences.BeforeCave)
+					{
 
+						var DirectionModifier = Cave.X < TheFirstSignAsObstacle.X;
+
+						if ((int)TheFirstSign.WaitPositionPreference < 0)
+							DirectionModifier = !DirectionModifier;
+
+						var DirectionMultiplier = (double)(Math.Abs((int)TheFirstSign.WaitPositionPreference) - 1) / ((double)Sign.WaitPositionPreferences._DivideBy - 1);
+
+						if (DirectionModifier)
+							x = o.Right + (TheFirstSignAsObstacle.Left - o.Right) * DirectionMultiplier;
+						else
+							x = o.Left + (TheFirstSignAsObstacle.Right - o.Left) * DirectionMultiplier;
+
+					}
+					else
+					{
+						x = o.X;
+					}
 
 					p.WaitPosition = new Obstacle
 					{

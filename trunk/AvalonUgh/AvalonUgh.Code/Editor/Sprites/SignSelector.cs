@@ -7,18 +7,21 @@ using System.Windows.Controls;
 using ScriptCoreLib.Shared.Avalon.Extensions;
 using ScriptCoreLib.Shared.Lambda;
 using AvalonUgh.Assets.Avalon;
+using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor.Sprites
 {
 	[Script]
 	public class SignSelector : SelectorBase
 	{
+		public readonly SelectorSize_1x1 Size_1x1 = new SelectorSize_1x1();
+
 		public SignSelector()
 		{
 			this.Sizes =
 				new[]
 				{
-					new Size_1x1()
+					Size_1x1
 				};
 
 			this.ToolbarImage =
@@ -33,9 +36,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 		}
 		
 		[Script]
-		public class Size_1x1 : SpriteSelector
+		public class SelectorSize_1x1 : SpriteSelector
 		{
-			public Size_1x1()
+			public SelectorSize_1x1()
 			{
 				PrimitiveTileCountX = 1;
 				PrimitiveTileCountY = 1;
@@ -77,7 +80,30 @@ namespace AvalonUgh.Code.Editor.Sprites
 				v.AddTo(Level.KnownSigns);
 				v.MoveTo(x, y);
 			}
+
+			public void CreateTo(Level level, Level.Attribute.Int32_Array SyncAttributeSign, int TileRowsProcessed)
+			{
+				var x = SyncAttributeSign.Value[0] * level.Zoom;
+				var y = TileRowsProcessed * PrimitiveTile.Heigth * level.Zoom;
+
+				new Sign(level.Zoom)
+				{
+					Value = SyncAttributeSign.Value[1],
+					WaitPositionPreference = (Sign.WaitPositionPreferences) SyncAttributeSign.Value[2]
+				}.AddTo(level.KnownSigns).MoveBaseTo(x, y);
+			}
 		}
 
+		public static Level.Attribute.Int32_Array SerializeSign(Sign value)
+		{
+			var a = new Level.Attribute.Int32_Array { Key = "sign" };
+
+			a.Value[0] = value.UnscaledX;
+			a.Value[1] = value.Value;
+			a.Value[2] = (int)value.WaitPositionPreference;
+
+			return a;
+
+		}
 	}
 }

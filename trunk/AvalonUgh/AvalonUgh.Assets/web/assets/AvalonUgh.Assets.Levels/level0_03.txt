@@ -7,31 +7,31 @@
 # water-rise: 1
 # wind: 0
 # snow: 0
-# background:
+# background: 
 # headcount: 3
 ######################
 S-                    
 | S-S-S-S-SS-SS-SR-R--
 | | | | C-|| || || |  
 | | | | |1 S-S| S-R-R-
-# sign: 168;4
+# sign: 168;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 S--S--| P--| || | | | 
 |  |  S-|  | S-S| SR- 
  S-SS-SR-RR-C-S-| ||  
 # rock: 256
  | || || R--|1|  S--R-
-# sign: 264;3
+# sign: 264;3;2;0;0;0;0;0;0;0;0;0;0;0;0;0
  | S| R--|  BBBBB|  | 
 # tree: 80
  S--P-|  RR-SS-S-S-R- 
  |  SS--C-| || | | |  
  S- ||  |0FR-| | | R- 
-# sign: 56;2
+# sign: 56;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 P-BBBP-P--PR-S-| SS-R-
 | SS-| |  R| SS-SS-S| 
 R-|| R-R--R-S-| || C-R
 | S| | |  | | |  | |0R
-# sign: 264;1
+# sign: 264;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0
  R-| SR-RSR--BBBPBBBBP
  |   ||  ||           
 ######################

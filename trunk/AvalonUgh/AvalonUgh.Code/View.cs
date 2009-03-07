@@ -258,6 +258,18 @@ namespace AvalonUgh.Code
 			#region sync the level platforms into view
 
 			this.Level.KnownSigns.AttachTo(this.Entities);
+			this.Level.KnownSigns.WithEvents(
+				value =>
+				{
+					value.WaitPositionPreferenceChanged += this.Level.ToPlatformSnapshotsWithReset;
+
+					return delegate
+					{
+						value.WaitPositionPreferenceChanged -= this.Level.ToPlatformSnapshotsWithReset;
+					};
+				}
+			);
+
 			this.Level.KnownTrees.AttachTo(this.Entities);
 
 			this.Level.KnownBirds.AttachTo(this.Entities);

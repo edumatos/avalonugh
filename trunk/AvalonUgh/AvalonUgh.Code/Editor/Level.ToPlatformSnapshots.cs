@@ -24,6 +24,13 @@ namespace AvalonUgh.Code.Editor
 			Valid
 		}
 
+		public void ToPlatformSnapshotsWithReset()
+		{
+			ToPlatformSnapshots_Cache = null;
+			ToPlatformSnapshots();
+		}
+		
+
 		Func<IEnumerable<PlatformSnapshot>> ToPlatformSnapshots_Cache;
 		public IEnumerable<PlatformSnapshot> ToPlatformSnapshots()
 		{

@@ -239,24 +239,24 @@ namespace AvalonUgh.Code.Dialogs
 						this.MoreGames();
 				};
 
-			var Options_Shop_Y = Options_Y - Convert.ToInt32((PrimitiveFont.Heigth * Zoom + 4) * 2.5);
-			var Options_Shop = new DialogTextBox
-			{
-				Width = Width,
-				Zoom = Zoom,
-				TextAlignment = TextAlignment.Center,
-				Text = "shop",
-				Visibility = Visibility.Hidden
-			}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_Shop_Y);
+			//var Options_Shop_Y = Options_Y - Convert.ToInt32((PrimitiveFont.Heigth * Zoom + 4) * 2.5);
+			//var Options_Shop = new DialogTextBox
+			//{
+			//    Width = Width,
+			//    Zoom = Zoom,
+			//    TextAlignment = TextAlignment.Center,
+			//    Text = "shop",
+			//    Visibility = Visibility.Hidden
+			//}.AttachContainerTo(this.Container).MoveContainerTo(0, Options_Shop_Y);
 
-			Options_Shop.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_Shop_Y);
+			//Options_Shop.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_Shop_Y);
 
-			Options_Shop.Click +=
-				delegate
-				{
-					if (this.Shop != null)
-						this.Shop();
-				};
+			//Options_Shop.Click +=
+			//    delegate
+			//    {
+			//        if (this.Shop != null)
+			//            this.Shop();
+			//    };
 
 
 			var Options_5_Y = Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -1;
@@ -410,7 +410,7 @@ namespace AvalonUgh.Code.Dialogs
 				{
 					Options_6.Show(Options_Play.Visibility != Visibility.Hidden);
 
-					Options_Shop.Show(Options_Play.Visibility != Visibility.Hidden);
+					//Options_Shop.Show(Options_Play.Visibility != Visibility.Hidden);
 					Options_MoreGames.Show(Options_Play.Visibility != Visibility.Hidden);
 
 					if (Options_Play.Visibility == Visibility.Visible)
@@ -418,7 +418,7 @@ namespace AvalonUgh.Code.Dialogs
 						AnimatedBackgroundOpacity = 0.5;
 						Options_Play.Visibility = Visibility.Hidden;
 						Options_3.Visibility = Visibility.Visible;
-						Options_Shop.Visibility = Visibility.Visible;
+						//Options_Shop.Visibility = Visibility.Visible;
 						Options_2.Visibility = Visibility.Visible;
 						Options_4.Visibility = Visibility.Visible;
 					}
