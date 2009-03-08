@@ -74,6 +74,8 @@ Users shall be able to create new levels and exchange those, either by:
  # Are the passengers in the correct order?
  # Do the signs have correct waiting positions?
  # Is the travel route correct?
+ # Is the headcount correct?
+
 = Videos =
 
 <wiki:video url="http://www.youtube.com/watch?v=lluAkkLRdHI"/>
