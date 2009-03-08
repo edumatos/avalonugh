@@ -1,6 +1,6 @@
 # generated map
-# text: Diving fun
-# code: DOGS
+# text: Pretty platforms
+# code: DESPERATEHELL
 # autoscroll: 0
 # water: 20
 ######################

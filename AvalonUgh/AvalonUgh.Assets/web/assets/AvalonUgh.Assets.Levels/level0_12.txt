@@ -1,8 +1,14 @@
 # generated map
 # text: Big cave
 # code: DEATHWISH
+# nextcode: DOGS
 # autoscroll: 0
 # water: 28
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background:
+# headcount: 2
 ##########################
 R-SS-SS-S-S-S-SS-S-S-SS-R-
 | |SS-S-S-| S--S-| | |S-| 
@@ -11,10 +17,10 @@ R-S|| | | | |  | S-S--| R-
 | | | | R-|  | SS-S--S--| 
 RC-S--SR| SS-| || |  |  R-
 # tree: 320
-|| |   || || SC-| SP-SS-| 
-# sign: 104;1
-|PP-P--|R-S|  | S-S| R--| 
-# sign: 216;2
+||1|   || || SC-| SP-SS-| 
+# sign: 104;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0
+|PP-P--|R-S|  |1S-S| R--| 
+# sign: 216;2;4;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 276
 R-R-|  R| || P--P-|| |  R-
 | SS-R--R-S--S--S--R-|  | 
@@ -22,9 +28,12 @@ R-R-|  R| || P--P-|| |  R-
 R-S| |  S-S-S-S-S-S-RR--R-
 | S-S-S-| | | | | | ||  | 
 R-| C-| | | S-S-| | R--R| 
-| | | | | S | | | R-|  |R-
-# sign: 184;3
+| | |0| | S | | | R-|  |R-
+# sign: 184;3;1;0;0;0;0;0;0;0;0;0;0;0;0;0
 R-S-P-BBBBP-| | R-| R--|| 
 | | | S-S-| S-R--R--|  R| 
 | S-S-| | | | |  |  |  |R-
 ##########################
+# passenger: 0;0;0;0;0;0;48000;16800;19;1;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;6400;14400;3;0;0;0;0;0;0;0
+# bird: 0;0;0;0;0;0;64000;6000;0;0;0;0;0;0;0;0
