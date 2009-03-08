@@ -75,6 +75,7 @@ Users shall be able to create new levels and exchange those, either by:
  # Do the signs have correct waiting positions?
  # Is the travel route correct?
  # Is the headcount correct?
+ # Is the level title correct?
 
 = Videos =
 
