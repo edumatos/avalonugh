@@ -270,6 +270,11 @@ namespace AvalonUgh.Code
 				}
 			);
 
+			this.Level.KnownRocks.AttachTo(this.Entities);
+			this.Level.KnownRocks.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
+			//this.Level.KnownRocks.WithEvents(this.LogicForInfoLabel);
+
+
 			this.Level.KnownTrees.AttachTo(this.Entities);
 
 			this.Level.KnownBirds.AttachTo(this.Entities);
@@ -295,10 +300,7 @@ namespace AvalonUgh.Code
 			);
 
 
-			this.Level.KnownRocks.AttachTo(this.Entities);
-			this.Level.KnownRocks.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
-			//this.Level.KnownRocks.WithEvents(this.LogicForInfoLabel);
-
+		
 
 			this.Level.KnownDinos.AttachTo(this.Entities);
 

@@ -97,13 +97,15 @@ namespace AvalonUgh.Code.GameWorkspace
 
 							this.Console.WriteLine("Memory_Route: " + Passanger.Memory_Route.Value);
 
-							var CurrentTravelWindow = new RouteWindow
+							var TravelContext = Actor.CreateFromType(Passanger.GetActorType(), DefaultZoom);
+							TravelContext.Animation = Actor.AnimationEnum.Talk;
+
+							var CurrentTravelWindow = new RouteWindow(TravelContext)
 							{
 								DragContainer = this.Container,
 								CurrentLevel = this.Editor.Level,
 								CurrentRoute = Passanger.Memory_Route,
 							};
-
 
 							//CurrentTravelWindow.ContentContainer.Background = Brushes.Red;
 
