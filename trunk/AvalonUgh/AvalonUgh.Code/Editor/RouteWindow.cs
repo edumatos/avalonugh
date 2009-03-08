@@ -88,7 +88,7 @@ namespace AvalonUgh.Code.Editor
 
 		public Level CurrentLevel;
 
-		public RouteWindow()
+		public RouteWindow(Actor Context)
 		{
 
 			this.ClientWidth = 200;
@@ -98,6 +98,14 @@ namespace AvalonUgh.Code.Editor
 			{
 				Text = ""
 			};
+
+			Context.MoveTo(
+				PrimitiveTile.Width + AddStopButton.Padding,
+				0 + AddStopButton.Padding
+			);
+
+			Context.AttachContainerTo(AddStopButton.ContentContainer);
+
 
 			AddStopButton.AttachContainerTo(this.OverlayContainer);
 			AddStopButton.Click +=

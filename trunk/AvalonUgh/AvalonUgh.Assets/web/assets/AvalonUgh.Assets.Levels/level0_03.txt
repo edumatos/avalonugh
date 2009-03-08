@@ -3,8 +3,8 @@
 # code: FIGURATIVETHEATRE
 # nextcode: BURNTOFFERINGS
 # autoscroll: 0
-# water: 8
-# water-rise: 0
+# water: 14
+# water-rise: 1
 # wind: 0
 # snow: 0
 # background: 
