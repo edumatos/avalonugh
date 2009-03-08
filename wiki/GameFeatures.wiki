@@ -15,9 +15,9 @@ http://www.abandonia.com/en/games/26/Ugh.html
 
 = Known Remakes =
 
-[http://www.onekit.com/store/review/ugh~exmark~_remake_or_an_absolutely_new_ancient_taxi~question~.html]
-[http://www.alawar.com/games/ancienttaxi/]
-[http://pc.gamezone.com/gamesell/p30695.htm]
+  * [http://www.onekit.com/store/review/ugh~exmark~_remake_or_an_absolutely_new_ancient_taxi~question~.html]
+  * [http://www.alawar.com/games/ancienttaxi/]
+  * [http://pc.gamezone.com/gamesell/p30695.htm]
 
 = Details =
 
@@ -68,6 +68,12 @@ Users shall be able to create new levels and exchange those, either by:
  # cut&paste the level code in base64 (maybe apply xor?)
  # all levels loaded at multiplayer games
 
+== Level Port Checklist ==
+
+ # Are all the caves correct?
+ # Are the passengers in the correct order?
+ # Do the signs have correct waiting positions?
+ # Is the travel route correct?
 = Videos =
 
 <wiki:video url="http://www.youtube.com/watch?v=lluAkkLRdHI"/>
