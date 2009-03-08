@@ -76,6 +76,8 @@ Users shall be able to create new levels and exchange those, either by:
  # Is the travel route correct?
  # Is the headcount correct?
  # Is the level title correct?
+ # Is the tree there?
+ # Is next level code there?
 
 = Videos =
 
