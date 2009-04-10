@@ -1,32 +1,40 @@
 # generated map
 # text: A capital g
 # code: ANDROGYNOUSNOISE
+# nextcode: HANDPERMEATES
 # autoscroll: 0
 # water: 18
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background:
+# headcount: 2
 ######################
-   S-      R--R-R-    
- S-| C-R-R-|  | | R-- 
- |  S| | | S-S-R-R|   
-# sign: 56;1
+   S-  R-  R--R-R-   R
+ S-| C-R-R-|  | | R--|
+ |  S|0| | S-S-R-R|  |
+# sign: 56;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0
  | P-P-R--S| | | S-S- 
 SS-| | |  || | S-| C- 
-|| R--RSS-S-S--| S |  
-# sign: 296;2
+|| R--RSS-S-S--| S |1 
+# sign: 296;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 S| |  S-| | |  | |P---
 # tree: 224
 || SR-| | S-P--| S-R--
  SS-| C-| | |  S-| |  
- || | | S S--R-SS-SC- 
-# sign: 152;3
+ || | |1S S--R-SS-SC- 
+# sign: 152;3;1;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 146
-S-| R-BBBB|  R-||  |  
-# sign: 296;4
-| | R-S-S-SS-| S| P-- 
+S-| R-BBBB|  R-||  |0 
+# sign: 296;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+| | R-S-S-SS-| S| P--P
 S-S-| | C-|| R-|| |   
-| S-R-| |  | | S--S-S-
-# sign: 168;5
+| S-R-| |0 | | S--S-S-
+# sign: 168;5;-1;0;0;0;0;0;0;0;0;0;0;0;0;0
 | | | P--P---| |  | | 
 | | S-|  |   S-SS-| | 
 S-| | S--S-S-| || | S-
 |   | |    | |  |   | 
 ######################
+# passenger: 0;0;0;0;0;0;64000;24000;595;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;19200;4800;1332;2;0;0;0;0;0;0

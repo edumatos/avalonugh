@@ -1,10 +1,14 @@
 # generated map
 # text: Tower of atlantis
 # code: CERVIXCOUCH
+# nextcode: THISGLASSHOUSE
 # autoscroll: 0
 # water: 16
 # water-rise: 1
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 2
 ######################
      S-   S-       S- 
 S--S-| SS-| SS-S-S-|  
@@ -12,23 +16,25 @@ S--S-| SS-| SS-S-S-|
  S-S-SS-| | S| | | |  
 # tree: 192
  | | || C-P-P-S-S--S- 
- | S- | | | | RS|  |  
-# sign: 88;5
+ | S- | |1| | RS|  |  
+# sign: 88;5;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 96
 SS-| P---PR-| R-S-SS- 
 || | S-S-R--R-| | ||  
 S| | | C-|  | C-| S|  
- SS- | | RR--F| S ||  
-# sign: 280;4
-# sign: 72;3
+ SS- | |0RR--F|0S ||  
+# sign: 280;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 72;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
  || P-P--||  P--PP-S- 
-S-| | |  R--R|  SS-|  
-S-S-S-S-S|  |S-S-| | P
+S-| | |  R--R|  SS-| S
+S-S-S-S-S|  |S-S-| | |
 | | | | ||  |C-| | |  
-| | | | C-R-F| |  SS- 
-# sign: 280;2
- S-S--S | | P-PBBB||  
-# sign: 120;1
-P| |  BBP-R-| RS-S-|  
- |   S  | | |  |      
+| | | | C-R-F|1|  SS- 
+# sign: 280;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0
+ S-S--S |0| P-PBBB||  
+# sign: 120;1;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+S| |  BBP-R-| RS-S-|  
+||   S  | | |  |      
 ######################
+# passenger: 0;0;0;0;0;0;28800;36000;18;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;44800;33600;19;1;0;0;0;0;0;0

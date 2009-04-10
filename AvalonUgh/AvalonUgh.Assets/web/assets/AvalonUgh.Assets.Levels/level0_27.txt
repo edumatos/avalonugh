@@ -1,15 +1,20 @@
 # generated map
 # text: Trees on the top
 # code: ASHES
+# nextcode: ASHESPARTII
 # autoscroll: 0
 # water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 0
 ######################
-     S-S         S  S-
+     S-S  RR-    S  S-
  S-S-| |C-R--S-S-|C-| 
- | | |  | |  | |  | R-
-# sign: 120;3
-# sign: 280;2
+ | | |  |1|  | |  |0R-
+# sign: 120;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 280;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
  | | SBBBP|  | | BBB| 
  S--S-SS-RR--SS-S-S-| 
  |  | || ||  || | | S-
@@ -23,11 +28,14 @@ S-| P-S-S-R-| | P-S--
 | | R--SS-S-S--R-S-|  
  S-S|  || | |  | | |  
  | S-R--| S-S--| C-|  
- | C-|  C-| |  R-| S  
-# sign: 328;1
- | |  R-| | S R--P--PP
-# sign: 88;4
-# sign: 216;5
+ | C-|  C-| |  R-|1S  
+# sign: 328;1;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+ | |0 R-|0| S R--P--PP
+# sign: 88;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 216;5;4;0;0;0;0;0;0;0;0;0;0;0;0;0
+# rock: 176
 P---BB| P---P-|  |  R 
 |     | |   |         
 ######################
+# passenger: 0;0;0;0;0;0;28800;4800;1059;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;28800;36000;786;1;0;0;0;0;0;0
