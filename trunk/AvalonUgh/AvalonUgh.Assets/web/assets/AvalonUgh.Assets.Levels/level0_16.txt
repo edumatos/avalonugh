@@ -1,31 +1,40 @@
 # generated map
 # text: The easy cave
 # code: SLEEPWALK
+# nextcode: THEDROWNING
 # autoscroll: 0
 # water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background:
+# headcount: 1
 ######################
  S-S-   S-SR--  S-S-- 
  | | S--| ||  R-| |   
  | | |  | S-R-| SS-S- 
  S--R-R-| | | | || |  
  |  | | SS-S-R-C-| |  
- S-S-R--|| C-| | S S- 
-# sign: 296;3
- S-| |   | | | P---| B
-# sign: 136;2
- | SS-R-BP--BR--S-S|  
+ S-S-R--|| C-| |0S S- 
+# sign: 296;3;1;0;0;0;0;0;0;0;0;0;0;0;0;0
+ S-| |   | |0| P---| S
+# sign: 136;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0
+ | SS-R-BP--BR--S-S| |
  | S| R-S|  S|  | S-S-
  | || | S-S-|R-SS-| S-
 S--S-S| | S--| || | | 
 |  | S--| |  SS-| | | 
 SS-| |  S-S-C-| S-S-- 
-|| S-S- | | | | | |   
-# sign: 120;1
+|| S-S- | | |1| | |   
+# sign: 120;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 146
 S| | | P--PPP--S| SC- 
-|| S-| |  R-|  | S-|  
+|| S-| |  R-|  | S-|1 
 # tree: 48
-# sign: 264;4
+# sign: 264;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 PP---P-S--| SS-P-P---P
  |     |  |  | | |    
 ######################
+# passenger: 0;0;0;0;0;0;38400;14400;1043;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;64000;36000;8978;0;0;0;0;0;0;0
+# bird: 0;0;0;0;0;0;54400;22800;0;0;0;0;0;0;0;0
