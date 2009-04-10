@@ -1,33 +1,40 @@
 # generated map
 # text: Especially for you
 # code: LAMENTOVERTHESHADOWS
+# nextcode: FACE
 # autoscroll: 0
 # water: 38
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 1
 ######################
-          S-S--       
+     R-   S-S--     R-
  R--R-RSS-| |  S-SS-R-
  |  | S|| | C-S| || | 
- R-S-SS-| S | F| S| R 
-# sign: 184;3
- | | || | P--P-PSS-S- 
- R-| S| SR|  | S|| |  
- | C-|S-R-R-S-S--| R- 
- S-|  S-| C-| |  | |  
-# sign: 88;1
-BBBBP-| | | |  S-S-R--
-# sign: 232;3
+ R-S-SS-| S |1F| S| RR
+# sign: 184;3;4;0;0;0;0;0;0;0;0;0;0;0;0;0
+R| | || | P--P-PSS-S-|
+|R-| S| SR|  | S|| | |
+|| C-|S-R-R-S-S--| R- 
+ S-|0 S-| C-| |  | |  
+# sign: 88;1;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+BBBBP-| | |1|  S-S-R--
+# sign: 232;4;3;0;0;0;0;0;0;0;0;0;0;0;0;0
  S--| | R-P-P--| | |  
  |  S-| | | |  | S-R- 
  SS-| S-S-S-R-S-SS-|  
  || S-| | C-| C-|| R- 
- S| | S | | FF|  | |  
+ S| | S | |0FF|0 | |  
 # tree: 48
-# sign: 120;2
-# sign: 264;5
+# sign: 120;2;3;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 264;5;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 162
 P---| |BBP--R-P---R-R-
 |   S-S-S|  | R-S-| | 
 S-S-| | S--R--R-S--R- 
 | | | | |  |  | |  |  
 ######################
+# passenger: 0;0;0;0;0;0;35200;31200;20786;1;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;41600;7200;17699;0;0;0;0;0;0;0

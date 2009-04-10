@@ -1,15 +1,20 @@
 # generated map
 # text: Divers delight II
 # code: ASHESPARTII
+# nextcode: WHENIWASBED
 # autoscroll: 0
 # water: 16
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 2
 ######################
     S-     R-R-       
  S--| C-R--| | C-S-S- 
- |   S| |  RR--| S |  
-# sign: 296;2
-# sign: 72;1
+ |   S|0|  RR--|1S |  
+# sign: 296;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 72;1;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 272
  S-SPP--R-R-|  P--P|  
  | |R|  | | RR-|  S-- 
@@ -26,5 +31,7 @@
  | | || R-S--R-| | R- 
  S-R-S--| |  | | | |  
  | S-|  | SS-S-S--R-- 
- | |      ||   |  |   
+ | |    R-||   |  |   
 ######################
+# passenger: 0;0;0;0;0;0;22400;4800;2;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;51200;4800;1;0;0;0;0;0;0;0
