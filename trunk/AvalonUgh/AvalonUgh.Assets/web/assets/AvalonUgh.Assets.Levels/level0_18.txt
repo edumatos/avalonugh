@@ -1,18 +1,24 @@
 # generated map
 # text: Dino likes the ladies
 # code: THEBLUEHOUR
+# nextcode: ASEVENINGFALLS
 # autoscroll: 0
 # water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background:
+# headcount: 1
 ######################
      S- R--    R--    
 SS-S-| S|  R--R|  R-- 
 || | | ||  |  ||  |   
 S| | SC-R--S--S-R-R-- 
-|| |  | |  |  | S-|   
-# sign: 88;3
+|| |  |1|  |  | S-|   
+# sign: 88;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 S--P-P--RR-C-SS-| SR- 
-|  | |  || |  | | ||  
-# sign: 216;2
+|  | |  || |0 | | ||  
+# sign: 216;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0
  S-S-S-S|R-P--PS--S-S-
  | | | S-S-|  S|  | | 
 # dino: 312
@@ -23,11 +29,13 @@ RR-|  || || | | | S-|
  | SS-S-P-| S-| SS-R--
  R--| | | | | SS-| |  
  |  C-SS| SC-S|| | |  
- |  | | R- | |S| SR-- 
-# sign: 120;4
-# sign: 168;1
+ |  |0| R- |1|S| SR-- 
+# sign: 120;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 168;1;-1;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 224
 # rock: 256
 BR--P--P| P---P--B|   
  |        |           
 ######################
+# passenger: 0;0;0;0;0;0;22400;9600;36;1;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;16000;36000;18;1;0;0;0;0;0;0
