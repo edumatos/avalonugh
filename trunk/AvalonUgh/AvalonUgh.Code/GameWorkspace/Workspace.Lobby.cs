@@ -135,6 +135,18 @@ namespace AvalonUgh.Code.GameWorkspace
 						Width = 16,
 						Height = 16,
 						Hyperlink = new Uri( "http://www.stumbleupon.com/submit?url=" + Info.Nonoba.URL)
+					},
+					new GameSocialLinks.Button { 
+						Source = (Assets.Shared.KnownAssets.Path.Assets + "/abandonia.png").ToSource(),
+						Width = 16,
+						Height = 16,
+						Hyperlink = new Uri( "http://www.abandonia.com/en/games/26/Ugh.html")
+					},
+					new GameSocialLinks.Button { 
+						Source = (Assets.Shared.KnownAssets.Path.Assets + "/rss.png").ToSource(),
+						Width = 14,
+						Height = 14,
+						Hyperlink = new Uri( "http://zproxy.wordpress.com")
 					}
 				};
 			}

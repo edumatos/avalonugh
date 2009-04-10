@@ -1,34 +1,43 @@
 # generated map
 # text: Easy triop
-# code: HANDPERMEATES
+# code: ELECTRADESCENDING
+# nextcode: 
 # autoscroll: 0
 # water: 18
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background:
+# headcount: 2
 ######################
- SS--        S-S-     
- ||  S-S--SS-| | S-C- 
- R-C-| |  || | S | |  
-# sign: 264;2
- | | S R-S-| S--BBBP-P
-# sign: 104;1
+RSS--        S-S-     
+|||  S-S--SS-| | S-C- 
+ R-C-| |  || | S | |0 
+# sign: 264;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0
+ | |1S R-S-| S--BBBP-P
+# sign: 104;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0
  | BBBB| | | |  SS-|  
 R-SSS-S| | S--C-|| |  
-| ||| S-S-S|  |  | S--
-# sign: 264;3
+| ||| S-S-S|  |1 | S--
+# sign: 264;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 S-S-| | | S--BP-BS-|  
 | | S-| | |  S| SS-S- 
 | | | S-SC-S-|S--| |  
 # tree: 64
-SS-P-P|  | | S|  | C- 
-# sign: 136;0
-|| | R| P-P-S-S--S |  
-# sign: 296;4
+SS-P-P|  |0| S|  | C- 
+# sign: 136;0;-1;0;0;0;0;0;0;0;0;0;0;0;0;0
+|| | R| P-P-S-S--S |1 
+# sign: 296;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 S| | S--S-| | |  P--PP
 || S-|  | SS-S-S-|  R-
  C-| S--S--| | | SS-| 
- | | |  |  S | | || | 
-# sign: 200;5
+ |0| |  |  S | | || | 
+# sign: 200;5;2;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 148
 # rock: 114
 PP---P-P-BBBBP-S--| S-
  |   |       | |    | 
 ######################
+# passenger: 0;0;0;0;0;0;64000;26400;97;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;12800;7200;52;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;64000;4800;37;1;0;0;0;0;0;0

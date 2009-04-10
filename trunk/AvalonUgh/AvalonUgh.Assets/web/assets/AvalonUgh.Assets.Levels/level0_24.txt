@@ -1,9 +1,14 @@
 # generated map
 # text: A cave under water
 # code: THISGLASSHOUSE
+# nextcode: FLEEINGSOMNAMBULIST
 # autoscroll: 0
 # water: 23
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 2
 ######################
       R-  R-- R-   R- 
 R-R-R-| R-|  R| R--|  
@@ -11,24 +16,26 @@ R-R-R-| R-|  R| R--|
 R--R--| S--S| S-R-R|  
 |  |  S-|  || | | R-- 
  R-S-S| S-S-| | C-|   
- C-| || | | S-S | FR- 
-# sign: 248;1
- | |  | | | | BBBBB|  
+ C-| || | | S-S |1FR- 
+# sign: 248;1;-1;0;0;0;0;0;0;0;0;0;0;0;0;0
+ |0|  | | | | BBBBB|  
 # tree: 152
-# sign: 88;2
+# sign: 88;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 P--P---P--PSS-S-S--SS-
 R-R--R-|  S|| | |  || 
 | |  | S-S-S| | SC-S| 
- R-R-S-| | ||  S-| || 
-# sign: 232;3
+ R-R-S-| | ||  S-|0|| 
+# sign: 232;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 260
 # rock: 194
  | S-| S-| P-BBBBP-S--
 S-S| | | R-| S-S-| |  
  C-| S-R-| C-| | SS-S-
- | | R-| S-|  S| || | 
-# sign: 216;5
-# sign: 72;4
+ |1| R-| S-|0 S| || | 
+# sign: 216;5;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 72;4;1;0;0;0;0;0;0;0;0;0;0;0;0;0
 P-P--R--RP---P-| S| | 
 | |  |   |   |        
 ######################
+# passenger: 0;0;0;0;0;0;54400;14400;37;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;57600;26400;36;0;0;0;0;0;0;0
