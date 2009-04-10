@@ -1,33 +1,41 @@
 # generated map
 # text: The triops and you
 # code: AWAKEATTHEWALL
+# nextcode: SLEEPWALK
 # autoscroll: 0
 # water: 28
+# water-rise: 0
+# wind: 0
+# snow: 0
+# background:
+# headcount: 2
 ######################
 S-SS-S-    S-  S-S-   
 | || | S-S-| S-| | S- 
  S-| S-| | | | | C-|  
- | C-| | | S-| S | |  
-# sign: 264;5
+ | C-| | | S-| S |0|  
+# sign: 264;5;4;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 224
- | | S | S-| P-P-P-S--
-# sign: 104;2
+ | |1S | S-| P-P-P-S--
+# sign: 104;2;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 P--PP---S| | | | | |  
 |  S-S-R--S--S-| S-S-B
  R-| S-|  |  | S-| |  
 S--| | C-R-S-| | | S- 
-|  S | | | | | S--S|  
-# sign: 72;3
+|  S | |0| | | S--S|  
+# sign: 72;3;1;0;0;0;0;0;0;0;0;0;0;0;0;0
  SS-BBBBBR-S-S-|  ||  
 # tree: 304
  || S-SS-| | | S-P--PP
  S| | || S-| | | |  R-
  C-S| S| | S-SS-C-RR--
- | || S- | | || |  |  
-# sign: 136;1
-# sign: 296;4
+ |0|| S- | | || |1 |  
+# sign: 136;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 296;4;-1;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 96
-PP--P-P--PB| BPP--R-- 
- |  | |  S-S-S-|  |   
+PP--P-P--PB| BPP--PR- 
+ |  | |  S-S-S-|  R|  
          | | |        
 ######################
+# passenger: 0;0;0;0;0;0;25600;21600;37;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;57600;7200;36;1;0;0;0;0;0;0
