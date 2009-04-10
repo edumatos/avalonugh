@@ -17,7 +17,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly LevelReference DefaultMissionLevel;
 		public readonly LevelReference DefaultCaveLevel;
 		//public const int DefaultMissionLevelNumber = 1;
-		public const int DefaultMissionLevelNumber = 28;
+		public const int DefaultMissionLevelNumber = 33;
 
 		public readonly int DefaultEditorLevel = DefaultMissionLevelNumber;
 

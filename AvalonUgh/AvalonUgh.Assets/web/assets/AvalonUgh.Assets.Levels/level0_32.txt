@@ -1,33 +1,41 @@
 # generated map
 # text: Triopterus nastius
 # code: THELUXURYOFTEARS
+# nextcode: OFTHEWOUND
 # autoscroll: 0
 # water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 1
 ######################
 SS- S-S-S--  SS-R--   
 || S| | |  S-|| |  R--
 S| |S--C-S-| S| S--|  
-||  |  | | | || |  S- 
-# sign: 56;4
+||  |  |1| | || |  S- 
+# sign: 56;4;2;0;0;0;0;0;0;0;0;0;0;0;0;0
 P-PBBBP--| S-S-S-S-SS-
 | SS-S|  | | | | | || 
 S-|| S-S-S-S--S| | S| 
 # tree: 304
 S--C-| | | |  S-P-P---
-|  | S | | SS-| R--R--
-# sign: 104;1
+|  |0S | | SS-| R--R--
+# sign: 104;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 S-P--P--P--|| S-|  |  
 | |  R--|  S| | SS-|  
 SS-S-|  S-S-S-| || S- 
 || | SS-| | | S-S| C- 
-S| | || | | | |  | |  
-# sign: 264;3
+S| | || | | | |  | |1 
+# sign: 264;3;3;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 240
  S-S--| | SC-P--PP-P--
- | |  S S-|| |  R--R--
-# sign: 120;2
+ | |  S S-||0|  R--R--
+# sign: 120;2;2;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 96
 P--BBP---P--PR--|  |  
 |    |   |   |  |  |  
 ######################
+# passenger: 0;0;0;0;0;0;38400;36000;561;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;64000;31200;36;1;0;0;0;0;0;0
+# bird: 0;0;0;0;0;0;32000;18000;0;0;0;0;0;0;0;0
