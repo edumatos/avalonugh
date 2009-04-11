@@ -1,29 +1,32 @@
 # generated map
 # text: Grannys home
 # code: THEDANZIGWALTZ
+# nextcode: CHIMEREDESIDELA
 # autoscroll: 0
 # water: 22
 # water-rise: 0
+# wind: 0
 # snow: 0
 # background: 
+# headcount: 2
 ######################
-    S-S  S  S-S  S-   
+   RS-S  S  S-S  S-   
 R-R-| |S-|S-| |S-| S- 
 | | | S-S-| SS-| | |  
 R--C-SS-| | || C-| |  
-|  |  | | S--| |  S-S-
-# sign: 88;3
-# sign: 280;2
+|  |1 | | S--| |1 S-S-
+# sign: 88;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 280;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 112
  R-P--P--P|  P--P-| | 
  | |  |  S-S-|  S--S- 
  R-S-S-R-C-| R-S|  S- 
- | | | | |  S| C-S-|  
-# sign: 184;1
- C-| | SRBBBB| | | |  
-# sign: 280;4
- | S | ||S-S-R-BBBBS- 
-# sign: 72;5
+R| | | | |0 S| C-S-|  
+# sign: 184;1;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+ C-| | SRBBBB| |0| |  
+# sign: 280;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+ |0S | ||S-S-R-BBBBS- 
+# sign: 72;5;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 48
 P-BBBS-S-| | | S-S-|  
 R-SS-| S-| | S-| | |  
@@ -34,3 +37,5 @@ R-S| | | R-| | |  |SR-
 | |  |  S| R--| R-|   
         |  |    | |   
 ######################
+# passenger: 0;0;0;0;0;0;12800;9600;84;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;32000;19200;82;2;0;0;0;0;0;0

@@ -1,37 +1,43 @@
 # generated map
 # text: The capital I
 # code: CHIMEREDESIDELA
+# nextcode: SILENTTHUNDER
 # autoscroll: 0
 # water: 20
 # water-rise: 0
+# wind: 0
 # snow: 0
 # background: 
+# headcount: 3
 ######################
  S-       SR-   S--   
  | S-SS-S-|| SS-|  C- 
- C-| || | R-R-| S- |  
-# sign: 296;5
- | |  | | | | | | BBP-
-# sign: 88;4
+ C-| || | R-R-| S- |1 
+# sign: 296;5;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+ |0|  | | | | | | BBP-
+# sign: 88;4;3;0;0;0;0;0;0;0;0;0;0;0;0;0
 P-P---S-S-S--SS-| S-| 
 | SS--S-| |  || S-| S-
 S-||  | | R-R-| | | S-
 | S-S-| | | | | | | | 
 # dino: 312
  C-S| S-S--R-S-S--P---
- |  | | |  | | |  S-S 
-# sign: 56;3
+ |1 | | |  | | |  S-S 
+# sign: 56;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 96
- P-BBP-SSS-| | S-S-C- 
- | S-| ||| R-S-| | |  
-# sign: 280;2
+PP-BBP-SSS-| | S-S-C- 
+ | S-| ||| R-S-| | |0 
+# sign: 280;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
  S--S-SS-| R-| | BBPP-
  |  | || | | | S-S-R| 
 S-C-| S| SR-R--| | SR-
-| | |  | || |  | | || 
+| |0|  | || |  | | || 
 # tree: 128
-# sign: 104;1
+# sign: 104;1;1;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 80
- P-BBBBBP-R-S-R-S| S- 
+PP-BBBBBP-R-S-R-S| S- 
  |      |   | | |  |  
 ######################
+# passenger: 0;0;0;0;0;0;64000;26400;1;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;9600;36000;50;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;64000;26400;1;1;0;0;0;0;0;0

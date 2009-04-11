@@ -67,6 +67,7 @@ namespace AvalonUgh.Code
 						Width = e.Width,
 						Height = e.Height,
 						Name = "GameSocialLinks_Button_Image",
+						Opacity = 0.6
 					}.AttachTo(this).MoveTo(x, y);
 
 					e.Overlay = new Rectangle
@@ -79,16 +80,19 @@ namespace AvalonUgh.Code
 						Name = "GameSocialLinks_Button_Overlay",
 					}.AttachTo(this).MoveTo(x, y);
 
+					var ImageOpacity = e.Image.ToAnimatedOpacity();
+					ImageOpacity.Opacity = 0.4;
+
 					e.Overlay.MouseEnter +=
 						delegate
 						{
-							e.Image.Opacity = 0.6;
+							ImageOpacity.Opacity = 1;
 						};
 
 					e.Overlay.MouseLeave +=
 						delegate
 						{
-							e.Image.Opacity = 1;
+							ImageOpacity.Opacity = 0.4;
 						};
 
 					e.Overlay.MouseLeftButtonUp +=
