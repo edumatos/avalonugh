@@ -165,7 +165,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 						Bottom_Trigger
 					},
 					Vertical = ToLookupValue(0, 4),
-					Horizontal = ToLookupValue(300, 2),
+					Horizontal = ToLookupValue(300, 3),
 					Cut = ToLookupValue(500, 1),
 					LeftToBottom = ToLookupValue(510, 1),
 					LeftToTop = ToLookupValue(520, 2),

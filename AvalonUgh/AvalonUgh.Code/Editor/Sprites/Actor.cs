@@ -22,6 +22,8 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
+		public Level LevelViaKnownActors;
+
 		public int AvailableFare;
 
 		public virtual int GetActorType()
@@ -147,6 +149,9 @@ namespace AvalonUgh.Code
 		public Image[] TalkFrames = new Image[0];
 		public int TalkInterval = 100;
 
+		public Image[] SwimLeftFrames = new Image[0];
+		public int SwimLeftInterval = 100;
+
 		public Image[] WalkLeftFrames = new Image[0];
 		public int WalkLeftInterval = 100;
 
@@ -169,6 +174,7 @@ namespace AvalonUgh.Code
 			this.Memory_CanBeHitByVehicle = true;
 			this.RespectPlatforms = true;
 
+			//this.Density = 1;
 			this.Density = 0.3;
 			this.Zoom = Zoom;
 
@@ -206,7 +212,7 @@ namespace AvalonUgh.Code
 			WalkRight,
 			CaveEnter,
 			CaveExit,
-			// only the woman seems to be able to swim!
+			// the old man cannot swim!
 			SwimLeft,
 			SwimRight
 		}
@@ -236,6 +242,8 @@ namespace AvalonUgh.Code
 					this.WalkLeftFrames.ForEach(k => k.Hide());
 				if (value != AnimationEnum.WalkRight)
 					this.WalkRightFrames.ForEach(k => k.Hide());
+				if (value != AnimationEnum.SwimLeft)
+					this.SwimLeftFrames.ForEach(k => k.Hide());
 				if (value == AnimationEnum.Idle)
 					this.IdleFrames.First().Show();
 
@@ -249,6 +257,9 @@ namespace AvalonUgh.Code
 					this.WalkLeftFrames.FirstOrDefault().Apply(k => k.Show());
 				if (value == AnimationEnum.WalkRight)
 					this.WalkRightFrames.FirstOrDefault().Apply(k => k.Show());
+
+				if (value == AnimationEnum.SwimLeft)
+					this.SwimLeftFrames.FirstOrDefault().Apply(k => k.Show());
 
 			}
 		}
@@ -322,6 +333,7 @@ namespace AvalonUgh.Code
 
 		DispatcherTimer AnimationTimer_Idle;
 		DispatcherTimer AnimationTimer_Talk;
+		DispatcherTimer AnimationTimer_SwimLeft;
 		DispatcherTimer AnimationTimer_WalkLeft;
 		DispatcherTimer AnimationTimer_WalkRight;
 		DispatcherTimer AnimationTimer_Panic;
@@ -356,6 +368,25 @@ namespace AvalonUgh.Code
 						(k, j) =>
 						{
 							if (j == i % this.TalkFrames.Length)
+								k.Show();
+							else
+								k.Hide();
+						}
+					);
+				}
+			);
+
+
+			AnimationTimer_SwimLeft = this.SwimLeftInterval.AtIntervalWithCounter(
+				i =>
+				{
+					if (Animation != AnimationEnum.SwimLeft)
+						return;
+
+					this.SwimLeftFrames.ForEach(
+						(k, j) =>
+						{
+							if (j == i % this.SwimLeftFrames.Length)
 								k.Show();
 							else
 								k.Hide();
@@ -405,6 +436,12 @@ namespace AvalonUgh.Code
 				{
 					if (Animation != AnimationEnum.Panic)
 					{
+						if (Animation == AnimationEnum.SwimLeft)
+							return;
+
+						if (Animation == AnimationEnum.SwimRight)
+							return;
+
 						if (Animation == AnimationEnum.WalkLeft)
 							return;
 
@@ -588,8 +625,16 @@ namespace AvalonUgh.Code
 				{
 					if (this.VelocityX < 0)
 					{
-						if (this.Animation != AnimationEnum.WalkLeft)
-							this.Animation = AnimationEnum.WalkLeft;
+						if (this.ToObstacle().Bottom > this.LevelViaKnownActors.WaterTop)
+						{
+							if (this.Animation != AnimationEnum.SwimLeft)
+								this.Animation = AnimationEnum.SwimLeft;
+						}
+						else
+						{
+							if (this.Animation != AnimationEnum.WalkLeft)
+								this.Animation = AnimationEnum.WalkLeft;
+						}
 
 					}
 					else
@@ -656,6 +701,7 @@ namespace AvalonUgh.Code
 			this.AnimationTimer_Idle.Stop();
 			this.AnimationTimer_Panic.Stop();
 			this.AnimationTimer_Talk.Stop();
+			this.AnimationTimer_SwimLeft.Stop();
 			this.AnimationTimer_WalkLeft.Stop();
 			this.AnimationTimer_WalkRight.Stop();
 

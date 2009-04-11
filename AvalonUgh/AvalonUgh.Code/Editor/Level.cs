@@ -182,6 +182,13 @@ namespace AvalonUgh.Code.Editor
 
 			this.Zoom = Zoom;
 
+			this.KnownActors.ForEachNewItem(
+				NewActor =>
+				{
+					NewActor.LevelViaKnownActors = this;
+				}
+			);
+
 			var Create = new
 			{
 				tryo = (Attribute.Int32)Sprites.Tryoperus.SpecificNameFormat.Alias,
