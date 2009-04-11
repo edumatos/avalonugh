@@ -78,7 +78,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 		public readonly ConstructorArguments Arguments;
 
-		readonly AudioLoop Audio_Music;
+		public readonly AudioLoop Audio_Music;
 		readonly AudioLoop Audio_WaterRise;
 		readonly AudioLoop Audio_Snore;
 

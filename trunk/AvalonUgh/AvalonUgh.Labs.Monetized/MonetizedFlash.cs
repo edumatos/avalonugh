@@ -16,28 +16,28 @@ namespace AvalonUgh.Labs.Monetized.ActionScript
 	using TargetFlash = global::AvalonUgh.Labs.ActionScript.LabsFlash;
 
 
-	[Script]
-	[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight, backgroundColor = 0)]
-	public class MonetizedFlashLean : TargetFlash
-	{
-		// this class is to be used
-		// on mochiads with versioning and crypt
-		// as ve define the key as a field here
+	//[Script]
+	//[SWF(width = TargetCanvas.DefaultWidth, height = TargetCanvas.DefaultHeight, backgroundColor = 0)]
+	//public class MonetizedFlashLean : TargetFlash
+	//{
+	//    // this class is to be used
+	//    // on mochiads with versioning and crypt
+	//    // as ve define the key as a field here
 
-		public static string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
+	//    public static string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
 
-		// multiplayer shall be enabled via hyperlink to nonobas version
+	//    // multiplayer shall be enabled via hyperlink to nonobas version
 
 		
 
-		public MonetizedFlashLean()
-		{
-			//new TextField
-			//{
-			//    text = "multiplayer disabled"
-			//}.AttachTo(this);
-		}
-	}
+	//    public MonetizedFlashLean()
+	//    {
+	//        //new TextField
+	//        //{
+	//        //    text = "multiplayer disabled"
+	//        //}.AttachTo(this);
+	//    }
+	//}
 
 	
 	[Script]
@@ -47,6 +47,8 @@ namespace AvalonUgh.Labs.Monetized.ActionScript
 	{
 		// this class is to be used
 		// on nonoba to get ads and multiplayer support
+
+		public static string _mochiads_game_id = AvalonUgh.Promotion.Info.MochiAds.Key;
 
 		// multiplayer shall be enabled internally
 	}

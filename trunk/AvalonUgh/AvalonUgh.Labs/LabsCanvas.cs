@@ -40,6 +40,7 @@ namespace AvalonUgh.Labs.Shared
 		public const int DefaultHeight = PortHeight;
 #endif
 
+		public readonly Workspace GameWorkspace;
 
 		public LabsCanvas(bool ShowCredits)
 		{
@@ -58,9 +59,12 @@ namespace AvalonUgh.Labs.Shared
 					DefaultWidth = DefaultWidth,
 					DefaultHeight = DefaultHeight,
 
-					ShowCredits = ShowCredits
+					ShowCredits = ShowCredits,
+					
 				}
 			);
+
+			GameWorkspace = w;
 
 			w.SavedLevels.Add(
 				new LevelReference()
