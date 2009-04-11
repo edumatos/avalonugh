@@ -41,6 +41,7 @@ namespace AvalonUgh.Code.Editor
 					{
 						KnownCaves,
 						KnownSigns,
+						KnownFlags,
 						KnownStones,
 						KnownFences,
 						KnownBridges,

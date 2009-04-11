@@ -123,6 +123,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Dino> KnownDinos = new BindingList<Dino>();
 		public readonly BindingList<Tree> KnownTrees = new BindingList<Tree>();
 		public readonly BindingList<Sign> KnownSigns = new BindingList<Sign>();
+		public readonly BindingList<Flag> KnownFlags = new BindingList<Flag>();
 		public readonly BindingList<Rock> KnownRocks = new BindingList<Rock>();
 		public readonly BindingList<Gold> KnownGold = new BindingList<Gold>();
 
@@ -189,6 +190,7 @@ namespace AvalonUgh.Code.Editor
 				Dino = (Attribute.Int32)"dino",
 				Tree = (Attribute.Int32)"tree",
 				Gold = (Attribute.Int32)"gold",
+				flag = (Attribute.Int32)"flag",
 				//Sign = (Attribute.Int32_Int32)"sign",
 			};
 
@@ -302,6 +304,17 @@ namespace AvalonUgh.Code.Editor
 					}.AddTo(KnownGold).MoveBaseTo(x, y);
 				};
 
+			Create.flag.Assigned +=
+				x_ =>
+				{
+					var x = x_ * Zoom;
+					var y = this.TileRowsProcessed * PrimitiveTile.Heigth * Zoom;
+
+					new Flag(Zoom)
+					{
+
+					}.AddTo(KnownFlags).MoveBaseTo(x, y);
+				};
 
 			Attribute.Int32_Array SyncAttributeSign = "sign";
 			SyncAttributeSign.Assigned +=
@@ -325,6 +338,7 @@ namespace AvalonUgh.Code.Editor
 				SyncAttributeSign,
 
 				//Create.Sign,
+				Create.flag,
 				Create.Tree,
 				
 				Create.tryo,
@@ -739,6 +753,21 @@ namespace AvalonUgh.Code.Editor
 									}
 							}
 					)
+				).Concat(
+					this.KnownFlags.Select(
+						Entity =>
+							new RemovableObject
+							{
+								Obstacle = Entity.ToObstacle(),
+								Dispose =
+									delegate
+									{
+										this.KnownFlags.Remove(Entity);
+										Entity.Dispose();
+									}
+							}
+					)
+
 				).Concat(
 					this.KnownVehicles.Select(
 						Entity =>

@@ -140,6 +140,12 @@ namespace AvalonUgh.Code.Editor
 							select new Attribute.Int32 { Key = "gold", Value = i.UnscaledX }
 						);
 
+						WriteAttribute.InvokeAsEnumerable(
+							from i in this.KnownFlags
+							where i.BaseY == index
+							select new Attribute.Int32 { Key = "flag", Value = i.UnscaledX }
+						);
+
 						if (Mode == ToStringMode.ForSavedLevel)
 						{
 							// for saved levels we store only the start positions
