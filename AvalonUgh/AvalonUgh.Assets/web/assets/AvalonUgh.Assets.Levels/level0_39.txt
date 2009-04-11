@@ -1,35 +1,42 @@
 # generated map
 # text: Tina triop and donald doni
 # code: AMATERASU
+# nextcode: THEABSOLUTE
 # autoscroll: 0
 # water: 18
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 0
 ######################
  R-   S R--R-S  R-  R-
  | S--|R|  | |S-| R-| 
 R-S|  S-|  SS-| SRR-R-
 | C-S-| S-S|| | S-| | 
-R-|  S| | S-| S-| SR- 
-# sign: 72;1
+R-|1 S| | S-| S-| SR- 
+# sign: 72;1;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 | BBBSS-| | | | | ||  
 # tree: 208
  C-S-|| | | P-| S-S-R-
- | | S| S-S-| | | | | 
-# sign: 88;2
+ |0| S| S-S-| | | | | 
+# sign: 88;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
  P--P-S-S-| SR-S--| S-
  C-SS-| | | || |  | | 
 # dino: 312
- | || | | SC-R-S-SP-- 
-# sign: 56;3
+ |1|| | | SC-R-S-SP-- 
+# sign: 56;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 104
 # rock: 128
- P--P--P-S | | | ||   
-# sign: 168;4
+ P--P--P-S |0| | ||   
+# sign: 168;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
  |  |  | P-P-| | S-R--
  S-SS-S-SS-| R-S-| |  
  C-|| | || S-| | SS-R-
- |  | | S| | S-S-|| | 
-# sign: 56;5
+ |0 | | S| | S-S-|| | 
+# sign: 56;5;5;0;0;0;0;0;0;0;0;0;0;0;0;0
  P-P---S--S| | | S| R-
  | |   |  |    | || | 
 ######################
+# passenger: 0;0;0;0;0;0;6400;24000;325;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;6400;16800;852;0;0;0;0;0;0;0
