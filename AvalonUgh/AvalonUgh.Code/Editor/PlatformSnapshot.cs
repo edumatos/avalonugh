@@ -176,25 +176,34 @@ namespace AvalonUgh.Code.Editor
 
 					var x = 0.0;
 
-					if (TheFirstSign.WaitPositionPreference != Sign.WaitPositionPreferences.BeforeCave)
+					var DaFlag = Level.KnownFlags.FirstOrDefault(k => k.ToObstacle().Intersects(p.IncludedSpace));
+
+					if (DaFlag != null)
 					{
-
-						var DirectionModifier = Cave.X < TheFirstSignAsObstacle.X;
-
-						if ((int)TheFirstSign.WaitPositionPreference < 0)
-							DirectionModifier = !DirectionModifier;
-
-						var DirectionMultiplier = (double)(Math.Abs((int)TheFirstSign.WaitPositionPreference) - 1) / ((double)Sign.WaitPositionPreferences._DivideBy - 1);
-
-						if (DirectionModifier)
-							x = o.Right + (TheFirstSignAsObstacle.Left - o.Right) * DirectionMultiplier;
-						else
-							x = o.Left + (TheFirstSignAsObstacle.Right - o.Left) * DirectionMultiplier;
-
+						x = DaFlag.X ; 
 					}
 					else
 					{
-						x = o.X;
+						if (TheFirstSign.WaitPositionPreference != Sign.WaitPositionPreferences.BeforeCave)
+						{
+
+							var DirectionModifier = Cave.X < TheFirstSignAsObstacle.X;
+
+							if ((int)TheFirstSign.WaitPositionPreference < 0)
+								DirectionModifier = !DirectionModifier;
+
+							var DirectionMultiplier = (double)(Math.Abs((int)TheFirstSign.WaitPositionPreference) - 1) / ((double)Sign.WaitPositionPreferences._DivideBy - 1);
+
+							if (DirectionModifier)
+								x = o.Right + (TheFirstSignAsObstacle.Left - o.Right) * DirectionMultiplier;
+							else
+								x = o.Left + (TheFirstSignAsObstacle.Right - o.Left) * DirectionMultiplier;
+
+						}
+						else
+						{
+							x = o.X;
+						}
 					}
 
 					p.WaitPosition = new Obstacle

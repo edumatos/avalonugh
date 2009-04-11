@@ -372,6 +372,9 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownGold.AttachTo(this.Entities);
 
+			this.Level.KnownFlags.AttachTo(this.Entities);
+			//this.Level.KnownFlags.AttachTo(this.StartPositionsContainer);
+
 
 
 
