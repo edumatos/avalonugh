@@ -1,35 +1,43 @@
 # generated map
 # text: May the force be with you
 # code: OFTHEWOUND
+# nextcode: BELIEVERSOFTHEUNPURE
 # autoscroll: 0
 # water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 2
 ######################
      S-S-S- S--S-S-S- 
  S-S-| | | S|  | | |  
  | | | | | |C-TC-| |  
 # tree: 160
- | | S--SP- | T|  S|  
-# sign: 184;2
-# sign: 280;1
+ | | S--SP- |1T|1 S|  
+# sign: 184;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 280;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0
  S-S-|  TRRP--TBBBBBS-
  | | SS-T|TTTTTS-SS-| 
  | S-|C-TTTSS--| || | 
-SS-|  | TTC-|  | S| S-
-# sign: 88;4
-|| BBP--TF|  S-| || | 
-# sign: 200;3
+SS-|  |0TTC-|  | S| S-
+# sign: 88;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+|| BBP--TF|0 S-| || | 
+# sign: 200;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 258
 S| S-|  R-P--PP--S--| 
 || | R-R| |  S-S-|  S-
  S-| | R--R--| | S-S- 
  | | | |  |  | S-| |  
  | S-S-C-R|  C-| | |  
-S- | | | FRR-| | S |  
-# sign: 296;5
-# sign: 40;0
+S- | | |1FRR-|0| S |  
+# sign: 296;5;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 40;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 260
 P-BBBBBBBB|| BBBBBBBP-
 | S--S-SS-R--S--S-S-| 
   |  | || |  |  | |   
 ######################
+# passenger: 0;0;0;0;0;0;41600;7200;84;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;22400;16800;100;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;51200;7200;54;1;0;0;0;0;0;0

@@ -136,6 +136,8 @@ namespace AvalonUgh.Code.GameWorkspace
 				Sign.WaitPositionPreferences.BeforeCave,
 
 				Sign.WaitPositionPreferences.OtherSideAtCave,
+
+		
 			};
 
 

@@ -130,7 +130,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 			AtSign = 5,
 
 			// this will give us double enum
-			_DivideBy = AtSign
+			_DivideBy = AtSign,
+
 		}
 
 		WaitPositionPreferences InternalWaitPositionPreference;
