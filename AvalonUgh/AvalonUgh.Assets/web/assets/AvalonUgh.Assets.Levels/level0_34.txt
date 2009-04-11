@@ -1,35 +1,42 @@
 # generated map
 # text: The last triopterus
 # code: BELIEVERSOFTHEUNPURE
+# nextcode: OUVERTURE
 # autoscroll: 0
 # water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 2
 ######################
-    S-  R--R--SS-S-S- 
+  R-S-  R--R--SS-S-S- 
 R--R| S-|  |  || | |  
 |  S| | SC-R-S-| | C- 
-R-S--S|  | | | | S |  
-# sign: 136;3
-# sign: 296;3
+R-S--S|  |0| | | S |0 
+# sign: 136;3;0;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 296;4;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 | |  |P-P-PRSSS-BBBBP-
  SS-S-S-| R-||| S-S-| 
  || | S-| | C-| | | S-
- S| | | C-| | S | SS- 
-# sign: 248;5
+ S| | | C-| |1S | SS- 
+# sign: 248;5;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 274
- || S | | R-P--PP-||  
-# sign: 88;2
+ || S | |1R-P--PP-||  
+# sign: 88;2;1;0;0;0;0;0;0;0;0;0;0;0;0;0
 S-S-P--P--| |  S-S-|  
 | | SS-|  SS-S-| | |  
 | | || S-S-| | | | C- 
-SS-S-| | | S-| S | |  
+SS-S-| | | S-| S | |1 
 # tree: 288
-# sign: 264;0
+# sign: 264;0;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 || S-C-| | | P-P--PP--
-S| | | | S | | |  R|  
-# sign: 168;1
+S| | |0| S | | |  R|  
+# sign: 168;1;2;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 144
 || | P-BBBBP-| R-R-R--
- R--R| S--S| R-| | |  
- |  |  |  |  | |   |  
+RR--R| S--S| R-| | |  
+||  |  |  |  | |   |  
 ######################
+# passenger: 0;0;0;0;0;0;19200;33600;18;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;28800;19200;53;1;0;0;0;0;0;0
