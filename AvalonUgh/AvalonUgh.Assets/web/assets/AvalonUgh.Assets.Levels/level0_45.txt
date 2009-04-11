@@ -1,11 +1,14 @@
 # generated map
 # text: Tricky diving
 # code: TALESOFINNOCENCE
+# nextcode: WILLOTHEWISP
 # autoscroll: 0
 # water: 42
 # water-rise: 0
+# wind: 0
 # snow: 0
 # background: 
+# headcount: 1
 ##########################
 R- S-S-S-R-R--     S-   R 
 |  | | | | |  SS-S-| SS-R 
@@ -15,14 +18,13 @@ R- | | | S-R-S|| | | || |
 R-| | |  S-R-| | SP-| | R 
 # tree: 112
 | | S-P-S| RC-S-S|| SC- | 
-# vehicle: 240
-| | | | || ||  SS-R- |  | 
-# sign: 232;2
-# sign: 328;3
+| | | | || ||1 SS-R- |0 | 
+# sign: 328;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 232;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 336
 C-S-| R-SS-|BBB|| | P--P- 
-| |  S| || R-S-S| | S-S-  
-# sign: 72;1
+|0|  S| || R-S-S| | S-S-  
+# sign: 72;1;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 P-P---R-S| R-| S--R-| |   
    SS-| || | | |  R-| S-  
    || | S--R--S-S-| | |   
@@ -33,3 +35,5 @@ P-P---R-S| R-| S--R-| |
   RS-| S--S-| |  | SR|    
   || | |  | |      ||     
 ##########################
+# passenger: 0;0;0;0;0;0;3200;19200;18;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;41600;14400;50;1;0;0;0;0;0;0

@@ -1,9 +1,14 @@
 # generated map
 # text: The stairway to heaven
 # code: LACRIMACHRISTI
+# nextcode: BETWEENYOUTH
 # autoscroll: 0
 # water: 21
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 3
 ######################
        S--S-S-  S--   
 S--S-S-|  | | S-|  S- 
@@ -11,25 +16,28 @@ S--S-S-|  | | S-|  S-
 SS-| | | |  || | | |  
 # tree: 64
 || P-C-| S-S-| | | |  
-S| | | S | | | SS-S-- 
-# sign: 136;4
+S| | |0S | | | SS-S-- 
+# sign: 136;4;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 112
 || R-P--PC-| S--| |   
- S-| |  R| S |  | SS- 
-# sign: 200;3
+ S-| |  R|0S |  | SS- 
+# sign: 200;3;5;0;0;0;0;0;0;0;0;0;0;0;0;0
  | SR--R-P---C-SS-||  
- | ||  | RR--| | S-|  
-# sign: 264;2
+ | ||  | RR--|1| S-|  
+# sign: 264;2;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 S-S--R-R--|  P--P| C- 
-| |  | |  RR-|  RS |  
-# sign: 296;1
+| |  | |  RR-|  RS |1 
+# sign: 296;1;5;0;0;0;0;0;0;0;0;0;0;0;0;0
 R-S-S-SS-S-S-S-R-BBBBB
 | | | |C-| | | S-S--S-
- R-S|  | | | | C-|  | 
-# sign: 104;0
+ R-S|  |1| | | C-|  | 
+# sign: 104;0;0;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 144
- | PP--PP--S | | S-S| 
-# sign: 200;5
+ | PP--PP--S | |0S-S| 
+# sign: 200;5;0;0;0;0;0;0;0;0;0;0;0;0;0;0
  R--|  R|  P---P-| || 
  |             | |    
 ######################
+# passenger: 0;0;0;0;0;0;64000;26400;1;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;32000;16800;6;2;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;44800;21600;5;1;0;0;0;0;0;0
