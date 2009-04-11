@@ -26,10 +26,12 @@ namespace AvalonUgh.Labs.ActionScript
 		{
 
 
+			var c = new TargetCanvas(true);
 
+			c.GameWorkspace.Audio_Music.Enabled = true;
 
 			// spawn the wpf control
-			AvalonExtensions.AttachToContainer(new TargetCanvas(true), this);
+			AvalonExtensions.AttachToContainer(c, this);
 		}
 
 		static LabsFlash()
