@@ -1,34 +1,41 @@
 # generated map
 # text: Wooden problems
 # code: OUVERTURE
+# nextcode: WINDKISSEDPICTURES
 # autoscroll: 0
 # water: 20
+# water-rise: 0
+# wind: 0
+# snow: 0
 # background: 
+# headcount: 2
 ######################
   S-    S-   S-       
 S-| S-S-| SS-| S-S-S- 
 | C-| | | || | | | |  
-| | S | S-S| S-| C-|  
-# sign: 88;1
+| |0S | S-S| S-| C-|  
+# sign: 88;1;-1;0;0;0;0;0;0;0;0;0;0;0;0;0
 # tryo: 112
- P--BBBP-S-| | S-|  F 
+RP--BBBP-S-| | S-|1 F 
 # tree: 208
-# sign: 312;5
+# sign: 312;5;0;0;0;0;0;0;0;0;0;0;0;0;0;0
  |  S-S| | SP--BBBBBP-
  S--| |S-| ||  S-S--R-
  |  | S| | S-S-| |  | 
 S-S-SS-| S-| | | S-S| 
 | | || C-| S--S| | C- 
-| |  | | | |  S- | |  
-# sign: 264;4
-# sign: 72;2
+| |  | |0| |  S- | |0 
+# sign: 264;4;3;0;0;0;0;0;0;0;0;0;0;0;0;0
+# sign: 72;2;3;0;0;0;0;0;0;0;0;0;0;0;0;0
 # rock: 48
 P-BBBBP--SS-S-| P--P--
  S-TS-|  || | S-|  |  
  | T| S-S-| | | SRTTTT
  | T| C-| S-| | ||TR--
- R-R-F| S | S--R--T|  
-# sign: 152;3
+ R-R-F|1S | S--R--T|  
+# sign: 152;3;1;0;0;0;0;0;0;0;0;0;0;0;0;0
  | | P--P---|  |  TTT 
      |  |      |    T 
 ######################
+# passenger: 0;0;0;0;0;0;9600;7200;596;0;0;0;0;0;0;0
+# passenger: 0;0;0;0;0;0;25600;24000;65;0;0;0;0;0;0;0
