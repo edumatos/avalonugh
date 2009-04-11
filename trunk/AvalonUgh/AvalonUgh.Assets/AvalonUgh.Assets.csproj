@@ -847,6 +847,17 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\talk0_02.mp3" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Exclamation.png" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_130_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_131_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_132_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_133_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_134_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_135_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_136_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_137_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_138_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridge1_1x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Tiles\ridgetree302.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\flag0.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\abandonia.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets\rss.png" />
