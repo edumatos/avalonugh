@@ -46,6 +46,7 @@ namespace AvalonUgh.Code
 		public const int Memory_LogicState_Waiting = 0;
 		public const int Memory_LogicState_Boarding = 1;
 		public const int Memory_LogicState_LastMile = 2;
+		public const int Memory_LogicState_Drowning = 3;
 
 		public const int Memory_LogicState_BubbleLength = 120;
 
@@ -58,6 +59,9 @@ namespace AvalonUgh.Code
 		public const int Memory_LogicState_CaveLifeStart = 3000;
 		public const int Memory_LogicState_CaveLifeEnd = Memory_LogicState_CaveLifeStart + 240;
 
+		public const int Memory_LogicState_WaitingRescueStart = 4000;
+		public const int Memory_LogicState_WaitingRescueEnd = Memory_LogicState_WaitingRescueStart + 480;
+
 		public const int Memory_LogicState_FareBase = 10000;
 		public const int Memory_LogicState_FareMax = 19999;
 		public const int Memory_LogicState_FareMin = 10250;
@@ -69,6 +73,20 @@ namespace AvalonUgh.Code
 			get
 			{
 				return (int)this.Memory_Route.Elements[0] - 1;
+			}
+		}
+
+		public bool Memory_LogicState_IsWaitingRescue
+		{
+			get
+			{
+				if (Memory_LogicState < Memory_LogicState_WaitingRescueStart)
+					return false;
+
+				if (Memory_LogicState > Memory_LogicState_WaitingRescueEnd)
+					return false;
+
+				return true;
 			}
 		}
 
