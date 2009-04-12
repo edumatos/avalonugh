@@ -16,6 +16,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 	[Script]
 	public class Tree : ISupportsContainer, ISupportsObstacle, ISupportsMoveTo, IDisposable
 	{
+		// a tree should only spawn each fruit only once
+		// after the fruits are depleted, the tree shall remain in sleep
+
 		public View.SelectorInfo Selector { get; set; }
 
 		public Canvas Container { get; set; }
