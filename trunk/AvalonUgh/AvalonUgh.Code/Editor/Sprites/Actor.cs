@@ -15,6 +15,7 @@ using AvalonUgh.Code.Editor.Sprites;
 using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Threading;
+using AvalonUgh.Assets.Avalon;
 
 namespace AvalonUgh.Code
 {
@@ -720,8 +721,9 @@ namespace AvalonUgh.Code
 						EnterVehicle();
 				}
 
-			if (this.GetVelocity() > 0)
-				this.KnownBubbles.RemoveAll();
+			//if (!this.Memory_LogicState_IsTalking)
+			//    if (this.GetVelocity() > 0)
+			//        this.KnownBubbles.RemoveAll();
 
 		}
 
@@ -839,6 +841,68 @@ namespace AvalonUgh.Code
 				if (CurrentPassengerVehicleChanged != null)
 					CurrentPassengerVehicleChanged();
 			}
+		}
+
+		public void StartTalkingConfusion()
+		{
+			var i = new { Passenger = this };
+
+
+			SoundBoard.Default.talk0_01();
+
+
+			i.Passenger.Memory_LogicState = Actor.Memory_LogicState_ConfusedStart;
+
+			if (i.Passenger.ToObstacle().Bottom > this.LevelViaKnownActors.WaterTop)
+			{
+				i.Passenger.Animation = Actor.AnimationEnum.Panic;
+			}
+			else
+				i.Passenger.Animation = Actor.AnimationEnum.Talk;
+
+			i.Passenger.VelocityX = 0;
+			i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+			i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
+
+			i.Passenger.KnownBubbles.RemoveAll();
+			i.Passenger.KnownBubbles.Add(
+				new Actor.Bubble(this.LevelViaKnownActors.Zoom, -1)
+			);
+		}
+
+		public void StartTalking()
+		{
+			var i = new { Passenger = this };
+
+			if (i.Passenger is Actor.woman0)
+			{
+				// woman will sound a little different than the males
+				SoundBoard.Default.talk0_02();
+			}
+			else
+			{
+				SoundBoard.Default.talk0_00();
+			}
+
+			i.Passenger.KnownBubbles.Add(
+				new Actor.Bubble(i.Passenger.LevelViaKnownActors.Zoom,
+					i.Passenger.LevelViaKnownActors.ToPlatformSnapshots().AtModulus(i.Passenger.Memory_Route_NextPlatformIndex).CaveSigns.First().Value
+				)
+			);
+
+			i.Passenger.Memory_FirstWait = true;
+			i.Passenger.Memory_LogicState = Actor.Memory_LogicState_TalkStart;
+
+			if (i.Passenger.ToObstacle().Bottom > this.LevelViaKnownActors.WaterTop)
+			{
+				i.Passenger.Animation = Actor.AnimationEnum.Panic;
+			}
+			else
+				i.Passenger.Animation = Actor.AnimationEnum.Talk;
+
+			i.Passenger.VelocityX = 0;
+			i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+			i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
 		}
 	}
 }
