@@ -158,6 +158,10 @@ namespace AvalonUgh.Code.GameWorkspace
 			if (this.Lobby.Menu.EnteringPassword != null)
 				return;
 
+			if (args.Key == Key.F)
+			{
+				this.Arguments.ToFullscreen();
+			}
 
 			if (args.Key == Key.M)
 			{
