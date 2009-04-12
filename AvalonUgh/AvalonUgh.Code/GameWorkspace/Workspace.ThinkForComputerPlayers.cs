@@ -32,6 +32,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			const double TryoSpeed = 1.5;
 
+			#region KnownTryoperus
 			foreach (var CurrentTryo in view.Level.KnownTryoperus)
 			{
 				if (CurrentTryo.VelocityY == 0)
@@ -49,7 +50,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						if (CurrentPickup != null)
 						{
 							//if (CurrentPickup.VehicleObstacle.X < CurrentTryo.X)
-								CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Stare;
+							CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Stare;
 							//else
 							//    CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Right_Stare;
 						}
@@ -92,6 +93,8 @@ namespace AvalonUgh.Code.GameWorkspace
 					CurrentTryo.Animation = AvalonUgh.Code.Editor.Sprites.Tryoperus.AnimationEnum.Left_Hit;
 				}
 			}
+			#endregion
+
 
 			#region bird
 			foreach (var bird in view.Level.KnownBirds)
@@ -208,14 +211,42 @@ namespace AvalonUgh.Code.GameWorkspace
 				select new { Passenger, PassengerObstacle, Platform, PickupArrived, NearestPickup }
 			);
 
+			var PassengersInTheWater = Enumerable.ToArray(
+				from Passanger in KnownPassengers
+				where Passanger.Memory_LogicState != Actor.Memory_LogicState_Drowning
+				where Passanger.ToObstacle().Bottom > view.Level.WaterTop
+				select new { Passanger }
+			);
+
+			foreach (var i in PassengersInTheWater)
+			{
+				if (i.Passanger.Memory_LogicState_IsWaitingRescue)
+				{
+					if (i.Passanger.Memory_LogicState == Actor.Memory_LogicState_WaitingRescueEnd)
+					{
+						i.Passanger.Memory_LogicState = Actor.Memory_LogicState_Drowning;
+						// not rescued
+						i.Passanger.Density = 2;
+					}
+					else
+					{
+						i.Passanger.Memory_LogicState++;
+					}
+				}
+				else
+				{
+					// if this passanger can swim...
+					i.Passanger.Memory_LogicState = Actor.Memory_LogicState_WaitingRescueStart;
+				}
+			}
 
 
-
-
+			#region Passengers not in the water
 			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle == null))
 			{
 				if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_LastMile)
 				{
+					#region LastMile
 					// go to the cave dude
 
 					if (Math.Abs(i.PassengerObstacle.X - i.Platform.Cave.X) <= view.Level.Zoom)
@@ -235,6 +266,8 @@ namespace AvalonUgh.Code.GameWorkspace
 						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.Platform.Cave.X - i.Passenger.X) > view.Level.Zoom;
 						i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.Cave.X - i.Passenger.X) < -view.Level.Zoom;
 					}
+					#endregion
+
 				}
 				else if (i.Passenger.Memory_LogicState_IsConfused)
 				{
@@ -254,6 +287,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				{
 					if (i.PickupArrived)
 					{
+						#region PickupArrived = talking or boarding
 						if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_Boarding)
 						{
 							#region Memory_LogicState_Boarding
@@ -330,6 +364,7 @@ namespace AvalonUgh.Code.GameWorkspace
 								#endregion
 							}
 						}
+						#endregion
 
 					}
 					else
@@ -374,12 +409,15 @@ namespace AvalonUgh.Code.GameWorkspace
 								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.Platform.WaitPosition.X - i.Passenger.X) < -i.Platform.WaitPosition.Width;
 							}
 							#endregion
-
 						}
 					}
 				}
 			}
+			#endregion
 
+
+
+			#region passangers already on board
 			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle != null))
 			{
 				if (i.Passenger.Memory_LogicState_IsFare)
@@ -421,6 +459,8 @@ namespace AvalonUgh.Code.GameWorkspace
 					}
 				}
 			}
+			#endregion
+
 
 			// simulate cave life
 
