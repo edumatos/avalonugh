@@ -70,6 +70,7 @@ namespace AvalonUgh.Code
 		public bool ReadyForGoldPickup = true;
 
 		public readonly BindingList<Gold> GoldStash = new BindingList<Gold>();
+		public readonly BindingList<Fruit> FruitStash = new BindingList<Fruit>();
 
 		// the woman does not have talk animation
 		// the default waiting position is between the outer edges between

@@ -51,6 +51,7 @@ namespace AvalonUgh.Code
 
 			this.Level.KnownVehicles.ForEach(k => Apply(k, Obstacles));
 			this.Level.KnownRocks.ForEach(k => Apply(k, Obstacles));
+			this.Level.KnownFruits.ForEach(k => Apply(k, Obstacles));
 			this.Level.KnownActors.ForEach(k => Apply(k, Obstacles));
 			this.Level.KnownTryoperus.ForEach(k => Apply(k, Obstacles));
 			this.Level.KnownBirds.ForEach(k => Apply(k, Obstacles));
@@ -112,12 +113,24 @@ namespace AvalonUgh.Code
 
 
 
+			#region Vehicle
 			var veh = twin as Vehicle;
 			if (veh != null)
 				if (!veh.IsUnmanned)
 				{
 
 					//Obstacles = Obstacles.Concat(this.Level.KnownVehicles.Where(k => k != twin).Where(k => !k.IsUnmanned).Select(k => k.ToObstacle()));
+
+					this.Level.KnownFruits.Where(k => k.ToObstacle().Intersects(vehXY)).ToArray().ForEach(
+						FoundFruit =>
+						{
+							// yay, we got a fruit
+							this.Level.KnownFruits.Remove(FoundFruit);
+
+							// the driver got the fruit. should make him happy
+							veh.CurrentDriver.FruitStash.Add(FoundFruit);
+						}
+					);
 
 					if (veh.CurrentWeapon == null)
 						if (veh.CurrentPassengers.Count == 0)
@@ -155,6 +168,7 @@ namespace AvalonUgh.Code
 						);
 
 				}
+			#endregion
 
 			bool DinoWindEnabled = true;
 
@@ -165,6 +179,7 @@ namespace AvalonUgh.Code
 				Obstacles = new Obstacle[0].AsEnumerable();
 			}
 
+			#region Actor
 			var actor = twin as Actor;
 			if (actor != null)
 			{
@@ -192,6 +207,8 @@ namespace AvalonUgh.Code
 					DinoWindEnabled = false;
 
 			}
+			#endregion
+
 
 			#region Rock
 			var rock = twin as Rock;
@@ -213,9 +230,18 @@ namespace AvalonUgh.Code
 						this.Level.KnownTrees.WhereNot(k => k.IsSleeping).Where(k => k.ToObstacle().Intersects(vehXY)).ForEach(
 							tree =>
 							{
+								var fruit = new Fruit(this.Level.Zoom);
+
+								fruit.MoveTo(rock.X, rock.Y);
+								fruit.VelocityY = -rock.VelocityY / 2;
+								fruit.VelocityX = -rock.VelocityX;
+								
+
+								this.Level.KnownFruits.Add(fruit);
+
 								// we did will hit a tree
 								tree.GoToSleep();
-								rock.GoToSleep();
+								//rock.GoToSleep();
 							}
 						);
 

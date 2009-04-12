@@ -186,6 +186,17 @@ namespace AvalonUgh.Code.GameWorkspace
 							}
 						);
 
+						p.Actor.FruitStash.ForEachNewItem(
+							gold =>
+							{
+								var _CurrentPort = this.Ports.Single(k => k.Level == p.Actor.CurrentLevel);
+
+								_CurrentPort.View.ColorOverlay.Background = Brushes.GreenYellow;
+								_CurrentPort.View.ColorOverlay.Opacity = 0.7;
+								_CurrentPort.View.ColorOverlay.Show();
+								_CurrentPort.View.ColorOverlay.FadeOut();
+							}
+						);
 					}
 				};
 			#endregion
