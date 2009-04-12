@@ -847,6 +847,15 @@
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Audio\talk0_02.mp3" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Fonts\Brown\_Exclamation.png" />
     <Content Include="web\assets\AvalonUgh.Assets.Levels\howto.txt" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_140_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_141_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_142_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_143_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_144_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_145_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_146_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_147_2x2.png" />
+    <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_148_2x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_130_2x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_131_2x2.png" />
     <EmbeddedResource Include="web\assets\AvalonUgh.Assets.Sprites\man0_132_2x2.png" />
