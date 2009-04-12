@@ -157,6 +157,7 @@
     <Compile Include="ColoredRectangleList.cs" />
     <Compile Include="Diagnostics\DOMDump.cs" />
     <Compile Include="Editor\CommonFileWindow.cs" />
+    <Compile Include="Editor\Sprites\Fruit.cs" />
     <Compile Include="Editor\Sprites\Flag.cs" />
     <Compile Include="Editor\Sprites\FlagSelector.cs" />
     <Compile Include="Editor\WaterRiseSelector.cs" />

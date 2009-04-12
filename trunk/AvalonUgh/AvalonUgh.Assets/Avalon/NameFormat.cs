@@ -47,6 +47,13 @@ namespace AvalonUgh.Assets.Avalon
 			return c;
 		}
 
+		public NameFormat ToRandomIndex(int MaxIndex)
+		{
+			var r = new Random();
+
+			return ToIndex(r.Next(MaxIndex));
+		}
+
 		public NameFormat ToIndex(int Index)
 		{
 			var c = this.Clone();

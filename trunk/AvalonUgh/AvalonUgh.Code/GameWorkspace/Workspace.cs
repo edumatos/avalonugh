@@ -436,7 +436,15 @@ namespace AvalonUgh.Code.GameWorkspace
 						}
 					);
 
+					NewPlayer.Actor.FruitStash.ForEachNewItem(
+						delegate
+						{
+							// play the sound only if it is in the same port
+							SoundBoard.Default.treasure();
 
+							// the yellow flash shall be displayed for local players only
+						}
+					);
 
 					NewPlayer.Actor.CurrentVehicleChanged +=
 						delegate

@@ -125,6 +125,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly BindingList<Sign> KnownSigns = new BindingList<Sign>();
 		public readonly BindingList<Flag> KnownFlags = new BindingList<Flag>();
 		public readonly BindingList<Rock> KnownRocks = new BindingList<Rock>();
+		public readonly BindingList<Fruit> KnownFruits = new BindingList<Fruit>();
 		public readonly BindingList<Gold> KnownGold = new BindingList<Gold>();
 
 		public readonly List<Obstacle> KnownInvisibleObstacles = new List<Obstacle>();
