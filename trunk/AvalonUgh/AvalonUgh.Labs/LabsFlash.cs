@@ -29,6 +29,7 @@ namespace AvalonUgh.Labs.ActionScript
 			var c = new TargetCanvas(true);
 
 			c.GameWorkspace.Audio_Music.Enabled = true;
+			c.GameWorkspace.Arguments.ToFullscreen = () => this.stage.SetFullscreen(true);
 
 			// spawn the wpf control
 			AvalonExtensions.AttachToContainer(c, this);

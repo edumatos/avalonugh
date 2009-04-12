@@ -74,6 +74,16 @@ namespace AvalonUgh.Code.GameWorkspace
 			public int DefaultHeight;
 
 			public bool ShowCredits;
+
+			public Action ToFullscreen;
+
+			public ConstructorArguments()
+			{
+				this.ToFullscreen = delegate
+				{
+
+				};
+			}
 		}
 
 		public readonly ConstructorArguments Arguments;
