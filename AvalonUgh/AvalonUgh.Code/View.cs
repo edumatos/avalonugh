@@ -283,7 +283,7 @@ namespace AvalonUgh.Code
 			this.Level.KnownActors.AttachTo(this.Entities);
 			this.Level.KnownActors.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
 			this.Level.KnownActors.AttachTo(k => k.KnownBubbles, this.BubbleContainer);
-			this.Level.KnownActors.WithEvents(this.LogicForInfoLabel);
+			//this.Level.KnownActors.WithEvents(this.LogicForInfoLabel);
 
 			this.Level.KnownVehicles.AttachTo(this.Entities);
 			this.Level.KnownVehicles.AttachTo(k => k.StartPosition, this.StartPositionsContainer);
@@ -382,39 +382,39 @@ namespace AvalonUgh.Code
 			#endregion
 
 
-			this.Level.KnownPassengers.WithEvents(
-				NewPassanger =>
-				{
-					var Info = new TextBox
-					{
-						Width = 100,
-						Height = 24,
-						Background = Brushes.Transparent,
-						Foreground = Brushes.Yellow,
-						BorderThickness = new Thickness(0),
-						TextAlignment = TextAlignment.Center,
-					};
+			//this.Level.KnownPassengers.WithEvents(
+			//    NewPassanger =>
+			//    {
+			//        var Info = new TextBox
+			//        {
+			//            Width = 100,
+			//            Height = 24,
+			//            Background = Brushes.Transparent,
+			//            Foreground = Brushes.Yellow,
+			//            BorderThickness = new Thickness(0),
+			//            TextAlignment = TextAlignment.Center,
+			//        };
 
-					NewPassanger.Memory_LogicStateChanged +=
-						delegate
-						{
-							Info.Text = "" + NewPassanger.Memory_LogicState;
-						};
+			//        NewPassanger.Memory_LogicStateChanged +=
+			//            delegate
+			//            {
+			//                Info.Text = "" + NewPassanger.Memory_LogicState;
+			//            };
 
-					Info.AttachTo(this.Entities);
+			//        Info.AttachTo(this.Entities);
 
-					NewPassanger.LocationChanged +=
-						delegate
-						{
-							Info.MoveTo(NewPassanger.X - 50, NewPassanger.ToObstacle().Bottom);
-						};
+			//        NewPassanger.LocationChanged +=
+			//            delegate
+			//            {
+			//                Info.MoveTo(NewPassanger.X - 50, NewPassanger.ToObstacle().Bottom);
+			//            };
 
-					return delegate
-					{
-						Info.Orphanize();
-					};
-				}
-			);
+			//        return delegate
+			//        {
+			//            Info.Orphanize();
+			//        };
+			//    }
+			//);
 
 			this.CurrentWater = new Water(
 				new Water.Info

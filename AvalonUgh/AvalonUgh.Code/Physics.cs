@@ -142,6 +142,7 @@ namespace AvalonUgh.Code
 								actor_.Memory_CanBeHitByVehicle = false;
 								actor_.RespectPlatforms = false;
 								actor_.Animation = Actor.AnimationEnum.Panic;
+								actor_.Memory_LogicState = 0;
 
 								//// we did hit an actor that repsects platforms
 								//// as such he cannot fall thro it to water

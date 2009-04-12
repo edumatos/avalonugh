@@ -194,6 +194,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			var Passengers = Enumerable.ToArray(
 				from Passenger in KnownPassengers
+				where Passenger.CurrentPassengerVehicle == null
 				where !Passenger.Memory_CaveAction
 				where Passenger.CurrentCave == null
 				where Passenger.VelocityY == 0
@@ -211,38 +212,137 @@ namespace AvalonUgh.Code.GameWorkspace
 				select new { Passenger, PassengerObstacle, Platform, PickupArrived, NearestPickup }
 			);
 
-			var PassengersInTheWater = Enumerable.ToArray(
-				from Passanger in KnownPassengers
-				where Passanger.Memory_LogicState != Actor.Memory_LogicState_Drowning
-				where Passanger.ToObstacle().Bottom > view.Level.WaterTop
-				select new { Passanger }
+
+
+			var PickupVehiclesInTheWater = Enumerable.ToArray(
+				from Vehicle in view.Level.KnownVehicles
+				where Vehicle.CurrentWeapon == null
+				where Vehicle.CurrentDriver != null
+				where Vehicle.CurrentPassengers.Count == 0
+				//where Vehicle.LastVelocity == 0
+				//where Vehicle.GetVelocity() == 0
+				let VehicleObstacle = Vehicle.ToObstacle()
+				where (VehicleObstacle.Bottom + VehicleObstacle.Height / 2) > view.Level.WaterTop
+				select new { Vehicle, VehicleObstacle }
 			);
 
+			var PassengersInTheWater = Enumerable.ToArray(
+				from Passenger in KnownPassengers
+				where Passenger.CurrentPassengerVehicle == null
+				where Passenger.Memory_LogicState != Actor.Memory_LogicState_Drowning
+				let PassengerObstacle = Passenger.ToObstacle()
+				where PassengerObstacle.Bottom > view.Level.WaterTop
+
+				let NearestPickup = Enumerable.FirstOrDefault(
+					from k in PickupVehiclesInTheWater
+					where Passenger.Memory_Route_NextPlatformIndex >= 0
+					orderby k.VehicleObstacle.X - PassengerObstacle.X
+					select k
+				)
+
+				let PickupArrived = NearestPickup != null
+				select new { Passenger, NearestPickup, PassengerObstacle, PickupArrived }
+			);
+
+			#region PassengersInTheWater
 			foreach (var i in PassengersInTheWater)
 			{
-				if (i.Passanger.Memory_LogicState_IsWaitingRescue)
+				if (i.Passenger.Memory_LogicState_IsConfused)
 				{
-					if (i.Passanger.Memory_LogicState == Actor.Memory_LogicState_WaitingRescueEnd)
+					#region Memory_LogicState_IsConfused > Memory_LogicState_ConfusedEnd
+					i.Passenger.Memory_LogicState++;
+
+					if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_ConfusedEnd)
 					{
-						i.Passanger.Memory_LogicState = Actor.Memory_LogicState_Drowning;
+						i.Passenger.KnownBubbles.RemoveAll();
 						// not rescued
-						i.Passanger.Density = 2;
+						i.Passenger.Memory_LogicState = Actor.Memory_LogicState_Drowning;
+						i.Passenger.Density = 2;
+					}
+					#endregion
+				}
+				else if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_Boarding)
+				{
+					if (i.PickupArrived)
+					{
+						if (Math.Abs(i.PassengerObstacle.X - i.NearestPickup.VehicleObstacle.X) <= view.Level.Zoom)
+						{
+							// enter the vehicle
+
+							i.Passenger.Animation = Actor.AnimationEnum.Hidden;
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
+							i.Passenger.RespectPlatforms = true;
+							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_FareBase + i.Passenger.AvailableFare;
+
+							i.NearestPickup.Vehicle.CurrentPassengers.Add(i.Passenger);
+							i.Passenger.CurrentPassengerVehicle = i.NearestPickup.Vehicle;
+						}
+						else
+						{
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) > view.Level.Zoom;
+							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = (i.NearestPickup.VehicleObstacle.X - i.Passenger.X) < -view.Level.Zoom;
+
+						}
 					}
 					else
 					{
-						i.Passanger.Memory_LogicState++;
+						i.Passenger.StartTalkingConfusion();
+						// confusion
+					}
+				}
+				else if (i.Passenger.Memory_LogicState_IsTalking)
+				{
+					if (i.PickupArrived)
+					{
+						#region Memory_LogicState_IsTalking > Memory_LogicState_Boarding
+						i.Passenger.Memory_LogicState++;
+
+						if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_TalkEnd)
+						{
+							i.Passenger.KnownBubbles.RemoveAll();
+							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_Boarding;
+							Console.WriteLine("Memory_LogicState_Boarding");
+
+						}
+						#endregion
+					}
+					else
+					{
+						i.Passenger.StartTalkingConfusion();
+					}
+				}
+				else if (i.Passenger.Memory_LogicState_IsWaitingRescue)
+				{
+					if (i.PickupArrived)
+					{
+						i.Passenger.StartTalking();
+
+						// shall start talking!
+
+					}
+					else if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_WaitingRescueEnd)
+					{
+						// not rescued
+						i.Passenger.Memory_LogicState = Actor.Memory_LogicState_Drowning;
+						i.Passenger.Density = 2;
+					}
+					else
+					{
+						i.Passenger.Memory_LogicState++;
 					}
 				}
 				else
 				{
 					// if this passanger can swim...
-					i.Passanger.Memory_LogicState = Actor.Memory_LogicState_WaitingRescueStart;
+					i.Passenger.Memory_LogicState = Actor.Memory_LogicState_WaitingRescueStart;
 				}
 			}
+			#endregion
 
 
 			#region Passengers not in the water
-			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle == null))
+			foreach (var i in Passengers)
 			{
 				if (i.Passenger.Memory_LogicState == Actor.Memory_LogicState_LastMile)
 				{
@@ -333,35 +433,8 @@ namespace AvalonUgh.Code.GameWorkspace
 							}
 							else
 							{
-								Console.WriteLine("Memory_LogicState_TalkStart");
+								i.Passenger.StartTalking();
 
-
-								#region Memory_LogicState_TalkStart
-
-								if (i.Passenger is Actor.woman0)
-								{
-									// woman will sound a little different than the males
-									SoundBoard.Default.talk0_02();
-								}
-								else
-								{
-									SoundBoard.Default.talk0_00();
-								}
-
-								i.Passenger.KnownBubbles.Add(
-									new Actor.Bubble(view.Level.Zoom,
-										view.Level.ToPlatformSnapshots().AtModulus(i.Passenger.Memory_Route_NextPlatformIndex).CaveSigns.First().Value
-									)
-								);
-
-								i.Passenger.Memory_FirstWait = true;
-								i.Passenger.Memory_LogicState = Actor.Memory_LogicState_TalkStart;
-								i.Passenger.Animation = Actor.AnimationEnum.Talk;
-								i.Passenger.VelocityX = 0;
-								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
-								i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
-
-								#endregion
 							}
 						}
 						#endregion
@@ -374,18 +447,8 @@ namespace AvalonUgh.Code.GameWorkspace
 							#region Memory_LogicState_ConfusedStart
 							Console.WriteLine("Memory_LogicState_ConfusedStart");
 
-							SoundBoard.Default.talk0_01();
+							i.Passenger.StartTalkingConfusion();
 
-
-							i.Passenger.Memory_LogicState = Actor.Memory_LogicState_ConfusedStart;
-							i.Passenger.Animation = Actor.AnimationEnum.Talk;
-							i.Passenger.VelocityX = 0;
-							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedRight = false;
-							i.Passenger.DefaultPlayerInput.Keyboard.IsPressedLeft = false;
-
-							i.Passenger.KnownBubbles.Add(
-								new Actor.Bubble(view.Level.Zoom, -1)
-							);
 							#endregion
 
 						}
@@ -418,44 +481,44 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 			#region passangers already on board
-			foreach (var i in Passengers.Where(k => k.Passenger.CurrentPassengerVehicle != null))
+			foreach (var i_Passenger in KnownPassengers.Where(k => k.CurrentPassengerVehicle != null))
 			{
-				if (i.Passenger.Memory_LogicState_IsFare)
+				if (i_Passenger.Memory_LogicState_IsFare)
 				{
 					if (this.LocalIdentity.SyncFrame % 2 == 0)
-						if (i.Passenger.Memory_LogicState != Actor.Memory_LogicState_FareMin)
-							i.Passenger.Memory_LogicState = Math.Max(i.Passenger.Memory_LogicState - 4, Actor.Memory_LogicState_FareMin);
+						if (i_Passenger.Memory_LogicState != Actor.Memory_LogicState_FareMin)
+							i_Passenger.Memory_LogicState = Math.Max(i_Passenger.Memory_LogicState - 4, Actor.Memory_LogicState_FareMin);
 				}
 
-				if (i.Passenger.CurrentPassengerVehicle.GetVelocity() == 0)
+				if (i_Passenger.CurrentPassengerVehicle.GetVelocity() == 0)
 				{
 					// if we are at the correct platform
 					// we could release the passenger...
-					var CurrentPassengerVehicle = i.Passenger.CurrentPassengerVehicle.ToObstacle();
+					var CurrentPassengerVehicle = i_Passenger.CurrentPassengerVehicle.ToObstacle();
 
-					var CurrentPlatform = view.Level.ToPlatformSnapshots().AtModulus(i.Passenger.Memory_Route_NextPlatformIndex);
+					var CurrentPlatform = view.Level.ToPlatformSnapshots().AtModulus(i_Passenger.Memory_Route_NextPlatformIndex);
 					if (CurrentPlatform.IncludedSpace.Intersects(CurrentPassengerVehicle))
 					{
 
 
-						i.Passenger.Animation = Actor.AnimationEnum.Idle;
-						i.Passenger.MoveTo(
-							i.Passenger.CurrentPassengerVehicle.X,
-							i.Passenger.CurrentPassengerVehicle.Y - 2 * view.Level.Zoom
+						i_Passenger.Animation = Actor.AnimationEnum.Idle;
+						i_Passenger.MoveTo(
+							i_Passenger.CurrentPassengerVehicle.X,
+							i_Passenger.CurrentPassengerVehicle.Y - 2 * view.Level.Zoom
 						);
-						i.Passenger.VelocityX = 0;
-						i.Passenger.VelocityY = 0;
-						i.Passenger.CurrentPassengerVehicle.CurrentPassengers.Remove(i.Passenger);
-						i.Passenger.CurrentPassengerVehicle = null;
+						i_Passenger.VelocityX = 0;
+						i_Passenger.VelocityY = 0;
+						i_Passenger.CurrentPassengerVehicle.CurrentPassengers.Remove(i_Passenger);
+						i_Passenger.CurrentPassengerVehicle = null;
 
 						// add the fare to the highscore
 						// this action will be done in sync in all clients
 
-						view.Memory_Score += (i.Passenger.Memory_LogicState - Actor.Memory_LogicState_FareBase) * view.Memory_ScoreMultiplier;
+						view.Memory_Score += (i_Passenger.Memory_LogicState - Actor.Memory_LogicState_FareBase) * view.Memory_ScoreMultiplier;
 
-						i.Passenger.Memory_LogicState = Actor.Memory_LogicState_LastMile;
+						i_Passenger.Memory_LogicState = Actor.Memory_LogicState_LastMile;
 
-						i.Passenger.Memory_CanBeHitByVehicle = false;
+						i_Passenger.Memory_CanBeHitByVehicle = false;
 					}
 				}
 			}
