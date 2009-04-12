@@ -65,6 +65,7 @@ namespace AvalonUgh.Code
 				this.CaveExitFrames = Enumerable.Range(50, 9).ToArray(ToFrame);
 
 				this.SwimLeftFrames = Enumerable.Range(130, 9).ToArray(ToFrame);
+				this.SwimRightFrames = Enumerable.Range(140, 9).ToArray(ToFrame);
 
 
 				InitializeAnimation();
