@@ -15,10 +15,10 @@ namespace AvalonUgh.Labs
 
 			Action<Delegate, long> Add = (Target, Ticks) => Trace.Add(new { Target, Ticks });
 
-			ScriptCoreLib.Shared.Avalon.Extensions.AvalonSharedExtensions.TimerEvent += Add;
+            //ScriptCoreLib.Shared.Avalon.Extensions.AvalonSharedExtensions.TimerEvent += Add;
 
 			handler();
-			ScriptCoreLib.Shared.Avalon.Extensions.AvalonSharedExtensions.TimerEvent -= Add;
+            //ScriptCoreLib.Shared.Avalon.Extensions.AvalonSharedExtensions.TimerEvent -= Add;
 
 			Console.WriteLine("TimerEventTrace:");
 
