@@ -51,21 +51,15 @@ namespace AvalonUgh.Code
 				}
 			}
 
-			public Button()
-				: this(null)
-			{
-			}
+		
 
 			public event Action Click;
 			public event Action MouseEnter;
 			public event Action MouseLeave;
 
-			public Button(Image ButtonImage)
-				: this(ButtonImage, 92, 16)
-			{
-			}
+        
 
-			public Button(Image ButtonImage, int ImageWidth, int ImageSize)
+			public Button(Image ButtonImage = null, int ImageWidth = 92, int ImageSize = 16)
 			{
 
 				this.Padding = 1;

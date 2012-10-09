@@ -121,7 +121,7 @@ namespace AvalonUgh.Code.Editor
 			get
 			{
 				return
-					Padding + Convert.ToInt32(Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
+					Padding + (Buttons.Count / 2) * (PrimitiveTile.Width * 2 + Padding);
 			}
 		}
 
@@ -151,7 +151,7 @@ namespace AvalonUgh.Code.Editor
 			Buttons.ForEachNewOrExistingItem(
 				(value, index) =>
 				{
-					var x = Padding + Convert.ToInt32(index / 2) * (PrimitiveTile.Width * 2 + Padding);
+					var x = Padding + (index / 2) * (PrimitiveTile.Width * 2 + Padding);
 					var y = Padding;
 
 					if (index % 2 == 1)

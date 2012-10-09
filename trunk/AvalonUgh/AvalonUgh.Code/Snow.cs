@@ -55,8 +55,8 @@ namespace AvalonUgh.Code
 
 			var SnowFlake_Size = 128 * view.Level.Zoom;
 
-			var CountX = Convert.ToInt32(view.ContentExtendedWidth / SnowFlake_Size) + 2;
-			var CountY = Convert.ToInt32(view.ContentExtendedHeight / SnowFlake_Size) + 2;
+			var CountX = (view.ContentExtendedWidth / SnowFlake_Size) + 2;
+			var CountY = (view.ContentExtendedHeight / SnowFlake_Size) + 2;
 
 			var Name = new NameFormat
 			{
