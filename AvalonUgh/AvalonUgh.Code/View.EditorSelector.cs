@@ -245,8 +245,8 @@ namespace AvalonUgh.Code
 			public int ContentX;
 			public int ContentY;
 
-			public int TileX { get { return Convert.ToInt32(ContentX / PrimitiveTile.Width); } }
-			public int TileY { get { return Convert.ToInt32(ContentY / PrimitiveTile.Heigth); } }
+			public int TileX { get { return (ContentX / PrimitiveTile.Width); } }
+			public int TileY { get { return (ContentY / PrimitiveTile.Heigth); } }
 
 			public SelectorPosition this[int x, int y]
 			{

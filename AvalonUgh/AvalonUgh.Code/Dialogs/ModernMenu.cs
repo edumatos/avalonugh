@@ -220,7 +220,7 @@ namespace AvalonUgh.Code.Dialogs
 			Options_3.TouchOverlay.AttachTo(this.Container).MoveTo(0, Options_3_Y);
 
 
-			var Options_MoreGames_Y = Options_Y - Convert.ToInt32((PrimitiveFont.Heigth * Zoom + 4) * 4);
+			var Options_MoreGames_Y = Options_Y - ((PrimitiveFont.Heigth * Zoom + 4) * 4);
 			var Options_MoreGames = new DialogTextBox
 			{
 				Width = Width,
@@ -340,7 +340,7 @@ namespace AvalonUgh.Code.Dialogs
 				};
 
 
-			var Options_6_Y = Convert.ToInt32(Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -4);
+			var Options_6_Y = (Options_Y - (PrimitiveFont.Heigth * Zoom + 4) * -4);
 			var Options_6 = new DialogTextBox
 			{
 				Width = Width,

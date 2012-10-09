@@ -95,7 +95,7 @@ namespace AvalonUgh.Code.Editor
 						var p = args.GetPosition(PreviewContainer);
 						var y = ((p.Y - 30) / (PreviewContainer_Height - 60)).Max(0).Min(1);
 
-						var AllRows = Convert.ToInt32(this.Items.Count / VisibleColumns) + 1;
+						var AllRows = (this.Items.Count / VisibleColumns) + 1;
 
 						y = Math.Round(y * AllRows) / AllRows;
 
@@ -110,10 +110,10 @@ namespace AvalonUgh.Code.Editor
 						//value.Preview.MoveTo(Padding, Padding);
 
 						var x = index % VisibleColumns * (PreviewArguments.ClientWidth + Padding);
-						var y = Convert.ToInt32(index / VisibleColumns) * (PreviewArguments.ClientHeight + Padding);
+						var y = (index / VisibleColumns) * (PreviewArguments.ClientHeight + Padding);
 
 
-						PreviewArea.Height = (PreviewArguments.ClientHeight + Padding) * (Convert.ToInt32(index / VisibleColumns) + 1) - Padding;
+						PreviewArea.Height = (PreviewArguments.ClientHeight + Padding) * ((index / VisibleColumns) + 1) - Padding;
 
 						var Preview = new MiniLevelWindow(PreviewArguments)
 						{
@@ -127,7 +127,7 @@ namespace AvalonUgh.Code.Editor
 
 
 						Preview.AttachContainerTo(PreviewArea).MoveContainerTo(
-							Convert.ToInt32(x), Convert.ToInt32(y)
+							(x),(y)
 						);
 
 						Preview.DraggableArea.MouseEnter +=

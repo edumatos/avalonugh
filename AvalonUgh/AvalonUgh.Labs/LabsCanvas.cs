@@ -42,7 +42,7 @@ namespace AvalonUgh.Labs.Shared
 
 		public readonly Workspace GameWorkspace;
 
-		public LabsCanvas(bool ShowCredits)
+		public LabsCanvas(bool ShowCredits = true)
 		{
 			Width = DefaultWidth;
 			Height = DefaultHeight;

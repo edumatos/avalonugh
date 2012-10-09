@@ -35,6 +35,10 @@ namespace AvalonUgh.Assets.Shared
 			if (s == "'")
 				return "_Apostrophe";
 
+            if (s == "ö")
+                return "__F6";
+
+
 			return s.ToLower();
 		}
 	}
