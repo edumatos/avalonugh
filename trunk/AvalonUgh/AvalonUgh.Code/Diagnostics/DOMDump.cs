@@ -11,10 +11,11 @@ using System.Linq;
 
 namespace AvalonUgh.Code.Diagnostics
 {
-	public static class DOMDump
-	{
-		[Conditional("DEBUGX")]
-		public static void WriteTreeToConsoleOnClick(this FrameworkElement x)
+    public static  class DOMDump
+    {
+
+#if false
+		public static partial void WriteTreeToConsoleOnClick(this FrameworkElement x)
 		{
 			x.MouseLeftButtonUp +=
 				(sender, sender_args) =>
@@ -90,5 +91,7 @@ namespace AvalonUgh.Code.Diagnostics
 					DumpWithParents(2, x);
 				};
 		}
-	}
+#endif
+
+    }
 }
