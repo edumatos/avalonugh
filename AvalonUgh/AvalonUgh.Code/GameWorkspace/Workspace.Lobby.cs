@@ -52,7 +52,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				this.Menu.AttachContainerTo(this.Window.OverlayContainer);
 
-				this.Window.Container.WriteTreeToConsoleOnClick();
+                //this.Window.Container.WriteTreeToConsoleOnClick();
 
 
 
