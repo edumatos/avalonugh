@@ -13,7 +13,7 @@ namespace AvalonUgh.Code.Diagnostics
 {
 	public static class DOMDump
 	{
-		[Conditional("DEBUG")]
+		[Conditional("DEBUGX")]
 		public static void WriteTreeToConsoleOnClick(this FrameworkElement x)
 		{
 			x.MouseLeftButtonUp +=
