@@ -8,7 +8,7 @@ using System.IO;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class ASCIIImage : IEnumerable<ASCIIImage.Entry>
+	public class ASCIIImage : IEnumerable<ASCII_ImageEntry>
 	{
 		public readonly string[] Lines;
 
@@ -118,56 +118,18 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		[Script]
-		public class Entry
-		{
-			public readonly int X;
-			public readonly int Y;
-
-			readonly Func<int, int, string> Select;
-
-			public static implicit operator Func<int, int, string>(Entry e)
-			{
-				return (x, y) => e[x, y];
-			}
-
-			public Entry(Func<int, int, string> Select, int X, int Y)
-			{
-				this.Select = Select;
-
-				this.X = X;
-				this.Y = Y;
-			}
-
-			public string Value
-			{
-				get
-				{
-					return this[0, 0];
-				}
-			}
-
-
-			public string this[int x, int y]
-			{
-				get
-				{
-					return Select(this.X + x, this.Y + y);
-				}
-			}
-		}
-
+	
 
 		#region IEnumerable<Item> Members
 
-		public IEnumerator<ASCIIImage.Entry> GetEnumerator()
+		public IEnumerator<ASCII_ImageEntry> GetEnumerator()
 		{
 			Func<int, int, string> Select = (x, y) => this[x, y];
 
 			return (
 				from x in Enumerable.Range(0, Width)
 				from y in Enumerable.Range(0, Height)
-				select new ASCIIImage.Entry(Select, x, y)
+				select new ASCII_ImageEntry(Select, x, y)
 			).GetEnumerator();
 		}
 
@@ -182,5 +144,44 @@ namespace AvalonUgh.Code
 
 		#endregion
 	}
+
+    [Script]
+    public class ASCII_ImageEntry
+    {
+        public readonly int X;
+        public readonly int Y;
+
+        readonly Func<int, int, string> Select;
+
+        public static implicit operator Func<int, int, string>(ASCII_ImageEntry e)
+        {
+            return (x, y) => e[x, y];
+        }
+
+        public ASCII_ImageEntry(Func<int, int, string> Select, int X, int Y)
+        {
+            this.Select = Select;
+
+            this.X = X;
+            this.Y = Y;
+        }
+
+        public string Value
+        {
+            get
+            {
+                return this[0, 0];
+            }
+        }
+
+
+        public string this[int x, int y]
+        {
+            get
+            {
+                return Select(this.X + x, this.Y + y);
+            }
+        }
+    }
 
 }

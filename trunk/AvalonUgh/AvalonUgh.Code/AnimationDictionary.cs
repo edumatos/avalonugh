@@ -10,23 +10,25 @@ using ScriptCoreLib.Shared.Lambda;
 
 namespace AvalonUgh.Code
 {
-	[Script]
-	public class AnimationDictionary : IEnumerable<AnimationDictionary.Entry>
-	{
-		[Script]
-		public class Entry
-		{
-			public int Frame;
-			public Image[] Images;
-			public int Milliseconds;
+    [Script]
+    public class AnimationDictionary_Entry
+    {
+        public int Frame;
+        public Image[] Images;
+        public int Milliseconds;
 
-			public Action Stop;
-		}
+        public Action Stop;
+    }
+
+
+	[Script]
+	public class AnimationDictionary : IEnumerable<AnimationDictionary_Entry>
+	{
 
 		public void Add(int Frame, int FrameOffset)
 		{
 			this.Add(
-				new Entry
+				new AnimationDictionary_Entry
 				{
 					Frame = Frame,
 					Images = new[] { this.FrameToImage(FrameOffset) }
@@ -37,7 +39,7 @@ namespace AvalonUgh.Code
 		public void Add(int Frame, int Milliseconds, int FrameOffset, int FrameLength)
 		{
 			this.Add(
-				new Entry
+				new AnimationDictionary_Entry
 				{
 					Frame = Frame,
 					Milliseconds = Milliseconds,
@@ -46,12 +48,12 @@ namespace AvalonUgh.Code
 			);
 		}
 
-		public void Add(Entry e)
+		public void Add(AnimationDictionary_Entry e)
 		{
 			this.Items.Add(e);
 		}
 
-		public readonly BindingList<Entry> Items = new BindingList<Entry>();
+		public readonly BindingList<AnimationDictionary_Entry> Items = new BindingList<AnimationDictionary_Entry>();
 
 		public readonly ISupportsContainer Container;
 		public readonly Func<int, Image> FrameToImage;
@@ -64,7 +66,7 @@ namespace AvalonUgh.Code
 
 		#region IEnumerable<Entry> Members
 
-		public IEnumerator<AnimationDictionary.Entry> GetEnumerator()
+		public IEnumerator<AnimationDictionary_Entry> GetEnumerator()
 		{
 			return this.Items.GetEnumerator();
 		}
@@ -161,7 +163,7 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public Entry this[int Frame]
+		public AnimationDictionary_Entry this[int Frame]
 		{
 			get
 			{

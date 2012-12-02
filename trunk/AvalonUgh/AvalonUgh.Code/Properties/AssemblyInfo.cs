@@ -36,8 +36,11 @@ using ScriptCoreLib;
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
-[assembly:
-	Script,
-	ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Code.View)),
-	ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Code.View)),
-]
+[assembly: Obfuscation(Feature = @"merge")]
+
+
+//[assembly:
+//    Script,
+//    ScriptTypeFilter(ScriptType.ActionScript, typeof(AvalonUgh.Code.View)),
+//    ScriptTypeFilter(ScriptType.JavaScript, typeof(AvalonUgh.Code.View)),
+//]

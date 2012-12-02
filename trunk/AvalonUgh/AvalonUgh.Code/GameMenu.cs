@@ -14,36 +14,38 @@ using System.ComponentModel;
 
 namespace AvalonUgh.Code
 {
+    [Script]
+    public class GameMenuOption
+    {
+        public ImageSource Source;
+
+        public string Text;
+
+        public Action Click;
+
+        public Uri Hyperlink;
+
+        public double MarginBefore;
+        public double MarginAfter;
+
+        internal SimpleCarouselControl.EntryInfo CarouselEntry;
+
+
+    }
+
 	[Script]
-	public class GameMenu : ISupportsContainer, IEnumerable<GameMenu.Option>
+	public class GameMenu : ISupportsContainer, IEnumerable<GameMenuOption>
 	{
 		public Canvas Container { get; set; }
 
 
-		[Script]
-		public class Option
-		{
-			public ImageSource Source;
-
-			public string Text;
-
-			public Action Click;
-
-			public Uri Hyperlink;
-
-			public double MarginBefore;
-			public double MarginAfter;
-
-			internal SimpleCarouselControl.EntryInfo CarouselEntry;
-
-
-		}
+	
 
 		public string IdleText = "Select a difficulty for a new game!";
 
-		internal readonly BindingList<Option> Options = new BindingList<Option>();
+		internal readonly BindingList<GameMenuOption> Options = new BindingList<GameMenuOption>();
 
-		public void Add(Option e)
+		public void Add(GameMenuOption e)
 		{
 			Options.Add(e);
 		}
@@ -204,7 +206,7 @@ namespace AvalonUgh.Code
 
 		#region IEnumerable<Option> Members
 
-		public IEnumerator<GameMenu.Option> GetEnumerator()
+		public IEnumerator<GameMenuOption> GetEnumerator()
 		{
 			return this.Options.GetEnumerator();
 		}
