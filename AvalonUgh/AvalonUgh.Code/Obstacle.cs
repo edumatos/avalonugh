@@ -23,7 +23,7 @@ namespace AvalonUgh.Code
 			};
 		}
 
-		public ASCIIImage.Entry Position;
+		public ASCII_ImageEntry Position;
 		public ASCIITileSizeInfo Tile;
 
 		public ISupportsVelocity SupportsVelocity;

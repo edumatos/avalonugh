@@ -13,28 +13,30 @@ using System.Windows.Input;
 
 namespace AvalonUgh.Code
 {
+    [Script]
+    public class GameSocialLinksButton
+    {
+        public ImageSource Source;
+
+        public int Width;
+        public int Height;
+
+        public Action Click;
+
+        public Uri Hyperlink;
+
+        internal Image Image;
+        internal Rectangle Overlay;
+    }
+
+
 	[Script]
-	public class GameSocialLinks : ISupportsContainer, IEnumerable<GameSocialLinks.Button>
+	public class GameSocialLinks : ISupportsContainer, IEnumerable<GameSocialLinksButton>
 	{
 		public Canvas Container { get; set; }
 
-		[Script]
-		public class Button
-		{
-			public ImageSource Source;
-
-			public int Width;
-			public int Height;
-
-			public Action Click;
-
-			public Uri Hyperlink;
-
-			internal Image Image;
-			internal Rectangle Overlay;
-		}
-
-		public readonly BindingList<Button> Buttons = new BindingList<Button>();
+	
+		public readonly BindingList<GameSocialLinksButton> Buttons = new BindingList<GameSocialLinksButton>();
 
 		public int Margin = 8;
 
@@ -109,14 +111,14 @@ namespace AvalonUgh.Code
 			);
 		}
 
-		public void Add(Button e)
+		public void Add(GameSocialLinksButton e)
 		{
 			this.Buttons.Add(e);
 		}
 
 		#region IEnumerable<Button> Members
 
-		public IEnumerator<Button> GetEnumerator()
+		public IEnumerator<GameSocialLinksButton> GetEnumerator()
 		{
 			return this.Buttons.GetEnumerator();
 		}

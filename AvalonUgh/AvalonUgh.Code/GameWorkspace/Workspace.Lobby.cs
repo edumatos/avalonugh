@@ -91,9 +91,9 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 				// redefine the ctor to fit our context
-				Func<string, string, string, GameMenu.Option> Option =
+				Func<string, string, string, GameMenuOption> Option =
 					(Text, Image, href) =>
-						new GameMenu.Option
+						new GameMenuOption
 						{
 							Text = "Play " + Text + "!",
 							Source = (KnownAssets.Path.SocialLinks + "/" + Image + ".png").ToSource(),
@@ -124,25 +124,25 @@ namespace AvalonUgh.Code.GameWorkspace
 
 				this.SocialLinks = new GameSocialLinks(this.Window.OverlayContainer)
 				{
-					new GameSocialLinks.Button { 
+					new GameSocialLinksButton { 
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/plus_google.png").ToSource(),
 						Width = 62,
 						Height = 17,
 						Hyperlink = new Uri(Info.GoogleGadget.AddLink)
 					},
-					new GameSocialLinks.Button { 
+					new GameSocialLinksButton { 
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/su.png").ToSource(),
 						Width = 16,
 						Height = 16,
 						Hyperlink = new Uri( "http://www.stumbleupon.com/submit?url=" + Info.Nonoba.URL)
 					},
-					new GameSocialLinks.Button { 
+					new GameSocialLinksButton { 
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/abandonia.png").ToSource(),
 						Width = 16,
 						Height = 16,
 						Hyperlink = new Uri( "http://www.abandonia.com/en/games/26/Ugh.html")
 					},
-					new GameSocialLinks.Button { 
+					new GameSocialLinksButton { 
 						Source = (Assets.Shared.KnownAssets.Path.Assets + "/rss.png").ToSource(),
 						Width = 14,
 						Height = 14,
