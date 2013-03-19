@@ -90,7 +90,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				Name.Index = (Name.Index + 1) % Name.IndexCount;
 

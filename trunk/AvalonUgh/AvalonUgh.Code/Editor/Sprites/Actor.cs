@@ -23,7 +23,7 @@ namespace AvalonUgh.Code
 	public abstract partial class Actor :
 		ISupportsContainer, ISupportsPhysics, ISupportsLocationChanged, ISupportsPlayerInput, IDisposable
 	{
-		public Level LevelViaKnownActors;
+		public LevelType LevelViaKnownActors;
 
 		public int AvailableFare;
 
@@ -54,8 +54,11 @@ namespace AvalonUgh.Code
 
 		public Color GetColorStripeForVehicle(Vehicle v)
 		{
-			if (this.PlayerInfo == null)
-				return Colors.Transparent;
+            if (this.PlayerInfo == null)
+            {
+                var value = Colors.Transparent;
+                return value;
+            }
 
 			return v.SupportedColorStripes.Keys.AtModulus(this.PlayerInfo.Identity.NetworkNumber);
 		}
@@ -770,8 +773,8 @@ namespace AvalonUgh.Code
 		}
 
 
-		Level InternalCurrentLevel;
-		public Level CurrentLevel
+		LevelType InternalCurrentLevel;
+		public LevelType CurrentLevel
 		{
 			get
 			{

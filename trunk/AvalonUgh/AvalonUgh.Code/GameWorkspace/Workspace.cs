@@ -422,13 +422,13 @@ namespace AvalonUgh.Code.GameWorkspace
 				{
 					// here we create an actor for remote and local players
 
-					NewPlayer.Actor = new Actor.man0(DefaultZoom)
+					NewPlayer.XActor = new Actor.man0(DefaultZoom)
 					{
 						RespectPlatforms = true,
 						Memory_CanBeHitByVehicle = false,
 					};
 
-					NewPlayer.Actor.Jumping +=
+					NewPlayer.XActor.Jumping +=
 						delegate
 						{
 							SoundBoard.Default.jump();
@@ -436,7 +436,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						};
 
 					// every actor could act differently on gold collected
-					NewPlayer.Actor.GoldStash.ForEachNewItem(
+					NewPlayer.XActor.GoldStash.ForEachNewItem(
 						gold =>
 						{
 							// play the sound only if it is in the same port
@@ -446,7 +446,7 @@ namespace AvalonUgh.Code.GameWorkspace
 						}
 					);
 
-					NewPlayer.Actor.FruitStash.ForEachNewItem(
+					NewPlayer.XActor.FruitStash.ForEachNewItem(
 						delegate
 						{
 							// play the sound only if it is in the same port
@@ -456,19 +456,19 @@ namespace AvalonUgh.Code.GameWorkspace
 						}
 					);
 
-					NewPlayer.Actor.CurrentVehicleChanged +=
+					NewPlayer.XActor.CurrentVehicleChanged +=
 						delegate
 						{
 							SoundBoard.Default.enter();
 						};
 
 
-					NewPlayer.Actor.EnterCave +=
+					NewPlayer.XActor.EnterCave +=
 						delegate
 						{
 
 							// are we trying to enter a cave?
-							var NearbyCave = NewPlayer.Actor.NearbyCave;
+							var NearbyCave = NewPlayer.XActor.NearbyCave;
 
 							if (NearbyCave != null)
 							{
@@ -487,15 +487,15 @@ namespace AvalonUgh.Code.GameWorkspace
 								return;
 							}
 
-							if (NewPlayer.Actor.VelocityX == 0)
-								if (NewPlayer.Actor.Animation != Actor.AnimationEnum.Talk)
+							if (NewPlayer.XActor.VelocityX == 0)
+								if (NewPlayer.XActor.Animation != Actor.AnimationEnum.Talk)
 								{
-									NewPlayer.Actor.Animation = Actor.AnimationEnum.Talk;
+									NewPlayer.XActor.Animation = Actor.AnimationEnum.Talk;
 
 									SoundBoard.Default.talk0_00();
 
 
-									NewPlayer.Actor.KnownBubbles.Add(
+									NewPlayer.XActor.KnownBubbles.Add(
 
 										// show where shall we go
 
@@ -504,27 +504,27 @@ namespace AvalonUgh.Code.GameWorkspace
 								}
 						};
 
-					NewPlayer.Actor.EnterVehicle +=
+					NewPlayer.XActor.EnterVehicle +=
 						delegate
 						{
 							// exiting a vehicle is easy
 							// entering is a bit harder
 							// as we need to find it and reserve its use for us
 
-							var ManAsObstacle = NewPlayer.Actor.ToObstacle();
+							var ManAsObstacle = NewPlayer.XActor.ToObstacle();
 
-							var NearbyVehicle = NewPlayer.Actor.CurrentLevel.KnownVehicles.Where(k => k.CurrentDriver == null).FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
+							var NearbyVehicle = NewPlayer.XActor.CurrentLevel.KnownVehicles.Where(k => k.CurrentDriver == null).FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
 
 							if (NearbyVehicle != null)
 							{
-								NearbyVehicle.CurrentDriver = NewPlayer.Actor;
+								NearbyVehicle.CurrentDriver = NewPlayer.XActor;
 							}
 						};
 
-					NewPlayer.Actor.Drop +=
+					NewPlayer.XActor.Drop +=
 						delegate
 						{
-							var CurrentVehicle = NewPlayer.Actor.CurrentVehicle;
+							var CurrentVehicle = NewPlayer.XActor.CurrentVehicle;
 
 							if (CurrentVehicle != null)
 							{
@@ -539,13 +539,13 @@ namespace AvalonUgh.Code.GameWorkspace
 							}
 						};
 
-					NewPlayer.Actor.MoveTo(64, 64);
+					NewPlayer.XActor.MoveTo(64, 64);
 				}
 			);
 			this.Players.ForEachItemDeleted(
 				DeletedPlayer =>
 				{
-					DeletedPlayer.Actor.CurrentLevel = null;
+					DeletedPlayer.XActor.CurrentLevel = null;
 				}
 			);
 
@@ -760,7 +760,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				};
 
 
-			Lobby.LevelReference = KnownLevels.DefaultLobbyLevel;
+			Lobby.XLevelReference = KnownLevels.DefaultLobbyLevel;
 
 
 			// the ingame status bar can support 1 or 2 players. The third player cannot be show ant this time.

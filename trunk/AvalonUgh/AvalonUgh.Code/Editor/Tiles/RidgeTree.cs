@@ -10,7 +10,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	[Script]
 	public class RidgeTree : Tile
 	{
-		public RidgeTree(Level Level, TileSelector Selector)
+		public RidgeTree(LevelType Level, TileSelector Selector)
 			: base(Level, Selector)
 		{
 		}

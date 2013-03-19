@@ -50,7 +50,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				PercisionY = PrimitiveTile.Heigth;
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
 				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
@@ -78,13 +78,13 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 
 
-			public static Level.Attribute.Int32_Array SerializeBird(Bird i, Level.ToStringMode Mode)
+			public static LevelType.Attribute.Int32_Array SerializeBird(Bird i, LevelType.ToStringMode Mode)
 			{
 				var StartPosition = i.StartPosition;
 
-				Level.Attribute.Int32_Array a = "bird";
+				LevelType.Attribute.Int32_Array a = "bird";
 
-				if (Mode == Level.ToStringMode.ForSync)
+				if (Mode == LevelType.ToStringMode.ForSync)
 				{
 					a.Value[0] = 1;
 
@@ -100,7 +100,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				return a;
 			}
 
-			public void CreateTo(Level level, Level.Attribute.Int32_Array source)
+			public void CreateTo(LevelType level, LevelType.Attribute.Int32_Array source)
 			{
 				var ForSync = source.Value[0];
 

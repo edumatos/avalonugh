@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Flashlight : ISupportsContainer
+	public class FlashlightType : ISupportsContainer
 	{
 		public Canvas Container { get; set; }
 
@@ -91,7 +91,7 @@ namespace AvalonUgh.Code
 				MoveTo(this.X, this.Y);
 			}
 		}
-		public Flashlight(int Zoom, int Width, int Height)
+		public FlashlightType(int Zoom, int Width, int Height)
 		{
 			this.Size = 128;
 			this.Zoom = Zoom;

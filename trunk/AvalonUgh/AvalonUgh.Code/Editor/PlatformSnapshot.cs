@@ -32,7 +32,7 @@ namespace AvalonUgh.Code.Editor
 
 		public Obstacle IncludedSpace;
 
-		public static PlatformSnapshot Of(Level Level, Cave Cave)
+		public static PlatformSnapshot Of(LevelType LevelArgument, Cave Cave)
 		{
 			// show that we are thinking about that cave
 
@@ -40,25 +40,25 @@ namespace AvalonUgh.Code.Editor
 
 			//View.AddToContentInfoColoredShapes(o, Brushes.Cyan);
 
-			var LandingTiles = Level.KnownLandingTiles.ToArray();
+			var LandingTiles = LevelArgument.KnownLandingTiles.ToArray();
 
-			var TaxiVehicles = Level.KnownVehicles.Where(k => k.CurrentDriver != null).Where(k => k.GetVelocity() == 0).ToArray();
-			var Signs = Level.KnownSigns.ToArray();
-			var Obstacles = Level.ToObstacles().ToArray();
-			var Caves = Level.KnownCaves.Where(k => k != Cave).ToArray();
+			var TaxiVehicles = LevelArgument.KnownVehicles.Where(k => k.CurrentDriver != null).Where(k => k.GetVelocity() == 0).ToArray();
+			var Signs = LevelArgument.KnownSigns.ToArray();
+			var Obstacles = LevelArgument.ToObstacles().ToArray();
+			var Caves = LevelArgument.KnownCaves.Where(k => k != Cave).ToArray();
 
 			var a = new Obstacle
 			{
 				Left = o.Left,
 				Top = o.Bottom,
-				Width = Level.Zoom * PrimitiveTile.Width,
-				Height = Level.Zoom * PrimitiveTile.Heigth,
+				Width = LevelArgument.Zoom * PrimitiveTile.Width,
+				Height = LevelArgument.Zoom * PrimitiveTile.Heigth,
 			};
 
 			Func<int, int, Obstacle> f =
 				(x, y) => a.WithOffset(
-					Level.Zoom * PrimitiveTile.Width * x,
-					Level.Zoom * PrimitiveTile.Heigth * y
+					LevelArgument.Zoom * PrimitiveTile.Width * x,
+					LevelArgument.Zoom * PrimitiveTile.Heigth * y
 				);
 
 			Func<int, int> PassInteger = y => y;
@@ -93,7 +93,7 @@ namespace AvalonUgh.Code.Editor
 					if (SpaceOnLandingTileObstacle != null)
 					{
 						// we got platform
-						Level.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.Red);
+						LevelArgument.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.Red);
 						e.StopSearch();
 						return false;
 					}
@@ -112,14 +112,14 @@ namespace AvalonUgh.Code.Editor
 					if (AnotherCave != null)
 					{
 						e.StopSearch();
-						Level.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.White);
+						LevelArgument.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.White);
 						return false;
 					}
 
 					var TheSign = Signs.FirstOrDefault(k => k.ToObstacle().Intersects(SpaceOnLandingTile));
 					if (TheSign != null)
 					{
-						Level.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.Cyan);
+						LevelArgument.ContentInfoColoredShapes_PlatformSnapshots.Add(SpaceOnLandingTile, Brushes.Cyan);
 						TheSign.DistinctAddTo(p.CaveSigns);
 					}
 
@@ -166,7 +166,7 @@ namespace AvalonUgh.Code.Editor
 			}
 
 			if (p.IncludedSpace != null)
-				Level.ContentInfoColoredShapes_PlatformSnapshots.Add(p.IncludedSpace, Brushes.Green, 0.2);
+				LevelArgument.ContentInfoColoredShapes_PlatformSnapshots.Add(p.IncludedSpace, Brushes.Green, 0.2);
 
 			#region find WaitPosition
 			p.CaveSigns.FirstOrDefault().Apply(
@@ -176,7 +176,7 @@ namespace AvalonUgh.Code.Editor
 
 					var x = 0.0;
 
-					var DaFlag = Level.KnownFlags.FirstOrDefault(k => k.ToObstacle().Intersects(p.IncludedSpace));
+					var DaFlag = LevelArgument.KnownFlags.FirstOrDefault(k => k.ToObstacle().Intersects(p.IncludedSpace));
 
 					if (DaFlag != null)
 					{
@@ -208,13 +208,13 @@ namespace AvalonUgh.Code.Editor
 
 					p.WaitPosition = new Obstacle
 					{
-						Left = x - Level.Zoom * 1,
-						Right = x + Level.Zoom * 1,
+						Left = x - LevelArgument.Zoom * 1,
+						Right = x + LevelArgument.Zoom * 1,
 						Top = TheFirstSignAsObstacle.Top,
 						Bottom = TheFirstSignAsObstacle.Bottom
 					};
 
-					Level.ContentInfoColoredShapes_PlatformSnapshots.Add(p.WaitPosition, Brushes.GreenYellow);
+					LevelArgument.ContentInfoColoredShapes_PlatformSnapshots.Add(p.WaitPosition, Brushes.GreenYellow);
 				}
 			);
 			#endregion

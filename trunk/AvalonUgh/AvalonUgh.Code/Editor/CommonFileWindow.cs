@@ -168,7 +168,7 @@ namespace AvalonUgh.Code.Editor
 										if (Parent.Visibility == System.Windows.Visibility.Hidden)
 											return;
 
-										Preview.LevelReference = value;
+										Preview.XLevelReference = value;
 
 										t.Stop();
 										SignalNext();

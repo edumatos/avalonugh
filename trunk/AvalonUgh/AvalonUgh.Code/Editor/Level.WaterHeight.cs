@@ -12,7 +12,7 @@ using AvalonUgh.Code.Editor.Tiles;
 
 namespace AvalonUgh.Code.Editor
 {
-	partial class Level
+	partial class LevelType
 	{
 		public int WaterTop
 		{

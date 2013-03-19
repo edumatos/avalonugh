@@ -54,7 +54,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			public readonly BindingList<Arrow> Arrows = new BindingList<Arrow>();
 
-			readonly Statusbar Statusbar;
+			readonly StatusbarType Statusbar;
 
 
 			public EditorPort(ConstructorArguments args)
@@ -62,8 +62,8 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.Toolbar = new EditorToolbar(args.Selectors);
 
 				#region Statusbar
-				this.Statusbar = new Statusbar(
-					new Statusbar.ConstructorArguments
+				this.Statusbar = new StatusbarType(
+					new StatusbarType.ConstructorArguments
 					{
 						Zoom = DefaultZoom
 					}
@@ -139,7 +139,7 @@ namespace AvalonUgh.Code.GameWorkspace
 							this.SaveWindow.PropertyNextLevelCode.ValueText = this.Level.AttributeNextCode.Value;
 							this.SaveWindow.PropertyText.ValueText = this.Level.AttributeText.Value;
 
-							this.SaveWindow.Preview.LevelReference = new LevelReference
+							this.SaveWindow.Preview.XLevelReference = new LevelReference
 							{
 								Data = this.Level.ToString()
 							};
@@ -272,7 +272,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				 {
 					 Audio_Music.Loop = (AvalonUgh.Assets.Shared.KnownAssets.Path.Audio + "/highscore_music.mp3");
 
-					 if (this.Editor.LevelReference == null)
+					 if (this.Editor.XLevelReference == null)
 					 {
 						 // maybe send others a pre loading message too?
 
@@ -331,7 +331,7 @@ namespace AvalonUgh.Code.GameWorkspace
 								 }
 							 );
 
-							 if (this.Editor.LevelReference == null)
+							 if (this.Editor.XLevelReference == null)
 							 {
 								 this.Sync_LoadLevel(
 									 // load default editor level

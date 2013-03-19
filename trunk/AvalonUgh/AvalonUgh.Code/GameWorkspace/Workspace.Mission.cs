@@ -32,14 +32,14 @@ namespace AvalonUgh.Code.GameWorkspace
 				public int Zoom;
 			}
 
-			public readonly Statusbar Statusbar;
+			public readonly StatusbarType Statusbar;
 
 			public event Action LevelComplete;
 
 			public MissionPort(ConstructorArguments args)
 			{
-				this.Statusbar = new Statusbar(
-					  new Statusbar.ConstructorArguments
+				this.Statusbar = new StatusbarType(
+					  new StatusbarType.ConstructorArguments
 					  {
 						  Zoom = args.Zoom
 					  }
@@ -133,7 +133,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				if (this.Level == null)
 					throw new Exception("Level has to be loaded before you can teleport into it");
 
-				var s = this.Level.SpawnPointLookup.ToIndicies().Random(k => this.Level.SpawnPointLookup[k] == Level.SpawnLocationTag.Valid);
+				var s = this.Level.SpawnPointLookup.ToIndicies().Random(k => this.Level.SpawnPointLookup[k] == LevelType.SpawnLocationTag.Valid);
 
 				this.Level.WriteLine(new { s.X, s.Y }.ToString());
 
@@ -321,7 +321,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Lobby.Menu.Play +=
 				delegate
 				{
-					if (this.PrimaryMission.LevelReference == null)
+					if (this.PrimaryMission.XLevelReference == null)
 					{
 						this.Sync_MissionStartHint(
 							this.LocalIdentity.NetworkNumber,
@@ -414,13 +414,13 @@ namespace AvalonUgh.Code.GameWorkspace
 			this.Lobby.Window.ColorOverlay.SetOpacity(1,
 				delegate
 				{
-					if (PrimaryMission.LevelReference.Location.Embedded != null)
-						PrimaryMission.Intro.LevelNumber = PrimaryMission.LevelReference.Location.Embedded.AnimationFrame;
+					if (PrimaryMission.XLevelReference.Location.Embedded != null)
+						PrimaryMission.Intro.LevelNumber = PrimaryMission.XLevelReference.Location.Embedded.AnimationFrame;
 					else
 						PrimaryMission.Intro.LevelNumber = 0;
 
-					PrimaryMission.Intro.LevelTitle = PrimaryMission.LevelReference.Text;
-					PrimaryMission.Intro.LevelPassword = PrimaryMission.LevelReference.Code;
+					PrimaryMission.Intro.LevelTitle = PrimaryMission.XLevelReference.Text;
+					PrimaryMission.Intro.LevelPassword = PrimaryMission.XLevelReference.Code;
 
 					PrimaryMission.Intro.BringContainerToFront();
 					PrimaryMission.Intro.Show();

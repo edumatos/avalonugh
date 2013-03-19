@@ -174,7 +174,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				this.LocalIdentity.Locals.ForEach(
 					k =>
 					{
-						k.Actor.VelocityY = -12;
+						k.XActor.VelocityY = -12;
 					}
 				);
 			}
@@ -183,7 +183,7 @@ namespace AvalonUgh.Code.GameWorkspace
 			{
 				// this is a cheat
 				// reload current port
-				this.CurrentPort.LevelReference = this.CurrentPort.LevelReference;
+				this.CurrentPort.XLevelReference = this.CurrentPort.XLevelReference;
 			}
 
 			if (args.Key == Key.V)

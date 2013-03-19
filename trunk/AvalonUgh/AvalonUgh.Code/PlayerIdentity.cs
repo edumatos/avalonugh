@@ -200,19 +200,19 @@ namespace AvalonUgh.Code
 
 				foreach (var x in this.Locals)
 				{
-					if (x.Actor.CurrentVehicle == null)
+					if (x.XActor.CurrentVehicle == null)
 					{
-						c ^= x.Actor.InternalX.StoredValue;
-						c ^= x.Actor.InternalY.StoredValue;
-						c ^= x.Actor.InternalVelocityX.StoredValue;
-						c ^= x.Actor.InternalVelocityY.StoredValue;
+						c ^= x.XActor.InternalX.StoredValue;
+						c ^= x.XActor.InternalY.StoredValue;
+						c ^= x.XActor.InternalVelocityX.StoredValue;
+						c ^= x.XActor.InternalVelocityY.StoredValue;
 					}
 					else
 					{
-						c ^= x.Actor.CurrentVehicle.InternalX.StoredValue;
-						c ^= x.Actor.CurrentVehicle.InternalY.StoredValue;
-						c ^= x.Actor.CurrentVehicle.InternalVelocityX.StoredValue;
-						c ^= x.Actor.CurrentVehicle.InternalVelocityY.StoredValue;
+						c ^= x.XActor.CurrentVehicle.InternalX.StoredValue;
+						c ^= x.XActor.CurrentVehicle.InternalY.StoredValue;
+						c ^= x.XActor.CurrentVehicle.InternalVelocityX.StoredValue;
+						c ^= x.XActor.CurrentVehicle.InternalVelocityY.StoredValue;
 					}
 				}
 

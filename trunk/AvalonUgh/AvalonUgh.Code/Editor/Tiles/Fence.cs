@@ -10,7 +10,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	[Script]
 	public class Fence : Tile
 	{
-		public Fence(Level Level, TileSelector Selector)
+		public Fence(LevelType Level, TileSelector Selector)
 			: base(Level, Selector)
 		{
 		}

@@ -17,7 +17,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 		public Image Image;
 		public TileSelector Selector { get; set; }
 
-		public readonly Level Level;
+		public readonly LevelType Level;
 
 		[Script]
 		public class VariationElement
@@ -27,7 +27,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 		public VariationElement Variation;
 
-		public Tile(Level Level, TileSelector Selector)
+		public Tile(LevelType Level, TileSelector Selector)
 		{
 			this.Level = Level;
 			this.Selector = Selector;

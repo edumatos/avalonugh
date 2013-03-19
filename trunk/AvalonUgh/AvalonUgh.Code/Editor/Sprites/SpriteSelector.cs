@@ -19,7 +19,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			PercisionY = PrimitiveTile.Heigth;
 		}
 
-		public static void RemoveEntities(View.SelectorInfo Selector, Level Level, View.SelectorPosition Position)
+		public static void RemoveEntities(View.SelectorInfo Selector, LevelType Level, View.SelectorPosition Position)
 		{
 			var z = Level.Zoom;
 			var x = Position.ContentX * z;

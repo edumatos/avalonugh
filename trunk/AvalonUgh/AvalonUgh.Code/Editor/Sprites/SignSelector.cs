@@ -44,7 +44,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				PrimitiveTileCountY = 1;
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
 				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
@@ -81,7 +81,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				v.MoveTo(x, y);
 			}
 
-			public void CreateTo(Level level, Level.Attribute.Int32_Array SyncAttributeSign, int TileRowsProcessed)
+			public void CreateTo(LevelType level, LevelType.Attribute.Int32_Array SyncAttributeSign, int TileRowsProcessed)
 			{
 				var x = SyncAttributeSign.Value[0] * level.Zoom;
 				var y = TileRowsProcessed * PrimitiveTile.Heigth * level.Zoom;
@@ -94,9 +94,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 		}
 
-		public static Level.Attribute.Int32_Array SerializeSign(Sign value)
+		public static LevelType.Attribute.Int32_Array SerializeSign(Sign value)
 		{
-			var a = new Level.Attribute.Int32_Array { Key = "sign" };
+			var a = new LevelType.Attribute.Int32_Array { Key = "sign" };
 
 			a.Value[0] = value.UnscaledX;
 			a.Value[1] = value.Value;

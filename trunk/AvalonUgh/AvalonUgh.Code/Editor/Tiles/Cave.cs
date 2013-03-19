@@ -10,7 +10,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	[Script]
 	public class Cave : Tile
 	{
-		public Cave(Level Level, TileSelector Selector)
+		public Cave(LevelType Level, TileSelector Selector)
 			: base(Level, Selector)
 		{
 		}

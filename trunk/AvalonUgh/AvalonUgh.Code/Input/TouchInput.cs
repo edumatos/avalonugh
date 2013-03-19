@@ -11,7 +11,7 @@ using System.Windows.Threading;
 namespace AvalonUgh.Code.Input
 {
 	[Script]
-	public class TouchInput
+	public class TouchInputType
 	{
 		// our touch input should be relative to content
 		public double OffsetX;
@@ -25,7 +25,7 @@ namespace AvalonUgh.Code.Input
 
 		public bool IsPressed;
 
-		public TouchInput(Canvas Container)
+		public TouchInputType(Canvas Container)
 		{
 			var Offset = new { X = 0.0, Y = 0.0 }.ToDefault();
 

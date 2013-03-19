@@ -37,7 +37,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 				};
 			}
 
-			public Image ToImage(Level Level, View.SelectorPosition Position)
+			public Image ToImage(LevelType Level, View.SelectorPosition Position)
 			{
 				var u = new Image
 					{
@@ -67,20 +67,20 @@ namespace AvalonUgh.Code.Editor.Tiles
 		[Script]
 		public sealed class Composite : TileSelector
 		{
-			readonly Action<Level, View.SelectorPosition> CreateToHandler;
+			readonly Action<LevelType, View.SelectorPosition> CreateToHandler;
 
-			public Composite(int x, int y, Action<Level, View.SelectorPosition> CreateToHandler) : base(x, y)
+			public Composite(int x, int y, Action<LevelType, View.SelectorPosition> CreateToHandler) : base(x, y)
 			{
 				this.CreateToHandler = CreateToHandler;
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				this.CreateToHandler(Level, Position);
 			}
 		}
 
-		public static void RemovePlatforms(View.SelectorInfo Selector, Level Level, View.SelectorPosition Position)
+		public static void RemovePlatforms(View.SelectorInfo Selector, LevelType Level, View.SelectorPosition Position)
 		{
 			var z = Level.Zoom;
 			var x = Position.ContentX * z;
@@ -98,7 +98,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 			Level.GetRemovablePlatforms().Where(k => k.Obstacle.Intersects(o)).ToArray().ForEach(k => k.Dispose());
 		}
 
-		public static void RemoveEntities(View.SelectorInfo Selector, Level Level, View.SelectorPosition Position)
+		public static void RemoveEntities(View.SelectorInfo Selector, LevelType Level, View.SelectorPosition Position)
 		{
 			var z = Level.Zoom;
 			var x = Position.ContentX * z;

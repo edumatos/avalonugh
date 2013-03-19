@@ -7,7 +7,7 @@ using ScriptCoreLib;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class LocationTracker : ISupportsLocationChanged
+	public class LocationTrackerType : ISupportsLocationChanged
 	{
 		ISupportsLocationChanged _Target;
 		public ISupportsLocationChanged Target

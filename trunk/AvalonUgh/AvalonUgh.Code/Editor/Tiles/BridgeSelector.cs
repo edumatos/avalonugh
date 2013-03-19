@@ -89,12 +89,12 @@ namespace AvalonUgh.Code.Editor.Tiles
 
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				CreateTo(Level, Position, true, true);
 			}
 
-			void CreateTo(Level Level, View.SelectorPosition Position, bool ForwardScanToLeft, bool ForwardScanToRight)
+			void CreateTo(LevelType Level, View.SelectorPosition Position, bool ForwardScanToLeft, bool ForwardScanToRight)
 			{
 				//Name.Index = (Name.Index + 1) % Name.IndexCount;
 

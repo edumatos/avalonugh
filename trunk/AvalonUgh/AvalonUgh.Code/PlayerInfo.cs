@@ -49,7 +49,7 @@ namespace AvalonUgh.Code
 
 
 		Actor InternalActor;
-		public Actor Actor
+		public Actor XActor
 		{
 			get
 			{
@@ -109,10 +109,10 @@ namespace AvalonUgh.Code
 			if (Input == null)
 				return;
 
-			if (Actor.CurrentVehicle != null)
-				Actor.CurrentVehicle.AddAcceleration(Input);
+			if (XActor.CurrentVehicle != null)
+				XActor.CurrentVehicle.AddAcceleration(Input);
 			else
-				Actor.AddAcceleration(Input);
+				XActor.AddAcceleration(Input);
 		}
 
 		#region ISupportsLocationChanged Members
@@ -121,10 +121,10 @@ namespace AvalonUgh.Code
 		{
 			get
 			{
-				if (Actor.CurrentVehicle != null)
-					return Actor.CurrentVehicle.X;
+				if (XActor.CurrentVehicle != null)
+					return XActor.CurrentVehicle.X;
 				else
-					return Actor.X;
+					return XActor.X;
 			}
 		}
 
@@ -132,10 +132,10 @@ namespace AvalonUgh.Code
 		{
 			get
 			{
-				if (Actor.CurrentVehicle != null)
-					return Actor.CurrentVehicle.Y;
+				if (XActor.CurrentVehicle != null)
+					return XActor.CurrentVehicle.Y;
 				else
-					return Actor.Y;
+					return XActor.Y;
 			}
 		}
 

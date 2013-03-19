@@ -11,7 +11,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	public class Ridge : Tile
 	{
 
-		public Ridge(Level Level, TileSelector Selector)
+		public Ridge(LevelType Level, TileSelector Selector)
 			: base(Level, Selector)
 		{
 		}
