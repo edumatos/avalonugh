@@ -58,7 +58,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 			public int PortIdentity;
 
-			public Level Level;
+			public LevelType Level;
 			public View View;
 
 			public int StatusbarHeight;
@@ -93,7 +93,7 @@ namespace AvalonUgh.Code.GameWorkspace
 				get
 				{
 
-					if (this.LevelReference == null)
+					if (this.XLevelReference == null)
 						return false;
 
 					if (this.Level != null)
@@ -105,7 +105,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 
 			LevelReference InternalLevelReference;
-			public LevelReference LevelReference
+			public LevelReference XLevelReference
 			{
 				get
 				{
@@ -131,7 +131,7 @@ namespace AvalonUgh.Code.GameWorkspace
 							if (Level != null)
 								throw new Exception("InternalLevelReference");
 
-							this.Level = new Level(Data, this.Zoom, this.Selectors);
+							this.Level = new LevelType(Data, this.Zoom, this.Selectors);
 							this.WhenLoadedDelay = false;
 
 							this.View = new View(Width, Height - StatusbarHeight, this.Level);

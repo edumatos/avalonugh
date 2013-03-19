@@ -110,11 +110,11 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					v.MoveTo(l.X, l.Y);
 
-					var Level = l.Actor.CurrentLevel;
+					var Level = l.XActor.CurrentLevel;
 
 					Level.KnownVehicles.Add(v);
 
-					l.Actor.CurrentVehicle = v;
+					l.XActor.CurrentVehicle = v;
 				};
 
 
@@ -149,7 +149,7 @@ namespace AvalonUgh.Code.GameWorkspace
 
 						this.Console.WriteLine("created new player via teleport " + new { p.Identity, p.IdentityLocal });
 
-						p.Actor.PlayerInfo = p;
+						p.XActor.PlayerInfo = p;
 					}
 
 
@@ -158,26 +158,26 @@ namespace AvalonUgh.Code.GameWorkspace
 
 					var CurrentPort = this.Ports.SingleOrDefault(k => k.PortIdentity == port);
 
-					p.Actor.CurrentVehicle = null;
+					p.XActor.CurrentVehicle = null;
 
 					// assigning a level may assign a pending vehcile
 					if (CurrentPort == null)
-						p.Actor.CurrentLevel = null;
+						p.XActor.CurrentLevel = null;
 					else
-						p.Actor.CurrentLevel = CurrentPort.Level;
+						p.XActor.CurrentLevel = CurrentPort.Level;
 
 
-					p.Actor.MoveTo(x, y);
-					p.Actor.VelocityX = vx;
-					p.Actor.VelocityY = vy;
+					p.XActor.MoveTo(x, y);
+					p.XActor.VelocityX = vx;
+					p.XActor.VelocityY = vy;
 
 					if (a == this.LocalIdentity.Locals)
 					{
 						// every actor could act differently on gold collected
-						p.Actor.GoldStash.ForEachNewItem(
+						p.XActor.GoldStash.ForEachNewItem(
 							gold =>
 							{
-								var _CurrentPort = this.Ports.Single(k => k.Level == p.Actor.CurrentLevel);
+								var _CurrentPort = this.Ports.Single(k => k.Level == p.XActor.CurrentLevel);
 
 								_CurrentPort.View.ColorOverlay.Background = Brushes.Yellow;
 								_CurrentPort.View.ColorOverlay.Opacity = 0.7;
@@ -186,10 +186,10 @@ namespace AvalonUgh.Code.GameWorkspace
 							}
 						);
 
-						p.Actor.FruitStash.ForEachNewItem(
+						p.XActor.FruitStash.ForEachNewItem(
 							gold =>
 							{
-								var _CurrentPort = this.Ports.Single(k => k.Level == p.Actor.CurrentLevel);
+								var _CurrentPort = this.Ports.Single(k => k.Level == p.XActor.CurrentLevel);
 
 								_CurrentPort.View.ColorOverlay.Background = Brushes.GreenYellow;
 								_CurrentPort.View.ColorOverlay.Opacity = 0.7;
@@ -228,11 +228,11 @@ namespace AvalonUgh.Code.GameWorkspace
 
 						this.DiscoveredLevels.Add(LevelReference);
 
-						CurrentPort.LevelReference = LevelReference;
+						CurrentPort.XLevelReference = LevelReference;
 					}
 					else
 					{
-						CurrentPort.LevelReference = this.EmbeddedLevels.Single(k => k.Location.Embedded.AnimationFrame == level);
+						CurrentPort.XLevelReference = this.EmbeddedLevels.Single(k => k.Location.Embedded.AnimationFrame == level);
 					}
 
 				};

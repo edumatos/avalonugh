@@ -49,7 +49,7 @@ namespace AvalonUgh.Code.Editor
 				this.Height = 4;
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				var WaterHeight = PrimitiveTile.Heigth * Level.Map.Height - Position.ContentY;
 

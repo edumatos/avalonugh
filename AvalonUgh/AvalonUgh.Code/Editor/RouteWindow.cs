@@ -86,7 +86,7 @@ namespace AvalonUgh.Code.Editor
 
 		public readonly BindingList<DestinationButton> Buttons = new BindingList<DestinationButton>();
 
-		public Level CurrentLevel;
+		public LevelType CurrentLevel;
 
 		public RouteWindow(Actor Context)
 		{

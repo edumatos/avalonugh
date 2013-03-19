@@ -11,7 +11,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	public class Platform : Tile
 	{
 
-		public Platform(Level Level, TileSelector Selector)
+		public Platform(LevelType Level, TileSelector Selector)
 			: base(Level, Selector)
 		{
 		}

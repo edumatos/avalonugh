@@ -49,7 +49,7 @@ namespace AvalonUgh.Code.Editor
 
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				if (Level.AttributeBackground.Value == null)
 					Level.AttributeBackground.Value = "";

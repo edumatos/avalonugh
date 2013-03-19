@@ -67,7 +67,7 @@ namespace AvalonUgh.Game.Shared
 
 		public Action<int> LoadEmbeddedLevel;
 
-		public Level CurrentLevel;
+		public LevelType CurrentLevel;
 
 		public GameCanvas()
 		{
@@ -183,7 +183,7 @@ namespace AvalonUgh.Game.Shared
 			LobbyLevel.ToStringAsset(
 				LevelText =>
 				{
-					var Level = new Level(LevelText, Zoom, this.Selectors);
+					var Level = new LevelType(LevelText, Zoom, this.Selectors);
 					//var Level2 = new Level(LevelText, Zoom, this.Selectors);
 
 					this.LoadEmbeddedLevel =
@@ -513,7 +513,7 @@ namespace AvalonUgh.Game.Shared
 
 							// lets create a dummy actor
 							//NewPlayer.Actor = new Actor.woman0(Zoom)
-							NewPlayer.Actor = new Actor.man0(Zoom)
+							NewPlayer.XActor = new Actor.man0(Zoom)
 							{
 								Animation = Actor.AnimationEnum.Panic,
 								RespectPlatforms = true,
@@ -530,26 +530,26 @@ namespace AvalonUgh.Game.Shared
 							// where are the spawnpoints in this level?
 							if (Level.KnownCaves.Count == 0)
 							{
-								NewPlayer.Actor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 4);
+								NewPlayer.XActor.MoveTo((DefaultWidth / 4) + (DefaultWidth / 2).Random(), DefaultHeight / 4);
 							}
 							else
 							{
 								var CandidateCave = Level.KnownCaves.Random();
 
-								AIDirector.ActorExitAnyCave(NewPlayer.Actor, CandidateCave);
+								AIDirector.ActorExitAnyCave(NewPlayer.XActor, CandidateCave);
 							}
 
 							// we need to play jumping sound
-							NewPlayer.Actor.Jumping +=
+							NewPlayer.XActor.Jumping +=
 								delegate
 								{
 									(Assets.Shared.KnownAssets.Path.Audio + "/jump.mp3").PlaySound();
 								};
 
-							NewPlayer.Actor.EnterCave +=
+							NewPlayer.XActor.EnterCave +=
 								delegate
 								{
-									var ManAsObstacle = NewPlayer.Actor.ToObstacle();
+									var ManAsObstacle = NewPlayer.XActor.ToObstacle();
 
 									// are we trying to enter a cave?
 									var NearbyCave = Level.KnownCaves.FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
@@ -561,7 +561,7 @@ namespace AvalonUgh.Game.Shared
 
 										Console.WriteLine("entering a cave");
 
-										AIDirector.WalkActorToTheCaveAndEnter(NewPlayer.Actor, NearbyCave,
+										AIDirector.WalkActorToTheCaveAndEnter(NewPlayer.XActor, NearbyCave,
 											delegate
 											{
 												Console.WriteLine("inside a cave");
@@ -573,14 +573,14 @@ namespace AvalonUgh.Game.Shared
 												if (Level.KnownCaves.Count == 0)
 												{
 													// whatif the cave is destroyed?
-													AIDirector.ActorExitCaveFast(NewPlayer.Actor);
+													AIDirector.ActorExitCaveFast(NewPlayer.XActor);
 													return;
 												}
 
 												var NextCave = Level.KnownCaves.Next(k => k == NearbyCave);
 
 
-												AIDirector.ActorExitAnyCave(NewPlayer.Actor, NextCave);
+												AIDirector.ActorExitAnyCave(NewPlayer.XActor, NextCave);
 											}
 										);
 
@@ -589,24 +589,24 @@ namespace AvalonUgh.Game.Shared
 									}
 									else
 									{
-										NewPlayer.Actor.Animation = Actor.AnimationEnum.Talk;
+										NewPlayer.XActor.Animation = Actor.AnimationEnum.Talk;
 									}
 								};
 
-							NewPlayer.Actor.EnterVehicle +=
+							NewPlayer.XActor.EnterVehicle +=
 								delegate
 								{
 									// exiting a vehicle is easy
 									// entering is a bit harder
 									// as we need to find it and reserve its use for us
 
-									var ManAsObstacle = NewPlayer.Actor.ToObstacle();
+									var ManAsObstacle = NewPlayer.XActor.ToObstacle();
 
 									var NearbyVehicle = Level.KnownVehicles.Where(k => k.CurrentDriver == null).FirstOrDefault(k => k.ToObstacle().Intersects(ManAsObstacle));
 
 									if (NearbyVehicle != null)
 									{
-										NearbyVehicle.CurrentDriver = NewPlayer.Actor;
+										NearbyVehicle.CurrentDriver = NewPlayer.XActor;
 									}
 								};
 
@@ -616,14 +616,14 @@ namespace AvalonUgh.Game.Shared
 									(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
 								};
 
-							NewPlayer.Actor.CurrentVehicleChanged +=
+							NewPlayer.XActor.CurrentVehicleChanged +=
 								delegate
 								{
 									(Assets.Shared.KnownAssets.Path.Audio + "/enter.mp3").PlaySound();
 								};
 
 							// every actor could act differently on gold collected
-							NewPlayer.Actor.GoldStash.ForEachNewItem(
+							NewPlayer.XActor.GoldStash.ForEachNewItem(
 								gold =>
 								{
 									(Assets.Shared.KnownAssets.Path.Audio + "/treasure.mp3").PlaySound();
@@ -635,10 +635,10 @@ namespace AvalonUgh.Game.Shared
 								}
 							);
 
-							NewPlayer.Actor.Drop +=
+							NewPlayer.XActor.Drop +=
 								delegate
 								{
-									var CurrentVehicle = NewPlayer.Actor.CurrentVehicle;
+									var CurrentVehicle = NewPlayer.XActor.CurrentVehicle;
 
 									if (CurrentVehicle != null)
 									{
@@ -656,14 +656,14 @@ namespace AvalonUgh.Game.Shared
 					Players.ForEachItemDeleted(
 						DeletedPlayer =>
 						{
-							if (View.LocationTracker.Target == DeletedPlayer.Actor)
+							if (View.LocationTracker.Target == DeletedPlayer.XActor)
 								View.LocationTracker.Target = null;
 
 							Console.WriteLine("ingame player deleted: " + DeletedPlayer);
 
 
-							DeletedPlayer.Actor.Dispose();
-							Level.KnownActors.Remove(DeletedPlayer.Actor);
+							DeletedPlayer.XActor.Dispose();
+							Level.KnownActors.Remove(DeletedPlayer.XActor);
 						}
 					);
 

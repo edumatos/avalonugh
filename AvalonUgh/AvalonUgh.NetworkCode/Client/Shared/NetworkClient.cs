@@ -288,7 +288,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 								Action<Workspace.Port> ReplicatePort =
 									(Port) =>
 									{
-										if (Port.LevelReference == null)
+										if (Port.XLevelReference == null)
 											return;
 
 
@@ -300,7 +300,7 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 											Port.PortIdentity,
 											this.Content.LocalIdentity.SyncFrame,
 											-1,
-											Port.Level.ToString(Level.ToStringMode.ForSync)
+											Port.Level.ToString(LevelType.ToStringMode.ForSync)
 										);
 									};
 
@@ -329,10 +329,10 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 									// which port are our local players in?
 									this.Content.CurrentPort.PortIdentity,
 
-									Local.Actor.X,
-									Local.Actor.Y,
-									Local.Actor.VelocityX,
-									Local.Actor.VelocityY
+									Local.XActor.X,
+									Local.XActor.Y,
+									Local.XActor.VelocityX,
+									Local.XActor.VelocityY
 								
 								});
 
@@ -345,10 +345,10 @@ namespace AvalonUgh.NetworkCode.Client.Shared
 									// which port are our local players in?
 									this.Content.CurrentPort.PortIdentity,
 
-									Local.Actor.X,
-									Local.Actor.Y,
-									Local.Actor.VelocityX,
-									Local.Actor.VelocityY
+									Local.XActor.X,
+									Local.XActor.Y,
+									Local.XActor.VelocityX,
+									Local.XActor.VelocityY
 								);
 
 								// we need to sync user inputs too

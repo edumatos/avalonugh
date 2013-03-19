@@ -10,9 +10,9 @@ namespace AvalonUgh.Code.Input
 	public class PlayerInput
 	{
 		#region Touch
-		TouchInput InternalTouch;
+		TouchInputType InternalTouch;
 
-		public TouchInput Touch
+		public TouchInputType Touch
 		{
 			get
 			{

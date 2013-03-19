@@ -65,7 +65,7 @@ namespace AvalonUgh.SneakPeak.Shared
 				{
 					Console.WriteLine(LevelText);
 
-					var Level = new Level(LevelText, Zoom, null);
+					var Level = new LevelType(LevelText, Zoom, null);
 
 					// subtract statusbar
 					var View = new View(DefaultWidth, DefaultHeight, Level);

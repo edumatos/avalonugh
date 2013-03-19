@@ -56,7 +56,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
 				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
@@ -81,7 +81,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 			}
 
-			public void CreateTo(Level level, Level.Attribute.Int32_Array SyncAttributeVehicle)
+			public void CreateTo(LevelType level, LevelType.Attribute.Int32_Array SyncAttributeVehicle)
 			{
 				var v = new Vehicle(level.Zoom);
 

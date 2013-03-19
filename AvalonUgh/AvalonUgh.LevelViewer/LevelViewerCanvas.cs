@@ -58,7 +58,7 @@ namespace AvalonUgh.LevelViewer.Shared
 				}
 			)
 			{
-				LevelReference = levels.DefaultLobbyLevel,
+				XLevelReference = levels.DefaultLobbyLevel,
 				DragContainer = this
 			}.AttachContainerTo(this).MoveContainerTo(200, 8);
 
@@ -68,7 +68,7 @@ namespace AvalonUgh.LevelViewer.Shared
 				}
 			)
 			{
-				LevelReference = levels.DefaultMissionLevel,
+				XLevelReference = levels.DefaultMissionLevel,
 				DragContainer = this
 			}.AttachContainerTo(this).MoveContainerTo(200, 200);
 
@@ -78,7 +78,7 @@ namespace AvalonUgh.LevelViewer.Shared
 				}
 			)
 			{
-				LevelReference = levels.Levels.Random(),
+				XLevelReference = levels.Levels.Random(),
 				DragContainer = this
 			}.AttachContainerTo(this).MoveContainerTo(200, 200);
 
@@ -98,24 +98,24 @@ namespace AvalonUgh.LevelViewer.Shared
 					a_Relation.Update();
 				};
 
-			a.DragBehavior.DragStart +=
+			a.XDragBehavior.DragStart +=
 				delegate
 				{
 					a_Relation.Hide();
 				};
-			a.DragBehavior.DragStop +=
+			a.XDragBehavior.DragStop +=
 				delegate
 				{
 					UpdateRelations();
 				};
 
-			b.DragBehavior.DragStart +=
+			b.XDragBehavior.DragStart +=
 				delegate
 				{
 					a_Relation.Hide();
 				};
 
-			b.DragBehavior.DragStop +=
+			b.XDragBehavior.DragStop +=
 				delegate
 				{
 					UpdateRelations();

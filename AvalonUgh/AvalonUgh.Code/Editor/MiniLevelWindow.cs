@@ -77,11 +77,11 @@ namespace AvalonUgh.Code.Editor
 
 			this.DraggableArea.BringToFront();
 
-			this.LevelReference = null;
+			this.XLevelReference = null;
 		}
 
 		LevelReference InternalLevelReference;
-		public LevelReference LevelReference
+		public LevelReference XLevelReference
 		{
 			get
 			{
@@ -127,14 +127,14 @@ namespace AvalonUgh.Code.Editor
 
 
 
-			if (this.LevelReference == null)
+			if (this.XLevelReference == null)
 				return;
 
 
-			if (this.LevelReference.Map == null)
+			if (this.XLevelReference.Map == null)
 				return;
 
-			var Size = this.LevelReference.Size;
+			var Size = this.XLevelReference.Size;
 
 			this.ExtendedContentContainer.SizeTo(
 				Size.Width * SmallTileInfo.Width,

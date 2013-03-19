@@ -66,7 +66,7 @@ namespace AvalonUgh.Code.Editor
 					}
 				);
 
-			var Commands = new Level.AttributeDictonary
+			var Commands = new LevelType.AttributeDictonary
 			{
 				AttributeWater,
 				AttributeCode,
@@ -100,22 +100,22 @@ namespace AvalonUgh.Code.Editor
 
 		}
 
-		public bool DoCommand(Level.AttributeDictonary Commands, string e)
+		public bool DoCommand(LevelType.AttributeDictonary Commands, string e)
 		{
-			if (!e.StartsWith(Level.Comment))
+			if (!e.StartsWith(LevelType.Comment))
 			{
 				//TileRowsProcessed++;
 				return false;
 			}
 
-			var i = e.IndexOf(Level.Assignment);
+			var i = e.IndexOf(LevelType.Assignment);
 
 			if (i > 0)
 			{
-				var Key = e.Substring(Level.Comment.Length, i - Level.Comment.Length).Trim().ToLower();
+				var Key = e.Substring(LevelType.Comment.Length, i - LevelType.Comment.Length).Trim().ToLower();
 				if (Commands.ContainsKey(Key))
 				{
-					var Value = e.Substring(i + Level.Assignment.Length).Trim();
+					var Value = e.Substring(i + LevelType.Assignment.Length).Trim();
 
 					if (Value == "null")
 						throw new Exception("null trap 3" + new { e, i });
@@ -134,19 +134,19 @@ namespace AvalonUgh.Code.Editor
 		/// <summary>
 		/// name of the level to show to the users
 		/// </summary>
-		public readonly Level.Attribute.String AttributeText = "text";
+		public readonly LevelType.Attribute.String AttributeText = "text";
 
 		/// <summary>
 		///  the code to unlock this level
 		/// </summary>
-		public readonly Level.Attribute.String AttributeCode = "code";
+		public readonly LevelType.Attribute.String AttributeCode = "code";
 
-		public readonly Level.Attribute.String AttributeBackground = "background";
+		public readonly LevelType.Attribute.String AttributeBackground = "background";
 
-		public readonly Level.Attribute.Int32 AttributeWater = "water";
+		public readonly LevelType.Attribute.Int32 AttributeWater = "water";
 
-		public readonly Level.Attribute.String AttributeEpisode = "episode";
-		public readonly Level.Attribute.String AttributeNextCode = "nextcode";
+		public readonly LevelType.Attribute.String AttributeEpisode = "episode";
+		public readonly LevelType.Attribute.String AttributeNextCode = "nextcode";
 
 
 		public string Code
@@ -206,7 +206,7 @@ namespace AvalonUgh.Code.Editor
 
 					while (e != null)
 					{
-						if (!e.StartsWith(Level.Comment))
+						if (!e.StartsWith(LevelType.Comment))
 						{
 							n.Width = n.Width.Max(e.Length);
 							n.Height++;

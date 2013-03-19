@@ -227,7 +227,7 @@ namespace AvalonUgh.Code
 
 			//public Action<View, SelectorPosition> Invoke;
 
-			public virtual void CreateTo(Level Level, SelectorPosition Position)
+			public virtual void CreateTo(LevelType LevelArgument, SelectorPosition Position)
 			{
 
 			}

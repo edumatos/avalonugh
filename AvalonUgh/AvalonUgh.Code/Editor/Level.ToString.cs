@@ -13,7 +13,7 @@ using AvalonUgh.Code.Editor.Sprites;
 
 namespace AvalonUgh.Code.Editor
 {
-	partial class Level
+	partial class LevelType
 	{
 		public override string ToString()
 		{

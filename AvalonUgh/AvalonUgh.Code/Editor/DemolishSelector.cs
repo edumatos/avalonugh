@@ -45,7 +45,7 @@ namespace AvalonUgh.Code.Editor
 		{
 			public Size_Generic(int x, int y) : base(x, y) { }
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 
 				var z = Level.Zoom;

@@ -51,7 +51,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				PercisionY = PrimitiveTile.Heigth;
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
 				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;
@@ -106,7 +106,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 			}
 
 
-			public void CreateTo(Level level, Level.Attribute.Int32_Array source)
+			public void CreateTo(LevelType level, LevelType.Attribute.Int32_Array source)
 			{
 				var ForSync = source.Value[0];
 

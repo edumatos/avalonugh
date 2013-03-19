@@ -15,7 +15,7 @@ using AvalonUgh.Assets.Shared;
 
 namespace AvalonUgh.Code.Editor
 {
-	partial class Level
+	partial class LevelType
 	{
 		public enum SpawnLocationTag
 		{

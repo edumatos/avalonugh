@@ -48,9 +48,9 @@ namespace AvalonUgh.Code
 		public Canvas ContentInfoOverlay { get; set; }
 
 		public Canvas TouchOverlay { get; set; }
-		public TouchInput TouchInput { get; set; }
+		public TouchInputType TouchInput { get; set; }
 
-		public Level Level { get; set; }
+		public LevelType Level { get; set; }
 
 		public int ContentActualWidth
 		{
@@ -78,9 +78,9 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public LocationTracker LocationTracker { get; set; }
+		public LocationTrackerType LocationTracker { get; set; }
 
-		public Flashlight Flashlight { get; set; }
+		public FlashlightType Flashlight { get; set; }
 
 		public int ContainerWidth { get; set; }
 		public int ContainerHeight { get; set; }
@@ -89,7 +89,7 @@ namespace AvalonUgh.Code
 
 		public Water CurrentWater;
 
-		public View(int width, int height, Level level)
+		public View(int width, int height, LevelType level)
 		{
 			this.ContainerWidth = width;
 			this.ContainerHeight = height;
@@ -470,11 +470,11 @@ namespace AvalonUgh.Code
 					CurrentWater.MoveContainerTo(0, WaterTop);
 				};
 
-			this.LocationTracker = new LocationTracker();
+			this.LocationTracker = new LocationTrackerType();
 
 			MovetToContainerCenter();
 
-			this.Flashlight = new Flashlight(
+			this.Flashlight = new FlashlightType(
 				this.Level.Zoom,
 				ContentExtendedWidth,
 				ContentExtendedHeight
@@ -538,7 +538,7 @@ namespace AvalonUgh.Code
 
 			AttachEditorSelector();
 
-			this.TouchInput = new TouchInput(this.TouchOverlay)
+			this.TouchInput = new TouchInputType(this.TouchOverlay)
 			{
 				OffsetX = ContentOffsetX,
 				OffsetY = ContentOffsetY,

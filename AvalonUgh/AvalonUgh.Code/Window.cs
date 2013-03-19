@@ -248,7 +248,7 @@ namespace AvalonUgh.Code
 
 		Canvas InternalDragContainer;
 
-		public DragBehavior DragBehavior { get; set; }
+		public DragBehavior XDragBehavior { get; set; }
 
 		public Canvas DragContainer
 		{
@@ -261,12 +261,12 @@ namespace AvalonUgh.Code
 				if (InternalDragContainer != null)
 					throw new ArgumentException();
 
-				if (DragBehavior != null)
+				if (XDragBehavior != null)
 					throw new ArgumentException();
 
 				InternalDragContainer = value;
 
-				this.DragBehavior = new DragBehavior(DraggableArea, Container, DragContainer)
+				this.XDragBehavior = new DragBehavior(DraggableArea, Container, DragContainer)
 				{
 					SnapX = x => x.Max(Padding - Width).Min(DragContainer.Width - Padding),
 					SnapY = y => y.Max(Padding - Height).Min(DragContainer.Height - Padding)

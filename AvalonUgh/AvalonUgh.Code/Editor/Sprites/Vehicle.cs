@@ -31,7 +31,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 		public double LastWaterCollisionVelocity { get; set; }
 
 
-		public Level CurrentLevel { get; set; }
+		public LevelType CurrentLevel { get; set; }
 
 		// a vehicle can carry a rock
 		// and throw it at trees and animals
@@ -87,7 +87,8 @@ namespace AvalonUgh.Code.Editor.Sprites
 				if (_CurrentDriver != null)
 				{
 					this.ExitIsBlocked = true;
-					this.ColorStripe = value.GetColorStripeForVehicle(this);
+                    Console.WriteLine("this.ColorStripe = value.GetColorStripeForVehicle(this);");
+                    this.ColorStripe = value.GetColorStripeForVehicle(this);
 
 					if (_CurrentDriver.CurrentVehicle != this)
 						_CurrentDriver.CurrentVehicle = this;
@@ -215,6 +216,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 				if (value)
 				{
+                    Console.WriteLine("this.ColorStripe = Colors.Transparent;");
 					this.ColorStripe = Colors.Transparent;
 					IsAnimated = false;
 					UnmannedImage.Show();

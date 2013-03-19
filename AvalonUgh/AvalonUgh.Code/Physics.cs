@@ -15,7 +15,7 @@ namespace AvalonUgh.Code
 	[Script]
 	public class Physics
 	{
-		public Level Level;
+		public LevelType Level;
 
 
 		// mass = density / volume

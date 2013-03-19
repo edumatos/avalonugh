@@ -89,9 +89,9 @@ namespace AvalonUgh.Code.Editor.Sprites
 
 		readonly AnimationDictionary InternalAnimation;
 
-		readonly Level Level;
+		readonly LevelType Level;
 
-		public Tryoperus(Level Level)
+		public Tryoperus(LevelType Level)
 		{
 			this.Level = Level;
 			this.Zoom = Level.Zoom;

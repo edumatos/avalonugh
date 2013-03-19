@@ -48,7 +48,7 @@ namespace AvalonUgh.Code.Editor.Sprites
 				PercisionY = PrimitiveTile.Heigth;
 			}
 
-			public override void CreateTo(Level Level, View.SelectorPosition Position)
+			public override void CreateTo(LevelType Level, View.SelectorPosition Position)
 			{
 				var x = (Position.ContentX + this.HalfWidth) * Level.Zoom;
 				var y = (Position.ContentY + this.HalfHeight) * Level.Zoom;

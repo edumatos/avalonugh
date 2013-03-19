@@ -11,7 +11,7 @@ namespace AvalonUgh.Code.Editor.Tiles
 	public class Stone : Tile
 	{
 		
-		public Stone(Level Level, TileSelector Selector) : base(Level, Selector)
+		public Stone(LevelType Level, TileSelector Selector) : base(Level, Selector)
 		{
 		}
 

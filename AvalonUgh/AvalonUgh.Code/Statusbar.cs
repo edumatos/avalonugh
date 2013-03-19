@@ -18,7 +18,7 @@ using ScriptCoreLib.Shared.Lambda;
 namespace AvalonUgh.Code
 {
 	[Script]
-	public class Statusbar : ISupportsContainer
+	public class StatusbarType : ISupportsContainer
 	{
 		public Canvas Container { get; set; }
 
@@ -41,7 +41,7 @@ namespace AvalonUgh.Code
 		[Script]
 		public class StatusbarWindow : Window
 		{
-			public readonly Statusbar Statusbar = new Statusbar();
+			public readonly StatusbarType Statusbar = new StatusbarType();
 
 			public StatusbarWindow()
 			{
@@ -56,7 +56,7 @@ namespace AvalonUgh.Code
 			}
 		}
 
-		public Statusbar()
+		public StatusbarType()
 			: this(null)
 		{
 
@@ -69,7 +69,7 @@ namespace AvalonUgh.Code
 		}
 
 		public readonly ConstructorArguments Arguments;
-		public Statusbar(ConstructorArguments Arguments)
+		public StatusbarType(ConstructorArguments Arguments)
 		{
 			if (Arguments == null)
 				Arguments = new ConstructorArguments();

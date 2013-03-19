@@ -15,7 +15,7 @@ using System.Windows.Media;
 namespace AvalonUgh.Code.Editor
 {
 	[Script]
-	public partial class Level : IDisposable
+	public partial class LevelType : IDisposable
 	{
 		/// <summary>
 		/// name of the level to show to the users
@@ -154,7 +154,7 @@ namespace AvalonUgh.Code.Editor
 		public readonly Physics Physics;
 
 
-		public Level(string source, int Zoom, KnownSelectors Selectors)
+		public LevelType(string source, int Zoom, KnownSelectors Selectors)
 		{
 			this.AttributeCode.Value = "";
 			this.AttributeNextCode.Value = "";

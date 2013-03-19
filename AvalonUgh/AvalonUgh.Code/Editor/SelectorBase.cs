@@ -32,7 +32,7 @@ namespace AvalonUgh.Code.Editor
 
 		public abstract string GetIdentifier();
 
-		public void AttachTileToLevel(ASCII_ImageEntry Position, ASCIITileSizeInfo Tile, Level Level)
+		public void AttachTileToLevel(ASCII_ImageEntry Position, ASCIITileSizeInfo Tile, LevelType Level)
 		{
 			
 			var Selector = Sizes.SingleOrDefault(
