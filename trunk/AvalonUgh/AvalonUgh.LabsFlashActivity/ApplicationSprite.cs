@@ -1,3 +1,4 @@
+using net.hires.debug;
 using ScriptCoreLib.ActionScript.Extensions;
 using ScriptCoreLib.ActionScript.flash.display;
 using ScriptCoreLib.ActionScript.flash.external;
@@ -45,6 +46,11 @@ namespace AvalonUgh.LabsFlashActivity
 
 
                     this.stage.resize += delegate { AtResize(); };
+
+
+
+                    // http://www.flare3d.com/support/index.php?topic=1101.0
+                    this.addChild(new Stats { alpha = 0.5 });
                 }
             );
         }
