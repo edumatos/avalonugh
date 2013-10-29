@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AvalonUgh.LabsFlashActivity</RootNamespace>
     <AssemblyName>AvalonUgh.LabsFlashActivity</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>AvalonUgh.LabsFlashActivity.Program</StartupObject>
     <TargetFrameworkProfile />
@@ -44,6 +44,9 @@
     </Reference>
     <Reference Include="Chrome Web Server">
       <HintPath>..\packages\Chrome.Web.Server.1.0.0.0\lib\Chrome Web Server.dll</HintPath>
+    </Reference>
+    <Reference Include="Chrome Web Server Styled Form">
+      <HintPath>..\packages\Chrome.Web.Server.StyledForm.1.0.0.0\lib\Chrome Web Server Styled Form.dll</HintPath>
     </Reference>
     <Reference Include="Chrome Web Store">
       <HintPath>..\packages\Chrome.Web.Store.1.0.0.0\lib\Chrome Web Store.dll</HintPath>
@@ -157,7 +160,7 @@
     <Content Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air.com.abstractatech.gamification.augh.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Textures\Preview128.png" />
+    <Content Include="Design\Preview.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AvalonUgh.Assets\AvalonUgh.Assets.csproj">
@@ -173,10 +176,14 @@
       <Name>AvalonUgh.Labs</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Textures\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air.com.abstractatech.gamification.augh-build.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

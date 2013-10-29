@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Web
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Public", "Public", "{B35AD758-4CA6-4479-B36A-766C68AF4A08}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Monetized", "Monetized", "{9CDD8CFA-BA6D-4020-850D-D180B4621FCD}"
@@ -43,6 +45,15 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.LabsActivity", "AvalonUgh.LabsActivity\AvalonUgh.LabsActivity.csproj", "{112F5A8F-17ED-4F24-903E-8BDBA85C512A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonUgh.LabsFlashActivity", "AvalonUgh.LabsFlashActivity\AvalonUgh.LabsFlashActivity.csproj", "{92E6268B-462D-4013-814F-7951AB7622ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF} = {DF763FAD-6D74-47A6-80C3-EA7B444C81BF}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "References", "References", "{FBF21E9E-EE7C-48DE-9086-107DA3A2DB63}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChromeTCPServerWithFrameNone", "..\..\..\jsc.svn\examples\javascript\chrome\apps\ChromeTCPServerWithFrameNone\ChromeTCPServerWithFrameNone\ChromeTCPServerWithFrameNone.csproj", "{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abstractatech.ActionScript.ConsoleFormPackage", "..\..\..\jsc.svn\market\actionscript\Abstractatech.ActionScript.ConsoleFormPackage\Abstractatech.ActionScript.ConsoleFormPackage\Abstractatech.ActionScript.ConsoleFormPackage.csproj", "{266AC7B2-550B-4B68-B4F7-DBFE482318BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -258,6 +269,36 @@ Global
 		{92E6268B-462D-4013-814F-7951AB7622ED}.ReleaseWithJavaScript|Mixed Platforms.Build.0 = Release|x86
 		{92E6268B-462D-4013-814F-7951AB7622ED}.ReleaseWithJavaScript|x86.ActiveCfg = Release|x86
 		{92E6268B-462D-4013-814F-7951AB7622ED}.ReleaseWithJavaScript|x86.Build.0 = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Debug|x86.ActiveCfg = Debug|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Debug|x86.Build.0 = Debug|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Release|Any CPU.ActiveCfg = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Release|Mixed Platforms.Build.0 = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Release|x86.ActiveCfg = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.Release|x86.Build.0 = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.ReleaseWithJavaScript|Any CPU.ActiveCfg = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.ReleaseWithJavaScript|Mixed Platforms.ActiveCfg = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.ReleaseWithJavaScript|Mixed Platforms.Build.0 = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.ReleaseWithJavaScript|x86.ActiveCfg = Release|x86
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF}.ReleaseWithJavaScript|x86.Build.0 = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Debug|x86.ActiveCfg = Debug|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Debug|x86.Build.0 = Debug|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Release|Any CPU.ActiveCfg = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Release|Mixed Platforms.Build.0 = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Release|x86.ActiveCfg = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.Release|x86.Build.0 = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.ReleaseWithJavaScript|Any CPU.ActiveCfg = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.ReleaseWithJavaScript|Mixed Platforms.ActiveCfg = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.ReleaseWithJavaScript|Mixed Platforms.Build.0 = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.ReleaseWithJavaScript|x86.ActiveCfg = Release|x86
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF}.ReleaseWithJavaScript|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -275,5 +316,7 @@ Global
 		{08040EDB-5008-4D09-8513-388C12888FBD} = {CA59EFB1-4C94-482D-B2FB-4CB8FC4EBC17}
 		{112F5A8F-17ED-4F24-903E-8BDBA85C512A} = {CA59EFB1-4C94-482D-B2FB-4CB8FC4EBC17}
 		{92E6268B-462D-4013-814F-7951AB7622ED} = {CA59EFB1-4C94-482D-B2FB-4CB8FC4EBC17}
+		{DF763FAD-6D74-47A6-80C3-EA7B444C81BF} = {FBF21E9E-EE7C-48DE-9086-107DA3A2DB63}
+		{266AC7B2-550B-4B68-B4F7-DBFE482318BF} = {FBF21E9E-EE7C-48DE-9086-107DA3A2DB63}
 	EndGlobalSection
 EndGlobal
