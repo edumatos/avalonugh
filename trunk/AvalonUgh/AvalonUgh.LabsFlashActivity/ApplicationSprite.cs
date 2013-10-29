@@ -18,21 +18,25 @@ namespace AvalonUgh.LabsFlashActivity
         public ApplicationSprite()
         {
             // give my my console!
+            // not inside chrome webview?
             if (ExternalInterface.available)
                 Abstractatech.ActionScript.ConsoleFormPackage.ConsoleFormPackageExperience.Initialize();
 
             this.InvokeWhenStageIsReady(
                 () =>
                 {
+                    this.stage.align = StageAlign.BOTTOM_LEFT;
 
 
                     content.AttachToContainer(this);
                     content.AutoSizeTo(this.stage);
 
+
                     Action AtResize =
                         delegate
                         {
                             var s = content.ToSprite();
+
 
                             var r = this.stage.stageWidth / (double)DefaultWidth; ;
 
