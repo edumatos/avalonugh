@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>AvalonUgh.LabsFlashActivity</RootNamespace>
     <AssemblyName>AvalonUgh.LabsFlashActivity</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <StartupObject>AvalonUgh.LabsFlashActivity.Program</StartupObject>
     <TargetFrameworkProfile />
@@ -157,7 +157,7 @@
     <Compile Include="Program.cs">
       <DependentUpon>ApplicationCanvas.cs</DependentUpon>
     </Compile>
-    <Content Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air.com.abstractatech.gamification.augh.xml">
+    <Content Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air-descriptor.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Design\Preview.png" />
@@ -184,13 +184,13 @@
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air.com.abstractatech.gamification.augh-build.bat">
+    <None Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air-android.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air.com.abstractatech.gamification.augh-install.bat">
+    <None Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air-ios.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air.com.abstractatech.gamification.augh-test.bat">
+    <None Include="staging\AvalonUgh.LabsFlashActivity.ApplicationSprite\web\air-test.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="staging\AvalonUgh.LabsFlashActivity.Application\web\manifest.json">
